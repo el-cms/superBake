@@ -24,7 +24,7 @@ Note that SuperBake don't bake controllers without models (for now)
 
 Please, backup your app before testing this shell. Thank you !
 
-DIRECTORY STRUCTURE
+Directory structure
 -------------------
 <pre>
 <CakeBase>
@@ -94,6 +94,10 @@ How it works
 SuperBake Shell is just modified CakePHP's Bake files, with configuration files to have a easier
 baking process.
 
+Contact/help/support
+--------------------
+
+For any help, as there is no website for EL-CMS (nor SuperBake, of course) now, feel free to use my [g+ page](https://plus.google.com/b/110073171539347252283/110073171539347252283/posts), or the GitHub issue system...
 
 Todo
 ----

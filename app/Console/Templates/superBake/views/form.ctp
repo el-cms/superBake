@@ -95,26 +95,10 @@ include($themePath . 'views/common/headers.php');
 			<li><?php echo "<?php echo \$this->Html->link(" . $this->display("List " . $pluralHumanName) . ", " . $this->url('index', $pluralVar) . "); ?>"; ?></li>
 		<?php endif; ?>
 		<?php
-		$done = array();
-		foreach ($associations as $type => $data) {
-			foreach ($data as $alias => $details) {
-				if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-					$actions = 0;
-					if ($this->actionable('index', $details['controller'])):
-						$actions = 1;
-						echo "\t\t<li><?php echo \$this->Html->link(" . $this->display("List " . Inflector::humanize($details['controller'])) . ", " . $this->url('index', $details['controller']) . "); ?> </li>\n";
-					endif;
-					if ($this->actionable('add', $details['controller'])):
-						$actions = 1;
-						echo "\t\t<li><?php echo \$this->Html->link(" . $this->display("New " . Inflector::humanize(Inflector::underscore($alias))) . ", " . $this->url('add', $details['controller']) . "); ?> </li>\n";
-					endif;
-					if ($actions == 0) {
-						echo "<?php  __('Sorry, no action available.');?>";
-					}
-					$done[] = $details['controller'];
-				}
-			}
-		}
+		/*
+		 * Related actions
+		 */
+		include(dirname(__FILE__).DS.'common'.DS.'related_actions.php');
 		?>
 	</ul>
 </div>

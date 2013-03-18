@@ -296,7 +296,6 @@ class SuperViewTask extends BakeTask {
 		$template = $action;
 		$prefixes = Configure::read('Routing.prefixes');
 		foreach ((array) $prefixes as $prefix) {
-			$this->out('prefix');
 			if (strpos($template, $prefix) !== false) {
 				$this->out("template before replace : $template");
 				$template = str_replace($prefix . '_', '', $template);

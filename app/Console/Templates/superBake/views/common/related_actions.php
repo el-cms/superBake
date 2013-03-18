@@ -3,8 +3,7 @@
 /**
  * PHP file for EL-CMS
  * 
- * This file mus be included once in all of your template views, as it defines
- * some vars used in the process (and creates the copyright header)
+ * This file should be included in any template that needs a "related controllers actions" part.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>

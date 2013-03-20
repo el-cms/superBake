@@ -179,10 +179,14 @@ class AppShell extends Shell {
 		} else {
 			$url.=" 'plugin' => '" . Inflector::underscore($plugin) . "',";
 		}
-		if (!is_null($controller)) {
+
+		if (!is_null($controller)) {//Given controller
 			$controller = Inflector::underscore($controller);
-			$url.=" 'controller' => '$controller',";
+		} else { // null, so assuming current controller
+			$controller = $this->templateVars['pluralVar'];
 		}
+		$url.=" 'controller' => '$controller',";
+		
 		if (!empty($action)) {
 			$url.=" 'action' => '$action'";
 		} else {

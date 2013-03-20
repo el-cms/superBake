@@ -99,6 +99,8 @@ Contact/help/support
 
 For any help, as there is no website for EL-CMS (nor SuperBake, of course) now, feel free to use my [g+ page](https://plus.google.com/b/110073171539347252283/110073171539347252283/posts), or the GitHub issue system...
 
+And if you want to help me to buy coffee: [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=kure&url=https://github.com/mtancoigne/superBake&title=superBake&language=&tags=github&category=software) 
+
 Todo
 ----
  - Work on generation of controllers with no models

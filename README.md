@@ -99,11 +99,10 @@ Contact/help/support
 
 For any help, as there is no website for EL-CMS (nor SuperBake, of course) now, feel free to use my [g+ page](https://plus.google.com/b/110073171539347252283/110073171539347252283/posts), or the GitHub issue system...
 
+Examples are coming in the wiki.
+
 And if you want to help me to buy coffee: [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=kure&url=https://github.com/mtancoigne/superBake&title=superBake&language=&tags=github&category=software) 
 
 Todo
 ----
- - Work on generation of controllers with no models
- - Work to be able to generate just one entire plugin
- - Use the actions equivalences (defined in plugins config files) during controller generation
- - ...
+A (in)complete list of things to do is described on the [roadmap/todo wiki page](https://github.com/mtancoigne/superBake/wiki/Roadmap-todo)

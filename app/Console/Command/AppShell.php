@@ -165,14 +165,24 @@ class AppShell extends Shell {
 	 * @param array  $options		An array of options
 	 * @return string Like "array('admin'=>'string|false', 'plugin'=>'string', 'controller'=>'controller', 'action'=>'action', 'options')"
 	 */
-	function url($action, $controller = null, $options = null, $prefix = null) {
+	function url($action, $controller = null, $options = null) {
 		$url = 'array(';
+		// Routing prefix
 		$prefix = $this->templateVars['admin'];
 		if (!empty($prefix)) {
 			$url.=" 'admin' => '$prefix',";
 		} else {
 			$url.=" 'admin' => false,";
 		}
+
+		// Finding controller
+		if (!is_null($controller)) {//Given controller
+			$controller = Inflector::underscore($controller);
+		} else { // null, so assuming current controller
+			$controller = Inflector::underscore($this->templateVars['pluralVar']);
+		}
+
+		// Plugin
 		$plugin = $this->controllerPlugin($controller);
 		if (empty($plugin)) {
 			$url.=" 'plugin' => null,";
@@ -180,21 +190,21 @@ class AppShell extends Shell {
 			$url.=" 'plugin' => '" . Inflector::underscore($plugin) . "',";
 		}
 
-		if (!is_null($controller)) {//Given controller
-			$controller = Inflector::underscore($controller);
-		} else { // null, so assuming current controller
-			$controller = $this->templateVars['pluralVar'];
-		}
-		$url.=" 'controller' => '$controller',";
-		
+		// Controller
+		$url.=" 'controller' => '" . Inflector::underscore($controller) . "',";
+
+		// Action
 		if (!empty($action)) {
 			$url.=" 'action' => '$action'";
 		} else {
 			$url.=" 'action' => 'index'";
 		}
+
+		// URL options
 		if (!empty($options)) {
 			$url.=", $options";
 		}
+
 		return $url . ')';
 	}
 
@@ -295,4 +305,16 @@ class AppShell extends Shell {
 		return $modelWL;
 	}
 
+	/**
+	 * Returns the name of the current action, without current prefix.
+	 * 
+	 * @param string $action If set, returns an other action, without current prefix
+	 * @return string Action
+	 */
+	public function currentAction($action=null){
+		if(is_null($action)){
+			$action=$this->templateVars['action'];
+		}
+		return preg_replace('@^admin_@', '', $action);
+	}
 }

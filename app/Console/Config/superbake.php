@@ -37,11 +37,18 @@ $projectConfig = array(
 	// You can change this name if you want to create a plugin with it.
 	// If you do so, don't forget to rename the appropriate file in the 
 	// superBake Config/ dir
-	'notPlugin' => 'Public',
+	'notPlugin' => 'App',
 	//'notPlugin' => 'AnotherName',
 	// Plugins list. All plugin listed here must have a configuration file in the
 	// superBake Config/ dir. Use the templateFile.config.php file as example.
 	'plugins' => array(
+		'Blog' => array(),
+		'Gallery' => array(),
+		'Licenses' => array(),
+		'Liked' => array(),
+		'Links' => array(),
+		'Projects' => array(),
+		'Tags' => array(),
 	),
 	// The default console template to use for generation. If you want to build
 	// your own, take this one as an example.

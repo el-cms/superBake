@@ -58,7 +58,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Foobar. If not, see <http://www.gnu.org/licenses/> 
  */
-//die(var_export($_ENV).var_export($this));
+
+//Page headers and licensing
+include($themePath . 'views/common/headers.php');
+
 ?>
 <div class="<?php echo $pluralVar; ?> view">
 	<h2><?php echo "<?php  echo " . $this->display($singularHumanName) . " ?>"; ?></h2>

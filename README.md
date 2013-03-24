@@ -80,7 +80,7 @@ and cry a lot. Sorry.
 
 Sample files
 ------------
-No more sample files. Ask in [github issues](https://github.com/mtancoigne/el-cms/issues) and i'll take time to create some.
+No more sample files. Ask in [github issues](https://github.com/mtancoigne/superBake/issues) and i'll take time to create some.
 
 How it works
 ------------

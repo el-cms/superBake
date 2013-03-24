@@ -30,7 +30,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
-App::uses('SuperAppShell', 'Console/Command');
+App::uses('AppShell', 'Console/Command');
 App::uses('BakeTask', 'Console/Command/Task');
 App::uses('ConnectionManager', 'Model');
 App::uses('Model', 'Model');
@@ -93,6 +93,12 @@ class SuperModelTask extends BakeTask {
 	public $currentPlugin = null;
 	public $currentModel = null;
 	public $projectConfig = array();
+	public $currentModelConfig = array();
+
+	/**
+	 * Name of template used for generation
+	 * @var string
+	 */
 	public $template = null;
 
 	/**
@@ -111,11 +117,8 @@ class SuperModelTask extends BakeTask {
 	 */
 	public function execute() {
 		parent::execute();
-
 		$this->plugin = $this->currentPlugin;
 		$model = $this->currentModel;
-		$this->template = $this->projectConfig['defaultTemplate'];
-		//$this->interactive = false;
 		if (!isset($this->connection)) {
 			$this->connection = 'default';
 		}
@@ -559,8 +562,12 @@ class SuperModelTask extends BakeTask {
 		$this->Template->set($data);
 		$this->Template->set(array(
 			'plugin' => $this->plugin,
-			'pluginPath' => $pluginPath
+			'pluginPath' => $pluginPath,
+			'theme' => $this->params['theme'],
+			'projectConfig' => $this->projectConfig,
+			'currentModelConfig' => $this->currentModelConfig,
 		));
+		//echo (var_export($this->currentModelConfig));
 		$out = $this->Template->generate('classes', 'model');
 		$path = $this->getModelPath();
 		$filename = $path . $name . '.php';

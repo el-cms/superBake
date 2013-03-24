@@ -1,11 +1,7 @@
 <?php
 /**
- * Controllers actions template for EL-CMS baking
- * 
- * This file is used during controllers generation and adds basic CRUD actions
- * to the controllers.
- * 
- * This file is an updated file from cakePHP.
+ * "Missing model" snippet. This in included during model generation when a 
+ * snippet is not found. It contains comments on the missing snippet, and a todo statement.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -31,14 +27,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
-?>
+ ?>
 
-	/**
-	 * <?php echo $admin.$a ?> method from snippet
-	 *
-	 * @return void
-	 */
-	public function <?php echo $admin.$a ?>() {
-		$this-><?php echo $currentModelName ?>->recursive = 0;
-		$this->set('<?php echo $pluralName ?>', $this->paginate());
-	}
+/**
+ * <?php echo __d('superBake', 'A model snippet is missing.')."\n"?>
+ * <?php echo __d('superBake', 'It was referenced as %s in config file, and should have been created in file',$v)."\n"?>
+ * "<?php echo $additionnalCode ?>".
+ *
+ * <?php echo __d('superBake', 'Please do something with this.')."\n"?>
+ * 
+ * @todo <?php echo __d('superBake', 'Write the superBake model snippet for %s, in %s', array($v, $additionnalCode))."\n"?>
+ */
+ 
+ 

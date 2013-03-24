@@ -3,15 +3,16 @@
 /**
  * Controllers actions template for EL-CMS baking
  * 
- * This file is used during controllers generation and adds basiic CRUD actions
- * to the controllers.
+ * This file is used during controllers generation and is the skeleton to an 
+ * empty controller.
+ * 
+ * This file is an updated file from cakePHP.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @package       EL-CMS/Console/Controllers
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
- * @todo hacks/functions.php may be not included here... Must search in the console script dir.
  * 
  * ----
  * 
@@ -31,9 +32,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
-/*
- * Defining some vars
- */
 
 /**
  * @var string Plural controller name, CamelCased
@@ -52,7 +50,7 @@ if (!empty($plugin)) {
  * Step by step
  */
 if (empty($plugin)) {
-	$pluginParams = $projectConfig['notPlugin'];
+	$pluginParams = $projectConfig['appBase'];
 } else {
 	$pluginParams = $projectConfig['plugins'][$pluginName];
 }
@@ -64,21 +62,22 @@ if (empty($admin)) {
 }
 
 /*
- * Load whitelists.
- * The project whiteLists and plugin whitelists are merged. This represents the
- * actions to bake.
- * Plugin blacklists override the whiteList
+ * Load actions to bake.
+ * The project defaultActions and plugin actions are merged. This represents the actions to bake.
+ * Plugin blacklists override the actions to bake
  */
-$prefixWhiteList = array_merge($projectConfig['defaultWhiteList'][$prefix], $pluginParams['models'][$controllerName]['whiteList'][$prefix]);
-foreach ($prefixWhiteList as $a => $path) {
-	//Checking plugin's blacklist
-	if (!in_array($a, $pluginParams['models'][$controllerName]['blackList'][$prefix])) {
+$actionsToBake = array();
+
+$actionsToBake=$this->allowedActions( $controllerName, $prefix);
+foreach ($actionsToBake as $a => $path) {
+		$this->out(__d('superBake', 'Action %s is being built (path to snippet: "%s)', array($a, $path)), 1, Shell::VERBOSE);
 		// Creating the snippet path. If $path is not an array, the path is created
 		// as snippets/controller/action.ctp.
-		if (is_null($path)) {
-			$snippetFile = dirname(__FILE__) . DS . 'snippets' . DS . $controllerName . DS . $a . '.ctp';
+		if (empty($path)) {
+			$snippetFile = dirname(__FILE__) . DS . 'snippets' . DS . $a . '.ctp';
+		} else {
+			$snippetFile = dirname(__FILE__) . DS . 'snippets' . DS . str_replace('::', DS, $path) . '.ctp';
 		}
-		$snippetFile = dirname(__FILE__) . DS . 'snippets' . DS . $path . '.ctp';
 		if (file_exists($snippetFile)) {
 			$this->out(__d('superBake', '<info>The "%s" snippet file has been added.</info>', $snippetFile), 1, Shell::VERBOSE);
 			include($snippetFile);
@@ -86,7 +85,4 @@ foreach ($prefixWhiteList as $a => $path) {
 			$this->out(__d('superBake', '<warning>The "%s" snippet file is missing.</warning>', $snippetFile), 1, Shell::QUIET);
 			include(dirname(__FILE__) . DS . 'snippets' . DS . 'missing_action.ctp');
 		}
-	} else {
-		$this->out(__d('superBake', "Action %s not created, as specified by the blacklist", $a), 1, Shell::VERBOSE);
-	}
 }

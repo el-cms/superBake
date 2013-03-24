@@ -108,13 +108,13 @@ class SuperViewTask extends BakeTask {
 		$this->controllerName = $this->currentController;
 		$this->plugin = $this->currentPlugin;
 
-		//We create an array with plugins/models 
-		//$this->pluginsModels = $this->getAllPluginsControllers();
+		// We create an array with plugins/models 
+		// $this->pluginsModels = $this->getAllPluginsControllers();
 		// variables to be made available to a view template
 		$vars = $this->_loadController();
 		// Methods to build
 		$methods = $this->_methodsToBake();
-		//Generates methods views from template file
+		// Generates methods views from template file
 		foreach ($methods as $method) {
 			$this->out(__d('superBake', 'View for "%s" is being built', $method));
 			$content = $this->getContent($method, $vars);
@@ -129,7 +129,6 @@ class SuperViewTask extends BakeTask {
 	 *
 	 * @return array Array of action names that should be baked
 	 * @todo : filter method which must not have views.
-	 * @todo : swap methods based on the SuperBake config
 	 */
 	protected function _methodsToBake() {
 		$this->out(__d('superbake', 'Searching for methods to bake fo controller "' . $this->controllerName . '"'), 1, Shell::VERBOSE);
@@ -142,9 +141,7 @@ class SuperViewTask extends BakeTask {
 		//$scaffoldActions = false;
 		// No methods
 		if (empty($methods)) {
-			$this->out(__d('superbake', '<warning>No method to bake. You should check your controller.</warning>'), 1, Shell::QUIET);
-			/* $scaffoldActions = true;
-			  $methods = $this->scaffoldActions; */
+			$this->out(__d('superbake', '<warning>No method to bake for controller "%s". You should check your config.</warning>', $this->controllerName), 1, Shell::QUIET);
 			return array();
 		}
 
@@ -223,7 +220,7 @@ class SuperViewTask extends BakeTask {
 		if (empty($content)) {
 			return false;
 		}
-		$this->out("\n" . __d('cake_console', 'Baking `%s` view file...', $action), 1, Shell::QUIET);
+		$this->out("\n" . __d('cake_console', 'Baking "%s" view file...', $action), 1, Shell::QUIET);
 		$path = $this->getViewPath();
 		$filename = $path . $this->controllerName . DS . Inflector::underscore($action) . '.ctp';
 		return $this->createFile($filename, $content);
@@ -246,7 +243,7 @@ class SuperViewTask extends BakeTask {
 		if (count($temp) >= 2) {
 			if (in_array($temp[0], Configure::read('Routing.prefixes'))) {
 				$this->Template->set('admin', $temp[0]);
-				$GLOBALS['admin'] = $temp[0];
+				$GLOBALS['admin'] = $temp[0]; // @todo check usage of this, not sure if needed anymore
 			}
 		}
 		$this->Template->set('action', $action);
@@ -256,7 +253,7 @@ class SuperViewTask extends BakeTask {
 		if ($template) {
 			return $this->Template->generate('views', $template);
 		}
-		
+
 		return false;
 	}
 
@@ -270,35 +267,60 @@ class SuperViewTask extends BakeTask {
 		/*
 		 * Looking for alternative template
 		 */
-		//Getting the plugin :
-		$plugin=$this->controllerPlugin($this->controllerName);
-		if(!is_null($plugin)){
-			//Searching for current model in plugins
-			$config=$this->projectConfig['plugins'][$plugin]['models'][$this->controllerName];
+		// Getting the plugin :
+		$plugin = $this->controllerPlugin($this->controllerName);
+		if (!is_null($plugin)) { // Searching for current model in plugins
+			$config = $this->projectConfig['plugins'][$plugin]['models'][$this->controllerName];
+		} else { // Searchning in appBase
+			$config = $this->projectConfig['appBase']['models'][$this->controllerName];
 		}
-		else{
-			$config=$this->projectConfig['notPlugin']['models'][$this->controllerName];
+
+		// Getting current prefix
+		$prefix = $this->Template->templateVars['admin'];
+		// Removing prefix from action
+		$simpleAction=  str_replace($prefix.'_', '', $action);
+		if (empty($prefix)) {
+			$prefix = 'public';
 		}
-		if(isset($config['views'][$action])){
-			$action=$config['views'][$action];
-			$this->out(__d('superBake', '<info>We use an alternate template for "%s"</info>', $action));
+		// Default: current action.
+		$view = $action;
+		// Alternative view
+		if (!empty($config['views'][$prefix][$simpleAction])) {
+			$view = $config['views'][$prefix][$simpleAction];
+			$this->out(__d('superBake', '<info>We want to use the "%s" template for "%s" action view</info>', array($view, $action)));
 		}
-		if ($action != $this->template && in_array($action, $this->noTemplateActions)) {
-			return false;
-		}
-		if (!empty($this->template) && $action != $this->template) {
-			return $this->template;
-		}
+
+		// Action has no view
+		//echo $this->template;
+		/* if ($config != $this->template && in_array($action, $this->noTemplateActions)) {
+		  return false;
+		  } */
+		/*
+		  if (!empty($this->template) && $action != $this->template) {
+		  return $this->template;
+		  } */
+
+		//
+		//First case: template view exists, everything's ok. We don't go any further
+		//
 		$themePath = $this->Template->getThemePath();
-		if (file_exists($themePath . 'views' . DS . $action . '.ctp')) {
-			return $action;
+		$filePath = str_replace('::', DS, $view);
+		if (file_exists($themePath . 'views' . DS . $filePath . '.ctp')) {
+			return $filePath;
 		}
-		$template = $action;
+
+		$template = $view;
+
+		//
+		// At this point, the template file has not been found in views, so we  
+		// try combining different things
+		//
+		
+		// Removing the prefix from the views
 		$prefixes = Configure::read('Routing.prefixes');
 		foreach ((array) $prefixes as $prefix) {
 			if (strpos($template, $prefix) !== false) {
 				$template = str_replace($prefix . '_', '', $template);
-
 			}
 		}
 		if (in_array($template, array('add', 'edit'))) {
@@ -359,58 +381,4 @@ class SuperViewTask extends BakeTask {
 		return $path;
 	}
 
-	/*
-	  public function superUrl($options) {
-
-	  // check the action
-	  if (empty($options['action'])) {
-	  // Action is not set, so default.
-	  $action = $this->projectConfig['defaultAction'];
-	  } else {
-	  // Action is set
-	  $action = $options['action'];
-	  }
-
-	  if (empty($option['controller'])) {
-	  // target controller not set, so current one
-	  $controller = $this->currentController;
-	  } else {
-	  // Target controller set, so we must search for it in plugins
-
-	  $controller = '';
-	  }
-
-	  if (empty($options['plugin'])) {
-
-	  } else {
-
-	  }
-
-	  if (empty($options['admin'])) {
-
-	  } else {
-
-	  }
-	  }
-	 */
-
-//	public function getAllPluginsControllers() {
-//		$plugins = array();
-//		foreach ($this->projectConfig['plugins'] as $plugin => $config) {
-//			$plugins[$plugin] = $config;
-//		}
-//		$plugins['notPlugin'] = $this->projectConfig['notPlugin'];
-//		$this->pluginsModels=$plugins;
-//	}
-
-	/*public function getPlugin($controller) {
-		// Search if Controller is in a plugin
-		foreach ($this->projectConfig['plugins'] as $plugin => $config) {
-			if (in_array($controller, $config)) {
-				return $plugin;
-			} else {
-				return false;
-			}
-		}
-	}*/
 }

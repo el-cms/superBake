@@ -1,0 +1,135 @@
+---
+##
+## Generation informations
+##
+
+## Template to use for generation. Must be superBake compatible
+defaultTemplate: superBake
+## Must the script ask to choose for template ? (if false, script will use
+## defaultTemplate)
+askForTemplate: true
+## Value set by superBake
+updateBootstrap: false
+## We want the rooting prefixes
+usePrefixes: true
+## Role (groups) model name
+rolesModel: Groups
+## Role primary key
+rolesPK: id
+## Users model name
+userModel: Users
+## Users primary key
+usersPK: id
+## default plugins dir
+defaultPluginDir: app::Plugin
+
+
+##
+## Personnal informations, mostly here to use in generated headers.
+##
+
+## Your name (for file headers)
+editorName: Your Name
+## Your email adress (for file headers)
+editorEmail: <your@email>
+## Your website
+editorWebsite: http://yourwebsite
+## Your website name
+editorWebsiteName: Your website Name
+## Your license template
+editorLicenseTemplate: gpl3 #license (see templates/superbake/common/licences)
+## Package name
+basePackage: PackageName
+
+
+##
+## Default actions to bake, by prefixes.
+## Actions can be followed by the template to use for it.
+##
+
+defaultActions:
+  ## public prefix (non prefixed actions)
+  public:
+    index:
+    view:
+  ## user prefix
+  user:
+    index:
+    view:
+  ## editor prefix : can add/edit/delete their own content
+  editor:
+    add: self_add
+    edit: self_edit
+    delete: self_delete
+    index: index
+    view: view
+  ## admin prefix : superpowers
+  admin:
+    index:
+    view:
+    add:
+    delete:
+    edit:
+## Models that must be baked in app/Model
+appBase:
+  models:
+#    ModelName:
+#      model: #Here are additional snippets for model. Use :: as directory separator
+#        snippet1
+#        path::to::snippet
+#      actions: # Here are additionnal actions for controllers.
+#        public: # this is the "public" prefix
+#          # Format :
+#          # actionName(will be in controller): path::to snippet (Code)
+#          additional_action: template
+#          additional_action2: dir::template2
+#      user:
+#          additional_action: template
+#        editor:
+#          additional_action: template
+#        admin:
+#          additional_action: template
+#      blacklist: # Actions that must not be created (overrides the defaultActions)
+#        public:
+#          forbiden_action1
+#          forbiden_action2
+#      views: # Views and their snippets, if any.
+#        public:
+#          additional_action: template
+#        editor:
+#          additional_action: template
+#        admin:
+#          additional_action: template
+plugins:
+## Complete plugin sample:
+#  PluginName:
+#    pluginDir: custom::dir
+#    haveBootstrap: false
+#    haveRoutes: false
+#    models:
+#      ModelName:
+#        model:
+#          snippet1
+#          snippet2
+#        actions:
+#          public:
+#            additional_action: template
+#          user:
+#            additional_action: template
+#          editor:
+#            additional_action: template
+#          admin:
+#            additional_action: template
+#        blacklist:
+#          public:
+#            forbiden_action1
+#            forbiden_action2
+#        views:
+#          user:
+#            additional_action: template
+#          editor:
+#            additional_action: template
+#          admin:
+#            additional_action: template
+#      Model2:
+#        ... 

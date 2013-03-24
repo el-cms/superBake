@@ -54,7 +54,6 @@ class SuperBakeShell extends AppShell {
 	 *
 	 * @var array
 	 */
-	//public $tasks = array('Project', 'DbConfig', 'SuperModel', 'SuperController', 'SuperView', 'SuperPlugin', 'Fixture', 'Test');
 	public $tasks = array('SuperModel', 'SuperController', 'SuperView', 'SuperPlugin');
 
 	/**
@@ -72,17 +71,6 @@ class SuperBakeShell extends AppShell {
 	public $projectConfig = array();
 
 	/**
-	 * Loads configuration files
-	 */
-//	public function initialize() {
-//		parent::initialize();
-//		/*if (!$this->loadConfig()) {
-//			$this->out(__d('supeBake', '<error>Some configuration files can\'t be loaded.</error>'), 1, SHELL::QUIET);
-//			exit();
-//		}*/
-//	}
-
-	/**
 	 * Assign $this->connection to the active task if a connection param is set.
 	 *
 	 * @return void
@@ -93,7 +81,8 @@ class SuperBakeShell extends AppShell {
 		Configure::write('Cache.disable', 1);
 
 		$task = Inflector::classify($this->command);
-		if (isset($this->{$task}) && !in_array($task, array('Project', 'DbConfig'))) {
+		// Checking for alternative "connection" param
+		if (isset($this->{$task})) {
 			if (isset($this->params['connection'])) {
 				$this->{$task}->connection = $this->params['connection'];
 			}
@@ -198,9 +187,10 @@ class SuperBakeShell extends AppShell {
 		$this->out(__d('superBake', "<info>Models generation summary:</info>"));
 		$this->hr();
 
-		//Passing project configuration to superModel Task
+		// Passing project configuration to superModel Task
 		$this->SuperModel->projectConfig = $this->projectConfig;
-		if ($this->projectConfig['askForTemplate']==false) {
+		// Template to use
+		if ($this->projectConfig['askForTemplate'] == false) {
 			$this->SuperModel->params['theme'] = $this->projectConfig['defaultTemplate'];
 		}
 		// Models in plugins
@@ -210,14 +200,17 @@ class SuperBakeShell extends AppShell {
 			$this->out(__d('superBake', '<info>Generating models for plugin "%s":</info>', $plugin));
 			foreach ($config['models'] as $model => $modelConfig) {
 				$this->SuperModel->currentModel = $model;
+				$this->SuperModel->currentModelConfig = $modelConfig;
 				$this->SuperModel->execute();
 			}
 		}
 		$this->SuperModel->currentPlugin = null;
-		// "Root" models
-		$this->out(__d('superBake', '<info>Generating models for app/Model: "%s":</info>', $plugin));
-		foreach ($this->projectConfig['notPlugin']['models'] as $model => $config) {
+		
+		// App models
+		$this->out(__d('superBake', '<info>Generating models for app/Model:</info>'));
+		foreach ($this->projectConfig['appBase']['models'] as $model => $config) {
 			$this->SuperModel->currentModel = $model;
+			$this->SuperModel->currentModelConfig = $config;
 			$this->SuperModel->execute();
 		}
 		$this->hr();
@@ -234,7 +227,7 @@ class SuperBakeShell extends AppShell {
 
 		//Passing project configuration to superController Task
 		$this->SuperController->projectConfig = $this->projectConfig;
-		if ($this->projectConfig['askForTemplate']==false) {
+		if ($this->projectConfig['askForTemplate'] == false) {
 			$this->SuperController->params['theme'] = $this->projectConfig['defaultTemplate'];
 		}
 		//Creation controllers from models in plugins
@@ -250,7 +243,7 @@ class SuperBakeShell extends AppShell {
 		//Creating controllers from models in app/Model
 		$this->out(__d('superBake', '<info>Generating controllers from app/Model</info>'));
 		$this->SuperController->currentPlugin = null;
-		foreach ($this->projectConfig['notPlugin']['models'] as $model => $config) {
+		foreach ($this->projectConfig['appBase']['models'] as $model => $config) {
 			$this->SuperController->currentModel = $model;
 			$this->SuperController->execute();
 		}
@@ -268,7 +261,7 @@ class SuperBakeShell extends AppShell {
 
 		// Passing configuration to superView Task
 		$this->SuperView->projectConfig = $this->projectConfig;
-		if ($this->projectConfig['askForTemplate']==false) {
+		if ($this->projectConfig['askForTemplate'] == false) {
 			$this->SuperView->params['theme'] = $this->projectConfig['defaultTemplate'];
 		}
 		// Baking views inside plugins
@@ -284,15 +277,15 @@ class SuperBakeShell extends AppShell {
 		//Creating Views from controllers in app/Controller
 		$this->out(__d('superBake', '<info>Generating views from app/Controllers</info>'));
 		$this->SuperView->currentPlugin = null;
-		foreach ($this->projectConfig['notPlugin']['models'] as $model => $config) {
+		foreach ($this->projectConfig['appBase']['models'] as $model => $config) {
 			$this->SuperView->currentController = $model;
 			$this->SuperView->execute();
 		}
-		if($this->SuperView->Template->missing_config_state==1){
+		if ($this->SuperView->Template->missing_config_state == 1) {
 			$this->hr();
-			$this->out(__d('superBake', '<error>/!\ superBake configuration is missing.</error>'), 1, Shell::QUIET);
-			foreach($this->SuperView->Template->missing_config as $k =>$v){
-				if($v==1){
+			$this->out(__d('superBake', '<error>superBake configuration is missing.</error>'), 1, Shell::QUIET);
+			foreach ($this->SuperView->Template->missing_config as $k => $v) {
+				if ($v == 1) {
 					$this->out(__d('superBake', '<warning>Model "%s" is not defined in your superBake configuration. All links related to its actions have not been built in related views</warning>', $k), 1, Shell::QUIET);
 				}
 			}

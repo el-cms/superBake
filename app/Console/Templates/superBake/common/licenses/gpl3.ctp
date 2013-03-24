@@ -1,16 +1,13 @@
 <?php
 /**
- * Users controller modifications for EL-CMS baking
- *
- * this file is used during UsersController generation. It adds the "lock"
- * action to the app.
+ * GPL v3 license template for headers in generated files.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @package       EL-CMS/Console/Controllers
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
- *
+ * 
  * ----
  * 
  *  This file is part of EL-CMS.
@@ -29,11 +26,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
-?>
-
-	/**
-	 * This method locks an user.
-	 */
-	public function <?php echo $admin ?>lock($id) {
-		die('Lock is not written yet. Please, take a look :D');
-	}
+ ?>
+* @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+*
+* ----
+* 
+*  This file is part of <?php echo $projectConfig['basePackage'] ?>.
+*
+*  <?php echo $projectConfig['basePackage'] ?> is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation, either version 3 of the License, or
+*  (at your option) any later version.
+* 
+*  <?php echo $projectConfig['basePackage'] ?> is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+* 
+*
+*  You should have received a copy of the GNU General Public License
+*  along with <?php echo $projectConfig['basePackage'] ?>. If not, see <http://www.gnu.org/licenses/>

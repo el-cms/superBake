@@ -2,11 +2,8 @@
 /**
  * PHP file for EL-CMS
  * 
- * This file should be included once in all of your template views, as it creates the copyright
- * header for the generated files.
- * 
- * Feel free to adapt this template to your own app with your own license. I mean
- * not this header, but the header below :)
+ * This file mus be included once in all of your template views, as it defines
+ * some vars used in the process (and creates the copyright header)
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -33,26 +30,25 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
 
-// Looking if in plugin to write in comments.
 $com_plugin='';
 if(!empty($plugin)){$com_plugin=$plugin.'/';}
 echo "<?php\n";
 ?>
+
 /**
- * app/<?php echo "${com_plugin}View/${pluralHumanName}/$action" ?>.ctp 
- *
- * This file contains the "<?php echo $action ?>" layout for "<?php echo $action ?>()" action
- * of the "<?php echo $pluralHumanName ?>" controller.
- * 
- * @copyright     Copyright 2012, Your Name (http://yourwebsite.com)
- * @author        Your Name <your@e.mail>
- * @link          http://yourwebsite.com yourWebsiteName
- * @package       <YOURAPP>/<?php echo $plugin ?>
- *
- * @license       License Name (Link)
- *
- * ----
- * 
- *  Here comes your license description
- */
-<?php echo "?>\n\n";?>
+* app/<?php echo $com_plugin . 'View/'.$pluralVar.'/' . $action ?>.php
+* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo stripslashes(str_replace(dirname($themePath), '', $themePath)); ?>".
+*
+* This file contains the <?php echo $action ?> view for <?php echo $pluralVar?> Controller.
+* 
+* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->projectConfig['editorName'] ?> (<?php echo $this->projectConfig['editorWebsite'] ?>)
+* @author        <?php echo $this->projectConfig['editorName'] ?> <?php echo $this->projectConfig['editorEmail'] . "\n" ?>
+* @link          <?php echo $this->projectConfig['editorWebsite'] ?> <?php echo $this->projectConfig['editorWebsiteName'] . "\n" ?>
+* @package       <?php echo $this->projectConfig['basePackage'] ?>/<?php echo $plugin . "\n" ?>
+*
+<?php
+$licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $this->projectConfig['editorLicenseTemplate'] . '.ctp';
+if (file_exists($licenseTemplate)) {
+	include($licenseTemplate);
+}
+echo "?>\n\n";?>

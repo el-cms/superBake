@@ -86,12 +86,12 @@ class SuperPluginTask extends AppShell {
 		$plugin = Inflector::camelize($this->currentPlugin);
 		$pluginPath = $this->_pluginPath($plugin);
 		if (is_dir($pluginPath)) {
-			$this->out(__d('el_console', '<warning>Plugin: %s already exists, no action taken.</warning>', $plugin));
-			$this->out(__d('el_console', 'Path: %s', $pluginPath), 1, Shell::VERBOSE);
+			$this->out(__d('superBake', '<warning>Plugin: %s already exists, no action taken.</warning>', $plugin));
+			$this->out(__d('superBake', 'Path: %s', $pluginPath), 1, Shell::VERBOSE);
 			return false;
 		} else {
 			if (!$this->bake($plugin)) {
-				$this->error(__d('el_console', "An error occurred trying to bake: %s in %s", $plugin, $this->path . $plugin));
+				$this->error(__d('superBake', "<warning>An error occurred trying to bake: %s in %s</warning>", $plugin, $this->path . $plugin));
 			}
 		}
 	}
@@ -104,13 +104,21 @@ class SuperPluginTask extends AppShell {
 	 */
 	public function bake($plugin) {
 		$pathOptions = App::path('plugins');
-		//If we're in a auto bake process, take the bake path from config.
-		$cleanPath = str_replace('\\', '\\\\', $this->projectConfig['plugins'][$this->currentPlugin]['plugin_dir'] . DS);
+		
+		// Checking if custom plugin dir or default plugin dir
+		if (in_array('plugin_dir', $this->projectConfig['plugins'][$this->currentPlugin])) {
+			$pluginDir = $this->projectConfig['plugins'][$this->currentPlugin]['plugin_dir'];
+		} else {
+			$pluginDir = $this->projectConfig['defaultPluginDir'];
+		}
+		// Cleaning path for windows
+		$cleanPath = str_replace('\\', '\\\\', $pluginDir . DS);
 		$ereg = '@' . $cleanPath . '$@';
+		// Verify if the path is in the possible plugins pathes
 		foreach ($pathOptions as $possiblePath) {
 			if (preg_match($ereg, $possiblePath)) {
 				$this->path = $possiblePath;
-				$this->out(__d('el_console', 'The "%s" plugin will be created in the "%s" dir.', $plugin, $this->path), 1, Shell::VERBOSE);
+				$this->out(__d('superBake', 'The "%s" plugin will be created in the "%s" dir.', $plugin, $this->path), 1, Shell::VERBOSE);
 			}
 		}
 
@@ -152,10 +160,8 @@ class SuperPluginTask extends AppShell {
 			}
 
 
-			/**
-			 * Additionnal files must be inserted here.
-			 */
-			// PluginController file
+			
+			// PluginAppController file
 			$controllerFileName = $plugin . 'AppController.php';
 
 			$out = "<?php\n\n";
@@ -164,7 +170,7 @@ class SuperPluginTask extends AppShell {
 			$out .= "}\n";
 			$this->createFile($this->path . $plugin . DS . 'Controller' . DS . $controllerFileName, $out);
 
-			// PluginModel file
+			// PluginAppModel file
 			$modelFileName = $plugin . 'AppModel.php';
 
 			$out = "<?php\n\n";
@@ -172,27 +178,29 @@ class SuperPluginTask extends AppShell {
 			$out .= "class {$plugin}AppModel extends AppModel {\n\n";
 			$out .= "}\n";
 			$this->createFile($this->path . $plugin . DS . 'Model' . DS . $modelFileName, $out);
-
+			
+			/**
+			 * Additionnal files must be inserted here.
+			 */
 
 			// bootstrap file
-			if ($this->projectConfig['plugins'][$plugin]['have_bootstrap'] == true) {
-
+			if(in_array('haveBootstrap', $this->projectConfig['plugins'][$plugin]) && $this->projectConfig['plugins'][$plugin]['haveBootstrap'] == true){
+			//if ($this->projectConfig['plugins'][$plugin]['have_bootstrap'] == true) {
 				$out = "<?php\n\n";
 				$out .="/* Some comments and file description must go here */\n\n";
-				$out .= "// Put your configuration here :p\n";
+				$out .= "// Put your bootstrap configuration here :p\n";
 				$this->createFile($this->path . $plugin . DS . 'Config' . DS . 'bootstrap.php', $out);
 			}
 
 			// route file
-			if ($this->projectConfig['plugins'][$plugin]['have_routes'] == true) {
-
+			if (in_array('haveRoutes', $this->projectConfig['plugins'][$plugin]) && $this->projectConfig['plugins'][$plugin]['have_routes'] == true) {
 				$out = "<?php\n\n";
 				$out .="/* Some comments and file description must go here */\n\n";
-				$out .= "// Put your configuration here :p\n";
+				$out .= "// Put your routes configuration here :p\n";
 				$this->createFile($this->path . $plugin . DS . 'Config' . DS . 'routes.php', $out);
 			}
 
-			// Bootstrap update
+			// App Bootstrap update
 			if ($this->projectConfig['updateBootstrap'] == 'Y') {
 				$this->_modifyBootstrap($plugin);
 			}
@@ -200,7 +208,7 @@ class SuperPluginTask extends AppShell {
 			$this->hr();
 			$this->out(__d('cake_console', '<success>The %s plugin has been successfully created in %s</success>', $plugin, $this->path . $plugin), 2);
 		} else {
-			$this->out(__d('el_console', '<warning>The "%s" plugin was not created, as its folder already exists.</warning>', $plugin));
+			$this->out(__d('superBake', '<warning>The "%s" plugin was not created, as its folder already exists.</warning>', $plugin));
 		}
 
 		return true;

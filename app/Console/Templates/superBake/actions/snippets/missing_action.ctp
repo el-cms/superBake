@@ -2,8 +2,8 @@
 /**
  * Users controller modifications for EL-CMS baking
  *
- * this file is used during UsersController generation. It adds the register
- * action to the app.
+ * this file is used during UsersController generation. It adds an empty action
+ * to the app, and a todo reminder in comments.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -32,10 +32,11 @@
 ?>
 
 	/**
-	 * <?php echo $a?>() is not implemented
+	 * <?php echo $admin.$a?>() is not implemented
 	 *
-	 * @todo implement this action
+	 * @todo implement <?php echo $a?>() and if possible, make the "<?php echo $path?>" snippet of this
+	 * and share it with the rest of the world.
 	 */
-	public function <?php echo $admin?><?php echo $a?>() {
-		die('<?php echo $a?>() is not yet implemented (<?php echo $path?>)');
+	public function <?php echo $admin.$a?>() {
+		throw new NotFoundException(__('"%s()" is not yet implemented (snippet should be here: "%s").', array(<?php echo "'$a', '$path'"?>)));
 	}

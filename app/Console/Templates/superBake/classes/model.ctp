@@ -1,31 +1,44 @@
 <?php
 /**
- * Model template file.
- *
- * Used by bake to create new Model files.
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       Cake.Console.Templates.default.classes
- * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * Usefull available vars :
+ * $theme
+ * $projectConfig
+ * $plugin
+ * $pluginPath
+ * $currentModelConfig
  */
 
+//Plugin name used in headers, with trailing slash
+$com_plugin = '';
+if (!empty($plugin)) {
+	$com_plugin = "Plugin/$plugin/";
+}
 echo "<?php\n";
-echo "App::uses('{$plugin}AppModel', '{$pluginPath}Model');\n";
 ?>
+
 /**
- * <?php echo $name ?> Model
- *
+* app/<?php echo $com_plugin . 'Model/' . $name ?>.php
+* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo $theme; ?>".
+*
+* This file contains the <?php echo $name ?> model.
+* 
+* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $projectConfig['editorName'] ?> (<?php echo $projectConfig['editorWebsite'] ?>)
+* @author        <?php echo $projectConfig['editorName'] ?> <?php echo $projectConfig['editorEmail'] . "\n" ?>
+* @link          <?php echo $projectConfig['editorWebsite'] ?> <?php echo $projectConfig['editorWebsiteName'] . "\n" ?>
+* @package       <?php echo $projectConfig['basePackage'] ?>/<?php echo $plugin . "\n" ?>
+*
+<?php
+$licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $projectConfig['editorLicenseTemplate'] . '.ctp';
+if (file_exists($licenseTemplate)) {
+	include($licenseTemplate);
+}
+?>
+*/
+
+<?php echo "App::uses('{$plugin}AppModel', '{$pluginPath}Model');\n"; ?>
+/**
+* <?php echo $name ?> Model
+*
 <?php
 foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $assocType) {
 	if (!empty($associations[$assocType])) {
@@ -35,18 +48,19 @@ foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $asso
 	}
 }
 ?>
- */
+*/
 class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
 
 <?php if ($useDbConfig !== 'default'): ?>
-/**
- * Use database config
- *
- * @var string
- */
+	/**
+	* Use database config
+	*
+	* @var string
+	*/
 	public $useDbConfig = '<?php echo $useDbConfig; ?>';
 
-<?php endif;
+	<?php
+endif;
 
 if ($useTable && $useTable !== Inflector::tableize($name)):
 	$table = "'$useTable'";
@@ -54,25 +68,29 @@ if ($useTable && $useTable !== Inflector::tableize($name)):
 	echo "\tpublic \$useTable = $table;\n\n";
 endif;
 
-if ($primaryKey !== 'id'): ?>
-/**
- * Primary key field
- *
- * @var string
- */
+if ($primaryKey !== 'id'):
+	?>
+	/**
+	* Primary key field
+	*
+	* @var string
+	*/
 	public $primaryKey = '<?php echo $primaryKey; ?>';
 
-<?php endif;
+	<?php
+endif;
 
-if ($displayField): ?>
-/**
- * Display field
- *
- * @var string
- */
+if ($displayField):
+	?>
+	/**
+	* Display field
+	*
+	* @var string
+	*/
 	public $displayField = '<?php echo $displayField; ?>';
 
-<?php endif;
+	<?php
+endif;
 
 if (!empty($validate)):
 	echo "/**\n * Validation rules\n *\n * @var array\n */\n";
@@ -96,10 +114,10 @@ endif;
 
 foreach ($associations as $assoc):
 	if (!empty($assoc)):
-?>
+		?>
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-<?php
+		//The Associations below have been created with all possible keys, those that are not needed can be removed
+		<?php
 		break;
 	endif;
 endforeach;
@@ -179,5 +197,26 @@ if (!empty($associations['hasAndBelongsToMany'])):
 	endforeach;
 	echo "\n\t);\n\n";
 endif;
+
+
+/**
+ * Additional are handled here.
+ */
+$nb = 0;
+if (!empty($currentModelConfig['models'])) {
+	$nb = count($currentModelConfig['models']);
+}
+if ($nb > 0) {
+	$this->out('Number of snippets: ' . $nb);
+	foreach ($currentModelConfig['models'] as $k => $v) {
+		$additionnalCode = dirname(dirname(__FILE__)) . DS . 'models' . DS . str_replace('::', DS, $v) . '.ctp';
+		if (file_exists($additionnalCode)) {
+			include($additionnalCode);
+		} else {
+			include(dirname(dirname(__FILE__)) . DS . 'models' . DS . 'missing_code.ctp');
+			$this->out(__d('superBake', '<warning>Snippet file "%s" was not found. Default code has been set as replacement.</warning>', $additionnalCode),1, Shell::QUIET);
+		}
+	}
+}
 ?>
 }

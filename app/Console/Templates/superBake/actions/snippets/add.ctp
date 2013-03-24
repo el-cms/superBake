@@ -2,15 +2,16 @@
 /**
  * Controllers actions template for EL-CMS baking
  * 
- * This file is used during controllers generation and adds basiic CRUD actions
+ * This file is used during controllers generation and adds basic CRUD actions
  * to the controllers.
+ * 
+ * This file is an updated file from cakePHP.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @package       EL-CMS/Console/Controllers
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
- * @todo hacks/functions.php may be not included here... Must search in the console script dir.
  * 
  * ----
  * 
@@ -34,11 +35,11 @@
 $compact = array(); ?>
 
 	/**
-	 * <?php echo $admin ?>add method
+	 * <?php echo $admin.$a ?> method
 	 *
 	 * @return void
 	 */
-	public function <?php echo $admin ?>add() {
+	public function <?php echo $admin.$a ?>() {
 		if ($this->request->is('post')) {
 			$this-><?php echo $currentModelName; ?>->create();
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {

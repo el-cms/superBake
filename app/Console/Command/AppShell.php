@@ -24,8 +24,9 @@
  * 
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Foobar. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
+include_once (dirname(dirname(dirname(__file__))) . DS . 'Lib' . DS . 'Spyc.php');
 App::uses('Shell', 'Console');
 
 /**
@@ -63,7 +64,6 @@ class AppShell extends Shell {
 	public function initialize() {
 		parent::initialize();
 		if (!$this->loadConfig()) {
-			$this->out(__d('supeBake', '<error>Some configuration files can\'t be loaded.</error>'), 1, SHELL::QUIET);
 			exit();
 		}
 	}
@@ -74,50 +74,14 @@ class AppShell extends Shell {
 	 * @return boolean
 	 */
 	public function loadConfig() {
-		$error = 0;
-
-		$configPath = dirname(dirname(__file__));
-
-		// Checks for main config file
-		if (file_exists($configPath . DS . 'Config' . DS . 'superbake.php') === false) {
-			$this->out(__d('<error>bakeShell', 'The main configuration file does not exists. Check README please.</error>'), 1, Shell::QUIET);
-			$this->hr();
-			exit();
-		} else {
-			include($configPath . DS . 'Config' . DS . 'superbake.php');
-		}
-
-		// loads all plugin-related config files
-		$this->projectConfig = $projectConfig;
-		foreach ($this->projectConfig['plugins'] as $plugin => $config) {
-
-			//Try to include the file
-			if (file_exists($configPath . DS . 'Config' . DS . $plugin . 'Config.php')) {
-				include($configPath . DS . 'Config' . DS . $plugin . 'Config.php');
-				$this->out(__d('superBake', 'The "%s" configuration file has been loaded', $plugin), 1, Shell::VERBOSE);
-				$this->projectConfig['plugins'][$plugin] = $PluginConfig;
-			} else {
-				$this->out(__d('superBake', '<warning>The "%s" configuration file can\'t be loaded</warning>', $plugin), 1, Shell::QUIET);
-				$error = 1;
-			}
-		}
-
-		// Loads notPlugin : Tries to include the file
-		if (file_exists($configPath . DS . 'Config' . DS . $this->projectConfig['notPlugin'] . 'Config.php')) {
-			include($configPath . DS . 'Config' . DS . $this->projectConfig['notPlugin'] . 'Config.php');
-			$this->out(__d('superBake', 'The "%s" configuration file has been loaded', $this->projectConfig['notPlugin'] . 'Config.php'), 1, Shell::VERBOSE);
-			$this->projectConfig['notPlugin'] = $PluginConfig;
-		} else {
-			$this->out(__d('superBake', '<warning>The "%s" configuration file can\'t be loaded</warning>', $this->projectConfig['notPlugin'] . 'Config.php'), 1, Shell::QUIET);
-			$error = 1;
-		}
-
-		if ($error === 1) {
-			return false;
-		} else {
-			$this->out(__d('superBake', '<success>SuperBake configuration file have been successfuly loaded.</success>'), 1, Shell::VERBOSE);
-			$this->initialized = 1;
+		$configFile = dirname(dirname(__FILE__)) . DS . 'superBakeConfig.yml';
+		if (file_exists($configFile)) {
+			//$this->projectConfig=yaml_parse();
+			$this->projectConfig = spyc_load_file($configFile);
 			return true;
+		} else {
+			$this->out(__('superBake', '<error>The "%s" copnfiguration file does not exists. Please create it.</error>', $configFile));
+			return false;
 		}
 	}
 
@@ -136,7 +100,23 @@ class AppShell extends Shell {
 		} else {
 			$plugin = strtolower($plugin);
 		}
-		if (!is_null($replacement)) {
+
+		if (!empty($replacement)) {
+
+			if (is_array($replacement)) {
+				$i = 0;
+				$temp = 'array(';
+				foreach ($replacement as $r) {
+					if ($i == 0) {
+						$temp.="'$r'";
+						$i++;
+					} else {
+						$temp.=",'$r'";
+					}
+				}
+				$replacement = $temp . ')';
+			}
+
 			$replacement = ", $replacement";
 		}
 		// Adding quotes if not var and not quoted string
@@ -146,7 +126,7 @@ class AppShell extends Shell {
 			}
 		}
 		if ($plugin != '') {
-			//Trim '.' ending plugin name (passed to bake on command line)
+			// Trim '.' ending plugin name (passed to bake on command line)
 			$out = "__d('" . trim($plugin, '.') . "',$string $replacement)";
 		} else {
 			$out = "__($string $replacement)";
@@ -176,7 +156,7 @@ class AppShell extends Shell {
 		}
 
 		// Finding controller
-		if (!is_null($controller)) {//Given controller
+		if (!is_null($controller)) { // Given controller
 			$controller = Inflector::underscore($controller);
 		} else { // null, so assuming current controller
 			$controller = Inflector::underscore($this->templateVars['pluralVar']);
@@ -242,12 +222,11 @@ class AppShell extends Shell {
 	 */
 	//function actionable($action, $controller, $prefix){
 	function actionable($action, $controller = null) {
-		// Plugin or notPlugin ?
 		if (is_null($controller)) {
 			$controller = $this->templateVars['pluralVar'];
 		}
 		$prefix = $this->templateVars['admin'];
-		if (in_array($action, $this->allowedActions($controller, $prefix))) {
+		if (array_key_exists($action, $this->allowedActions($controller, $prefix))) {
 			return true;
 		} else {
 			return false;
@@ -264,7 +243,7 @@ class AppShell extends Shell {
 				return true;
 			}
 		}
-		if (array_key_exists($item, $this->projectConfig['notPlugin']['models'])) {
+		if (array_key_exists($item, $this->projectConfig['appBase']['models'])) {
 			$this->missing_config[$item] = 0;
 			return true;
 		}
@@ -289,14 +268,27 @@ class AppShell extends Shell {
 		if (empty($prefix)) {
 			$prefix = 'public';
 		}
+		// Plugin or not plugin ? Here's the answer.
+		// Should be another way to do this
 		if (is_null($plugin)) {
-			$modelWL = $this->projectConfig['notPlugin']['models'][$controller]['whiteList'][$prefix];
-			$modelBL = $this->projectConfig['notPlugin']['models'][$controller]['blackList'][$prefix];
+			if (!empty($this->projectConfig['appBase']['models'][$controller]['actions'][$prefix])) {
+				$modelWL = $this->projectConfig['appBase']['models'][$controller]['actions'][$prefix];
+			}
+			if (!empty($this->projectConfig['appBase']['models'][$controller]['blacklist'][$prefix])) {
+				$modelBL = $this->projectConfig['appBase']['models'][$controller]['blacklist'][$prefix];
+			}
 		} else {
-			$modelWL = $this->projectConfig['plugins'][$plugin]['models'][$controller]['whiteList'][$prefix];
-			$modelBL = $this->projectConfig['plugins'][$plugin]['models'][$controller]['blackList'][$prefix];
-		}
-		$modelWL = array_merge($modelWL, $this->projectConfig['defaultWhiteList'][$prefix]);
+			if (!empty($this->projectConfig['plugins'][$plugin]['models'][$controller]['actions'][$prefix])) {
+				$modelWL = $this->projectConfig['plugins'][$plugin]['models'][$controller]['actions'][$prefix];
+			}
+			if (!empty($this->projectConfig['plugins'][$plugin]['models'][$controller]['blacklist'][$prefix])) {
+				$modelBL = $this->projectConfig['plugins'][$plugin]['models'][$controller]['blacklist'][$prefix];
+			}
+		}		
+		// merging : custom + default, so custom overrides default.
+		$modelWL += $this->projectConfig['defaultActions'][$prefix];
+		
+		// Removing blacklisted items
 		foreach ($modelWL as $action => $config) {
 			if (in_array($action, $modelBL)) {
 				unset($modelWL[$action]);
@@ -311,10 +303,11 @@ class AppShell extends Shell {
 	 * @param string $action If set, returns an other action, without current prefix
 	 * @return string Action
 	 */
-	public function currentAction($action=null){
-		if(is_null($action)){
-			$action=$this->templateVars['action'];
+	public function currentAction($action = null) {
+		if (is_null($action)) {
+			$action = $this->templateVars['action'];
 		}
 		return preg_replace('@^admin_@', '', $action);
 	}
+
 }

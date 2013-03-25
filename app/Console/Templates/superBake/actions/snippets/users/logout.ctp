@@ -2,7 +2,7 @@
 /**
  * Users controller modifications for EL-CMS baking
  *
- * this file is used during UsersController generation. It adds the "logout"
+ * This file is used during UsersController generation. It adds the "logout"
  * action to the app.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
@@ -32,9 +32,9 @@
 ?>
 
 	/**
-	 * This methods log an user out of the system
+	 * This methods logs an user out of the system
 	 */
-	public function <?php echo $admin ?>logout() {
+	public function <?php echo $admin.$a ?>() {
 		$this->Session->setFlash(<?php echo $this->display('You are disconnected')?>);
 		$this->redirect($this->Auth->logout());
 	}

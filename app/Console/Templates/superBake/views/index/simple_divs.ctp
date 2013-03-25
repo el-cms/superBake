@@ -54,6 +54,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
+
+//Page headers and licensing
+include($themePath . 'views/common/headers.php');
 ?>
 <div class="<?php echo $pluralVar; ?> index">
 	<h2><?php echo "<?php echo " . $this->display($pluralHumanName) . "; ?>"; ?></h2>

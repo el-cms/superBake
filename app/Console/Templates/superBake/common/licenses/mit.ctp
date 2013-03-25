@@ -1,16 +1,13 @@
 <?php
 /**
- * Users controller modifications for EL-CMS baking
- *
- * This file is used during UsersController generation. It adds an empty action
- * to the app, and a todo reminder in comments.
+ * MIT license template for headers in generated files.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
- * @package       EL-CMS/Console/Controllers
+ * @package       EL-CMS/Console/
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
- *
+ * 
  * ----
  * 
  *  This file is part of EL-CMS.
@@ -29,14 +26,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
-?>
-
-	/**
-	 * <?php echo $admin.$a?>() is not implemented
-	 *
-	 * @todo implement <?php echo $a?>() and if possible, make the "<?php echo $path?>" snippet of this
-	 * and share it with the rest of the world.
-	 */
-	public function <?php echo $admin.$a?>() {
-		throw new NotFoundException(__('"%s()" is not yet implemented (snippet should be here: "%s").', array(<?php echo "'$a', '$path'"?>)));
-	}
+ ?>
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ *
+ * ----
+ *
+ * This file is part of <?php echo $projectConfig['basePackage'] ?>.
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.

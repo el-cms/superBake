@@ -2,7 +2,7 @@
 /**
  * Users controller modifications for EL-CMS baking
  *
- * this file is used during UsersController generation. It adds the "login"
+ * This file is used during UsersController generation. It adds the "login"
  * action to the app.
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
@@ -34,7 +34,7 @@
 	/**
 	 * This method logs an user in the ACL system
 	 */
-	public function <?php echo $admin ?>login() {
+	public function <?php echo $admin.$a ?>() {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->Session->setFlash(<?php echo $this->display('You are now connected')?>);

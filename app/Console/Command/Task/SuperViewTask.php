@@ -248,6 +248,7 @@ class SuperViewTask extends BakeTask {
 		}
 		$this->Template->set('action', $action);
 		$this->Template->set('plugin', $this->plugin);
+		$this->Template->set('projectConfig', $this->projectConfig);
 		$this->Template->set($vars);
 		$template = $this->getTemplate($action);
 		if ($template) {

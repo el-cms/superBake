@@ -35,20 +35,23 @@ if(!empty($plugin)){$com_plugin=$plugin.'/';}
 echo "<?php\n";
 ?>
 
-/**
-* app/<?php echo $com_plugin . 'View/'.$pluralVar.'/' . $action ?>.php
-* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo stripslashes(str_replace(dirname($themePath), '', $themePath)); ?>".
-*
-* This file contains the <?php echo $action ?> view for <?php echo $pluralVar?> Controller.
-* 
-* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->projectConfig['editorName'] ?> (<?php echo $this->projectConfig['editorWebsite'] ?>)
-* @author        <?php echo $this->projectConfig['editorName'] ?> <?php echo $this->projectConfig['editorEmail'] . "\n" ?>
-* @link          <?php echo $this->projectConfig['editorWebsite'] ?> <?php echo $this->projectConfig['editorWebsiteName'] . "\n" ?>
-* @package       <?php echo $this->projectConfig['basePackage'] ?>/<?php echo $plugin . "\n" ?>
-*
+ /**
+ * app/<?php echo $com_plugin . 'View/'.$pluralVar.'/' . $action ?>.php
+ * File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo stripslashes(str_replace(dirname($themePath), '', $themePath)); ?>".
+ *
+ * This file contains the <?php echo $action ?> view for <?php echo $pluralVar?> Controller.
+ * 
+ * @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $projectConfig['editorName'] ?> (<?php echo $projectConfig['editorWebsite'] ?>)
+ * @author        <?php echo $projectConfig['editorName'] ?> <?php echo $projectConfig['editorEmail'] . "\n" ?>
+ * @link          <?php echo $projectConfig['editorWebsite'] ?> <?php echo $projectConfig['editorWebsiteName'] . "\n" ?>
+ * @package       <?php echo $projectConfig['basePackage'] ?>/<?php echo $plugin . "\n" ?>
+ *
 <?php
-$licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $this->projectConfig['editorLicenseTemplate'] . '.ctp';
+$licenseTemplate = dirname(dirname(dirname(__FILE__))) . DS . 'common' . DS . 'licenses' . DS . $projectConfig['editorLicenseTemplate'] . '.ctp';
 if (file_exists($licenseTemplate)) {
 	include($licenseTemplate);
-}
-echo "?>\n\n";?>
+	echo "\n";
+}?>
+ */
+
+<?php echo "?>\n\n";?>

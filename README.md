@@ -4,6 +4,10 @@ Thank you for using the Superbake Shell v0.2
 
 This console shell is designed for CakePHP 2.3.x
 
+Demo
+----
+As a demo, I finally [took screenshots](https://plus.google.com/b/110073171539347252283/photos/110073171539347252283/albums/5859403751260073329) during tests.
+
 Is this for me ?
 ----------------
 If you're in an early stage of development, this script will help you for

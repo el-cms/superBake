@@ -106,10 +106,10 @@ class SuperPluginTask extends AppShell {
 		$pathOptions = App::path('plugins');
 		
 		// Checking if custom plugin dir or default plugin dir
-		if (in_array('plugin_dir', $this->projectConfig['plugins'][$this->currentPlugin])) {
-			$pluginDir = $this->projectConfig['plugins'][$this->currentPlugin]['plugin_dir'];
+		if (in_array('pluginDir', $this->projectConfig['plugins'][$this->currentPlugin])) {
+			$pluginDir = str_replace('::', DS, $this->projectConfig['plugins'][$this->currentPlugin]['plugin_dir']);
 		} else {
-			$pluginDir = $this->projectConfig['defaultPluginDir'];
+			$pluginDir = str_replace('::',DS, $this->projectConfig['defaultPluginDir']);
 		}
 		// Cleaning path for windows
 		$cleanPath = str_replace('\\', '\\\\', $pluginDir . DS);

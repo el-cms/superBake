@@ -7,6 +7,7 @@
  * Useful vars available in model templates :
  * ==========================================
  * $theme				Name of the theme used for generation
+ * $name				Current model name
  * $projectConfig		Array of superBake configuration
  * $plugin				Current plugin name
  * $pluginPath			Plugin path (is "Plugin.", for cross plugins models)

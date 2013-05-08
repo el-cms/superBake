@@ -1,3 +1,4 @@
+Menu: [Demo](#demo) | [Is this for me ?](#is-this-for-me-) | [Directory structure](#directory-structure) | [Installation guide](#installation-guide) | [Usage](#usage) | [Sample files](#sample-files) | [Contact/help/support](#contacthelpsupport) | [todo](#todo)
 SuperBake Shell for CakePHP 2.3.x
 =================================
 Thank you for using the Superbake Shell v0.2
@@ -94,7 +95,7 @@ baking process.
 Contact/help/support
 --------------------
 
-For any help, as there is no website for EL-CMS (nor SuperBake, of course) now, feel free to use my [g+ page](https://plus.google.com/b/110073171539347252283/110073171539347252283/posts), or the GitHub issue system...
+For any help, as there is no website for EL-CMS (nor SuperBake, of course) now, feel free to use my [g+ page](https://plus.google.com/b/110073171539347252283/110073171539347252283/posts), the GitHub issue system or the [trello board](https://trello.com/board/superbake/514d6b4f3915675c66002032).
 
 And if you want to help me to buy coffee: [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=kure&url=https://github.com/mtancoigne/superBake&title=superBake&language=&tags=github&category=software) 
 

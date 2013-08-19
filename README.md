@@ -1,4 +1,7 @@
 Menu: [Demo](#demo) | [Is this for me ?](#is-this-for-me-) | [Directory structure](#directory-structure) | [Installation guide](#installation-guide) | [Usage](#usage) | [Sample files](#sample-files) | [Contact/help/support](#contacthelpsupport) | [todo](#todo)
+
+This line is just for testing purposes (I try to make branches in GitHub :)
+
 SuperBake Shell for CakePHP 2.3.x
 =================================
 Thank you for using the Superbake Shell v0.2

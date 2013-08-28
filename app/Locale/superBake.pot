@@ -1,0 +1,464 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2013-08-27 04:47+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Console/Command/AppShell.php:365
+msgid "No action found for controller %s, in plugin %s"
+msgstr ""
+
+#: Console/Command/AppShell.php:398
+msgid "Controller %s could not be found in plugin %s. Check your superBake config file."
+msgstr ""
+
+#: Console/Command/AppShell.php:419
+msgid "Controller %s could not be found in any plugin. Check your superBake config file."
+msgstr ""
+
+#: Console/Command/AppShell.php:440
+msgid "Model %s could not be found in any plugin. Check your superBake config file."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:144
+msgid "Something is wrong with your prefixes. Check messages above.<"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:147
+msgid "All Plugins"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:148
+msgid "    [<bold>P</bold>]lugins (Creates all plugins structures)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:149
+msgid "    [<bold>M</bold>]odels (Generates all models)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:150
+msgid "    [<bold>C</bold>]ontrollers (Generates all controllers)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:151
+msgid "    [<bold>V</bold>]iews (Generates all views)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:152
+msgid "    [<bold>A</bold>]ll (Models, Controllers and Views)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:153
+msgid "    [<bold>S</bold>]pecific entire plugin (M/C/V)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:155
+msgid "Model generation"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:156
+msgid "    One plugin mo[<bold>D</bold>]els (All models for a specific plugin)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:157
+msgid "    [<bold>B</bold>]ake one model"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:159
+msgid "Controller generation"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:160
+msgid "    [<bold>O</bold>]ne plugin controllers (All controllers for a specific plugin)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:161
+msgid "    Bake one contro[<bold>L</bold>]ler"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:163
+msgid "View generation"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:164
+msgid "<info>View generation is based on the configuration file, and not</info>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:165
+msgid "<info>from the existing controller. That means that if you have modified your</info>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:166
+msgid "<info>controllers, the new actions will not be available.</info>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:167
+msgid "    O[<bold>N</bold>]e plugin views (All views for a specific plugin)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:168
+msgid "    Views using one [<bold>T</bold>]emplate (All the views using it)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:169
+msgid "    V[<bold>I</bold>]ews for a given action name (All views for all actions with this name)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:170
+msgid "    Bake a view for one [<bold>G</bold>]iven action (plugin/controller specific)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:171
+msgid "    Views fo[<bold>R</bold>] one given controller"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:173
+msgid "Misc"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:174
+msgid "    M[<bold>E</bold>]nus (Generates menus)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:176
+msgid "    Config [<bold>J</bold>]anitor (Cleans and fills your config. Outputs the result)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:177
+msgid "    Deb[<bold>U</bold>]g Config file (Helps you find errors)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:178
+msgid "    [<bold>Q</bold>]uit"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:184
+msgid "What would you like to generate ?"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:253
+msgid "<warning>You have made an invalid selection. Please choose something to do.</warning>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:267
+msgid "Generating Models, Controllers and Views for ALL plugins."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:271
+msgid "MVC generation complete."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:283
+msgid "Building ALL models, controllers and views for a plugin"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:303
+msgid "Building all plugins structure"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:304
+msgid "Do we have to update the app's bootstrap file ?"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:307
+msgid "<info>Plugins generation summary:</info>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:327
+msgid "<info>The bootstrap file has been updated. Please re-launch SuperBake\nto reload the new configuration (if you want to use it more)</info>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:390
+msgid "Building unique model"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:393
+msgid "\"%s\" model has been generated in plugin \"%s\""
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:403
+msgid "Building ALL models for ALL plugins"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:406
+msgid "Generating models for plugin %s..."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:413
+msgid "Models generation complete"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:424
+msgid "Building ALL models for a plugin"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:470
+msgid "Model %s could not be found in plugin %s. Check your superBake config file."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:535
+msgid "Building unique controller"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:542
+msgid "\"%s\" controller has been generated in plugin \"%s\""
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:553
+msgid "Building ALL controllers, for ALL plugins"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:557
+msgid "Generating controllers for plugin %s..."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:564
+msgid "Controller generation complete"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:576
+msgid "Building ALL controllers for a plugin"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:661
+msgid "Delete me, and everything above if you want to have a valid file."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:662
+msgid "Tip : you can run the shell with the quiet option ($ cake superBake Janitor -q)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:663
+msgid "to get rid of all the text above and keep only what you wanted : the config file."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:665
+msgid "This file will not be valid until you remove the above lines."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:669
+msgid "File generated with superBake on %s"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:671
+msgid "What's next ?"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:672
+msgid "Next, you should copy/paste parts that are important to you, and replace them in your configuration file. And customize them :)"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:739
+msgid "Building unique view"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:746
+msgid "\"%s\" view has been generated for controller \"%s\" in plugin \"%s\""
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:757
+msgid "Building ALL views for ALL controllers"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:761
+msgid "Generating views for plugin %s..."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:764
+msgid "Generating views for controller %s..."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:771
+msgid "View generation complete"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:783
+msgid "Building ALL views for a plugin"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:812
+msgid "Building views for controller \"%s.%s\""
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:818
+msgid "Views for \"%s.%s\" have been generated"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:876
+msgid "%s controller not found in plugin %s"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:926
+msgid "Generating menu %s"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:949
+msgid "The Super Bake shell generates plugins, models, views, controllers or both Models/Views/Controllers for your application. If run with no command line arguments, Super Bake guides the user through the creation process. You can customize the generation process by telling Super Bake where different parts of your application are using command line arguments."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:954
+msgid "Creates all the plugins directories"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:957
+msgid "Bakes all the models, in their specfic plugin dir."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:960
+msgid "Bakes all controllers in their specific plugin dir."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:963
+msgid "Bakes all views, for controllers methods, in their specific plugin dir"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:966
+msgid "Bakes all Models/Controllers/Views, in their specific plugin dirs."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:968
+msgid "Creates the menu file(s)."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1009
+msgid "The submited plugin doesn't exists in config file\nMaybe it's just a typo...\nPlease, select one below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1020
+msgid "The submited model doesn't exists in config file\nMaybe it's just a typo...\nPlease, select one below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1031
+msgid "The submited controller doesn't exists in config file\nMaybe it's just a typo...\nPlease, select one below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1042
+msgid "The submited action doesn't exists in config file\nMaybe it's just a typo...\nPlease, select one below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1053
+msgid "The submited part doesn't exists in config file\nMaybe it's just a typo...\nPlease, select one below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1068
+msgid "Invalid argument count, switching to interactive mode."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1079
+msgid "Please, select a plugin below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1084
+msgid "Please, select a model below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1089
+msgid "Please, select a controller below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1094
+msgid "Please, select an action below:"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1153
+msgid "The '%s' template is not present in the app/Console/Template dir./n Please create it."
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1164
+msgid "<warning>The \"Routing.prefixes\" var is empty (core.php)</warning>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1171
+msgid "<error>Prefix %s, present in your config file, is not present in the routing prefixes array (core.php)</error>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1172;1182
+msgid "<warning>This will bring trouble.</warning>"
+msgstr ""
+
+#: Console/Command/SuperBakeShell.php:1181
+msgid "<error>Prefix %s, present in the routing prefixes array (core.php), is not present in your config file</error>"
+msgstr ""
+
+#: Console/Command/Task/SuperMenuTask.php:161
+msgid "Searching for methods include in the menu \""
+msgstr ""
+
+#: Console/Command/Task/SuperMenuTask.php:170
+msgid "<warning>No methods in \"%s\". You should check your config.</warning>"
+msgstr ""
+
+#: Console/Command/Task/SuperPluginTask.php:98
+msgid "The \"%s\" plugin will be created in the \"%s\" dir."
+msgstr ""
+
+#: Console/Command/Task/SuperPluginTask.php:185
+msgid "<warning>The \"%s\" plugin was not created, as its folder already exists.</warning>"
+msgstr ""
+
+#: Console/Command/Task/SuperViewTask.php:163
+msgid "View for \"%s\" is being built"
+msgstr ""
+
+#: Console/Command/Task/SuperViewTask.php:178
+msgid "Searching for methods to bake for controller \""
+msgstr ""
+
+#: Console/Command/Task/SuperViewTask.php:188
+msgid "<warning>No method to bake for controller \"%s\". You should check your config.</warning>"
+msgstr ""
+
+#: Console/Command/Task/SuperViewTask.php:362
+msgid "<info>We want to use the \"%s\" template for \"%s\" action view</info>"
+msgstr ""
+
+#: Console/Templates/superCakeStrap/actions/controller_actions.ctp:122
+msgid "Action \"%s\" is being built (path to snippet: \"%s\")"
+msgstr ""
+
+#: Console/Templates/superCakeStrap/actions/controller_actions.ctp:132
+msgid "<info>The \"%s\" snippet file has been added.</info>"
+msgstr ""
+
+#: Console/Templates/superCakeStrap/actions/controller_actions.ctp:135
+msgid "<warning>The \"%s\" snippet file is missing.</warning>"
+msgstr ""
+
+#: Console/Templates/superCakeStrap/classes/model.ctp:93
+msgid "The license template is invalid (%s). A blank one has been used, but you should check the config file."
+msgstr ""
+
+#: Console/Templates/superCakeStrap/classes/model.ctp:330
+msgid "<warning>Snippet file \"%s\" was not found. Default code has been set as replacement.</warning>"
+msgstr ""
+
+#: Console/Templates/superCakeStrap/models/missing_code.ctp:33
+msgid "A model snippet is missing."
+msgstr ""
+
+#: Console/Templates/superCakeStrap/models/missing_code.ctp:34
+msgid "It was referenced as %s in config file, and should have been created in file"
+msgstr ""
+
+#: Console/Templates/superCakeStrap/models/missing_code.ctp:37
+msgid "Please do something with this."
+msgstr ""
+
+#: Console/Templates/superCakeStrap/models/missing_code.ctp:39
+msgid "Write the superBake model snippet for %s, in %s"
+msgstr ""
+
+#: Console/Templates/superCakeStrap/views/menus/pages.ctp:22
+msgid "The \"%s\" folder does not exists"
+msgstr ""
+

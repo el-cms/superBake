@@ -1,0 +1,66 @@
+/**
+Values used in public and admin areas
+*/
+
+body{
+	background-color: @body-bg;
+}
+
+// Toolbar : for links
+.toolbar{
+	border-bottom:1px solid @gray-light;
+	border-top:1px solid @gray-light;
+	background-color:@gray-lighter;
+	margin: 0px -5px 10px -5px;
+	padding: 0px 10px 0px 5px;
+	.btn-group{
+		margin: 5px 0px 5px 0;
+	}
+    .list-inline{
+        .btn-group;   
+    }
+}
+
+// Sub toolbar
+.toolbar-sub{
+    background-color:lighten(@gray-lighter, 5%);
+    border-top:none;
+    border-bottom:1px solid lighten(@gray-light, 10%);
+    margin: 0px -5px 10px -5px;
+    padding: 0px 5px;
+    .btn-group{
+        margin: -4px 0px 5px 0;
+    }
+    .list-inline{
+        .btn-group;
+    }
+    .btn{
+        .btn-xs;
+    }
+}
+
+// Toolbar for collapsed elements
+.toolbar-collapse{
+    background-color:lighten(@gray-lighter, 5%);
+    border-top:none;
+    border-bottom:1px solid lighten(@gray-light, 10%);
+    margin: -15px -15px 0px -15px;
+    padding: 3px;
+}
+
+// Footer
+#footer{
+	border-top:1px solid #CCC;
+	size:0.5em;
+	padding:3px;
+	margin-top:5px;
+}
+
+// Selected language
+.language-selected{
+	.box-shadow(0 0 3px 0px @gray-darker)
+}
+
+.pointer{
+	cursor: pointer;
+}

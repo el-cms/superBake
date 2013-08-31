@@ -36,6 +36,7 @@
  * 		default : array()
  * - actionsPerRow = int: Number of related controllers to display on a row
  * 		default : 4
+ * - btnSize = string Button size class (default btn-xs) See twitter Bootstrap doc.
  */
 // ---
 // Resetting options to defaults if not defined
@@ -50,6 +51,15 @@ if (!isset($actionsPerRow)) {
 	$actionsPerRow = 4;
 }
 
+// Default button size:
+// --------------------
+// Large: btn-lg
+// Default: leave empty
+// Small : btn-sm
+// Extra small: $btnSize
+if(!isset($btnSize)){
+	$btnSize='btn-xs';
+}
 // ---
 // Some functions
 // ---
@@ -83,18 +93,16 @@ if (!function_exists('newTbGroup')) {
 	 * 
 	 * @return string String to add in the HTML
 	 */
-	function newTbGroup($title, $content, $actionsPerRow, $style = 'default') {
+	function newTbGroup($title, $content, $btnSize, $style = 'default') {
 		$toolbar='';
-//		$toolbar .= "<div class=\"col-lg-" . (12 / $actionsPerRow) . "\">\n";
 		$toolbar .="\t<div class=\"btn-group\">\n";
-		$toolbar .="\t\t<a class=\"btn dropdown-toggle btn-" . $style . "\" data-toggle=\"dropdown\" href=\"#\"><?php echo " . $title . "; ?><span class=\"caret\"></span></a>\n";
+		$toolbar .="\t\t<a class=\"btn $btnSize dropdown-toggle btn-" . $style . "\" data-toggle=\"dropdown\" href=\"#\"><?php echo " . $title . "; ?><span class=\"caret\"></span></a>\n";
 		$toolbar .="\t\t<ul class=\"dropdown-menu\">\n";
 		foreach ($content as $item) {
 			$toolbar.= "\t\t\t<li>\n\t\t\t\t" . $item . "\t\t\t</li>\n";
 		}
 		$toolbar .= "\t\t</ul>\n";
 		$toolbar .= "\t</div>\n";
-//		$toolbar .= "</div>\n";
 		return $toolbar;
 	}
 
@@ -108,18 +116,13 @@ if (!function_exists('newBtGroup')) {
 	 * 
 	 * @return string String to add in the HTML
 	 */
-	function newBtGroup($title, $content, $actionsPerRow, $style = 'default') {
+	function newBtGroup($content) {
 		$toolbar='';
-//		$toolbar .= "<div class=\"col-lg-" . (12 / $actionsPerRow) . "\">\n";
 		$toolbar .="\t<div class=\"btn-group\">\n";
-//		$toolbar .="\t\t<a class=\"btn dropdown-toggle btn-" . $style . "\" data-toggle=\"dropdown\" href=\"#\"><?php echo " . $title . "; ? ><span class=\"caret\"></span></a>\n";
-//		$toolbar .="\t\t<ul class=\"dropdown-menu\">\n";
 		foreach ($content as $item) {
 			$toolbar.= "\t\t\t\t\t\t\t" . $item . "\t\t\n";
 		}
-//		$toolbar .= "\t\t</ul>\n";
 		$toolbar .= "\t</div>\n";
-//		$toolbar .= "</div>\n";
 		return $toolbar;
 	}
 
@@ -130,9 +133,11 @@ if (!function_exists('newBtGroup')) {
 // ---
 // Final toolbar:
 $toolbar = '';
+
 // Number of toolbar groups. Used to count items on rows. Default to -1 to know 
 // that no row is currently opened
 $tbRowElements = -1;
+
 // Total number of elements in the toolbar
 $toolbarElements = 0;
 
@@ -144,25 +149,25 @@ $current_toolbar = array();
 // Index
 if ($this->actionable('index', $pluralVar)) {
 	$title = $this->display("List $pluralHumanName");
-	$current_toolbar[] = "<?php echo \$this->HTML->Link('<i class=\"icon-list\"></i> ' . " . $title . "," . $this->url('index', $pluralVar) . ", array('class'=>'btn btn-default', 'title' => " . $title . ", 'escape' => false));?>\n";
+	$current_toolbar[] = "<?php echo \$this->Html->Link('<i class=\"icon-list\"></i> ' . " . $title . "," . $this->url('index', $pluralVar) . ", array('class'=>'btn $btnSize btn-default', 'title' => " . $title . ", 'escape' => false));?>\n";
 }
 
 // Add
 if ($this->actionable('add', $pluralVar)) {
 	$title = $this->display("New $singularHumanName");
-	$current_toolbar[] = "<?php echo \$this->HTML->Link('<i class=\"icon-plus-sign\"></i> ' . " . $title . "," . $this->url('add', $pluralVar) . ", array('class'=>'btn btn-default', 'title' => " . $title . ", 'escape' => false));?>\n";
+	$current_toolbar[] = "<?php echo \$this->Html->Link('<i class=\"icon-plus-sign\"></i> ' . " . $title . "," . $this->url('add', $pluralVar) . ", array('class'=>'btn $btnSize btn-default', 'title' => " . $title . ", 'escape' => false));?>\n";
 }
 
 // Edit (Only on view)
 if ($this->actionable('edit', $pluralVar) && $this->currentAction() == 'view') {
 	$title = $this->display("Edit this $singularHumanName");
-	$current_toolbar[] = "<?php echo \$this->HTML->Link('<i class=\"icon-pencil\"></i> ' . " . $title . "," . $this->url('edit', $pluralVar, "$".strtolower($modelClass)."['{$modelClass}']['{$primaryKey}']") . ", array('class'=>'btn btn-default', 'title'=>" . $title . ", 'escape'=> false));?>\n";
+	$current_toolbar[] = "<?php echo \$this->Html->Link('<i class=\"icon-pencil\"></i> ' . " . $title . "," . $this->url('edit', $pluralVar, "$".strtolower($modelClass)."['{$modelClass}']['{$primaryKey}']") . ", array('class'=>'btn $btnSize btn-default', 'title'=>" . $title . ", 'escape'=> false));?>\n";
 }
 
 // (Only on view)
 if ($this->actionable('delete', $pluralVar) && $this->currentAction() == 'view') {
 	$title = '__(\'Delete\')';
-	$current_toolbar[] = "<?php echo \$this->Form->postLink('<i class=\"icon-trash\"></i> '." . $title . ", " . $this->url('delete', $pluralVar, "\$this->Form->value('{$modelClass}.{$primaryKey}')") . ", array('confirm' => __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}')), 'title'=>__('Delete this entry'),'class'=>'btn btn-warning',  'escape'=>false)); ?>";
+	$current_toolbar[] = "<?php echo \$this->Form->postLink('<i class=\"icon-trash\"></i> '." . $title . ", " . $this->url('delete', $pluralVar, "\$this->Form->value('{$modelClass}.{$primaryKey}')") . ", array('confirm' => __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}')), 'title'=>__('Delete this entry'),'class'=>'btn $btnSize btn-warning',  'escape'=>false)); ?>";
 }
 // Toolbar
 if (count($current_toolbar) > 0) {
@@ -172,7 +177,7 @@ if (count($current_toolbar) > 0) {
 		$tbRowElements = 1;
 	}
 	// Element
-	$toolbar.= newBtGroup($this->display($pluralHumanName), $current_toolbar, $actionsPerRow, 'primary');
+	$toolbar.= newBtGroup($current_toolbar);
 	$toolbarElements++;
 	if ($tbRowElements == $actionsPerRow) {
 		$toolbar.= newRow('close');
@@ -207,7 +212,7 @@ foreach ($associations as $type => $data) {
 			}
 			// Creating toolbar for controller and adding to the /global/ toolbar
 			if ($current_controller_actions == 1) {
-				$toolbar.=newTbGroup($this->display(Inflector::humanize($details['controller'])), $current_toolbar, $actionsPerRow);
+				$toolbar.=newTbGroup($this->display(Inflector::humanize($details['controller'])), $current_toolbar, $btnSize);
 				// Incrementing the number of elements in row
 				$tbRowElements++;
 			}

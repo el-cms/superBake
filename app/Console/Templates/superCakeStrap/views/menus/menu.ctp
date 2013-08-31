@@ -30,7 +30,6 @@ if (!isset($displayActionName)) {
 	$displayActionName = true;
 }
 
-
 //
 // Menu generation
 //
@@ -48,10 +47,6 @@ foreach ($Menu as $menuItem) {
 }
 foreach ($pluginMenu as $plugin => $controllers) {
 	if (!in_array($plugin, $removedPlugins)) {
-//		// Opening group
-//		echo "<li class=\"dropdown\">\n";
-//		// Button
-//		echo "\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">";
 		$groupCount = 0;
 		$links = '';
 		// Controllers in plugin
@@ -63,26 +58,35 @@ foreach ($pluginMenu as $plugin => $controllers) {
 							$groupCount++;
 							$title = '';
 							// Action name
-							if ($displayActionName === true) {
-								$title = "$action ";
-							}
+							$title = ($displayActionName === true) ? "$action " : Inflector::humanize(Inflector::underscore($controller));
+							
 							// Link icon
 							switch ($plugin) {
 								case 'blog':
 									$icon = 'book';
-									$title.= 'news';
+									// Additionnaly, you can add a title here to replace the plugin name
+									// $title='Custom title';
 									break;
 								case 'gallery';
 									$icon = 'picture';
-									$title.='portfolio';
 									break;
 								case 'licenses':
 									$icon = 'tags';
-									$title.= 'licenses';
+									break;
+								case 'tags':
+									$icon = 'tags';
+									break;
+								case 'projects':
+									$icon = 'folder-closed';
+									break;
+								case 'likes':
+									$icon = 'heart';
+									break;
+								case 'links':
+									$icon = 'link';
 									break;
 								default:
 									$icon = 'cog';
-									$title = $controller;
 									break;
 							}
 							// Creating link
@@ -122,11 +126,23 @@ foreach ($pluginMenu as $plugin => $controllers) {
 					case 'licenses':
 						$icon = 'tags';
 						break;
+					case 'tags':
+						$icon = 'tags';
+						break;
+					case 'projects':
+						$icon = 'folder-open';
+						break;
+					case 'likes':
+						$icon = 'heart';
+						break;
+					case 'links':
+						$icon = 'link';
+						break;
 					default:
 						$icon = 'cog';
 						break;
 				}
-				echo "<i class=\"icon-$icon\">d</i> <?php echo " . $this->display(Inflector::humanize(Inflector::underscore($plugin))) . ";?>";
+				echo "<i class=\"icon-$icon\"></i> <?php echo " . $this->display(Inflector::humanize(Inflector::underscore($plugin))) . ";?>";
 			}
 			echo "<span class=\"caret\"></span></a>\n";
 			// Dropdown

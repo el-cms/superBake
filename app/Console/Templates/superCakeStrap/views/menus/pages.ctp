@@ -34,7 +34,9 @@ if (!is_dir($pagesFolder)) {
 	} else {
 		foreach ($files as $file) {
 			$name=str_replace('.ctp', '', $file);
-			echo '<li><?php echo $this->Html->link('.$this->display(inflector::humanize($name), null, $projectConfig['general']['appBase']).','.$this->url($name, 'pages').');?></li>'."\n";
+			echo '<li>
+			<?php echo $this->Html->link('.$this->display(inflector::humanize($name), null, $projectConfig['general']['appBase']).','.$this->url('display', 'pages', "'$name'").');?>
+			</li>'."\n";
 		}
 	}
 }

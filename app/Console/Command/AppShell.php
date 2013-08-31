@@ -199,39 +199,33 @@ class AppShell extends Shell {
 	 * @return string Like "array('admin'=>'string|false', 'plugin'=>'string', 'controller'=>'controller', 'action'=>'action', 'options')"
 	 */
 	function url($action, $controller = null, $options = null) {
+//		$this->out('----------------------------------------');
+//		$this->out("url(action=$action, controller=$controller, options=$options)");
+//		$bt = debug_backtrace();
+//		$caller = array_shift($bt);
+//		$this->out('Stack -> '.$caller['file'].':'.$caller['line']);
+//		
+		// Beggining the url
 		$url = 'array(';
+		
 		// Routing prefix
 		$prefix = $this->templateVars['admin'];
-		if (!empty($prefix)) {
-			$url.=" 'admin' => '$prefix',";
-		} else {
-			$url.=" 'admin' => false,";
-		}
+		$url .= (!empty($prefix)) ? " 'admin' => '$prefix'," : " 'admin' => false,";
 
 		// Finding controller
-		if (!is_null($controller)) { // Given controller
-			$controller = Inflector::underscore($controller);
-		} else { // null, so assuming current controller
-			$controller = Inflector::underscore($this->templateVars['pluralVar']);
-		}
-
+		$controller = (!is_null($controller)) ? Inflector::underscore($controller) : Inflector::underscore($this->templateVars['pluralVar']);
+		
 		// Plugin
+//		$this->out('Searching plugin for controller '.$controller);
 		$plugin = $this->controllerPlugin($controller);
-		if (empty($plugin) || $plugin == $this->projectConfig['general']['appBase']) {
-			$url.=" 'plugin' => null,";
-		} else {
-			$url.=" 'plugin' => '" . Inflector::underscore($plugin) . "',";
-		}
+//		$this->out('Plugin is : '.$plugin);
+		$url.=(empty($plugin) || $plugin == $this->projectConfig['general']['appBase']) ? " 'plugin' => null," : " 'plugin' => '" . Inflector::underscore($plugin) . "',";
 
 		// Controller
-		$url.=" 'controller' => '" . Inflector::underscore($controller) . "',";
+		$url .= " 'controller' => '" . Inflector::underscore($controller) . "',";
 
 		// Action
-		if (!empty($action)) {
-			$url.=" 'action' => '$action'";
-		} else {
-			$url.=" 'action' => 'index'";
-		}
+		$url .= (!empty($action)) ? " 'action' => '$action'": " 'action' => 'index'";
 
 		// URL options
 		if (!empty($options)) {
@@ -249,10 +243,16 @@ class AppShell extends Shell {
 	 * none
 	 */
 	function controllerPlugin($controller) {
-		/* if ($this->initialized === 0) {
-		  $this->loadConfig();
-		  } */
+//		$this->out("controllerPlugin(controller=$controller)");
+//		$bt = debug_backtrace();
+//		$caller = array_shift($bt);
+//		$this->out('Stack -> '.$caller['file'].':'.$caller['line']);
+		
+		
 		$controller = Inflector::camelize($controller);
+		
+//		$this->out(">>> Searching for controller $controller in config array.");
+		
 		foreach ($this->projectConfig['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
 				if (!is_null($partConfig['controller']['name'])) {
@@ -264,8 +264,8 @@ class AppShell extends Shell {
 		}
 		return null;
 	}
-	
-	function getForeignModelName(&$fields,$field){
+
+	function getForeignModelName(&$fields, $field) {
 		$fields;
 	}
 
@@ -295,45 +295,26 @@ class AppShell extends Shell {
 	 * @return array
 	 */
 	public function allowedActions($controller, $prefix) {
-//		$modelWL = array();
-//		$modelBL = array();
+//		$this->out("-----------------\nallowedActions($controller, $prefix");
+//		$bt = debug_backtrace();
+//		$caller = array_shift($bt);
+//		$this->out('Stack -> '.$caller['file'].':'.$caller['line']);
+		
+		// Controller
 		$controller = Inflector::camelize($controller);
+		
+		// Plugin
 		$plugin = $this->controllerPlugin($controller);
+//		$this->out(">>>> And plugin is $plugin");
+		
+		// Part
 		$part = $this->getControllerPart($controller, $plugin);
-//		if ($this->inConfig($controller) == false) {
-//			return array();
-//		}
+
+		// Prefix
 		if (empty($prefix)) {
 			$prefix = 'public';
 		}
 		return $this->projectConfig['plugins'][$plugin]['parts'][$part]['controller']['actions'][$prefix];
-//		// Plugin or not plugin ? Here's the answer.
-//		// Should be another way to do this
-////		if (is_null($plugin)) {
-////			if (!empty($this->projectConfig['general']['appBase']['models'][$controller]['actions'][$prefix])) {
-////				$modelWL = $this->projectConfig['general']['appBase']['models'][$controller]['actions'][$prefix];
-////			}
-////			if (!empty($this->projectConfig['general']['appBase']['models'][$controller]['blacklist'][$prefix])) {
-////				$modelBL = $this->projectConfig['general']['appBase']['models'][$controller]['blacklist'][$prefix];
-////			}
-////		} else {
-//		if (!empty($this->projectConfig['plugins'][$plugin]['models'][$controller]['actions'][$prefix])) {
-//			$modelWL = $this->projectConfig['plugins'][$plugin]['models'][$controller]['actions'][$prefix];
-//		}
-//		if (!empty($this->projectConfig['plugins'][$plugin]['models'][$controller]['blacklist'][$prefix])) {
-//			$modelBL = $this->projectConfig['plugins'][$plugin]['models'][$controller]['blacklist'][$prefix];
-//		}
-////		}
-//		// merging : custom + default, so custom overrides default.
-//		$modelWL += $this->projectConfig['defaultActions'][$prefix];
-//
-//		// Removing blacklisted items
-//		foreach ($modelWL as $action => $config) {
-//			if (in_array($action, $modelBL)) {
-//				unset($modelWL[$action]);
-//			}
-//		}
-//		return $modelWL;
 	}
 
 	/**
@@ -364,23 +345,6 @@ class AppShell extends Shell {
 		}
 		$this->speak(__d('superBake', 'No action found for controller %s, in plugin %s', array($controller, $plugin)), 'warning', 0);
 		return array();
-//		$prefixes = Configure::read('Routing.prefixes');
-//		$prefixes[] = 'public';
-//		$actions = array();
-//		foreach ($prefixes as $prefix) {
-//			$pActions = $this->allowedActions($controller, $prefix);
-//			ksort($pActions);
-//			foreach ($pActions as $pAction => $val) {
-//				if ((is_array($val) && $val['hasView'] == true) || !is_array($val)) {
-//					if ($prefix == 'public') {
-//						$actions[] = $pAction;
-//					} else {
-//						$actions[] = "{$prefix}_$pAction";
-//					}
-//				}
-//			}
-//		}
-//		return $actions;
 	}
 
 	/**
@@ -390,6 +354,11 @@ class AppShell extends Shell {
 	 * @return mixed Part name or false.
 	 */
 	public function getControllerPart($controller, $plugin) {
+//		$this->out("getControllerPart($controller, $plugin)");
+//		$bt = debug_backtrace();
+//		$caller = array_shift($bt);
+//		$this->out('Stack -> '.$caller['file'].':'.$caller['line']);
+
 		foreach ($this->projectConfig['plugins'][$plugin]['parts'] as $part => $partConfig) {
 			if (!empty($partConfig['controller']) && $partConfig['controller']['name'] == $controller) {
 				return $part;

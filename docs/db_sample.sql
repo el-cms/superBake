@@ -2,9 +2,6 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-DROP SCHEMA IF EXISTS `superbake` ;
-CREATE SCHEMA IF NOT EXISTS `superbake` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `superbake` ;
 
 -- -----------------------------------------------------
 -- Table `superbake`.`acos`
@@ -237,11 +234,11 @@ CREATE  TABLE IF NOT EXISTS `superbake`.`projects` (
   `created` DATETIME NOT NULL ,
   `modified` DATETIME NOT NULL ,
   `project_state_id` INT UNSIGNED NOT NULL ,
-  `licenses_id` INT UNSIGNED NOT NULL ,
+  `license_id` INT UNSIGNED NOT NULL ,
   `user_id` INT UNSIGNED NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_projects_project_states1_idx` (`project_state_id` ASC) ,
-  INDEX `fk_projects_licenses1_idx` (`licenses_id` ASC) ,
+  INDEX `fk_projects_licenses1_idx` (`license_id` ASC) ,
   INDEX `fk_projects_users1_idx` (`user_id` ASC) ,
   CONSTRAINT `projects_project_states`
     FOREIGN KEY (`project_state_id` )
@@ -249,7 +246,7 @@ CREATE  TABLE IF NOT EXISTS `superbake`.`projects` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `projects_licenses`
-    FOREIGN KEY (`licenses_id` )
+    FOREIGN KEY (`license_id` )
     REFERENCES `superbake`.`licenses` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -268,11 +265,11 @@ CREATE  TABLE IF NOT EXISTS `superbake`.`project_notes` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(45) NULL ,
   `text` VARCHAR(45) NULL ,
-  `projects_id` INT UNSIGNED NOT NULL ,
+  `project_id` INT UNSIGNED NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_project_notes_projects1_idx` (`projects_id` ASC) ,
+  INDEX `fk_project_notes_projects1_idx` (`project_id` ASC) ,
   CONSTRAINT `fk_project_notes_project`
-    FOREIGN KEY (`projects_id` )
+    FOREIGN KEY (`project_id` )
     REFERENCES `superbake`.`projects` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

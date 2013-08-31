@@ -3,6 +3,8 @@
 ##
 ##
 ## Sample configuration file
+## -------------------------
+##      Not too much configuration, and a lot of comments.
 ##
 ##
 ##-----------------------------------------------------------------------
@@ -203,7 +205,9 @@ defaults:
             id
             modified
             password
+          ## Hide the related data actions list for the current item
           relatedDataHideActionsList: true
+          ## Fields that must be hidden on hasMany fields
           hasMany_hiddenModelFields:
             Posts:
               text
@@ -276,11 +280,15 @@ defaults:
 #
 #--------------------------------------------------------------------------
 plugins:
-  ## Models that must be baked in app/Model
+
+  ##--------------------------------------------------------------------------
+  ## Not a plugin (Baked in app/)
+  ## ----------------------------
+  ## Contains: Users, Groups
+  ##--------------------------------------------------------------------------
   appBase:
     parts:
       #--------------------------------------------------------------------------
-      #
       # Users
       #
       Users:
@@ -291,7 +299,7 @@ plugins:
             ## Password field name
             passField: password
             ## Password check field (for add/edit actions)
-            ## Check the form.ctp template before changing this.
+            ## Check the form.ctp template, in views/, before changing this.
             passCheckField: password2
           snippets:
             acls: acls::users
@@ -338,7 +346,6 @@ plugins:
             view:
 
       #--------------------------------------------------------------------------
-      #
       # Groups
       #
       Groups:
@@ -368,144 +375,106 @@ plugins:
                     email
                     group_id
 
+  ##--------------------------------------------------------------------------
+  ## Blog plugin
+  ## -----------
+  ## Contains : Posts, PostCategories, PostComments, PostTags
+  ##
   Blog:
-    #general:
-      # Directory where the plugin must be created ("app::Plugin" or "plugins")
-      #pluginDir: app::Plugin
-      # Plugin have a bootstrap file (true | false)
-      #haveBootstrap: false
-      # Plugin have routes (true | false)
-      #haveRoutes: false
-      # Must we generate the models ? (true | false)
-      #generateModels: true
-      # Must we generate controllers ? (true | false)
-      #generateControllers: true
-      # Must we generate views ? (true | false)
-      #generateViews: true
     parts:
       Posts:
-        model:
-          name: Post
-          displayField: title
-        controller:
-        views:
-          public:
-            view:
-              options:
-                noToolbar: true
-                additionnalCSS:
-                  "ckeditor::contents": true
-                relatedDataHideActionsList: true
-            index:
-              file: index::articles_list
-              options: 
-                noToolbar: true
-                contentField: text
-                titleField: title
-                hiddenFields:
-                  published
-                  user_id
-                  created
-                  id
-                sortableFields:
-                  publication_date
-                licenseField: 
-                  model: License
-                categoryField: post_category_id
-          admin:
-            add:
-              options:
-                additionnalCSS:
-                  "ckeditor::contents": true
-                additionnalJS:
-                  "ckeditor::ckeditor": true
-            index:
-              file: index
-              options:
-                hiddenFields:
-                  modified
-                  text
-            edit:
-              options:
-                hiddenFields:
-                  created
-                  modified
       PostCategories:
-        model:
-          name: PostCategory
-          displayField: name
-        controller:
-        views:
-          public:
-            index:
-              options:
-                noToolbar: true
-            view:
-              options:
-                noToolbar: true
-                relatedDataHideActionsList: true
-
+      PostComments:
+      PostTags:
+  
+  ##--------------------------------------------------------------------------
+  ## Gallery plugin
+  ## --------------
+  ## Contains : Galleries, GalleryItems, GalleryItemComments
+  ##
   Gallery:
     parts:
       Galleries:
-        model:
-          name: Gallery
-          displayField: name
-        controller:
-        views:
-          public:
-            index:
-              options:
-                noToolbar: true
-            view:
-              options:
-                noToolbar: true
       GalleryItems:
-        model:
-          name: GalleryItem
-          displayField: name
-        controller:
-          name: GalleryItems
-          blackList:
-            public:
-              index
-        views:
-          public:
-            index:
-              options:
-                noToolbar: true
-            view:
-              options:
-                noToolbar: true
-                relatedDataHideActionsList: true
+      GalleryItemTags:
+      GalleryItemComments:
 
+  ##--------------------------------------------------------------------------
+  ## Licenses plugin
+  ## ---------------
+  ## Contains : Licences
+  ##
   Licenses:
     parts:
       Licenses:
-        model:
-          name: License
-          displayField: name
-        controller:
-        views:
-          public:
-            index:
-              options:
-                noToolbar: true
-            view:
-              options:
-                noToolbar: true
-                relatedDataHideActionsList: true
+      
+  ##--------------------------------------------------------------------------
+  ## Projects plugin
+  ## ---------------
+  ## Contains : Projects, ProjectStates, ProjectTags, ProjectNotes, ProjectNoteComment
+  ##
+  Projects:
+    parts:
+      Projects:
+      ProjectStates:
+      ProjectTags:
+      ProjectNotes:
+      ProjectNoteComments:
+  
+  ##--------------------------------------------------------------------------
+  ## Likes plugin
+  ## ------------
+  ## Contains : Likes, LikeComments, LikeTags
+  ##
+  Likes:
+    parts:
+      Likes:
+      LikeComments:
+      LikeTags:
+  
+  ##--------------------------------------------------------------------------
+  ## Links plugin
+  ## ------------
+  ## Contains : Links, LinkCategories, LinkTags
+  ##
+  Links:
+    parts:
+      Links:
+      LinkCategories:
+      LinkTags:
+  
+  ##--------------------------------------------------------------------------
+  ## Tags plugin
+  ## -----------
+  ## Contains : Tags
+  ##
+  Tags:
+    parts:
+      Tags:
                   
-        
+
+#--------------------------------------------------------------------------
+#
+# Menus
+#
+#--------------------------------------------------------------------------
 menus:
 
+  ##--------------------------------------------------------------------------
   ## Administration menu
+  ## -------------------
+  ## Description : List of all actions with 'admin' prefix.
+  ##--------------------------------------------------------------------------
   Admin:
     prefixes:
       admin
     template: admin
   
-  ## Menu that represents only public indexes actions in controllers
+  ##--------------------------------------------------------------------------
+  ## Main menu
+  ## -------------------
+  ## Description : List of all public 'index' actions, with some controllers removed
+  ##--------------------------------------------------------------------------
   Main:
     fileName: main
     prefixes: 
@@ -516,19 +485,34 @@ menus:
     options:
       removedControllers:
         GalleryItems
+        GalleryItemComments
+        GalleryItemTags
         PostCategories
+        PostTags
+        PostComments
         Licenses
+        LikeComments
+        LikeTags
+        LinkTags
+        ProjectNoteComments
+        ProjectStates
         Users
         Groups
+        
       removedPlugins:
       onlyActions:
         index
       displayActionName: false
   
-  ## This menu have no options, as its template just lists the pages in app/View/Pages
+  ##--------------------------------------------------------------------------
+  ## Pages menu
+  ## -------------------
+  ## Description : List of all files in app/View/Pages
+  ##--------------------------------------------------------------------------
   Pages:
     options:
-      langSupport: false # And no support yet in the template file
+      # And no support yet in the template file for this option
+      langSupport: false 
 
       
       

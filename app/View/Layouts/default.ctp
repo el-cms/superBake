@@ -37,8 +37,10 @@
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
 					<ul class="nav navbar-nav">
 						<!-- You can include menus here -->
-						<!-- < ?php echo $this->element('menus/pages') ?> -->
-						<!-- < ?php echo $this->element('menus/main') ?> -->
+						<?php
+						// echo $this->element('menus/pages')
+						// echo $this->element('menus/main')
+						?>
 					</ul>
 				</div>
 			</div>

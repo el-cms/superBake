@@ -94,7 +94,7 @@ foreach ($pluginMenu as $plugin => $controllers) {
 				}
 				// finally, the link
 				if (!in_array(strtolower($action), array('view', 'delete', 'edit'))) {
-					echo "\t\t" . '<li><?php echo $this->Html->link(\'<i class="icon-' . $icon . '"></i>&nbsp;[' . ucfirst(substr($prefix, 0, 3)) . '] \' . __(\'' . $title . '\'), array(\'plugin\' => ' . $linkPlugin . ', \'admin\' => ' . $linkPrefix . ', \'controller\' => \'' . $controller . '\', \'action\' => \'' . $action . '\'), array(\'escape\'=>false));?></li>' . "\n";
+					echo "\t\t" . '<li><?php echo $this->Html->link(\'<i class="icon-' . $icon . '"></i> \' . __(\'' . $title . '\'), array(\'plugin\' => ' . $linkPlugin . ', \'admin\' => ' . $linkPrefix . ', \'controller\' => \'' . $controller . '\', \'action\' => \'' . $action . '\'), array(\'escape\'=>false));?></li>' . "\n";
 				}
 			}
 		}

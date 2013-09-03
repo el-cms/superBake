@@ -29,12 +29,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
+/*
+ * You don't need to set this options, only if you want to keep the default layout
+ * on a prefixed action. 
+ */
+
+$strippedPrefix=  str_replace('_', '', $admin);
+if(!isset($projectConfig['plugins'][(is_null($plugin))?$projectConfig['general']['appBase']:$plugin]['parts'][$currentPart]['controller']['actions'][$strippedPrefix][$a]['options']['publicLayout'])){
+	$publicLayout=false;
+}else{
+	$publicLayout=$projectConfig['plugins'][(is_null($plugin))?$projectConfig['general']['appBase']:$plugin]['parts'][$currentPart]['controller']['actions'][$strippedPrefix][$a]['options']['publicLayout'];
+}
 ?>
 
 	/**
 	 * This method logs an user in the ACL system
 	 */
 	public function <?php echo $admin.$a ?>() {
+
+		<?php if($publicLayout==true){ echo "\$this->layout = 'default';\n";}?>
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->Session->setFlash(<?php echo $this->display('You are now connected')?>, 'flash_success');

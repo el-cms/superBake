@@ -804,7 +804,7 @@ class SuperBakeShell extends AppShell {
 	 */
 	public function controllerViews() {
 
-		$args = $this->_checkArgs(1, array('p', 'c'));
+		$args = $this->_checkArgs(2, array('p', 'c'));
 
 		$plugin = $args['plugin'];
 		$controller = $args['controller'];

@@ -1334,6 +1334,25 @@ class SuperBakeShell extends AppShell {
 									}
 								}
 
+								// Restoring actions list
+								if (isset($controllerConfig['actions']) && is_array($controllerConfig['actions'])) {
+									$this->speak("|    |    |    |    ...Some actions have been defined for this controller...", 'info', 2);
+									foreach ($controllerConfig['actions'] as $prefix => $actions) {
+										if (is_array($actions)) {
+											foreach ($actions as $action => $actionConfig) {
+												if (is_array($actionConfig)) {
+													foreach ($actionConfig as $k => $v) {
+														$partConfig['controller']['actions'][$prefix][$action][$k] = $v;
+													}
+												} else {
+													//Adding defaults
+													$partConfig['controller']['actions'][$prefix][$action] = $projectConfig['defaults']['action'];
+													$partConfig['controller']['actions'][$prefix][$action]['file']=$actionConfig;
+												}
+											}
+										}
+									}
+								}
 								// Restoring Blacklist
 								if (isset($controllerConfig['blackList']) && is_array($controllerConfig['blackList'])) {
 									$this->speak("|    |    |    |    ...A wild actions blackList has been found...", 'info', 2);
@@ -1355,6 +1374,9 @@ class SuperBakeShell extends AppShell {
 								$prefixesList[] = $prefix;
 								$actionsList[$prefix] = array();
 								$actionsString = '';
+//								echo "$plugin.$controllerName.$prefix:\n";
+//								echo var_export($actions);
+//								debug($actions);
 								foreach ($actions as $action => $actionConfig) {
 									if (in_array($action, $partConfig['controller']['blackList'][$prefix])) {
 										$this->speak("|    |    |    |    +-> Action $action for prefix $prefix is blacklisted and then removed from config.", 'info', 2);

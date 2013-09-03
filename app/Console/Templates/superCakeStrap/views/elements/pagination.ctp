@@ -3,7 +3,7 @@
  * Pagination links for index views
  */
 ?>
-<div class="row text-center">
+<div class="text-center">
 	<ul class="pagination">
 		<?php echo "<?php
 		if (\$this->Paginator->hasPrev()):

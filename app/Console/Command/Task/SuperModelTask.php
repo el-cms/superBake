@@ -487,7 +487,7 @@ class SuperModelTask extends BakeTask {
 					$guess = $methods['time'];
 				} elseif ($metaData['type'] === 'datetime') {
 					$guess = $methods['datetime'];
-				} elseif ($metaData['type'] === 'inset') {
+				} elseif ($metaData['type'] === 'inet') {
 					$guess = $methods['ip'];
 				}
 			}
@@ -842,11 +842,11 @@ class SuperModelTask extends BakeTask {
 
 		// Getting options from config file
 		// HasOne associations
-		if (!empty($this->currentModelConfig['hasOne'])) {
-			$hasOne = $this->currentModelConfig['hasOne'];
-		} else {
-			$hasOne = array();
-		}
+		//if (!empty($this->currentModelConfig['hasOne'])) {
+		//	$hasOne = $this->currentModelConfig['hasOne'];
+		//} else {
+		//	$hasOne = array();
+		//}
 		//Options
 		if (!empty($this->currentModelConfig['options'])) {
 			$options = $this->currentModelConfig['options'];

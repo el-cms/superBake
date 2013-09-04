@@ -48,6 +48,10 @@ if(!isset($projectConfig['plugins'][(is_null($plugin))?$projectConfig['general']
 	public function <?php echo $admin.$a ?>() {
 
 		<?php if($publicLayout==true){ echo "\$this->layout = 'default';\n";}?>
+		if(is_array($this->Auth->User)){
+			$this->Session->setFlash(__('You are already logged in'), 'flash_info');
+			$this->Flash->redirect('/');
+		}
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->Session->setFlash(<?php echo $this->display('You are now connected')?>, 'flash_success');

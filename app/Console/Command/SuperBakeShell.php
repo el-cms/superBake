@@ -850,6 +850,8 @@ class SuperBakeShell extends AppShell {
 			$currentPrefix = 'public';
 		}
 		$currentAction = str_replace($currentPrefix . '_', '', $action);
+//		debug($this->projectConfig['plugins'][$plugin]['parts'][$part]['views'][$currentPrefix]);
+//		debug($currentAction);
 		$this->SuperView->currentViewConfig = $this->projectConfig['plugins'][$plugin]['parts'][$part]['views'][$currentPrefix][$currentAction];
 		$this->SuperView->currentAction = $action;
 		$this->SuperView->execute();
@@ -995,6 +997,7 @@ class SuperBakeShell extends AppShell {
 		if (!empty($this->args)) {
 			// Parsing args
 			$args = explode('.', $this->args[0]);
+//			die(var_dump($args));
 			if (count($args) == $nb) {
 				//Check first arg
 				$i = 0;
@@ -1029,7 +1032,7 @@ class SuperBakeShell extends AppShell {
 								$controller = $args[$i];
 							} else {
 								$this->speak(__d('superBake', "The submited controller doesn't exists in config file\nMaybe it's just a typo...\nPlease, select one below:"), 'warning', 0);
-								$controller = $this->_getControllerName();
+								$controller = $this->_getControllerName($plugin);
 							}
 							$return['controller'] = $controller;
 							break;

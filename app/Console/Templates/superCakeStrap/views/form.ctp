@@ -49,6 +49,7 @@
  *   i.e.: array('path::to::script'=>'1')
  * - noToolbar: boolean, default false. If set to true, no toolbar will be generated
  * - hiddenFields: array of fields not to display
+ * - fileField : string, default null. The name of a file field (for uploading things). 
  * 
  * Toolbar related options:
  * ------------------------
@@ -81,16 +82,21 @@ include($themePath . 'views/common/headers.ctp');
  * Current template options
  */
 // Additionnal CSS
-if(!isset($additionnalCSS) || !is_array($additionnalCSS)){
-	$additionnalCSS=array();
+if (!isset($additionnalCSS) || !is_array($additionnalCSS)) {
+	$additionnalCSS = array();
 }
 // Additionnal JS
-if(!isset($additionnalJS) || !is_array($additionnalJS)){
-	$additionnalJS=array();
+if (!isset($additionnalJS) || !is_array($additionnalJS)) {
+	$additionnalJS = array();
 }
 // Hidden fields
-if(!isset($hiddenFields) || !is_array($hiddenFields)){
-	$hiddenFields=array();
+if (!isset($hiddenFields) || !is_array($hiddenFields)) {
+	$hiddenFields = array();
+}
+
+// File field
+if (!isset($fileField)) {
+	$fileField = null;
 }
 /* ----------------------------------------------------------------------------
  * Toolbar options
@@ -108,8 +114,9 @@ if ($noToolbar === false) {
 }
 
 
-if(!function_exists('dateField')){
-	function dateField($name, $data_format='dd MM yyyy - hh:ii'){
+if (!function_exists('dateField')) {
+
+	function dateField($name, $data_format = 'dd MM yyyy - hh:ii') {
 		$out = "<div class=\"input-group date form_datetime\" id=\"{$name}_dtPicker\">\n";
 		$out.="<input type=\"text\" readonly class=\"form-control\" id=\"{$name}_field\" />\n";
 		$out.="\t<span class=\"input-group-addon\">
@@ -123,14 +130,14 @@ if(!function_exists('dateField')){
 		$out.="</div>\n";
 		$out.="\t<?php echo \$this->Form->input('$name', array('type'=>'hidden', 'readonly', 'data-format'=>'$data_format', 'class'=>'form-control', 'div'=>false, 'label'=>false));?>\n";
 		$out.="<script type=\"text/javascript\">
-				$('#{$name}_field').val($('#Post".Inflector::camelize($name)."').val());
+				$('#{$name}_field').val($('#Post" . Inflector::camelize($name) . "').val());
 				$('#{$name}_dtPicker').datetimepicker({
 					format: \"dd MM yyyy - hh:ii:ss\",
 					autoclose: true,
 					todayBtn: true,
 					minuteStep: 5,
 					language: 'fr',
-					linkField: \"Post".Inflector::camelize($name)."\",
+					linkField: \"Post" . Inflector::camelize($name) . "\",
 					linkFormat: \"yyyy-mm-dd hh:ii:ss\"
 				});
 				// This is lame, but it updates the fields with db value
@@ -141,30 +148,30 @@ if(!function_exists('dateField')){
 	}
 }
 
-if(!function_exists('openRow')){
+if (!function_exists('openRow')) {
 	/**
 	 * Opens a form row
 	 * @param string $field Field name
 	 * @return string
 	 */
-	function openRow($field){
-		$out="<div class=\"form-group\">";
-		$out.="\t<?php echo \$this->Form->label('$field', '". ucfirst(strtolower(Inflector::humanize($field)))."',  array('class' => 'col-lg-2 control-label'))?>\n";
+	function openRow($field) {
+		$out = "<div class=\"form-group\">";
+		$out.="\t<?php echo \$this->Form->label('$field', '" . ucfirst(strtolower(Inflector::humanize($field))) . "',  array('class' => 'col-lg-2 control-label'))?>\n";
 		$out.="\t<div class=\"col-lg-10\">\n";
 		return $out;
 	}
 }
-if(!function_exists('closeRow')){
+if (!function_exists('closeRow')) {
 	/**
 	 * Closes a form row
 	 * @return string
 	 */
-	function closeRow(){
+	function closeRow() {
 		return "\t</div>\n</div>\n";
 	}
 }
-
-echo "<?php echo \$this->Form->create('$modelClass', array('class'=>'form-horizontal')); ?>\n";
+$hasFileField=(!is_null($fileField)) ? ", 'enctype'=>'multipart/form-data'" : '';
+echo "<?php echo \$this->Form->create('$modelClass', array('class'=>'form-horizontal'$hasFileField)); ?>\n";
 
 echo "<?php echo \$this->Html->script('bootstrap-datetimepicker.min', array('inline' => false)); ?>\n";
 echo "<?php echo \$this->Html->script('locales/bootstrap-datetimepicker.fr', array('inline' => false)); ?>\n";
@@ -177,17 +184,17 @@ echo "<?php echo \$this->Html->css('datetimepicker')?>\n";
 		if ((strpos($action, 'add') !== false && $field == $primaryKey) || in_array($field, $hiddenFields)) {
 			continue;
 		} else {
-			$displayField=true;
-			$displayLabel=true;
+			$displayField = true;
+			$displayLabel = true;
 			//
 			// Field type
 			//
-			switch($schema[$field]['type']){
+			switch ($schema[$field]['type']) {
 				case 'datetime':
-					if(in_array($field, array('updated', 'created', 'modified')) && strpos($action, 'add') == true){
-						$displayField=false;
-					}else{
-						$fieldHTML=dateField($field);
+					if (in_array($field, array('updated', 'created', 'modified')) && strpos($action, 'add') == true) {
+						$displayField = false;
+					} else {
+						$fieldHTML = dateField($field);
 					}
 					break;
 				case 'text':
@@ -199,23 +206,27 @@ echo "<?php echo \$this->Html->css('datetimepicker')?>\n";
 					//
 					// Field name
 					//
-					switch($field){
+					switch ($field) {
 					case 'password':
-						$fieldValue=null;
-						$fieldRequired="true";
-						if(strpos($action, 'edit')== true){
-							$fieldValue="'value'=>null, ";
-							$fieldRequired="false";
+							$fieldValue = null;
+							$fieldRequired = "true";
+							if (strpos($action, 'edit') == true) {
+								$fieldValue = "'value'=>null, ";
+								$fieldRequired = "false";
 						}
 						$fieldHTML = "\t\t<?php echo \$this->Form->input('$field', array('div'=>false, 'label'=>false, $fieldValue'required'=>$fieldRequired, 'class'=>'form-control', 'type'=>'password', 'placeholder'=>'$field')); ?>\n";
 						$fieldHTML .= "\t\t<?php echo \$this->Form->input('{$field}2', array('div'=>false, 'label'=>false, 'class'=>'form-control', 'type'=>'password', 'placeholder'=>'Re-type your password')); ?>\n";
 						break;
 					case $primaryKey:
-						$displayLabel=false;
+							$displayLabel = false;
 						$fieldHTML = "\t\t<?php echo \$this->Form->input('$field', array('div'=>false, 'label'=>false, 'class'=>'form-control', 'placeholder'=>'$field')); ?>\n";
 						break;
 					default:
-						$fieldHTML = "\t\t<?php echo \$this->Form->input('$field', array('div'=>false, 'label'=>false, 'class'=>'form-control', 'placeholder'=>'$field')); ?>\n";
+							// Set type to file if fileField
+							$isfileField=(!is_null($fileField) && $field==$fileField) ? "'type'=>'file', " : "";
+							// No classes for file input
+							$inputClass=(!is_null($fileField) && $field==$fileField)?"":"'class'=>'form-control', ";
+							$fieldHTML = "\t\t<?php echo \$this->Form->input('$field', array($isfileField'div'=>false, 'label'=>false, $inputClass'placeholder'=>'$field')); ?>\n";
 						break;
 					}
 					break;
@@ -248,7 +259,7 @@ echo "<?php echo \$this->Html->css('datetimepicker')?>\n";
 echo "<?php echo \$this->Form->end(array('label'=>__('Submit'), 'class'=>'btn btn-primary')); ?>\n";
 
 // Additionnal scripts and CSS
-$out='';
+$out = '';
 foreach ($additionnalCSS as $k => $v) {
 	$out.= "\techo \$this->HTML->css('" . $this->cleanPath($k) . "');\n";
 }

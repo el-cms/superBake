@@ -58,3 +58,44 @@ ul.main-menu-xs li{
 	margin-left:5px;
 	margin-right:5px;
 }
+
+.polaroid{
+	padding:10px;
+	margin:5px;
+	margin-bottom: 10px;
+	border:1px solid @gray-light;
+	background-color: lighten(@gray-lighter, 10%);
+	color: @gray-light;
+	img{
+		margin-bottom:5px;
+	}
+	p {
+		line-break:normal;
+	}
+	.box-shadow(0 4px 6px rgba(0, 0, 0, .3));
+	.rotate(-5deg);
+}
+
+#wall .polaroid:nth-child(even){
+	.rotate(2deg);
+}
+#wall .polaroid:nth-child(3n){
+	margin-top: -5px;
+}
+#wall .polaroid:nth-child(5n){
+	margin-right: 5px;
+}
+#wall .polaroid:nth-child(8n){
+	margin-top: 8px;
+	margin-right: 5px;
+}
+#wall .polaroid:nth-child(11n){
+	margin-top: 3px;
+	margin-left: -5px;
+}
+#wall .polaroid:hover{
+	.rotate(0deg);
+	.scale(1.2);
+	.box-shadow(0 10px 20px rgba(0, 0, 0, .7));
+	z-index:10;
+}

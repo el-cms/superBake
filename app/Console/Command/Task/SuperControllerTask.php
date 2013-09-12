@@ -170,12 +170,13 @@ class SuperControllerTask extends BakeTask {
 		$singularName = Inflector::variable($currentModelName);
 		$singularHumanName = $this->_singularHumanName($controllerName);
 		$pluralHumanName = $this->_pluralName($controllerName);
+		$currentControllerConfig=$this->currentControllerConfig;
 		$currentPart=$this->currentPart;
 		//$currentPlugin=$this->currentPlugin;
 		$projectConfig = $this->projectConfig;
 		$this->Template->projectConfig=$this->projectConfig;
 		$this->Template->set(compact(
-						'projectConfig','currentPart', 'plugin', 'currentPlugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
+						'currentControllerConfig','projectConfig','currentPart', 'plugin', 'currentPlugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
 		));
 		$actions = $this->Template->generate('actions', 'controller_actions');
 		return $actions;

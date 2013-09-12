@@ -170,7 +170,7 @@ if (!function_exists('closeRow')) {
 		return "\t</div>\n</div>\n";
 	}
 }
-$hasFileField=(!is_null($fileField)) ? ", 'enctype'=>'multipart/form-data'" : '';
+$hasFileField = (!is_null($fileField)) ? ", 'enctype'=>'multipart/form-data'" : '';
 echo "<?php echo \$this->Form->create('$modelClass', array('class'=>'form-horizontal'$hasFileField)); ?>\n";
 
 echo "<?php echo \$this->Html->script('bootstrap-datetimepicker.min', array('inline' => false)); ?>\n";
@@ -223,9 +223,9 @@ echo "<?php echo \$this->Html->css('datetimepicker')?>\n";
 						break;
 					default:
 							// Set type to file if fileField
-							$isfileField=(!is_null($fileField) && $field==$fileField) ? "'type'=>'file', " : "";
+							$isfileField = (!is_null($fileField) && $field == $fileField) ? "'type'=>'file', " : "";
 							// No classes for file input
-							$inputClass=(!is_null($fileField) && $field==$fileField)?"":"'class'=>'form-control', ";
+							$inputClass = (!is_null($fileField) && $field == $fileField) ? "" : "'class'=>'form-control', ";
 							$fieldHTML = "\t\t<?php echo \$this->Form->input('$field', array($isfileField'div'=>false, 'label'=>false, $inputClass'placeholder'=>'$field')); ?>\n";
 						break;
 					}
@@ -261,10 +261,14 @@ echo "<?php echo \$this->Form->end(array('label'=>__('Submit'), 'class'=>'btn bt
 // Additionnal scripts and CSS
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
+	if ($v == true) {
 	$out.= "\techo \$this->HTML->css('" . $this->cleanPath($k) . "');\n";
 }
+}
 foreach ($additionnalJS as $k => $v) {
+	if ($v == true) {
 	$out.="\techo \$this->HTML->script('" . $this->cleanPath($k) . "');\n";
+	}
 }
 if (!empty($out)) {
 	echo "<?php \n $out\n?>";

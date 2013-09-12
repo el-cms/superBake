@@ -130,6 +130,11 @@ foreach ($actionsToBake as $a => $path) {
 	}
 	if (file_exists($snippetFile)) {
 		$this->out(__d('superBake', '<info>The "%s" snippet file has been added.</info>', $snippetFile), 1, Shell::VERBOSE);
+		// Options
+		$tmpPrefix = str_replace('_', '', $admin);
+		$tmpPrefix = (empty($tmpPrefix)) ? 'public' : $tmpPrefix;
+		$options = $currentControllerConfig['actions'][$tmpPrefix][$a]['options'];
+		// Including snippet file
 		include($snippetFile);
 	} else {
 		$this->out(__d('superBake', '<warning>The "%s" snippet file is missing.</warning>', $snippetFile), 1, Shell::QUIET);

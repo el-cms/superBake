@@ -59,12 +59,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
-// ProjectConfig
 
-/**
- * @var string Plural controller name, CamelCased
- */
-//$controllerName = Inflector::camelize($pluralHumanName);
+ // Plural controller name, CamelCased
 $controllerName = Inflector::camelize($controllerPath);
 
 // Plugin name without the dot. Empty for appBase.
@@ -80,45 +76,31 @@ if (empty($pluginName)) {
 	$configPluginName = $pluginName;
 }
 
-//if (empty($plugin)) {
-//	$pluginParams = $projectConfig['plugins'][$projectConfig['general']['appBase']];
-//} else {
-//	$pluginParams = $projectConfig['plugins'][$pluginName];
-//}
-
+// Prefix
 if (empty($admin)) {
 	$prefix = 'public';
 } else {
 	$prefix = rtrim($admin, '_');
 }
 
-/*
- * Load actions to bake.
- * The project defaultActions and plugin actions are merged. This represents the actions to bake.
- * Plugin blacklists override the actions to bake
- */
+//
+// Load actions to bake.
+// The project defaultActions and plugin actions are merged. This represents the actions to bake.
+// Plugin blacklists override the actions to bake
+//
 $actionsToBake = array();
-//foreach ($projectConfig['plugins'][$pluginName]['parts'][$currentPart]['controller']['actions'] as $prefix => $actions) {
 foreach ($projectConfig['plugins'][$configPluginName]['parts'][$currentPart]['controller']['actions'][$prefix] as $action => $actionConfig) {
-//	foreach ($actions as $action => $actionConfig) {
 	$actionsToBake["${action}"] = $actionConfig;
-//	}
 }
-//$actionsToBake = $this->allowedActions($controllerName, $prefix);
+
 //
 // Baking actions, using their respective templates
 //
 foreach ($actionsToBake as $a => $path) {
 	// The controller have options defined in config file
-	//if (is_array($path)) {
 	$controllerOptions = $path;
 	// This is the snippet file used for this action
-	//	if (!empty($controllerOptions['file'])) {
 	$path = $controllerOptions['file'];
-	//	} else {
-	//$path = $a;
-	//	}
-	//}
 	$this->out(__d('superBake', 'Action "%s" is being built (path to snippet: "%s")', array($a, $path)), 1, Shell::VERBOSE);
 
 	// Creating the snippet path. If $path is not an array, the path is created

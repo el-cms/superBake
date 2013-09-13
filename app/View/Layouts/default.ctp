@@ -55,7 +55,7 @@
 			<?php echo $content_for_layout; ?>
 		</div>
 		<div class="container" id="footer">
-			Here is a beautiful footer
+			<a href="http://cakephp.org">I LOVE CAKE AND PHP</a>
 		</div>
 	</body>
 </html>

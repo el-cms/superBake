@@ -48,8 +48,9 @@ class AppShell extends Shell {
 	}
 
 	/**
-	 * Makes a config path value (path::to::file
-	 * @param type $path If true, a trailing / will be added
+	 * Makes a config path value (path::to::file)
+	 * @param string $path Path::to::file.ext
+	 * @param bool $dir If true, a trailing / will be added
 	 * @return string Good path format, with trailing slash
 	 */
 	public function cleanPath($path, $dir = false) {

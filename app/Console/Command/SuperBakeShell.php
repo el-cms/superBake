@@ -1336,7 +1336,6 @@ class SuperBakeShell extends AppShell {
 										$partConfig['controller'][$k] = $v;
 									}
 								}
-
 								// Restoring actions list
 								if (isset($controllerConfig['actions']) && is_array($controllerConfig['actions'])) {
 									$this->speak("|    |    |    |    ...Some actions have been defined for this controller...", 'info', 2);

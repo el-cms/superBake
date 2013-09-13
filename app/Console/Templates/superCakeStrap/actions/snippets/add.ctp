@@ -53,7 +53,7 @@ if (!function_exists('parse_size')) {
 			'g' => 1073741824, // 1024 * 1024 * 1024
 		);
 		if (preg_match('/([0-9]+)\s*(k|m|g)?(b?(ytes?)?)/i', $size, $match)) {
-			return $match[1] * $suffixes[drupal_strtolower($match[2])];
+			return $match[1] * $suffixes[strtolower($match[2])];
 		}
 	}
 
@@ -85,81 +85,149 @@ if (!function_exists('file_upload_max_size')) {
 /* * *****************************************
  * Options for this action
  */
-	if (!isset($fileField)) {
-		$fileField = null;
-	} else {
-		// File defaults
-		if (!is_array($fileField)) {
-			$fileField = array(
-				'type'=>'file',
-				'file' => $fileField,
-				'forbiddenExts' => array('exe'),
-				'maximumSize' => file_upload_max_size(), // Maximum size defined by server max upload by default
-				'path'=>'files',
-			);
-		}
+
+if (!isset($options['fileField'])) {
+	$fileField = null;
+} elseif (!is_array($options['fileField'])) {
+	$fileField = array('type' => 'file',
+		'name' => (empty($options['fileField']) ? 'file' : $options['fileField']),
+		'allowedExts' => array('zip', 'jpg', 'cvs'), // Put whatever here.
+		'maximumSize' => file_upload_max_size(), // Maximum size defined by server max upload by default
+		'path' => 'files',
+	);
+} else {
+	$fileField = $options['fileField'];
+}
+// Prepares a string to display with a list of exts
+$i = 0;
+$fileExtsString = '';
+foreach ($fileField['allowedExts'] as $ext) {
+	if ($i == 0) {
+		$fileExtsString.=$ext;
 	}
+	$fileExtsString.=", $ext";
+}
 ?>
 	/**
 	* <?php echo $admin . $a ?> method from snippet <?php echo __FILE__ ?>
-	 *
-	 * @return void
-	 */
+	*
+	* @return void
+	*/
 	public function <?php echo $admin . $a ?>() {
 		if ($this->request->is('post')) {
+		// Creating entry
+		$this-><?php echo $currentModelName;?>->create();
 		<?php if (!is_null($fileField)): ?>
-			// Handling file upload : Check if <?php echo $fileField['type'] ?> is uploaded:
-			
-			if(!empty($this->data['<?php echo $currentModelName;?>']['upload']['<?php echo $fileField['name']?>']))
-                {
-                        $file = $this->data['<?php echo $currentModelName;?>']['upload']; //put the data into a var for easy use
+			// Verifying file presence
+			if (!empty($this->data['<?php echo $currentModelName;?>']['file']['name'])) {
+				// Put the data into a var for easy use
+				$file = $this->data['<?php echo $currentModelName;?>']['file'];
+				// Get the extension
+				$ext = substr(strtolower(strrchr($file['name'], '.')), 1);
+				// Only process if the extension is valid
+				if (in_array($ext, <?php echo var_export($fileField['allowedExts'])?>)) {
+					// Final file name
+					// By default, a time value is added at the end of the file to avoid filename problems. Feel free to change this.
+					$filename = substr($file['name'], 0, -(strlen($ext) + 1)) . '-' . time() . '.' . $ext;
+			<?php 
+			// Checking file type
+			switch ($fileField['type']) {
+					case 'file':
+						// Just move to dest folder
+						?>
+						move_uploaded_file($file['tmp_name'], WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'])?>' . $filename); 
+						<?php
+						break;
+					case 'image':?>
+						// Creating thumbnail:
+						$thumb = new SimpleImage;
+						// loading uploaded image
+						if (!$thumb->load($file['tmp_name'])) {
+							$this->Session->setFlash(<?php echo $this->display('Image cannot be opened. Please try again.')?>, 'flash_error');
+							$this->redirect(<?php echo $this->url('add')?>);
+						}
+						
+						// Thumb width
+						$thumb->resizeToWidth(<?php echo $fileField['thumbWidth']?>);
+						
+						// Saving thumbnail
+						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs'], true)?>' . $filename)) {
+							$this->Session->setFlash(<?php echo $this->display('The thumbnail cannot be saved.')?>, 'flash_error');
+							$this->redirect(<?php echo $this->url('add')?>);
+						}
+						
+						// Following lines are an example of croping for square thumbs
+						// Croping and saving image for square thumbs
+						// For cropping, we need to use an image larger as the previous thumb.
+						// So we reset the image to original. No need to do this if you want to create
+						// a cropped thumb smaller than the previous one.
+						/*
+						// Reset thumb
+						$thumb->reset();
+						// If final thumb isn't good for you, you can downsize image before croping it
+						$thumb->centerCrop(<?php echo $fileField['thumbWidth']?>, <?php echo $fileField['thumbWidth']?>);
+						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs']."::${fileField['thumbWidth']}x${fileField['thumbWidth']}", true)?>' . $filename)) {
+							$this->Session->setFlash(<?php echo $this->display('The square thumbnail cannot be saved.')?>, 'flash_error');
+							$this->redirect(<?php echo $this->url('add')?>);
+						}*/
+						
+						// Resize file if needed
+						$thumb->reset();
+						if($thumb->getWidth()>'<?php echo $fileField['imageMaxWidth']?>'){
+							$thumb->resizeToWidth(<?php echo $fileField['imageMaxWidth']?>);
+						}
+						
+						// Saving file
+						if (!$thum->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'])?>' . $filename)) {
+							$this->Session->setFlash(<?php echo $this->display('The file cannot be saved.')?>, 'flash_error');
+							$this->redirect(<?php echo $this->url('add')?>);
+						}
+						<?php
+						break;
+					default:
+						echo "//\n// UNKNOWN FILE TYPE SPECIFIED\n//\n";
+						$this->speak(__d('superBake', 'Unknown file type specified in action.', 'error'));
+						break;
+				}
+			?>
+						
+					//File name for DB entry
+					$this->request->data['<?php echo $currentModelName;?>']['<?php echo $fileField['name']?>'] = $filename;
+				} else {
+					// An error has occured
+					$this->Session->setFlash(<?php echo $this->display('Wrong file extension. Allowed extensions are: %s.', $fileExtsString)?>, 'flash_error');
+					$this->redirect(array('admin' => 'admin_', 'plugin' => 'gallery', 'controller' => 'gallery_items', 'action' => 'index'));
+				}
+			}
 
-                        $ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
-                        $arr_ext = array('jpg', 'jpeg', 'gif'); //set allowed extensions
-
-                        //only process if the extension is valid
-                        if(in_array($ext, $arr_ext))
-                        {
-                                //do the actual uploading of the file. First arg is the tmp name, second arg is 
-                                //where we are putting it
-                                move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/uploads/users/' . $file['name']);
-
-                                //prepare the filename for database entry
-                                $this->data['User']['image'] = $file['name'];
-                        }
-                }
-
-                //now do the save
-                if($this->User->save($this->data)) {...} else {...}
 		 <?endif;?>
-			$this-><?php echo $currentModelName; ?>->create();
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
-<?php if ($wannaUseSession): ?>
+			<?php if ($wannaUseSession): ?>
 				$this->Session->setFlash(<?php echo $this->display('The ' . strtolower($singularHumanName) . ' has been saved') ?>, 'flash_success');
 				$this->redirect(<?php echo $this->url('index', $controllerName) ?>);
-<?php else: ?>
+			<?php else: ?>
 				$this->flash(<?php echo $this->display(ucfirst(strtolower($currentModelName)) . ' saved.') ?>, <?php echo $this->url('index', $controllerName) ?>);
-<?php endif; ?>
+			<?php endif; ?>
 			} else {
-<?php if ($wannaUseSession): ?>
+			<?php if ($wannaUseSession): ?>
 				$this->Session->setFlash(<?php echo $this->display('The ' . strtolower($singularHumanName) . ' could not be saved. Please, try again.') ?>, 'flash_error');
-<?php endif; ?>
+			<?php endif; ?>
 			}
 		}
 		$this->set('title_for_layout', 'Add <?php echo strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) ?>');
-<?php
-	foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
-		foreach ($modelObj->{$assoc} as $associationName => $relation):
-			if (!empty($associationName)):
-				$otherModelName = $this->_modelName($associationName);
-				$otherPluralName = $this->_pluralName($associationName);
-				echo "\t\t\${$otherPluralName} = \$this->{$currentModelName}->{$otherModelName}->find('list');\n";
-				$compact[] = "'{$otherPluralName}'";
-			endif;
+		<?php
+		foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
+			foreach ($modelObj->{$assoc} as $associationName => $relation):
+				if (!empty($associationName)):
+					$otherModelName = $this->_modelName($associationName);
+					$otherPluralName = $this->_pluralName($associationName);
+					echo "\t\t\${$otherPluralName} = \$this->{$currentModelName}->{$otherModelName}->find('list');\n";
+					$compact[] = "'{$otherPluralName}'";
+				endif;
+			endforeach;
 		endforeach;
-	endforeach;
-	if (!empty($compact)):
+		if (!empty($compact)):
 			echo "\t\t\$this->set(compact(" . join(', ', $compact) . "));\n";
-	endif;
-?>
+		endif;
+	?>
 	}

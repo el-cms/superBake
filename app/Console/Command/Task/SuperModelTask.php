@@ -847,6 +847,8 @@ class SuperModelTask extends BakeTask {
 		//} else {
 		//	$hasOne = array();
 		//}
+
+
 		//Options
 		if (!empty($this->currentModelConfig['options'])) {
 			$options = $this->currentModelConfig['options'];

@@ -164,7 +164,7 @@ class SuperControllerTask extends BakeTask {
 			$primaryKey = $modelObj->primaryKey;
 		}
 
-
+		
 		$controllerPath = $this->_controllerPath($controllerName);
 		$pluralName = $this->_pluralName($currentModelName);
 		$singularName = Inflector::variable($currentModelName);
@@ -174,9 +174,12 @@ class SuperControllerTask extends BakeTask {
 		$currentPart=$this->currentPart;
 		//$currentPlugin=$this->currentPlugin;
 		$projectConfig = $this->projectConfig;
+		// pluralVar: plural form of the controller, to use in snippets and 
+		// by $this->url;
+		$pluralVar=$pluralName;
 		$this->Template->projectConfig=$this->projectConfig;
 		$this->Template->set(compact(
-						'currentControllerConfig','projectConfig','currentPart', 'plugin', 'currentPlugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
+						'pluralVar', 'currentControllerConfig','projectConfig','currentPart', 'plugin', 'currentPlugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
 		));
 		$actions = $this->Template->generate('actions', 'controller_actions');
 		return $actions;

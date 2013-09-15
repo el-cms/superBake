@@ -88,25 +88,30 @@ if (!function_exists('file_upload_max_size')) {
 
 if (!isset($options['fileField'])) {
 	$fileField = null;
-} elseif (!is_array($options['fileField'])) {
-	$fileField = array('type' => 'file',
-		'name' => (empty($options['fileField']) ? 'file' : $options['fileField']),
-		'allowedExts' => array('zip', 'jpg', 'cvs'), // Put whatever here.
-		'maximumSize' => file_upload_max_size(), // Maximum size defined by server max upload by default
-		'path' => 'files',
-	);
 } else {
-	$fileField = $options['fileField'];
-}
-// Prepares a string to display with a list of exts
-$i = 0;
-$fileExtsString = '';
-foreach ($fileField['allowedExts'] as $ext) {
-	if ($i == 0) {
-		$fileExtsString.=$ext;
+	if (!is_array($options['fileField'])) {
+		$fileField = array('type' => 'file',
+			'name' => (empty($options['fileField']) ? 'file' : $options['fileField']),
+			'allowedExts' => array('zip', 'jpg', 'cvs'), // Put whatever here.
+			'maximumSize' => file_upload_max_size(), // Maximum size defined by server max upload by default
+			'path' => 'files',
+		);
+	} else {
+		$fileField = $options['fileField'];
 	}
-	$fileExtsString.=", $ext";
+	
+	// Prepares a string to display with a list of exts
+	// That's usefull to prepare error messages
+	$i = 0;
+	$fileExtsString = '';
+	foreach ($fileField['allowedExts'] as $ext) {
+		if ($i == 0) {
+			$fileExtsString.=$ext;
+		}
+		$fileExtsString.=", $ext";
+	}
 }
+
 ?>
 	/**
 	* <?php echo $admin . $a ?> method from snippet <?php echo __FILE__ ?>

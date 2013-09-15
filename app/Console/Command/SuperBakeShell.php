@@ -165,8 +165,8 @@ class SuperBakeShell extends AppShell {
 		$this->out('|  ' . __d('superBake', '<info>from the existing controller. That means that if you have modified your</info>'));
 		$this->out('|  ' . __d('superBake', '<info>controllers, the new actions will not be available.</info>'));
 		$this->out('|  ' . __d('superBake', '    O[<bold>N</bold>]e plugin views (All views for a specific plugin)'), 1, 0);
-		$this->out('|  ' . __d('superBake', '    Views using one [<bold>T</bold>]emplate (All the views using it)'), 1, 0);
-		$this->out('|  ' . __d('superBake', '    V[<bold>I</bold>]ews for a given action name (All views for all actions with this name)'), 1, 0);
+//		$this->out('|  ' . __d('superBake', '    Views using one [<bold>T</bold>]emplate (All the views using it)'), 1, 0);
+//		$this->out('|  ' . __d('superBake', '    V[<bold>I</bold>]ews for a given action name (All views for all actions with this name)'), 1, 0);
 		$this->out('|  ' . __d('superBake', '    Bake a view for one [<bold>G</bold>]iven action (plugin/controller specific)'), 1, 0);
 		$this->out('|  ' . __d('superBake', '    Views fo[<bold>R</bold>] one given controller'), 1, 0);
 		$this->out('|                                                               ', 1, 0);
@@ -181,7 +181,7 @@ class SuperBakeShell extends AppShell {
 		// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 		// = = = = = = =   = =   = = = = = = = = = = =        
 
-		$classToGenerate = strtoupper($this->in('+--> ' . __d('superBake', 'What would you like to generate ?'), array('A', 'B', 'C', 'D', 'E', /* 'F', */ 'G', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V')));
+		$classToGenerate = strtoupper($this->in('+--> ' . __d('superBake', 'What would you like to generate ?'), array('A', 'B', 'C', 'D', 'E', /* 'F', */ 'G', /*'I',*/ 'J', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', /*'T',*/ 'U', 'V')));
 		switch ($classToGenerate) {
 			// Plugins: -------------------------------------------------------
 			case 'P': // Plugin structures
@@ -220,12 +220,12 @@ class SuperBakeShell extends AppShell {
 			case 'N': // one plugin views
 				$this->pluginViews();
 				break;
-			case 'T': // Views using one given templatePath
-				$this->templateViews();
-				break;
-			case 'I': // Views of a given ActionName
-				$this->actionViews();
-				break;
+//			case 'T': // Views using one given templatePath
+//				$this->templateViews();
+//				break;
+//			case 'I': // Views of a given ActionName
+//				$this->actionViews();
+//				break;
 			case 'G': // View for a given PluginName.ControllerName.ActionName
 				$this->View();
 				break;
@@ -577,7 +577,7 @@ class SuperBakeShell extends AppShell {
 
 		$args = $this->_checkArgs(1, array('p'));
 
-		$controllers = $this->_getModelList($args['plugin']);
+		$controllers = $this->_getControllerList($args['plugin']);
 
 		foreach ($controllers as $controller) {
 			$this->_controller($args['plugin'], $controller);
@@ -786,7 +786,7 @@ class SuperBakeShell extends AppShell {
 
 		$plugin = $args['plugin'];
 
-		$controllers = $this->_getModelList($plugin);
+		$controllers = $this->_getControllerList($plugin);
 		foreach ($controllers as $controller) {
 			$actions = $this->getActionList($plugin, $controller);
 			foreach ($actions as $action) {

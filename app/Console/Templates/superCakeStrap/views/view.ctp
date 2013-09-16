@@ -275,7 +275,7 @@ foreach ($relations as $alias => $details) {
 				}
 				$divs.= "\t\t\t\t\t\t<td class=\"actions\">\n";
 				$divs.= "\t\t\t\t\t\t\t<div class=\"btn-group\">\n";
-				$divs.= "\t\t\t\t\t\t\t\t<a class=\"btn btn-small btn-default dropdown-toggle$disabled\" data-toggle=\"dropdown\" href=\"#\">\n";
+				$divs.= "\t\t\t\t\t\t\t\t<a class=\"btn btn-xs btn-default dropdown-toggle$disabled\" data-toggle=\"dropdown\" href=\"#\">\n";
 				$divs.= "\t\t\t\t\t\t\t\t\t<i class=\"icon-cog\"></i>\n";
 				$divs.= "\t\t\t\t\t\t\t\t\t<span class=\"caret\"></span>\n";
 				$divs.= "\t\t\t\t\t\t\t\t</a>\n";

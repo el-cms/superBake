@@ -191,7 +191,7 @@ if ($noToolbar === false) {
 			echo "\t\t\t\t<td>\n";
 			echo "\t\t\t\t\t<div class=\"btn-group\">\n";
 			if ($item_actions > 0) { // Enabled, with submenu of actions
-				echo "\t\t\t\t\t\t<a class=\"btn btn-small btn-default dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n";
+				echo "\t\t\t\t\t\t<a class=\"btn btn-xs btn-default dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n";
 				echo "\t\t\t\t\t\t\t<i class=\"icon-cog\"></i>\n";
 				echo "\t\t\t\t\t\t\t<span class=\"caret\"></span>\n";
 				echo "\t\t\t\t\t\t</a>\n";

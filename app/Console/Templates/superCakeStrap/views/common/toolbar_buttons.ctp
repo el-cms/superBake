@@ -161,13 +161,14 @@ if ($this->actionable('add', $pluralVar)) {
 // Edit (Only on view)
 if ($this->actionable('edit', $pluralVar) && $this->currentAction() == 'view') {
 	$title = $this->display("Edit this $singularHumanName");
-	$current_toolbar[] = "<?php echo \$this->Html->Link('<i class=\"icon-pencil\"></i> ' . " . $title . "," . $this->url('edit', $pluralVar, "$".strtolower($modelClass)."['{$modelClass}']['{$primaryKey}']") . ", array('class'=>'btn $btnSize btn-default', 'title'=>" . $title . ", 'escape'=> false));?>\n";
+	$current_toolbar[] = "<?php echo \$this->Html->Link('<i class=\"icon-pencil\"></i> ' . " . $title . "," . $this->url('edit', $pluralVar, "\${$singularVar}['{$modelClass}']['{$primaryKey}']") . ", array('class'=>'btn $btnSize btn-default', 'title'=>" . $title . ", 'escape'=> false));?>\n";
 }
 
 // (Only on view)
 if ($this->actionable('delete', $pluralVar) && $this->currentAction() == 'view') {
 	$title = '__(\'Delete\')';
-	$current_toolbar[] = "<?php echo \$this->Form->postLink('<i class=\"icon-trash\"></i> '." . $title . ", " . $this->url('delete', $pluralVar, "\$this->Form->value('{$modelClass}.{$primaryKey}')") . ", array('confirm' => __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}')), 'title'=>__('Delete this entry'),'class'=>'btn $btnSize btn-warning',  'escape'=>false)); ?>";
+//	$current_toolbar[] = "<?php echo \$this->Form->postLink('<i class=\"icon-trash\"></i> '." . $title . ", " . $this->url('delete', $pluralVar, "\$this->Form->value('{$modelClass}.{$primaryKey}')") . ", array('confirm' => __('Are you sure you want to delete # %s?', \$this->Form->value('{$modelClass}.{$primaryKey}')), 'title'=>__('Delete this entry'),'class'=>'btn $btnSize btn-warning',  'escape'=>false)); ? >";
+	$current_toolbar[] = "<?php echo \$this->Form->postLink('<i class=\"icon-trash\"></i> '." . $title . ", " . $this->url('delete', null, "\${$singularVar}['{$modelClass}']['{$primaryKey}']").", array('confirm' => __('Are you sure you want to delete # %s?', \${$singularVar}['{$modelClass}']['{$primaryKey}']), 'title'=>__('Delete this entry'),'class'=>'btn $btnSize btn-warning',  'escape'=>false)); ?>";
 }
 // Toolbar
 if (count($current_toolbar) > 0) {

@@ -109,7 +109,9 @@ if (!isset($options['fileField'])) {
 			$fileExtsString.=$ext;
 		}
 		$fileExtsString.=", $ext";
+		$i++;
 	}
+	$fileExtsString="'$fileExtsString'";
 }
 
 ?>
@@ -124,9 +126,9 @@ if (!isset($options['fileField'])) {
 		$this-><?php echo $currentModelName;?>->create();
 		<?php if (!is_null($fileField)): ?>
 			// Verifying file presence
-			if (!empty($this->data['<?php echo $currentModelName;?>']['file']['name'])) {
+			if (!empty($this->data['<?php echo $currentModelName;?>']['<?php echo $fileField['name'];?>']['name'])) {
 				// Put the data into a var for easy use
-				$file = $this->data['<?php echo $currentModelName;?>']['file'];
+				$file = $this->data['<?php echo $currentModelName;?>']['<?php echo $fileField['name'];?>'];
 				// Get the extension
 				$ext = substr(strtolower(strrchr($file['name'], '.')), 1);
 				// Only process if the extension is valid
@@ -151,7 +153,9 @@ if (!isset($options['fileField'])) {
 							$this->Session->setFlash(<?php echo $this->display('Image cannot be opened. Please try again.')?>, 'flash_error');
 							$this->redirect(<?php echo $this->url('add')?>);
 						}
-						
+						<?
+						// Must we create thumbnail ?
+						if(!empty($fileField['thumbs'])): ?>
 						// Thumb width
 						$thumb->resizeToWidth(<?php echo $fileField['thumbWidth']?>);
 						
@@ -175,7 +179,7 @@ if (!isset($options['fileField'])) {
 							$this->Session->setFlash(<?php echo $this->display('The square thumbnail cannot be saved.')?>, 'flash_error');
 							$this->redirect(<?php echo $this->url('add')?>);
 						}*/
-						
+						<?php endif; ?>
 						// Resize file if needed
 						$thumb->reset();
 						if($thumb->getWidth()>'<?php echo $fileField['imageMaxWidth']?>'){
@@ -183,7 +187,7 @@ if (!isset($options['fileField'])) {
 						}
 						
 						// Saving file
-						if (!$thum->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'])?>' . $filename)) {
+						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'], true)?>' . $filename)) {
 							$this->Session->setFlash(<?php echo $this->display('The file cannot be saved.')?>, 'flash_error');
 							$this->redirect(<?php echo $this->url('add')?>);
 						}
@@ -203,6 +207,9 @@ if (!isset($options['fileField'])) {
 					$this->Session->setFlash(<?php echo $this->display('Wrong file extension. Allowed extensions are: %s.', $fileExtsString)?>, 'flash_error');
 					$this->redirect(array('admin' => 'admin_', 'plugin' => 'gallery', 'controller' => 'gallery_items', 'action' => 'index'));
 				}
+			}else {
+				$this->Session->setFlash(<?php echo $this->display('No file has been uploaded') ?>, 'flash_error');
+				$this->redirect(array('admin' => 'admin_', 'plugin' => 'resellers', 'controller' => 'sellers', 'action' => 'index'));
 			}
 
 		 <?endif;?>

@@ -319,7 +319,7 @@ $item_actions = $item_delete + $item_edit;
 </div>
 <?php
 // Pagination links, template is in views/common/
-include(dirname(__FILE__) . DS . '..' . DS . 'common' . DS . 'pagination.ctp');
+include(dirname(__FILE__) . DS . '..' . DS . 'elements' . DS . 'pagination.ctp');
 
 // Additionnal scripts and CSS
 $out = '';

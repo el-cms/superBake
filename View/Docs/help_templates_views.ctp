@@ -95,3 +95,7 @@ Options related to `view/view.vtp`:
  * `relationsHiddenControllers` - array of relation/ControllerName
  * `` - 
  * `` - 
+ 
+### users::register
+ 
+### users::login

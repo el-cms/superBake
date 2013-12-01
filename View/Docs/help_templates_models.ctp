@@ -34,11 +34,11 @@ All model snippets have access to these variables:
 
  * **`models/missing_code.ctp`** - This snippet is used when a defined snippet is not found. It contains PHP comments to explain the situation and a `@todo` statement.
  
-  * There is no option for this snippet.
+  * _There is no option for this snippet._
   
  * **`models/acls/roles.ctp`** - This snippets adds the mechanics used to define a certain table as the _role_ model. I'ts used for Acls and is based on the cakePHP tutorial on how to set up Acls.
  
-  * _There is no option for this snippet_
+  * _There is no option for this snippet._
   
  * **`models/acls/users.ctp`**
 This snippets adds the mechanics used to define a certain table as the _users_ model. I'ts used for Acls and is based on the cakePHP tutorial on how to set up Acls. Options are:

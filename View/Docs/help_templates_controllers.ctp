@@ -71,6 +71,9 @@ All action templates have access to these variables:
 ### Templates:
 
 #### **`actions/actions/add.ctp`**
+
+&rarr; [View template: add](help_templates_views#editadd)
+
 An _add_ action template. Options for this action:
 
  * <i class="icon-star-empty text-success" data-toggle="tooltip" title="Optionnal"></i> `fileField` - If set, the action will include mechanics to upload a file. The file name will be stored in the `fileField.name` field. **I recommand to define this in the part section, so it's available for the views to.**
@@ -119,13 +122,16 @@ An _add_ action template. Options for this action:
 </div>
 
 #### **`actions/actions/delete.ctp`**
-This action have no options, but don't forget **it has no view too.**
+This action have no options, but don't forget **it has no view too.** So you need to set the `haveView: false` parameter in action.
 
 #### **`actions/actions/edit.ctp`**
 
+&rarr; [View template: edit](help_templates_views#editadd)
 Options for this action:
 
 #### **`actions/actions/index.ctp`**
+
+&rarr; [View template: index](help_templates_views#index)
 
 Options for this action:
  
@@ -149,15 +155,19 @@ Options for this action:
 
 #### **`actions/actions/view.ctp`**
 
+&rarr; [View template: view](help_templates_views#view)
+
 Options for this action:
  
- * <i class="icon-star-empty text-success" data-toggle="tooltip" title="Optionnal"></i> `layout` - _string - default empty_ - If set, the given layou will be used for this action. This is usefull when you have multiple layouts for your prefixes.
+ * <i class="icon-star-empty text-success" data-toggle="tooltip" title="Optionnal"></i> `layout` - _string - default empty_ - If set, the given layout will be used for this action. This is usefull when you have multiple layouts for your prefixes.
  
 #### **`actions/actions/missing_action.ctp`**
 
 This templates creates an empty action if you declare one that doesn't exists in the config file. This action contains a `@todo` element in its comments and throws an exception to remind you of this non-existant action.
 
 #### **`actions/actions/users/login.ctp`**
+
+&rarr; [View template: login](help_templates_views#userslogin)
 
 Options for this action:
 
@@ -166,5 +176,7 @@ Options for this action:
 Options for this action:
 
 #### **`actions/actions/users/register.ctp`**
+
+&rarr; [View template: register](help_templates_views#usersregister)
 
 Options for this action:

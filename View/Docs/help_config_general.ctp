@@ -46,6 +46,3 @@ general:
   ## Package name (for comments. If someone can explain the use of Packages in files, that would be great:)
   basePackage: IREMEMBER
 </pre>
-
-## Next ?
-[Next part: Defaults section](help_config_defaults)

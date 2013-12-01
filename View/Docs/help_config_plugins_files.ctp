@@ -5,7 +5,7 @@
 ---
 ## Base
 
-To configure a menu in a plugin's part, define it as follow:
+To configure a file in a plugin's part, define it as follow:
 
 <pre class="syntax yaml">
 <em>PluginName:</em>

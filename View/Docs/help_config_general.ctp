@@ -15,7 +15,7 @@ general:
   ## Change this value if you want to name one of your plugin "appBase"
   appBase: appBase
   ## SuperBake template to use
-  template: superCakeStrap
+  template: superDefault
   ## Use prefixes ?
   usePrefixes: true
   ## By default, update the bootstrap file on plugin generation ?

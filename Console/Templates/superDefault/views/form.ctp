@@ -59,12 +59,11 @@ if (!isset($fileField)) {
 if (!isset($noToolbar)) {
 	$noToolbar = false;
 }
-
 ?>
 <div class="<?php echo $pluralVar; ?> form">
 	<?php
 	$hasFileField = (!is_null($fileField)) ? ", 'enctype'=>'multipart/form-data'" : '';
-	echo "<?php echo \$this->Form->create('$modelClass', array('class'=>'form-horizontal'$hasFileField)); ?>\n";
+	echo "<?php echo \$this->Form->create('$modelClass', array($hasFileField)); ?>\n";
 	?>
 	<fieldset>
 		<legend><?php printf("<?php echo __('%s %s'); ?>", Inflector::humanize($action), $singularHumanName); ?></legend>
@@ -99,12 +98,12 @@ if ($noToolbar === false) {
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
 	if ($v == true) {
-		$out.= "\techo \$this->HTML->css('" . $this->cleanPath($k) . "');\n";
+		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
 	}
 }
 foreach ($additionnalJS as $k => $v) {
 	if ($v == true) {
-		$out.="\techo \$this->HTML->script('" . $this->cleanPath($k) . "');\n";
+		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
 	}
 }
 ?>

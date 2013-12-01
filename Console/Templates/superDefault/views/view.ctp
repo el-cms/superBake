@@ -91,7 +91,7 @@ if (!isset($hasMany_hiddenModelFields) || !is_array($hasMany_hiddenModelFields))
 						if ($field === $details['foreignKey']) {
 							$isKey = true;
 							echo "\t\t\t<dt><?php echo " . $this->iString(Inflector::humanize(Inflector::underscore($alias))) . "; ?></dt>\n";
-							echo "\t\t\t<dd><?php echo \$this->Html->link(\${$singularVar}['{$alias}']['{$details['displayField']}'], " . $this->url('view', $details['controller'], "\${$singularVar}['{$alias}']['{$details['primaryKey']}']") . "); ?></dd>\n";
+							echo "\t\t\t<dd><?php echo \$this->Html->link(\${$singularVar}['{$alias}']['{$details['displayField']}'], " . $this->url('view', $details['controller'], null, "\${$singularVar}['{$alias}']['{$details['primaryKey']}']") . "); ?></dd>\n";
 							break;
 						}
 					}
@@ -130,7 +130,7 @@ if (!empty($associations['hasOne'])) :
 			<?php echo "<?php endif; ?>\n"; ?>
 			<div class="actions">
 				<ul>
-					<li><?php echo "<?php echo \$this->Html->link(" . $this->iString("Edit " . Inflector::humanize(Inflector::underscore($alias))) . ", " . $this->url('edit', $details['controller'], "\${$singularVar}['{$alias}']['{$details['primaryKey']}']") . "); ?></li>\n"; ?>
+					<li><?php echo "<?php echo \$this->Html->link(" . $this->iString("Edit " . Inflector::humanize(Inflector::underscore($alias))) . ", " . $this->url('edit', $details['controller'], null, "\${$singularVar}['{$alias}']['{$details['primaryKey']}']") . "); ?></li>\n"; ?>
 				</ul>
 			</div>
 		</div>
@@ -172,7 +172,7 @@ foreach ($relations as $alias => $details) {
 			<tr>
 				<?php
 				foreach ($details['fields'] as $field) {
-					if (empty($hasMany_hiddenModelFields) ||(!empty($hasMany_hiddenModelFields[$details['controller']]) && !in_array($field, $hasMany_hiddenModelFields[$details['controller']]))) {
+					if (empty($hasMany_hiddenModelFields) || (!empty($hasMany_hiddenModelFields[$details['controller']]) && !in_array($field, $hasMany_hiddenModelFields[$details['controller']]))) {
 						echo "\t<th><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></th>\n";
 					}
 				}
@@ -199,17 +199,17 @@ foreach ($relations as $alias => $details) {
 					// "View" action
 					if ($this->canDo('view', null, $ccController)) {
 						$hasActions = 1;
-						echo "\t\t\t\t<?php echo \$this->HTML->Link('<i class=\"icon-eye-open\"></i> ' . __('View')," . $this->url('view', $details['controller'], "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('title'=>__('View'), 'escape'=> false));?>\n";
+						echo "\t\t\t\t<?php echo \$this->Html->Link(__('View')," . $this->url('view', $details['controller'], null, "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('title'=>__('View'), 'escape'=> false));?>\n";
 					}
 					// "Edit" action
 					if ($this->canDo('edit', null, $ccController)) {
 						$hasActions = 1;
-						echo"\t\t\t\t<?php echo \$this->HTML->Link('<i class=\"icon-pencil\"></i> ' . __('Edit')," . $this->url('edit', $details['controller'], "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('title'=>__('Edit'), 'escape'=> false));?>\n";
+						echo"\t\t\t\t<?php echo \$this->Html->Link(__('Edit')," . $this->url('edit', $details['controller'], null, "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('title'=>__('Edit'), 'escape'=> false));?>\n";
 					}
 					// "Delete" action
 					if ($this->canDo('view', null, $ccController)) {
 						$hasActions = 1;
-						echo "\t\t\t\t<?php echo \$this->Form->postLink('<i class=\"icon-trash\"></i> ' .__('Delete'), " . $this->url('delete', $details['controller'], "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('confirm'=>__('Are you sure you want to delete %s?', \${$otherSingularVar}['{$details['primaryKey']}']), 'title'=>__('Delete'), 'escape'=>false)); ?>\n";
+						echo "\t\t\t\t<?php echo \$this->Form->postLink(__('Delete'), " . $this->url('delete', $details['controller'], null, "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('confirm'=>__('Are you sure you want to delete %s?', \${$otherSingularVar}['{$details['primaryKey']}']), 'title'=>__('Delete'), 'escape'=>false)); ?>\n";
 					}
 				}
 			}
@@ -230,10 +230,10 @@ foreach ($relations as $alias => $details) {
 // Additionnal scripts and CSS
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
-	$out.= "\techo \$this->HTML->css('" . $this->cleanPath($k) . "');\n";
+	$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
 }
 foreach ($additionnalJS as $k => $v) {
-	$out.="\techo \$this->HTML->script('" . $this->cleanPath($k) . "');\n";
+	$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
 }
 if (!empty($out)) {
 	echo "<?php \n $out\n?>";

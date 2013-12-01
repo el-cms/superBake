@@ -2,7 +2,7 @@
 
 ## Template directory structure
 
-Templates can be found in the `Sb/Console/Templates/` folder. If you want to create yours, the best way is to clone one of the existing one to use as base.
+Templates can be found in the `Sb/Console/Templates/` folder. If you want to create yours, the best way is to clone the existing default template.
 Directory structure is as follow:
 
   <template dir>

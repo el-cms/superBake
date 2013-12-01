@@ -45,7 +45,7 @@ echo "<?php
 		echo \$this->Html->meta('icon');
 
 		echo \$this->Html->css('cake.generic');
-		echo \$this->Html->css('test');
+		echo \$this->Html->css('superBake');
 
 		echo \$this->fetch('meta');
 		echo \$this->fetch('css');

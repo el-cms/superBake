@@ -84,7 +84,10 @@ defaults:
     ## View must be generated
     generate: true
     ## ... And have options
-    options: []
+    options:
+      hiddenFields:
+        password
+        username
   
   ##
   ## This is a default action
@@ -321,10 +324,6 @@ plugins:
         controller:
           actions:
             public:
-              index:
-                view:
-                  options:
-                    fun: true
               login:
                 template: users::login
                 view:
@@ -433,11 +432,17 @@ plugins:
         targetFileName: admin
         ext: ctp
         template: layouts::admin
-      admin_css:
+      superBake_css:
         targetPath: webroot::css
-        targetFileName: test
+        targetFileName: superBake
         ext: css
         template: css::test
+      appController:
+        targetPath: Controller
+        targetFileName: AppController
+        ext: php
+        template: appController
+        options: []
     required:
       css:
         source:

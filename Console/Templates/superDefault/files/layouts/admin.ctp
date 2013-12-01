@@ -46,6 +46,7 @@ echo "<?php
 		echo \$this->Html->meta('icon');
 
 		echo \$this->Html->css('cake.generic');
+		echo \$this->Html->css('superBake');
 
 		echo \$this->fetch('meta');
 		echo \$this->fetch('css');
@@ -57,8 +58,10 @@ echo "<?php
 			<div id="header">
 				<h1>Admin - <?php echo "<?php echo \$this->Html->link(\$cakeDescription, 'http://cakephp.org'); ?>" ?></h1>
 			</div>
+			<div id="menu">
+				<?php echo "<?php echo \$this->element('menus/admin');?>" ?>
+			</div>
 			<div id="content">
-
 				<?php echo "<?php echo \$this->Session->flash(); ?>" ?>
 
 				<?php echo "<?php echo \$this->fetch('content'); ?>" ?>

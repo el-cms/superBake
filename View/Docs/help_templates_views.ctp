@@ -1,9 +1,9 @@
 # Templates: views
 All the views templates are located under the `<yourTemplate>/views`.
 
-superBake comes with two default templates: **superDefault**, wich is based on Cake's default template, and **superCakeStrap**, wich is based on [Twitter Bootstrap](http://getbootstrap.com).
+superBake comes with one default template: **superDefault**, wich is based on Cake's default template.
 
-The following options are available for both of them, and I recommend you to use them as starting point for your own template.
+The following options are available:
 
 ## Available vars:
 The following variables are accessible in any view: (use `var_export($this);` for a complete and more comprehensive list)
@@ -52,25 +52,17 @@ The following options are available and valid for all the actions:
   
   * `noToolbar` - **BOOL** default `false` - If set to true, no toolbar will be created in the view.
   * `toolbarHiddenControllers` - **Array** default empty - List of related controller that must be hidden from toolbar.
-  * `` - 
-  * `` - 
-  * `` - 
-  * `` - 
+  * `viewIsAnItem` - **BOOL** default false - If set to true, actions for edit/delete will be added for the current item. Use it only on "view" actions, or views that display only one item.
   
  * **Fields options:** options concerning data fields
   
   * `hiddenFields` - List of fields that must not be shown on the view. Default is an empty array.
   * `sortableFields` - List of fields that can be sorted out. Default is an empty array.
-  * `` - 
-  * `` - 
-  * `` - 
  
  * **Other options:**
   * `additionnalCSS` - List of custom CSS to include in the view.
   * `additionnalJS` - List of custom javascript files to include.
-  * `` - 
-  * `` - 
- 
+
 ## Custom options
 Following views have these specific options:
 

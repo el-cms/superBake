@@ -65,9 +65,7 @@ if (!isset($noToolbar)) {
 
 // Toolbar : Hidden controllers are handled in the toolbar template file
 if ($noToolbar === false) {
-//	echo "<div class=\"row toolbar\">\n";
 	include(dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp');
-//	echo "</div>\n";
 }
 
 

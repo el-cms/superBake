@@ -224,7 +224,8 @@ class SbShell extends AppShell {
 		if (is_null($prefix)) {
 			$prefix = $this->templateVars['admin'];
 		}
-		$url .= (!empty($this->templateVars['admin'])) ? " 'admin' => '$prefix'," : " 'admin' => false,";
+		$prefix = ($prefix == 'public') ? null : $prefix;
+		$url .= (!is_null($prefix)) ? " 'admin' => '$prefix'," : " 'admin' => false,";
 
 		// Finding controller
 		$controller = (!is_null($controller)) ? $controller : $this->templateVars['pluralVar'];

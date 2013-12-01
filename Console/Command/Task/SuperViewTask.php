@@ -146,10 +146,10 @@ class SuperViewTask extends BakeTask {
 	protected function _methodsToBake() {
 		$this->out(__d('superBake', 'Searching for methods to bake for controller "' . $this->controllerName . '"'), 1, Shell::VERBOSE);
 		$methods = array_diff(
-				//Current controller
-				array_map('strtolower', get_class_methods($this->controllerName . 'Controller')),
-				//methods from appcontroller
-				array_map('strtolower', get_class_methods('AppController'))
+						//Current controller
+						array_map('strtolower', get_class_methods($this->controllerName . 'Controller')),
+						//methods from appcontroller
+						array_map('strtolower', get_class_methods('AppController'))
 		);
 		// No methods
 		if (empty($methods)) {
@@ -294,10 +294,9 @@ class SuperViewTask extends BakeTask {
 		// Default: current action.
 		$view = $action;
 		// Alternative view
-		$template = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . $this->sbc->prefixName($this->currentPrefix) . '.' . $this->currentSimpleAction . 'template');
-		if (!is_null($template)) {
+		$template = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . $this->sbc->prefixName($this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.template');
+		if (!empty($template)) {
 			$view = $template;
-
 			$this->speak(__d('superBake', 'We want to use the "%s" template for "%s" action view', array($view, $action)), 'info', 1);
 		} else {
 			$view = $simpleAction;

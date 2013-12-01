@@ -66,6 +66,9 @@ Path: <em>pathToCake/</em>app/
 +--[ <span class="text-danger"><a href="#menu_generation_section">Menus</a></span> ]
 |      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell menus"></i> M[<strong>E</strong>]nus (Generates menus)
 |                                                               
++--[ <span class="text-danger"><a href="#file_generation_section">Files</a></span> ]
+|      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell files"></i> F[<strong>I</strong>]les (Generates files)
+|                                                               
 +--[ <span class="text-danger"><a href="#misc_generation_section">Misc</a></span> ]
 |      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell janitor"></i> Config [<strong>J</strong>]anitor (Cleans and fills your config. Outputs the result)
 |      <i class="icon-info-sign" data-toggle="tooltip" title=":D"></i> [<strong>Q</strong>]uit
@@ -77,7 +80,8 @@ Actions in this section are related to plugin generation and actions related to 
 
  * `Sb.Shell plugins` will generate plugins structures. By default, all plugins defined in your configuration file will be created (See the [default part](config_defaults) from the config file)
  * `Sb.Shell pluginMVC <PluginName>` will generate models, views and controllers for the specified plugin.
-	 
+
+<a name="batch_generation_section"></a>
 ## Batch generation
 Actions in this section creates things for every plugins:
 
@@ -86,17 +90,20 @@ Actions in this section creates things for every plugins:
 * `Sb.Shell views` will generate every views for every actions in every controllers, in their respective plugin.
 * `Sb.Shell mvc` will generate models, controllers and views in all plugins.
 
+<a name="model_generation_section"></a>
 ## Model generation
 
  
  * `Sb.Shell model <PluginName>.<ModelName>` will generate the *ModelName* model in the *PluginName* it belongs to. Useful when you work on a specific model. If you launch this command without arguments, or with wrong ones, you'll be guided step by step.
  * `Sb.Shell pluginModels <PluginName>` will generate all models for the specified plugin.
-	 
+
+<a name="controller_generation_section"></a>
 ## Controller generation
  
  * `Sb.Shell controller <PluginName>.<ControllerName>` will generate the *ControllerName* controller in the *PluginName* it belongs to. Useful when you work on a specific controller. If you launch this command without arguments, or with wrong ones, you'll be guided step by step.
  * `Sb.Shell pluginControllers <PluginName>` will generate all controllers in the given plugin.
 
+<a name="view_generation_section"></a>
 ## View generation
 
  
@@ -104,17 +111,20 @@ Actions in this section creates things for every plugins:
  * `Sb.Shell pluginViews <PluginName>` will generate all views for the given plugin.
  * `Sb.Shell controllerViews <PluginName>.<ControllerName>` will generate all the views for a given plugin/controller.
 
+<a name="menu_generation_section"></a>
 ## Menus generation		 
 
  * `Sb.Shell menus` will generate all the menus
+ 
+<a name="file_generation_section"></a>
+## Standalone file generation
 
+ * `Sb.Shell files` will generate all the standalone files
+
+<a name="misc_generation_section"></a>
 ## Misc
 
 * `Sb.Shell janitor` will output the YAML array of your config file, fully populated. You can also find this in [the superBake GUI](../../sb/check). Lanched with the `-q` option and outputed to a file with the `> filename.yml` direction can be usefull to keep tracks of your different configurations and take parts from them.
-
-## Standalone file generation
-
- * *Sorry, this is not available yet.*
 
 ## Requirements
 

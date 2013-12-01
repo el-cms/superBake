@@ -38,4 +38,5 @@ More contact options to come in the future.
 * **The shell:**
 
  * [How it works](help_shell_base)
- * [Commands](help_shell_commands)
+ * [Commands and command line](help_shell_commands)
+ * [Extend the shell](help_shell_extend)

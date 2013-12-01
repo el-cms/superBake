@@ -151,6 +151,7 @@ class SbShell extends AppShell {
 				$separator = '>';
 				break;
 			case 'warning':
+				// Don't bother about the numerous \\, those are escaping chars.
 				$hrB = '/////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\';
 				$hrC = '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//////////////////////////////';
 				$separator = '#';

@@ -13,6 +13,7 @@ class DocsController extends SbAppController{
 	 */
 	public function display() {
 		$this->viewClass='Sb.Markdown';
+		$this->layout='doc';
 		$path = func_get_args();
 
 		$count = count($path);

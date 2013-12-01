@@ -21,8 +21,8 @@ If you want to buy me a coffee, show your interest for superBake or throw money 
 ## Used technology for this plugin
  * Frameworks:
  
-  * CakePHP framework
-  * Twitter Bootstrap framework (required for default template
+  * [CakePHP](http://cakephp.org) framework, of course
+  * [Twitter Bootstrap](http://getbootstrap.com) framework
   
  * HTML/CSS:
  
@@ -30,14 +30,20 @@ If you want to buy me a coffee, show your interest for superBake or throw money 
   
  * Javascript:
  
-  * [JQuery plugin](http://jquery.com) (required for default template)
-  * AutoTOC
-  * Syntax.highlighter
+  * [AutoTOC](http://fuelyourcoding.com/scripts/toc/)
+  * [Syntax.highlighter](http://www.oriontransfer.co.nz/software/jquery-syntax)
+	* These two plugins works with [jQuery](http://jquery.com)
   
  * Other:
  
-  * Markdown implementation for CakePHP (for the docs you're reading)
-  * Markdown extended Lib (for the docs you're reading)
-  * YAML Lib (for config file reading)
-  * superBake (for superBake :D)
-  * FontAwesome icons
+  * [Markdown implementation for CakePHP](http://sime.net.au) for the docs
+  * [Markdown extended Lib](https://github.com/egil/php-markdown-extra-extended) for the docs
+  * [Spyc library](http://code.google.com/p/spyc/) (for YAML manipulation)
+  * [FontAwesome](http://fontawesome.io/) icons
+	
+ * IDE/Softwares
+  * I like to work with [netBeans for PHP](https://netbeans.org/downloads/)
+	 * And this plugin: [CakePHP for Netbeans](http://plugins.netbeans.org/plugin/44579/php-cakephp-framework)
+  * To compare my files, I use [Meld](http://meldmerge.org/)
+	* I create my databases using [Mysql Workbench](http://dev.mysql.com/downloads/tools/workbench/)
+	* I maintain the gitHub repo using [smartGit](http://www.syntevo.com/smartgithg/) community edition

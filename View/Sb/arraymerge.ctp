@@ -9,7 +9,7 @@
 			</div>
 			<?php
 		} else {
-			echo '<pre class="pre-scrollable">' . $result . '</pre>';
+			echo '<pre class="pre-scrollable syntax yaml">' . $result . '</pre>';
 		}
 		?>
 	</div>
@@ -18,11 +18,36 @@
 <div class="row">
 	<div class="col-lg-6 col-md-6">
 		<h2>Default values</h2>
-		<textarea name="default" style="width:100%; min-height:200px; font-family: monospace"><?php if($result){echo $default;}?></textarea>
+		<textarea name="default" style="width:100%; min-height:200px; font-family: monospace"><?php
+			if ($result) {
+				echo $default;
+			} else {
+				?>
+Test:
+  options:
+    option1: val1
+    option2: val2
+    option3: val2
+    option5: val2
+			<?php } ?>
+		</textarea>
 	</div>
 	<div class="col-lg-6 col-md-6">
 		<h2>Defined values</h2>
-		<textarea name="defined" style="width:100%; min-height:200px; font-family: monospace"><?php if($result){echo $defined;}?></textarea>
+		<textarea name="defined" style="width:100%; min-height:200px; font-family: monospace"><?php
+			if ($result) {
+				echo $defined;
+			} else {
+				?>
+Test:
+  options:
+    option1: value1
+    option2: value2
+    option3: 
+    option4: value4
+			<?php } ?>
+		</textarea>
+		<input type="checkbox" name="keepRest" value="keep" <?php echo ($keepRest == true) ? 'CHECKED' : ''; ?>/> Keep the rest (defined keys absent from the default list)
 	</div>
 </div>
 <div class="row">

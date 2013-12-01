@@ -1,5 +1,15 @@
+##
+## File to use with superBake 0.3
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Configuration
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
 ##-----------------------------------------------------------------------
-## 0.3.alpha2.1 : New structure, new config, new plugin, new everything !
+## 0.3.alpha2 : New structure, new config, new plugin, new everything !
 ##
 ## Sample configuration file
 ## -------------------------
@@ -24,7 +34,7 @@ general:
   ## Name of the "plugin that isn't one"
   appBase: appBase
   ## SuperBake template to use
-  template: superCakeStrap
+  template: superDefault
   ## Use prefixes ?
   usePrefixes: true
   ## By default, update the bootstrap file on plugin generation ?
@@ -43,17 +53,17 @@ general:
   ##
 
   ## Your name (for file headers)
-  editorName: Manuel Tancoigne
+  editorName: 
   ## Your email adress (for file headers)
-  editorEmail: m.tancoigne@gmail.com
+  editorEmail: 
   ## Your website
-  editorWebsite: http://experimentslabs.com
+  editorWebsite: 
   ## Your website name
-  editorWebsiteName: Experiments labs
+  editorWebsiteName: 
   ## Your license template (find out all licenses in templates/<defaultTemplate>/commons/licenses/)
   editorLicenseTemplate: gpl3
   ## Package name
-  basePackage: EL
+  basePackage: 
   
 #--------------------------------------------------------------------------
 #
@@ -133,8 +143,12 @@ defaults:
     displayName:
     ## Must this be generated ?
     generate: true
+    ## Must the views be generated ?
+    generateViews: true
     ## List of prefixes/actions
     actions: []
+    ## Additionnal libraries
+    libraries: []
     
   ##
   ## Default model configuration
@@ -146,7 +160,7 @@ defaults:
     ## Must this model be generated ?
     generate: true
     ## Display field. Can be null
-    displayfield:
+    displayField:
     ## Snippets list. A snippet is a bit of code to be included in your model.
     snippets: []
     ## Options passed to template for generation
@@ -220,12 +234,16 @@ defaults:
     ## Folder where the file must be copied (relative to final plugin directory)
     targetPath:
     ## Final file name
-#    target_file:
+    targetFileName:
+    ## Target extension
+    ext: ctp
     ## Options for the file templates
     options: []
+    ## Generate the file ?
+    generate: true
   
   ##
-  ## Default configuration for a menu
+  ## Default configuration for a menu (By default, same as a file.)
   ##
   menu:
     ## Template path
@@ -233,15 +251,33 @@ defaults:
     ## be relative to this folder.)
     template:
     ## Target folder (relative to plugins' View/ folder)
-    targetPath: elements::menus
+    targetPath: Elements::menus
+    ## Final file name
+    targetFileName:
+    ## Target extension
+    ext: ctp
     ## Options
-    options: []
+    options:
+      prefixes: []
+      hiddenControllers: []
+      hiddenPlugins: []
+    ## Generate the menu ?
+    generate: true
     
   ##
   ## Default configuration for a required file
   ## 
-  ## Empty for now as not implemented yet.
-  required: []
+  ## NOT YET IMPLEMENTED.
+  required:
+    ## Target file or folder
+    target:
+    ## Source file or folder
+    source:
+    ## Type: file or folder
+    type:
+    ## List of tags to organize the files/folders.
+    ## This is used during copy to copy only certain files with same tag.
+    tags: []
 
 #--------------------------------------------------------------------------
 #
@@ -249,18 +285,27 @@ defaults:
 #
 #--------------------------------------------------------------------------
 plugins:
-  ## "Plugin that's not one": this must be baked in the app/ subdirs.
+  ## --------------------------------------------------------------------------
+  ##  Not a plugin (Baked in app/)
+  ## ----------------------------
+  ##  Contains: Users, Groups
+  ## --------------------------------------------------------------------------
+  ## This is a special plugin: it uses the <cake>/app/ folder as a plugin. All
+  ## the models, controllers,... will be created relatively to app/
+  ## If, for a reason you need to create a real plugin named 'appBase', change the
+  ## appBase value in 'general' section of this file.
+  ##   
+  ## This is the plugin where to put your app wide menus/files
+  ##
+  ## (For now, it only contains testing, random values.)
   appBase:
-    ## parts
+    ## Plugin parts
+    ## Be carefull when naming empty parts: as the part name is used for empty
+    ## models definition or empty controllers definition, you should use the Cake
+    ## naming convention : Users for table users, WaitingOrders for table
+    ## waiting_orders,...
+    ##
+    ## But you can name it as you want when the models/controllers definitions
+    ## have the name set.
     parts:
-      ## Users part. Named following the controllers naming convention, as 
-      ## if no model or controller names are provided, the part will be used as base.
-      Users:
-      Groups: 
-
-  ## A blog plugin
-  Blog:
-    parts:
-      Posts:
-      PostCategories:
-      PostComments:
+      ## Empty. Your move !

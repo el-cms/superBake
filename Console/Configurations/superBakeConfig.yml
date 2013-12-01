@@ -53,17 +53,17 @@ general:
   ##
 
   ## Your name (for file headers)
-  editorName: Manuel Tancoigne
+  editorName: John Doe
   ## Your email adress (for file headers)
-  editorEmail: m.tancoigne@gmail.com
+  editorEmail: j.d@example.com
   ## Your website
-  editorWebsite: http://experimentslabs.com
+  editorWebsite: http://recovery.com
   ## Your website name
-  editorWebsiteName: Experiments labs
+  editorWebsiteName: Brain Recovery
   ## Your license template (find out all licenses in templates/<defaultTemplate>/commons/licenses/)
   editorLicenseTemplate: gpl3
   ## Package name
-  basePackage: EL
+  basePackage: BR
   
 #--------------------------------------------------------------------------
 #

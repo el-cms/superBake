@@ -1,0 +1,624 @@
+##
+## File to use with superBake 0.3
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Configuration
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+## 0.3.alpha2 : New structure, new config, new plugin, new everything !
+##
+## Sample configuration file
+## -------------------------
+##      Defaults and tests.
+##
+##
+##-----------------------------------------------------------------------
+
+---
+#--------------------------------------------------------------------------
+#
+# File description, can be null
+#
+#--------------------------------------------------------------------------
+description: Testing config file with minimal configuration.
+#--------------------------------------------------------------------------
+#
+# General information
+#
+#--------------------------------------------------------------------------
+general:
+  ## Name of the "plugin that isn't one"
+  appBase: appBase
+  ## SuperBake template to use
+  template: superDefault
+  ## Use prefixes ?
+  usePrefixes: true
+  ## By default, update the bootstrap file on plugin generation ?
+  updateBootstrap: true
+  ## Default DB connection to use
+  dbConnection: default
+#  ## Empty parts must have a model ?
+#  ## If set to false, you will have to define each of your models yourself
+#  partsHaveModel: true
+#  ## Empty parts must have a controller ?
+#  ## If set to false, you will have to define each of your controllers yourself
+#  partsHaveController: true
+  
+  ##
+  ## Personnal informations, mostly here to use in generated headers.
+  ##
+
+  ## Your name (for file headers)
+  editorName: Manuel Tancoigne
+  ## Your email adress (for file headers)
+  editorEmail: m.tancoigne@gmail.com
+  ## Your website
+  editorWebsite: http://experimentslabs.com
+  ## Your website name
+  editorWebsiteName: Experiments labs
+  ## Your license template (find out all licenses in templates/<defaultTemplate>/commons/licenses/)
+  editorLicenseTemplate: gpl3
+  ## Package name
+  basePackage: EL
+  
+#--------------------------------------------------------------------------
+#
+# Default values.
+# Here you can set settings for global behaviour
+#
+#--------------------------------------------------------------------------
+defaults:
+  
+  ##
+  ## This is a default view
+  ##
+  view:
+    ## Path to the view template
+    ## (a list can be found in 'Templates/<templateName>/views', and path must
+    ## be relative to this folder.)
+    template:
+    ## View must be generated
+    generate: true
+    ## ... And have options
+    options: []
+  
+  ##
+  ## This is a default action
+  ##
+  action:
+    ## This is the path to the template
+    ## (a list can be found in 'Templates/<templateName>/actions', and path must
+    ## be relative to this folder.)
+    template:
+    ## An array of options
+    options: []
+    ## Template have view
+    haveView: true
+    ## 'view' section contains the view configuration
+    view: []
+    ## Set this to true and the action will be removed from controller.
+    ## The difefrence of this and generate: false is that this action will not be
+    ## referenced in any case. This is usefull when you want to discard a specific
+    ## action, previously defined as a default action, for a specific controller.
+    blackListed: false
+ 
+  ##
+  ## This is the default actions list. 
+  ## Here you will define your prefixes and the actions that are available for them.
+  ##
+  actions:
+    ## This is the public prefix
+    public:
+      ## Index action
+      index: []
+      ## View action
+      view: []
+    ## This is the admin prefix
+    admin:
+      ## Index action
+      index: []
+      ## View action
+      view: []
+      ## Add action
+      add: []
+      ## Delete action
+      delete:
+        ## Delete has no view
+        haveView: false
+      ## Edit action
+      edit: []
+  
+  ##
+  ## Default configuration for a controller
+  ##
+  controller:
+    ## Controller name.
+    ## It must follows Cake conventions. If empty, model name will be used as base.
+    name:
+    ## Name used in views
+    displayName:
+    ## Must this be generated ?
+    generate: true
+    ## Must the views be generated ?
+    generateViews: true
+    ## List of prefixes/actions
+    actions: []
+    ## Additionnal libraries
+    libraries: []
+    
+  ##
+  ## Default model configuration
+  ##
+  model:
+    ## Model name.
+    ## Follow the cake conventions. If empty, part name will be used as base.
+    name:
+    ## Must this model be generated ?
+    generate: true
+    ## Display field. Can be null
+    displayField:
+    ## Snippets list. A snippet is a bit of code to be included in your model.
+    snippets: []
+    ## Options passed to template for generation
+    options: []
+    
+  ##
+  ## Default snippet configuration
+  ##
+  snippet:
+    ## path to the snippet.
+    ## Path is relative to <yourTemplate>/models
+    ## if a snippet doesn't exists, a comment will be inserted in model as a reminder.
+    path:
+    ## Options for this snippet.
+    options: []
+  
+  ##  
+  ## Default part configuration
+  ##
+  part:
+    ## Generate this part ?
+    ## This overrides under-levels "generate", as model:generate, controller:generate
+    ## ...
+    generate: true
+    ## Have a model ?
+    haveModel: true
+    ## Model configuration
+    model: []
+    ## Have controller ?
+    haveController: true
+    ## Controller configuration
+    controller: []
+    ## Options that must be available in both model, controllers and views generation
+    options: []
+  
+  ##  
+  ## Default plugin configuration
+  ##
+  plugin:
+    ## Plugin name, human readable
+    displayName:
+    ## Path where the plugin must be built.
+    ## Path can be app::Plugin or Plugins
+    path: app::Plugin
+    ## Generate this plugin ?
+    ## Setting this to false will make this plugin not to be built, but all items
+    ## in it (models, controllers, ...) can be used as a reference.
+    generate: true;
+    ## Do the plugin must have routes ?
+    ## (will be created in <path>/Config)
+    haveRoutes: false
+    ## Do the plugin must have a bootstrap file ?
+    ## (will be created in <path>/Config
+    haveBootstrap: false
+    ## Parts of the plugin
+    parts: []
+    ## Menus for this plugin
+    menus: []
+    ## Files for this plugin
+    files: []
+    ## required files/folders for this plugin
+    required: []
+  
+  ##  
+  ## Default configuration for a file
+  ##
+  file:
+    ## (a list can be found in 'Templates/<templateName>/files', and path must
+    ## be relative to this folder.)
+    template:
+    ## Folder where the file must be copied (relative to final plugin directory)
+    targetPath:
+    ## Final file name
+    targetFileName:
+    ## Target extension
+    ext: ctp
+    ## Options for the file templates
+    options: []
+    ## Generate the file ?
+    generate: true
+  
+  ##
+  ## Default configuration for a menu (By default, same as a file.)
+  ##
+  menu:
+    ## Template path
+    ## (a list can be found in 'Templates/<templateName>/menus', and path must
+    ## be relative to this folder.)
+    template:
+    ## Target folder (relative to plugins' View/ folder)
+    targetPath: Elements::menus
+    ## Final file name
+    targetFileName:
+    ## Target extension
+    ext: ctp
+    ## Options
+    options:
+      prefixes: []
+      hiddenControllers: []
+      hiddenPlugins: []
+    ## Generate the menu ?
+    generate: true
+    
+  ##
+  ## Default configuration for a required file
+  ## 
+  ## NOT YET IMPLEMENTED.
+  required:
+    ## Target file or folder
+    target:
+    ## Source file or folder
+    source:
+    ## Type: file or folder
+    type:
+    ## List of tags to organize the files/folders.
+    ## This is used during copy to copy only certain files with same tag.
+    tags: []
+
+#--------------------------------------------------------------------------
+#
+# Plugins
+#
+#--------------------------------------------------------------------------
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Not a plugin (Baked in app/)
+  ## ----------------------------
+  ##  Contains: Users, Groups
+  ## --------------------------------------------------------------------------
+  ## This is a special plugin: it uses the <cake>/app/ folder as a plugin. All
+  ## the models, controllers,... will be created relatively to app/
+  ## If, for a reason you need to create a real plugin named 'appBase', change the
+  ## appBase value in 'general' section of this file.
+  ##   
+  ## This is the plugin where to put your app wide menus/files
+  ##
+  ## (For now, it only contains testing, random values.)
+  appBase:
+    ## Plugin parts
+    ## Be carefull when naming empty parts: as the part name is used for empty
+    ## models definition or empty controllers definition, you should use the Cake
+    ## naming convention : Users for table users, WaitingOrders for table
+    ## waiting_orders,...
+    ##
+    ## But you can name it as you want when the models/controllers definitions
+    ## have the name set.
+    parts:
+     
+      ## Users management. Put here as I use the Alaxos' Acl plugin, which 
+      ## doesn't work if users and groups are inside a plugin
+      Users:
+        model:
+          displayField: username
+          snippets:
+            ## Snippet name : useless, just here to help you navigate in the config file.  
+            acls:
+              path: acls::users
+        controller:
+          actions:
+            public:
+              index:
+                view:
+                  options:
+                    fun: true
+              login:
+                template: users::login
+                view:
+                  template: users::login
+              register: 
+                template: users::register
+                view:
+                  template: users::register
+            admin:
+              logout:
+                template: users::logout
+        options:
+          ## Options are part-wide, as needed by models/controllers and views
+          ## Name of the pass field in DB and forms
+          passField: password
+          ## Name of the pass confirmation in forms
+          passCheckField: password2
+      ## Groups management
+      Groups:
+        model:
+          snippets:
+            acls:
+              path: acls::roles
+              options: []
+      ## ------
+      ## Random tests (should not be generated)
+      ## ------
+      EmptyForTests:
+        generate: false
+      ## test
+      Lols:
+        generate: false
+        haveModel: false
+        controller:
+          actions:
+            public:
+              someAction:
+              index:
+                blackListed: true
+              view:
+                blackListed: true
+            admin:
+              index:
+                blackListed: true
+              view:
+                blackListed: true
+              add:
+                blackListed: true
+              delete:
+                blackListed: true
+              edit:
+                blackListed: true
+    menus:
+#      all_actions:
+#        template: menu
+#        targetFileName: all
+#        options:
+#          prefixes:
+#            public
+#            admin
+#      admin_actions:
+#        template: menu
+#        targetFileName: admin
+#        options:
+#          prefixes:
+#            admin
+      public_actions:
+        generate: true
+        template: menu
+        targetFileName: public
+        options:
+          prefixes:
+            public
+          hiddenPlugins:
+            ValidPlugin
+          hiddenControllers:
+            LinkTags
+            LikeTags
+            GalleryItemTags
+            GalleryItemComments
+            GalleryItems
+            PostComments
+            PostTags
+            ProjectTags
+            ProjectNoteComments
+            ProjectNotes
+            Lols
+            Groups
+            EmptyForTests
+          hiddenControllerActions:
+            Users:
+              index
+              view
+          hiddenActions:
+            view
+            delete
+            edit
+    files:
+      public_layout:
+        targetPath: View::Layouts
+        targetFileName: default
+        ext: ctp
+        template: layouts::default
+      admin_layout:
+        targetPath: View::Layouts
+        targetFileName: admin
+        ext: ctp
+        template: layouts::admin
+      admin_css:
+        targetPath: webroot::css
+        targetFileName: test
+        ext: css
+        template: css::test
+    required:
+      css:
+        source:
+        target:
+                
+
+  ## --------------------------------------------------------------------------
+  ##  Projects plugin
+  ## ----------------------------
+  ##  Manage some projects
+  ## --------------------------------------------------------------------------
+  ## 
+  Projects:
+    parts:
+      ## List of projects
+      Projects:
+      ## Notes, news about a project
+      ProjectNotes:
+      ## Comments on notes
+      ProjectNoteComments:
+      ## Project state (dev/stable/...)
+      ProjectStates:
+      ## Tags associated to project
+      ProjectTags:
+    menus:
+      test:
+        template: menu
+        targetFileName: test
+  
+  
+  ## --------------------------------------------------------------------------
+  ##  Blog plugin
+  ## ----------------------------
+  ##  Write stuff !
+  ## --------------------------------------------------------------------------
+  ## 
+  Blog:
+    generate: true
+    parts:
+      ## Posts
+      Posts:
+      ## Post categories
+      PostCategories:
+      ## Comments on posts
+      PostComments:
+      ## Tags associated to posts
+      PostTags:
+          
+  ## --------------------------------------------------------------------------
+  ##  Gallery plugin
+  ## ----------------------------
+  ##  More a file explorer than an actual gallery
+  ## --------------------------------------------------------------------------
+  ## 
+  Gallery:
+    parts:
+      ## The galleries list
+      Galleries:
+      ## An item in the gallery
+      GalleryItems:
+      ## Comments on an item
+      GalleryItemComments:
+      ## Tags associated to an item
+      GalleryItemTags:
+
+  ## --------------------------------------------------------------------------
+  ##  Likes plugin
+  ## ----------------------------
+  ##  Stuff I liked on the internet. A kind of "a la Facebook" sharing wall
+  ## --------------------------------------------------------------------------
+  ## 
+  Likes:
+    parts:
+      ## The list
+      Likes:
+      ## Comments on an item
+      LikeComments:
+      ## Tags associated to an item
+      LikeTags:
+  
+  ## --------------------------------------------------------------------------
+  ##  Links plugin
+  ## ----------------------------
+  ##  Links to friends, stuff
+  ## --------------------------------------------------------------------------
+  ## 
+  Links:
+    parts:
+      ## The list
+      Links:
+      ## Link categories
+      LinkCategories:
+      ## Tags associated to an item
+      LinkTags:
+   
+  ## --------------------------------------------------------------------------
+  ##  Misc plugin
+  ## ----------------------------
+  ##  Everything else
+  ## --------------------------------------------------------------------------
+  ## 
+  Misc:
+    parts:
+      ## Tag list
+      Tags:
+      ## Things reported by users
+      Reports:
+      ## Possible reasons:
+      ReportReasons:
+      ## I don't remember this one
+      Pages:
+      ## Licenses used
+      Licenses:
+  
+  ## --------------------------------------------------------------------------
+  ##  Sb plugin, for test
+  ## ----------------------------
+  ##  Here for testing menus generation
+  ## --------------------------------------------------------------------------
+  ## 
+  Sb:
+    path: plugins
+    displayName: superBake
+    generate: false
+    parts:
+      main:
+        haveModel: false
+        haveController: true
+        controller:
+          name: Sb
+          displayName: Main
+          actions:
+            public:
+              check: []
+              tree: []
+              updateArray: []
+          blackListed:
+            public:
+              view
+            admin:
+              index
+              view
+              add
+              edit
+              delete
+      doc:
+        haveModel: false
+        haveController: true
+        controller:
+          name: Docs
+          actions:
+            public:
+              display: []
+          blackListed:
+            public:
+              index
+              view
+            admin:
+              index
+              view
+              delete
+              add
+              edit
+  
+  
+  ## --------------------------------------------------------------------------
+  ##  Testing plugins (for conf tests)
+  ## ----------------------------
+  ##  some tests
+  ## --------------------------------------------------------------------------
+  ## The following plugins must not be populated as considered as empty
+  pEmptyArray: []
+  pEmptyParts:
+    generate: true
+    parts:
+  pEmpty:
+  ## This plugin is valid and must be generated
+  ValidPlugin:
+    generate: false
+    haveRoutes: true
+    haveBootstrap: true
+    parts:
+      ValidPart:
+      ValidPartsCats:

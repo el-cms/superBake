@@ -1,0 +1,266 @@
+##-----------------------------------------------------------------------
+## 0.3.alpha2.1 : New structure, new config, new plugin, new everything !
+##
+## Sample configuration file
+## -------------------------
+##      Defaults and tests.
+##
+##
+##-----------------------------------------------------------------------
+
+---
+#--------------------------------------------------------------------------
+#
+# File description, can be null
+#
+#--------------------------------------------------------------------------
+description: Testing config file with minimal configuration.
+#--------------------------------------------------------------------------
+#
+# General information
+#
+#--------------------------------------------------------------------------
+general:
+  ## Name of the "plugin that isn't one"
+  appBase: appBase
+  ## SuperBake template to use
+  template: superCakeStrap
+  ## Use prefixes ?
+  usePrefixes: true
+  ## By default, update the bootstrap file on plugin generation ?
+  updateBootstrap: true
+  ## Default DB connection to use
+  dbConnection: default
+#  ## Empty parts must have a model ?
+#  ## If set to false, you will have to define each of your models yourself
+#  partsHaveModel: true
+#  ## Empty parts must have a controller ?
+#  ## If set to false, you will have to define each of your controllers yourself
+#  partsHaveController: true
+  
+  ##
+  ## Personnal informations, mostly here to use in generated headers.
+  ##
+
+  ## Your name (for file headers)
+  editorName: Manuel Tancoigne
+  ## Your email adress (for file headers)
+  editorEmail: m.tancoigne@gmail.com
+  ## Your website
+  editorWebsite: http://experimentslabs.com
+  ## Your website name
+  editorWebsiteName: Experiments labs
+  ## Your license template (find out all licenses in templates/<defaultTemplate>/commons/licenses/)
+  editorLicenseTemplate: gpl3
+  ## Package name
+  basePackage: EL
+  
+#--------------------------------------------------------------------------
+#
+# Default values.
+# Here you can set settings for global behaviour
+#
+#--------------------------------------------------------------------------
+defaults:
+  
+  ##
+  ## This is a default view
+  ##
+  view:
+    ## Path to the view template
+    ## (a list can be found in 'Templates/<templateName>/views', and path must
+    ## be relative to this folder.)
+    template:
+    ## View must be generated
+    generate: true
+    ## ... And have options
+    options: []
+  
+  ##
+  ## This is a default action
+  ##
+  action:
+    ## This is the path to the template
+    ## (a list can be found in 'Templates/<templateName>/actions', and path must
+    ## be relative to this folder.)
+    template:
+    ## An array of options
+    options: []
+    ## Template have view
+    haveView: true
+    ## 'view' section contains the view configuration
+    view: []
+    ## Set this to true and the action will be removed from controller.
+    ## The difefrence of this and generate: false is that this action will not be
+    ## referenced in any case. This is usefull when you want to discard a specific
+    ## action, previously defined as a default action, for a specific controller.
+    blackListed: false
+ 
+  ##
+  ## This is the default actions list. 
+  ## Here you will define your prefixes and the actions that are available for them.
+  ##
+  actions:
+    ## This is the public prefix
+    public:
+      ## Index action
+      index: []
+      ## View action
+      view: []
+    ## This is the admin prefix
+    admin:
+      ## Index action
+      index: []
+      ## View action
+      view: []
+      ## Add action
+      add: []
+      ## Delete action
+      delete:
+        ## Delete has no view
+        haveView: false
+      ## Edit action
+      edit: []
+  
+  ##
+  ## Default configuration for a controller
+  ##
+  controller:
+    ## Controller name.
+    ## It must follows Cake conventions. If empty, model name will be used as base.
+    name:
+    ## Name used in views
+    displayName:
+    ## Must this be generated ?
+    generate: true
+    ## List of prefixes/actions
+    actions: []
+    
+  ##
+  ## Default model configuration
+  ##
+  model:
+    ## Model name.
+    ## Follow the cake conventions. If empty, part name will be used as base.
+    name:
+    ## Must this model be generated ?
+    generate: true
+    ## Display field. Can be null
+    displayfield:
+    ## Snippets list. A snippet is a bit of code to be included in your model.
+    snippets: []
+    ## Options passed to template for generation
+    options: []
+    
+  ##
+  ## Default snippet configuration
+  ##
+  snippet:
+    ## path to the snippet.
+    ## Path is relative to <yourTemplate>/models
+    ## if a snippet doesn't exists, a comment will be inserted in model as a reminder.
+    path:
+    ## Options for this snippet.
+    options: []
+  
+  ##  
+  ## Default part configuration
+  ##
+  part:
+    ## Generate this part ?
+    ## This overrides under-levels "generate", as model:generate, controller:generate
+    ## ...
+    generate: true
+    ## Have a model ?
+    haveModel: true
+    ## Model configuration
+    model: []
+    ## Have controller ?
+    haveController: true
+    ## Controller configuration
+    controller: []
+    ## Options that must be available in both model, controllers and views generation
+    options: []
+  
+  ##  
+  ## Default plugin configuration
+  ##
+  plugin:
+    ## Plugin name, human readable
+    displayName:
+    ## Path where the plugin must be built.
+    ## Path can be app::Plugin or Plugins
+    path: app::Plugin
+    ## Generate this plugin ?
+    ## Setting this to false will make this plugin not to be built, but all items
+    ## in it (models, controllers, ...) can be used as a reference.
+    generate: true;
+    ## Do the plugin must have routes ?
+    ## (will be created in <path>/Config)
+    haveRoutes: false
+    ## Do the plugin must have a bootstrap file ?
+    ## (will be created in <path>/Config
+    haveBootstrap: false
+    ## Parts of the plugin
+    parts: []
+    ## Menus for this plugin
+    menus: []
+    ## Files for this plugin
+    files: []
+    ## required files/folders for this plugin
+    required: []
+  
+  ##  
+  ## Default configuration for a file
+  ##
+  file:
+    ## (a list can be found in 'Templates/<templateName>/files', and path must
+    ## be relative to this folder.)
+    template:
+    ## Folder where the file must be copied (relative to final plugin directory)
+    targetPath:
+    ## Final file name
+#    target_file:
+    ## Options for the file templates
+    options: []
+  
+  ##
+  ## Default configuration for a menu
+  ##
+  menu:
+    ## Template path
+    ## (a list can be found in 'Templates/<templateName>/menus', and path must
+    ## be relative to this folder.)
+    template:
+    ## Target folder (relative to plugins' View/ folder)
+    targetPath: elements::menus
+    ## Options
+    options: []
+    
+  ##
+  ## Default configuration for a required file
+  ## 
+  ## Empty for now as not implemented yet.
+  required: []
+
+#--------------------------------------------------------------------------
+#
+# Plugins
+#
+#--------------------------------------------------------------------------
+plugins:
+  ## "Plugin that's not one": this must be baked in the app/ subdirs.
+  appBase:
+    ## parts
+    parts:
+      ## Users part. Named following the controllers naming convention, as 
+      ## if no model or controller names are provided, the part will be used as base.
+      Users:
+      Groups: 
+
+  ## A blog plugin
+  Blog:
+    parts:
+      Posts:
+      PostCategories:
+      PostComments:

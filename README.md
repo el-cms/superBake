@@ -15,10 +15,20 @@ Basically, it's __bake__ with modified tasks and modified template system.
 
 You can find a demo video on [youtube](https://www.youtube.com/watch?v=sP9WOk7qmwA) (a bit outdated now).
 
-## Installation
-In order to install superBake:
- * create a new cakePHP project
- * Create a directory named Sb in `/plugin` or `app/Plugins`
- * Extract the superBake files in this dir
- * Enable the plugin in bootstrap file, adding `CakePlugin::load('Sb', array('bootstrap' => true, 'routes' => false));`
- * Start to read the documentation here: http://<path to your cake install>/display/help
+## Test it in a few simple steps:
+ 
+ * Download CakePHP [2.4.3](https://github.com/cakephp/cakephp/zipball/2.4.3) (for example) and superBake.
+ * Prepare Cake and unzip superBake in a folder named `Sb` in either `app/Plugin` or in `plugin`. Don't forget to load the plugin in `app/bootstrap.php` with this line: `CakePlugin::load('Sb', array('bootstrap' => true, 'routes' => false));`
+ * Set up your db and db connection in `app/Config/database.php`
+ * Run/upload the sample db model located in `Sb/docs`. There's a SQL file and a Mysql Workbench file for the same db. Choose as you prefer.
+ * Open a browser and go to your cake Homepage. In parallel, open a terminal and cd to `PathToCakeInstall/app`
+ * You're ready to superBake:
+  1. Plugins: `./Console/cake Sb.Shell plugins`. Choose to update the bootstrap file.
+  2. Models/Controllers and views: `./Console/cake Sb.Shell mvc`
+  3. Menus: `./Console/cake Sb.Shell menus`
+  4. Additionnal files (custom layout, a css file, and AppController): `./Console/cake Sb.Shell files`
+  5. Refresh your browser.
+
+## What if it doesn't work as expected ?
+
+Open an issue, explain the problem, I'll be happy to help.

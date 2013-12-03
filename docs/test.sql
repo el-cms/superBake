@@ -468,11 +468,10 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   `path` VARCHAR(255) NULL,
-  `parent_id` INT UNSIGNED NULL,
   `sfw` TINYINT(1) NOT NULL DEFAULT 1,
-  `anon` TINYINT(1) NOT NULL DEFAULT 0,
-  `public` TINYINT(1) NOT NULL DEFAULT 0,
-  `user_id` INT UNSIGNED NOT NULL,
+  `anon` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Gallery is anonymous',
+  `public` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Other can post',
+  `user_id` INT UNSIGNED NOT NULL COMMENT 'Owner',
   PRIMARY KEY (`id`),
   INDEX `fk_galleries_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_galleries_users1`
@@ -616,4 +615,3 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-

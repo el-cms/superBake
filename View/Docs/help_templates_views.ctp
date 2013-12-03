@@ -65,7 +65,10 @@ The following options are available and valid for all the actions:
 
 ## Custom options
 Following views have these specific options:
-
+<div class="alert alert-danger">
+	<i class="icon-warning-sign"></i> This section is incomplete
+	<!-- todo Fill the views templates help section -->
+</div>
 ### index
 These options applies to the `views/index.ctp` template.
 

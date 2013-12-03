@@ -582,7 +582,7 @@ class Sbc {
 	public function loadFile($file) {
 		$file = $this->getConfigPath() . $file;
 		$this->log("Loading configuration file:"
-				. "<br/><small>\"$file\"...</small>", 'info', 1);
+						. "<br/><small>\"$file\"...</small>", 'info', 1);
 		$this->spyc = new Spyc();
 		$this->config = $this->spyc->YAMLLoad($file);
 		$this->log('Configuration file loaded.', 'success');
@@ -654,7 +654,7 @@ class Sbc {
 				if (!isset($pluginConfig['displayName'])) {
 					$pluginConfig['displayName'] = Inflector::humanize(Inflector::underscore($plugin));
 					$this->log("Plugin has no displayName.<br>"
-							. "   =>I'll use \"<strong>${pluginConfig['displayName']}</strong>\" instead.", 'warning', 3);
+									. "   =>I'll use \"<strong>${pluginConfig['displayName']}</strong>\" instead.", 'warning', 3);
 				}
 				// Merging with default plugin
 				$pluginConfig = $this->updateArray($this->config['defaults']['plugin'], $pluginConfig);
@@ -678,11 +678,11 @@ class Sbc {
 						if (!is_array($partConfig['model'])) {
 							if (empty($partConfig['model'])) {
 								$this->log("The model should be defined as an array.<br>"
-										. "   => I'll base the name on the part name (\"<strong>" . Inflector::singularize($part) . "</strong>\")", 'warning', 6);
+												. "   => I'll base the name on the part name (\"<strong>" . Inflector::singularize($part) . "</strong>\")", 'warning', 6);
 								$partConfig['model'] = array('name' => Inflector::singularize($part));
 							} else {
 								$this->log("The model should be defined as an array.<br>"
-										. "   => I'll use \"<strong>${partConfig['model']}</strong>\" as &lt;model&gt;.name", 'warning', 6);
+												. "   => I'll use \"<strong>${partConfig['model']}</strong>\" as &lt;model&gt;.name", 'warning', 6);
 								$partConfig['model'] = array('name' => $partConfig['model']);
 							}
 						}
@@ -691,7 +691,7 @@ class Sbc {
 							// Empty 'name' attribute
 							if (!isset($partConfig['model']['name']) || empty($partConfig['model']['name'])) {
 								$this->log("The model definition should contain a name attribute.<br>"
-										. "   => I'll base the name on the part name (\"<strong>" . Inflector::singularize($part) . "</strong>\")", 'warning', 6);
+												. "   => I'll base the name on the part name (\"<strong>" . Inflector::singularize($part) . "</strong>\")", 'warning', 6);
 								$partConfig['model']['name'] = Inflector::singularize($part);
 							}
 						}
@@ -724,16 +724,16 @@ class Sbc {
 							if (empty($partConfig['controller'])) {
 								if ($partConfig['haveModel'] == false) {
 									$this->log("The controller should be defined as an array.<br>"
-											. "   => I'll use \"<strong>" . $part . "</strong>\" as name (part name)", 'warning', 6);
+													. "   => I'll use \"<strong>" . $part . "</strong>\" as name (part name)", 'warning', 6);
 									$partConfig['controller'] = array('name' => $part);
 								} else {
 									$this->log("The controller should be defined as an array.<br>"
-											. "   => I'll use \"<strong>" . Inflector::pluralize($partConfig['model']['name']) . "</strong>\", based on the model name", 'warning', 6);
+													. "   => I'll use \"<strong>" . Inflector::pluralize($partConfig['model']['name']) . "</strong>\", based on the model name", 'warning', 6);
 									$partConfig['controller'] = array('name' => Inflector::pluralize($partConfig['model']['name']));
 								}
 							} else {
 								$this->log("The controller should be defined as an array.<br>"
-										. "   => I'll use \"<strong>${partConfig['controller']}</strong>\" as &lt;controller&gt;.name", 'warning', 6);
+												. "   => I'll use \"<strong>${partConfig['controller']}</strong>\" as &lt;controller&gt;.name", 'warning', 6);
 								$partConfig['controller'] = array('name' => $partConfig['controller']);
 							}
 						}
@@ -743,11 +743,11 @@ class Sbc {
 							if (!isset($partConfig['controller']['name']) || empty($partConfig['controller']['name'])) {
 								if ($partConfig['haveModel'] == false) {
 									$this->log("The controller definition should have a name.<br>"
-											. "   => I'll use \"<strong>" . $part . "</strong>\" as name (part name)", 'warning', 6);
+													. "   => I'll use \"<strong>" . $part . "</strong>\" as name (part name)", 'warning', 6);
 									$partConfig['controller']['name'] = $part;
 								} else {
 									$this->log("The controller definition should have a name.<br>"
-											. "   => I'll use \"<strong>" . Inflector::pluralize($partConfig['model']['name']) . "</strong>\", based on the model name", 'warning', 6);
+													. "   => I'll use \"<strong>" . Inflector::pluralize($partConfig['model']['name']) . "</strong>\", based on the model name", 'warning', 6);
 									$partConfig['controller']['name'] = Inflector::pluralize($partConfig['model']['name']);
 								}
 							}
@@ -757,7 +757,7 @@ class Sbc {
 						// Display name check
 						if (empty($partConfig['controller']['displayName'])) {
 							$this->log("The controller should have display name.<br>"
-									. "   => I'll base one on the controller name : \"<strong>" . ucfirst(strtolower(Inflector::humanize(Inflector::underscore($partConfig['controller']['name'])))) . "</strong>\"", 'warning', 6);
+											. "   => I'll base one on the controller name : \"<strong>" . ucfirst(strtolower(Inflector::humanize(Inflector::underscore($partConfig['controller']['name'])))) . "</strong>\"", 'warning', 6);
 							$partConfig['controller']['displayName'] = ucfirst(strtolower(Inflector::humanize(Inflector::underscore($partConfig['controller']['name']))));
 						}
 						//
@@ -769,12 +769,16 @@ class Sbc {
 							foreach ($actions as $action => $actionConfig) {
 								// Action
 								$partConfig['controller']['actions'][$prefix][$action] = $this->updateArray($this->config['defaults']['action'], $actionConfig, true);
+								// Options from part
+								$partConfig['controller']['actions'][$prefix][$action]['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['options'], true);
 								// View
 								if ($partConfig['controller']['actions'][$prefix][$action]['haveView'] === true) {
 									if (empty($actionConfig['view'])) {
 										$actionConfig['view'] = array();
 									}
 									$partConfig['controller']['actions'][$prefix][$action]['view'] = $this->updateArray($this->config['defaults']['view'], $actionConfig['view']);
+									// Options from part
+									$partConfig['controller']['actions'][$prefix][$action]['view']['options']=$this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['view']['options'], true);
 								}
 							}
 						}
@@ -846,7 +850,7 @@ class Sbc {
 				//
 			} else {
 				$this->log("Plugin <strong>\"$plugin\"</strong> is empty or have no parts.<br>"
-						. "   => It will now be removed from configuration.", 'error', 3);
+								. "   => It will now be removed from configuration.", 'error', 3);
 				unset($this->config['plugins'][$plugin]);
 			}
 		}

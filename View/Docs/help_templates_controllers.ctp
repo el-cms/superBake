@@ -125,7 +125,10 @@ An _add_ action template. Options for this action:
 This action have no options, but don't forget **it has no view too.** So you need to set the `haveView: false` parameter in action.
 
 #### **`actions/actions/edit.ctp`**
-
+<div class="alert alert-danger">
+	<i class="icon-warning-sign"></i> This section is incomplete
+	<!-- todo Fill the views templates help section -->
+</div>
 &rarr; [View template: edit](help_templates_views#editadd)
 Options for this action:
 

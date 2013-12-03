@@ -1,7 +1,10 @@
 # Config: menus
 Templates for menus are located in `<yourTemplate>/menus`.
 
-
+<div class="alert alert-danger">
+	<i class="icon-warning-sign"></i> This section is incomplete
+	<!-- todo Fill the views templates help section -->
+</div>
 
 If you look a default values for a menu file, it's the same as a "File" section. That's because both menus and files generation use the same task: superFileTask, wich is a modified viewTask.
 

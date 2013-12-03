@@ -43,19 +43,16 @@ if (!isset($hiddenControllerActions) || !is_array($hiddenControllerActions)) {
 if (!isset($hiddenActions) || !is_array($hiddenActions)) {
 	$hiddenActions = array();
 }
-?>
 
-<h3><?php echo "<?php echo " . $this->iString('Menu') . "?>"; ?></h3>
-<?php
+// Getting all actions
 $menu = $this->sbc->getActionsAll();
-?>
-<ul>
-	<?php
-	// plugins
-	foreach ($menu as $plugin => $pluginConfig) {
-		if (!in_array($plugin, $hiddenPlugins)) {
-			?>
-			<li><strong><?php echo "<?php echo " . $this->iString($pluginConfig['displayName']) . "?>" ?></strong></li>
+
+// plugins
+foreach ($menu as $plugin => $pluginConfig) {
+	if (!in_array($plugin, $hiddenPlugins)) {
+		?>
+		<div class="menu-plugin">
+			<div class="menu-header"><?php echo "<?php echo " . $this->iString($pluginConfig['displayName']) . "?>" ?></div>
 			<ul>
 				<?php
 				//Controllers
@@ -79,10 +76,10 @@ $menu = $this->sbc->getActionsAll();
 										if (!in_array($action, $hiddenActions) && !in_array($action, $hiddenControllerActions[$controller])) {
 											switch ($action) {
 												case 'index':
-													$actionName = "List " . $controllerConfig['displayName'];
+													$actionName = "List " . strtolower($controllerConfig['displayName']);
 													break;
 												case 'add':
-													$actionName = "New " . $controllerConfig['displayName'];
+													$actionName = "New " . strtolower(Inflector::singularize($controllerConfig['displayName']));
 													break;
 												case 'register':
 													$actionName = 'Register';
@@ -107,8 +104,8 @@ $menu = $this->sbc->getActionsAll();
 				}
 				?>
 			</ul>
-			<?php
-		}
+		</div>
+		<?php
 	}
-	?>
-</ul>
+}
+?>

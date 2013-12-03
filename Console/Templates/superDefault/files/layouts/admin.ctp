@@ -56,11 +56,12 @@ echo "<?php
 	<body>
 		<div id="container">
 			<div id="header">
-				<h1>Admin - <?php echo "<?php echo \$this->Html->link(\$cakeDescription, 'http://cakephp.org'); ?>" ?></h1>
+				<h1><?php echo "<?php echo \$this->Html->link(\$cakeDescription, 'http://cakephp.org'); ?>" ?></h1>
 			</div>
 			<div id="menu">
 				<?php echo "<?php echo \$this->element('menus/admin');?>" ?>
 			</div>
+			<div id="admin-line"></div>
 			<div id="content">
 				<?php echo "<?php echo \$this->Session->flash(); ?>" ?>
 

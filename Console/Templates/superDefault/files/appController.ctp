@@ -33,7 +33,7 @@ class AppController extends Controller {
 //		'DebugKit.Toolbar',
 		'Session',
 		'Acl',
-		'Auth' => array(
+		/*'Auth' => array(
 			'authenticate' => array(
 				'Form' => array(
 					'fields' => array('username' => 'email'),
@@ -49,7 +49,7 @@ class AppController extends Controller {
 			'logoutRedirect' => array('admin' => 'admin', 'plugin' => null, 'controller' => 'users', 'action' => 'login'),
 			// After login page
 			'loginRedirect' => array('admin' => 'admin', 'plugin' => 'blog', 'controller' => 'posts', 'action' => 'index'),
-		),);
+		),*/);
 	public $helpers = array(
 		'Form',
 		'Html',
@@ -67,17 +67,17 @@ class AppController extends Controller {
 		$this->set('current_controller', $this->request->params['controller']);
 
 		// Layout change for admin
-		if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin' && $this->Auth->loggedIn()) {
+		if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {// && $this->Auth->loggedIn()) {
 			$this->layout = 'admin';
 			// Message count for message board
 			//$this->loadModel('Messages');
 			//$this->set('messageCount', $this->Messages->find('count', array('conditions' => array('read' => 0))));
-			$this->Auth->allow();
+			//$this->Auth->allow();
 		} else {
 			//Cache all action for 1 hour
 			//$this->cacheAction = "1 hour";
 			//$this->Auth->allow('index', 'view', 'login', 'display');
-			$this->Auth->allow();
+			//$this->Auth->allow();
 		}
 
 

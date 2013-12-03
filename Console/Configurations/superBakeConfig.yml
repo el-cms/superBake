@@ -117,9 +117,15 @@ defaults:
     ## This is the public prefix
     public:
       ## Index action
-      index: []
+      index:
+        view:
+          options:
+            noToolbar: true
       ## View action
-      view: []
+      view:
+        view:
+          options:
+            noToolbar: true
     ## This is the admin prefix
     admin:
       ## Index action
@@ -384,13 +390,27 @@ plugins:
 #          prefixes:
 #            public
 #            admin
-#      admin_actions:
-#        template: menu
-#        targetFileName: admin
-#        options:
-#          prefixes:
-#            admin
-      public_actions:
+      admin_menu:
+        template: menu
+        targetFileName: admin
+        options:
+          prefixes:
+            admin
+          hiddenPlugins:
+            ValidPlugin
+          hiddenControllers:
+            LinkTags
+            LikeTags
+            GalleryItemTags
+            PostTags
+            ProjectTags
+            Lols
+            EmptyForTests
+          hiddenActions:
+            view
+            delete
+            edit
+      public_menu:
         generate: true
         template: menu
         targetFileName: public

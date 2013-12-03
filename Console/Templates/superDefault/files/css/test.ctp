@@ -28,16 +28,106 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
  */
 ?>
+/* *****************************************************************************
 
+MENU
+
+***************************************************************************** */
+/*
+ * Box containing all the menus */
 #menu{
-	float:left;
-	width:200px;
-	color:#DDD;
+	background-color: #004e61;
+	-moz-box-shadow:inset 0px 2px 3px #001217;
+	-webkit-box-shadow:inset 0px 2px 3px #001217;
+	box-shadow:inset 0px 2px 3px #001217;
+	border-bottom:1px solid #001217;
 }
-#menu a{
+
+/*
+ * Box (plugin name and links are in) */
+.menu-plugin{
+	background-color:rgba(255,255,255,0.1);
+  margin:5px 0px 0px 5px;
+	max-width: 175px;
+	font-size:0.8em;
+	list-style-type: none;
+	vertical-align: bottom;
+	padding:3px;
+	display:inline-block;
+	border:1px solid rgba(255,255,255,0.2);
+	border-bottom:1px solid transparent;
+}
+
+/*
+ * Box title (Plugin name) */
+.menu-header{
+	font-weight: bold;
+	font-size:1.2em;
+	border-bottom:1px solid rgba(255,255,255,0.3);
+	margin:-3px;
+	margin-bottom:0px;
+	padding:3px;
+}
+
+/* Removing list styles */
+.menu-plugin ul{
+	margin-left:0px;
+	padding-left:0px;
+	padding:0px;
+	margin:0px;
+}
+
+.menu-plugin li{
+	list-style-type: none;
+	padding:0px;
+	margin:0px;
+}
+
+/*
+ * Part names */
+.menu-plugin> ul>li{
+	font-weight:bold;
+	border-left:5px solid rgba(255,255,255,0.2);
+	margin-left:-3px;
+	padding-left:3px;
+}
+
+/* 
+ * Links */
+.menu-plugin a{
+	font-weight: normal;
+	color:#CCC;
 	color:#FFF;
+	display:block;
+	margin-left:-3px;
+	padding-left:5px;
+	padding-right:3px;
+	margin-right:-3px;
 }
+
+.menu-plugin a:hover{
+	background-color:rgba(255,255,255,0.5);
+}
+
+/* *****************************************************************************
+
+ADMIN LINE (red line under the menu, for admin layout) 
+
+***************************************************************************** */
+
+#admin-line{
+	min-height:3px;
+	border:none;
+	background-color:#a80000;
+}
+
+/* *****************************************************************************
+
+CONTENT
+
+***************************************************************************** */
 #content{
-	margin-left:205px;
-	clear: none;
+	-moz-box-shadow:inset 0px 2px 3px #555;
+	-webkit-box-shadow:inset 0px 2px 3px #555;
+	box-shadow:inset 0px 2px 3px #555;
 }

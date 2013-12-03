@@ -141,6 +141,12 @@ class Sbc {
 	 */
 	private $filesToBake;
 
+	/**
+	 * List of prefixes in default actions list.
+	 * @var array
+	 */
+	private $prefixesList;
+
 	// --------------------------------------------------------------------------
 	//
 	// Plugin operations
@@ -565,6 +571,20 @@ class Sbc {
 	}
 
 	/**
+	 * Returns the list of prefixes in default actions list.
+	 * @return array
+	 */
+	public function prefixesList() {
+		if (!is_array($this->prefixesList)) {
+			foreach ($this->getConfig('defaults.actions') as $prefix => $actions) {
+				$list[] = $prefix;
+			}
+			$this->prefixesList = $list;
+		}
+		return $this->prefixesList;
+	}
+
+	/**
 	 * Creates a prefix_action string, and returns only action if prefix is public.
 	 * @param string $action Action name
 	 * @param string $prefix Prefix
@@ -778,7 +798,7 @@ class Sbc {
 									}
 									$partConfig['controller']['actions'][$prefix][$action]['view'] = $this->updateArray($this->config['defaults']['view'], $actionConfig['view']);
 									// Options from part
-									$partConfig['controller']['actions'][$prefix][$action]['view']['options']=$this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['view']['options'], true);
+									$partConfig['controller']['actions'][$prefix][$action]['view']['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['view']['options'], true);
 								}
 							}
 						}

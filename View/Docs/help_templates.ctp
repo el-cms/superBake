@@ -107,7 +107,7 @@ public function cleanPath($path, $dir = false) {}
  * @param string $plugin Plugin to check
  * @return string
  */
-public function cleanPlugin($plugin) {
+public function cleanPlugin($plugin) {}
 ?&gt;
 </pre>
 
@@ -258,7 +258,7 @@ public function getActionsAll() {}
  * @param string $prefix
  * @return array
  */
-public function getActionsToBake($plugin, $part, $prefix) {
+public function getActionsToBake($plugin, $part, $prefix) {}
 ?&gt;
 </pre>
 
@@ -341,7 +341,7 @@ public function getControllersList($plugin = null) {}
  * 
  * @return array List of controllers to bake: array(controllerName=>array(part, plugin))
  */
-public function getControllersToBake() {
+public function getControllersToBake() {}
 ?&gt;
 </pre>
 
@@ -366,7 +366,7 @@ public function getFilesToBake() {}
  * 
  * @return array
  */
-public function getMenusToBake() {
+public function getMenusToBake() {}
 ?&gt;
 </pre>
 
@@ -510,6 +510,18 @@ public function pluginName($plugin = null) {}
  * @param string $prefix Prefix to test
  * @return string 
  */
-public function prefixName($prefix) {
+public function prefixName($prefix) {}
+?&gt;
+</pre>
+
+#### prefixesList()
+
+<pre class="syntax brush-html">
+&lt;?php
+/**
+ * Returns the list of prefixes in default actions list.
+ * @return array
+ */
+public function prefixesList(){}
 ?&gt;
 </pre>

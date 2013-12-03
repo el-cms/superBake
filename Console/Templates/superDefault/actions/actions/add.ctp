@@ -83,7 +83,7 @@ if (!function_exists('file_upload_max_size')) {
 
 }
 
-/* * *****************************************
+/* ******************************************
  * Options for this action
  */
 

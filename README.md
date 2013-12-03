@@ -4,6 +4,9 @@ This readme is in development too.
 
 Feel free to contact me on [g+ EL-CMS](https://plus.google.com/u/0/b/110073171539347252283/) or by [mail](mailto:m.tancoigne@gmail.com) (with "sb" in the beginning of your subject), i'll try to answer quickly.
 
+
+For now, the configuration file provided with the plugin is the one I work on, so it's not an empty config file. You can test it with the models structure available in `docs/`.
+
 # superBake version 0.3
 ## What is superBake
 superBake is a console Shell for __cakePHP__ 2.x. It will help you to generate your application's plugins, models, controllers, views and menus with a configuration file and custom templates.

@@ -89,8 +89,10 @@ foreach ($menu as $plugin => $pluginConfig) {
 													break;
 												case 'logout':
 													$actionName = 'Log out';
+													break;
 												default:
 													$actionName = Inflector::humanize(Inflector::underscore($action)) . ' ' . $controllerConfig['displayName'];
+													break;
 											}
 											echo "<li><?php echo \$this->Html->link(" . $this->iString($actionName) . ', ' . $this->url($action, $controller, $prefix) . "); ?></li>\n";
 										}
@@ -109,3 +111,19 @@ foreach ($menu as $plugin => $pluginConfig) {
 	}
 }
 ?>
+<!-- These are links to other versions of the site (for other prefixes) -->
+<div class="menu-plugin">
+	<div class="menu-header"><?php echo "<?php echo " . $this->iString('Other things') . "?>" ?></div>
+	<ul>
+		<li>Site</li>
+		<ul>
+			<?php
+			// Getting prefixes not shown on this page
+			$prefixesList = array_diff($this->sbc->prefixesList(), $prefixes);
+			foreach ($prefixesList as $prefix) {
+				echo "<?php echo \$this->Html->link(" . $this->iString(ucfirst($prefix) . ' site') . ", " . $this->url('index', 'Posts', $prefix) . ")?>";
+			}
+			?>
+		</ul>
+	</ul>
+</div>

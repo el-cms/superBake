@@ -593,40 +593,50 @@ plugins:
         haveController: true
         controller:
           name: Sb
-          displayName: Main
+          displayName: Superbake
           actions:
             public:
               check: []
               tree: []
-              updateArray: []
-          blackListed:
-            public:
-              view
+              arraymerge: []
+              index:
+                blackListed: true
+              view:
+                blackListed: true
             admin:
-              index
-              view
-              add
-              edit
-              delete
-      doc:
-        haveModel: false
-        haveController: true
-        controller:
-          name: Docs
-          actions:
-            public:
-              display: []
-          blackListed:
-            public:
-              index
-              view
-            admin:
-              index
-              view
-              delete
-              add
-              edit
-  
+              index:
+                blackListed: true
+              view:
+                blackListed: true
+              add:
+                blackListed: true
+              edit:
+                blackListed: true
+              delete:
+                blackListed: true            
+#      doc:
+#        haveModel: false
+#        haveController: true
+#        controller:
+#          name: Docs
+#          actions:
+#            public:
+#              display: []
+#              index:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#            admin:
+#              index:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
   
   ## --------------------------------------------------------------------------
   ##  Testing plugins (for conf tests)

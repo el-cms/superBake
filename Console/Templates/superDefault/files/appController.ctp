@@ -7,6 +7,17 @@
 // Options
 //
 
+// Enable the cache
+if(!isset($enableCache)){
+	$enableCache=false;
+}
+if(!isset($enableAcl)){
+	$enableAcl=false;
+}
+
+if(!isset($enableDebugKit)){
+	$enableDebugKit=false;
+}
 // Components
 
 ?>
@@ -30,10 +41,11 @@ class AppController extends Controller {
 
 	public $cacheAction;
 	public $components = array(
-//		'DebugKit.Toolbar',
+		<?php echo ($enableDebugKit)?"'DebugKit.Toolbar',\n":"// DebugKit is disabled\n\t\t//'DebugKit.Toolbar',\n";?>
 		'Session',
+		<?php if($enableAcl){ ?>
 		'Acl',
-		/*'Auth' => array(
+		'Auth' => array(
 			'authenticate' => array(
 				'Form' => array(
 					'fields' => array('username' => 'email'),
@@ -49,70 +61,44 @@ class AppController extends Controller {
 			'logoutRedirect' => array('admin' => 'admin', 'plugin' => null, 'controller' => 'users', 'action' => 'login'),
 			// After login page
 			'loginRedirect' => array('admin' => 'admin', 'plugin' => 'blog', 'controller' => 'posts', 'action' => 'index'),
-		),*/);
+		),
+		<?php
+		}
+		?>);
 	public $helpers = array(
 		'Form',
 		'Html',
-		//'Cache',
+		<?php if($enableCache){echo "'Cache',";}?>
 	);
 
 	public function beforeFilter() {
 		parent::beforeFilter();
 
-		// website config
-		//$this->set('_website', Configure::read('website'));
-		// current plugin
+		// Making current plugin available in view
 		$this->set('current_plugin', $this->request->params['plugin']);
-		// Current controller
+		// Making current controller available in view
 		$this->set('current_controller', $this->request->params['controller']);
 
-		// Layout change for admin
-		if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {// && $this->Auth->loggedIn()) {
+		// Changes for admin
+		if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin'<?php echo ($enableAcl)?' && $this->Auth->loggedIn()':''?>) {
+			// Layout change
 			$this->layout = 'admin';
-			// Message count for message board
-			//$this->loadModel('Messages');
-			//$this->set('messageCount', $this->Messages->find('count', array('conditions' => array('read' => 0))));
-			//$this->Auth->allow();
+			<?php
+			echo ($enableAcl)?"\t\t\t// Default for admins: allow everything\n"
+				. "\t\t\t\$this->Auth->allow();\n"
+							:"// Acls are disabled. Set 'enableAcl: true' in options for this file.\n";
+			?>
 		} else {
-			//Cache all action for 1 hour
-			//$this->cacheAction = "1 hour";
-			//$this->Auth->allow('index', 'view', 'login', 'display');
-			//$this->Auth->allow();
+			<?php
+				echo ($enableCache)?"\t\t\t\t//Cache all action for 1 hour\n"
+				. "\t\t\t\$this->cacheAction = '1 hour';\n"
+								:"// Cache disabled. Set 'enableCache: true' in options for this file if you want it\n";
+			echo ($enableAcl)?"\t\t\t// Some available actions for public prefix.\n"
+				. "\t\t\t\$this->Auth->allow('index', 'view', 'login', 'display', 'register');\n"
+							:"\t\t\t// Acls are disabled. Set 'enableAcl: true' in options for this file.\n";
+			?>
 		}
-
-
-		//// Language
-		//$curr_lang = $this->_setLanguage();
-		//// Change language
-		//$this->set('lang', $curr_lang);
-		//$this->set('lang_fallback', DEFAULT_LANGUAGE);
 	}
-
-	/**
-	private function _setLanguage() {
-		// Available languages
-		$langs = array_keys(Configure::read('Config.languages'));
-		$newLang = DEFAULT_LANGUAGE;
-		// Checking if new language has been set
-		if (isset($this->request['language'])) {
-			$newLang = $this->request['language'];
-			if (!in_array($newLang, $langs)) {
-				$newLang = DEFAULT_LANGUAGE;
-			}
-		}
-		// Checking for passed parameters
-		if (isset($this->request->params['named']['language'])) {
-			$newLang = $this->request->params['named']['language'];
-			if (!in_array($newLang, $langs)) {
-				$newLang = DEFAULT_LANGUAGE;
-			}
-		}
-
-		Configure::write('Config.language', $newLang);
-		$this->Session->write('Config.language', $newLang);
-		return $newLang;
-	}*/
-
 }
 
 

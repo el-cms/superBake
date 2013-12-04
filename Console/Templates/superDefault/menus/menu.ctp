@@ -44,6 +44,13 @@ if (!isset($hiddenActions) || !is_array($hiddenActions)) {
 	$hiddenActions = array();
 }
 
+// Is the menu the main public menu ?
+// Use this option to do specific things for public menu
+// I use it to run Auth check on public menus to display or not the logged-in user links
+if (!isset($isPublicMenu)) {
+	$isPublicMenu = false;
+}
+
 // Getting all actions
 $menu = $this->sbc->getActionsAll();
 

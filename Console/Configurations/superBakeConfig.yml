@@ -270,6 +270,10 @@ defaults:
       prefixes: []
       hiddenControllers: []
       hiddenPlugins: []
+      hiddenActions:
+        view
+        delete
+        edit
     ## Generate the menu ?
     generate: true
     
@@ -278,6 +282,8 @@ defaults:
   ## 
   ## NOT YET IMPLEMENTED.
   required:
+    ## Copy the files ?
+    generate: true
     ## Target file or folder
     target:
     ## Source file or folder
@@ -338,7 +344,6 @@ plugins:
                 template: users::register
                 view:
                   template: users::register
-            admin:
               logout:
                 template: users::logout
         options:
@@ -383,13 +388,9 @@ plugins:
               edit:
                 blackListed: true
     menus:
-#      all_actions:
-#        template: menu
-#        targetFileName: all
-#        options:
-#          prefixes:
-#            public
-#            admin
+      ## ---
+      ## Admin menu
+      ## ---
       admin_menu:
         template: menu
         targetFileName: admin
@@ -410,6 +411,10 @@ plugins:
             view
             delete
             edit
+
+      ## ---
+      ## Public menu
+      ## ---
       public_menu:
         generate: true
         template: menu
@@ -419,6 +424,7 @@ plugins:
             public
           hiddenPlugins:
             ValidPlugin
+            Misc
           hiddenControllers:
             LinkTags
             LikeTags
@@ -430,6 +436,7 @@ plugins:
             ProjectTags
             ProjectNoteComments
             ProjectNotes
+            ProjectStates
             Lols
             Groups
             EmptyForTests
@@ -437,10 +444,7 @@ plugins:
             Users:
               index
               view
-          hiddenActions:
-            view
-            delete
-            edit
+          ## Hidden actions defined in defaults
     files:
       public_layout:
         targetPath: View::Layouts
@@ -457,7 +461,7 @@ plugins:
         targetFileName: superBake
         ext: css
         template: css::test
-      appController:
+      AppController:
         targetPath: Controller
         targetFileName: AppController
         ext: php
@@ -613,31 +617,8 @@ plugins:
               edit:
                 blackListed: true
               delete:
-                blackListed: true            
-#      doc:
-#        haveModel: false
-#        haveController: true
-#        controller:
-#          name: Docs
-#          actions:
-#            public:
-#              display: []
-#              index:
-#                blackListed: true
-#              view:
-#                blackListed: true
-#            admin:
-#              index:
-#                blackListed: true
-#              view:
-#                blackListed: true
-#              add:
-#                blackListed: true
-#              edit:
-#                blackListed: true
-#              delete:
-#                blackListed: true
-  
+                blackListed: true
+
   ## --------------------------------------------------------------------------
   ##  Testing plugins (for conf tests)
   ## ----------------------------

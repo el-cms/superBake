@@ -142,6 +142,12 @@ class Sbc {
 	private $filesToBake;
 
 	/**
+	 * List of required file, saved from getRequiredToBake()
+	 * @var array
+	 */
+	private $requiredToBake;
+
+	/**
 	 * List of prefixes in default actions list.
 	 * @var array
 	 */
@@ -531,6 +537,28 @@ class Sbc {
 		return $this->filesToBake;
 	}
 
+	/**
+	 * Returns the required files/dirs to copy
+	 * @return array
+	 */
+	public function getRequiredToBake() {
+		// Checking if this op has been done before
+		if (!is_array($this->requiredToBake)) {
+			$required = array();
+			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+				if ($pluginConfig['generate'] == true) {
+					foreach ($pluginConfig['required'] as $file => $fileConfig) {
+						if ($fileConfig['generate'] == true) {
+							$required[$plugin][] = $file;
+						}
+					}
+				}
+			}
+			$this->requiredToBake = $required;
+		}
+		return $this->requiredToBake;
+	}
+
 	// --------------------------------------------------------------------------
 	//
 	// Misc methods
@@ -859,10 +887,32 @@ class Sbc {
 					$this->log("Added $file", 'success', 4);
 				}
 				$this->log("Files population is over.", 'success', 3);
-				// Required files
-				// 
-				// @todo required files check
+
 				//
+				// Required files
+				//
+				$this->log("Populating required files...", 'info', 3);
+				foreach ($pluginConfig['required'] as $required => $requiredConfig) {
+					$pluginConfig['required'][$required] = $this->updateArray($this->config['defaults']['required'], $requiredConfig, true);
+					if (empty($pluginConfig['required'][$required]['type'])) {
+						$this->log("No file type set, removing $required from configuration.", 'error', 5);
+						unset($pluginConfig['required'][$required]);
+						$error = 1;
+					} elseif (empty($pluginConfig['required'][$required][$target])) {
+						$this->log("No target set, removing $required from configuration.", 'error', 5);
+						unset($pluginConfig['required'][$required]);
+						$error = 1;
+					} elseif (empty($pluginConfig['required'][$required][$source])) {
+						$this->log("No source set, removing $required from configuration.", 'error', 5);
+						unset($pluginConfig['required'][$required]);
+						$error = 1;
+					} else {
+						$error = 0;
+						$this->log("Added $file", 'success', 4);
+					}
+				}
+				$this->log("Files population is over.", 'success', 3);
+
 				// @todo maybe check the templates existence.
 				// 
 				$this->config['plugins'][$plugin] = $pluginConfig;

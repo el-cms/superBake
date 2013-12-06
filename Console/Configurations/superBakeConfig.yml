@@ -457,7 +457,7 @@ plugins:
         targetPath: View::Layouts
         targetFileName: admin
         ext: ctp
-        template: layouts::
+        template: layouts::admin
       AppController:
         targetPath: Controller
         targetFileName: AppController
@@ -469,7 +469,7 @@ plugins:
       css_addition:
         type: file
         source: style.css
-        target: webroot::css::additions.css
+        target: webroot::css::superBake.css
   ## --------------------------------------------------------------------------
   ##  Projects plugin
   ## ----------------------------

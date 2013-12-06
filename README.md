@@ -26,8 +26,9 @@ You can find a demo video on [youtube](https://www.youtube.com/watch?v=sP9WOk7qm
   1. Plugins: `./Console/cake Sb.Shell plugins`. Choose to update the bootstrap file.
   2. Models/Controllers and views: `./Console/cake Sb.Shell mvc`
   3. Menus: `./Console/cake Sb.Shell menus`
-  4. Additionnal files (custom layout, a css file, and AppController): `./Console/cake Sb.Shell files`
-  5. Refresh your browser.
+  4. Additionnal files (custom layout and AppController): `./Console/cake Sb.Shell files`
+  5. Required files (a css file): `./Console/cake Sb.Shell required`
+  6. Refresh your browser.
 
 ## What if it doesn't work as expected ?
 

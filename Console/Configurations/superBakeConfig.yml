@@ -129,17 +129,29 @@ defaults:
     ## This is the admin prefix
     admin:
       ## Index action
-      index: []
+      index:
+        view:
+          options:
+            noToolbar: false
       ## View action
-      view: []
+      view:
+        view:
+          options:
+            noToolbar: false
       ## Add action
-      add: []
+      add:
+        view:
+          options:
+            noToolbar: false
       ## Delete action
       delete:
         ## Delete has no view
         haveView: false
       ## Edit action
-      edit: []
+      edit:
+        view:
+          options:
+            noToolbar: false
   
   ##
   ## Default configuration for a controller
@@ -232,6 +244,8 @@ defaults:
     files: []
     ## required files/folders for this plugin
     required: []
+    ## options
+    options: []
   
   ##  
   ## Default configuration for a file

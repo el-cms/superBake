@@ -458,7 +458,7 @@ class Sbc {
 							if ($partConfig['controller']['generateViews'] == true) {
 								foreach ($partConfig['controller']['actions'] as $prefix => $actions) {
 									foreach ($actions as $action => $actionConfig) {
-										if ($actionConfig['haveView'] == true && $actionConfig['view']['generate'] == true) {
+										if ($actionConfig['haveView'] == true && (isset($actionConfig['view']['generate']) && $actionConfig['view']['generate'] == true)) {
 											$views[$tPlugin][$part][$prefix][] = $action;
 										}
 									}
@@ -620,6 +620,24 @@ class Sbc {
 	 */
 	public function actionAddPrefix($action, $prefix = null) {
 		return (($prefix == 'public' || is_null($prefix)) ? '' : $prefix . '_') . $action;
+	}
+
+	/**
+	 * Removes the prefix from an action name.
+	 * 
+	 * @param string $action prefixed_action
+	 * @return string action
+	 */
+	public function actionRemovePrefix($action) {
+		$actionArray = explode('_', $action);
+		$prefixes = $this->prefixesList();
+		// There's a prefix
+		if (count($actionArray) > 1 && in_array($actionArray[0], $prefixes)) {
+			unset($actionArray[0]);
+			return implode('_', $actionArray);
+		} else {
+			return $action;
+		}
 	}
 
 	/**
@@ -819,7 +837,10 @@ class Sbc {
 								$partConfig['controller']['actions'][$prefix][$action] = $this->updateArray($this->config['defaults']['action'], $actionConfig, true);
 								// Options from part
 								$partConfig['controller']['actions'][$prefix][$action]['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['options'], true);
+								
+								//
 								// View
+								//
 								if ($partConfig['controller']['actions'][$prefix][$action]['haveView'] === true) {
 									if (empty($actionConfig['view'])) {
 										$actionConfig['view'] = array();

@@ -824,7 +824,7 @@ class Sbc {
 									if (empty($actionConfig['view'])) {
 										$actionConfig['view'] = array();
 									}
-									$partConfig['controller']['actions'][$prefix][$action]['view'] = $this->updateArray($this->config['defaults']['view'], $actionConfig['view']);
+									$partConfig['controller']['actions'][$prefix][$action]['view'] = $this->updateArray($this->config['defaults']['view'], $actionConfig['view'], true);
 									// Options from part
 									$partConfig['controller']['actions'][$prefix][$action]['view']['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['view']['options'], true);
 								}

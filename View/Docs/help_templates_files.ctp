@@ -12,9 +12,6 @@ Templates for files are located in `<yourTemplate>/files`.
 ## files/layouts/
 Here are template layouts
 
-## files/css/
-Here are sample css
-
 ## files/AppController.ctp
 This is a parametric AppController in replacement of the default AppController.
 

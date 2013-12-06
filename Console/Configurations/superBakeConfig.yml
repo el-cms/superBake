@@ -280,7 +280,6 @@ defaults:
   ##
   ## Default configuration for a required file
   ## 
-  ## NOT YET IMPLEMENTED.
   required:
     ## Copy the files ?
     generate: true
@@ -293,6 +292,9 @@ defaults:
     ## List of tags to organize the files/folders.
     ## This is used during copy to copy only certain files with same tag.
     tags: []
+    ## For folders: Copy only the source content ?
+    ## If set to false, the source dir will be created too.
+    contentOnly: true
 
 #--------------------------------------------------------------------------
 #
@@ -455,24 +457,19 @@ plugins:
         targetPath: View::Layouts
         targetFileName: admin
         ext: ctp
-        template: layouts::admin
-      superBake_css:
-        targetPath: webroot::css
-        targetFileName: superBake
-        ext: css
-        template: css::test
+        template: layouts::
       AppController:
         targetPath: Controller
         targetFileName: AppController
         ext: php
         template: appController
-        options: []
+        options:
+          enableAcl: false
     required:
-      css:
-        source:
-        target:
-                
-
+      css_addition:
+        type: file
+        source: style.css
+        target: webroot::css::additions.css
   ## --------------------------------------------------------------------------
   ##  Projects plugin
   ## ----------------------------
@@ -491,11 +488,6 @@ plugins:
       ProjectStates:
       ## Tags associated to project
       ProjectTags:
-    menus:
-      test:
-        template: menu
-        targetFileName: test
-  
   
   ## --------------------------------------------------------------------------
   ##  Blog plugin

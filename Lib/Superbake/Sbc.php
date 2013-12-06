@@ -898,11 +898,11 @@ class Sbc {
 						$this->log("No file type set, removing $required from configuration.", 'error', 5);
 						unset($pluginConfig['required'][$required]);
 						$error = 1;
-					} elseif (empty($pluginConfig['required'][$required][$target])) {
+					} elseif (empty($pluginConfig['required'][$required]['target'])) {
 						$this->log("No target set, removing $required from configuration.", 'error', 5);
 						unset($pluginConfig['required'][$required]);
 						$error = 1;
-					} elseif (empty($pluginConfig['required'][$required][$source])) {
+					} elseif (empty($pluginConfig['required'][$required]['source'])) {
 						$this->log("No source set, removing $required from configuration.", 'error', 5);
 						unset($pluginConfig['required'][$required]);
 						$error = 1;

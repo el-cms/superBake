@@ -57,7 +57,7 @@ class ShellShell extends SbShell {
 	 *
 	 * @var array
 	 */
-	public $tasks = array('Sb.SuperModel', 'Sb.SuperController', 'Sb.SuperView', 'Sb.SuperPlugin', 'Sb.SuperFile');
+	public $tasks = array('Sb.SuperModel', 'Sb.SuperController', 'Sb.SuperView', 'Sb.SuperPlugin', 'Sb.SuperFile', 'Sb.SuperRequired');
 
 	/**
 	 * The connection being used.
@@ -157,7 +157,10 @@ class ShellShell extends SbShell {
 		$this->out('|  ' . __d('superBake', '    M[<bold>E</bold>]nus (Generates menus)'), 1, 0);
 		$this->out('|', 1, 0);
 		$this->out('+--[ <error>' . __d('superBake', 'Files') . '</error> ]', 1, 0);
-		$this->out('|  ' . __d('superBake', '    F[<bold>I</bold>]les (Generates files)'), 1, 0);
+		$this->out('|  ' . __d('superBake', '    [<bold>F</bold>]iles (Generates files)'), 1, 0);
+		$this->out('|', 1, 0);
+		$this->out('+--[ <error>' . __d('superBake', 'Required files') . '</error> ]', 1, 0);
+		$this->out('|  ' . __d('superBake', '    Required f[<bold>I</bold>]les (Copies files and dirs)'), 1, 0);
 		$this->out('|', 1, 0);
 		$this->out('+--[ <error>' . __d('superBake', 'Misc') . '</error> ]', 1, 0);
 		$this->out('|  ' . __d('superBake', '    Config [<bold>J</bold>]anitor (Cleans and fills your config. Outputs the result)'), 1, 0);
@@ -165,7 +168,7 @@ class ShellShell extends SbShell {
 		$this->out('|', 1, 0);
 		// Used letters (just for info):
 		// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-		// = = = = =   =   = =   = = = = = = = =     =        
+		// = = = = = = =   = =   = = = = = = = =     =        
 
 		$classToGenerate = strtoupper($this->in('+--> ' . __d('superBake', 'What would you like to generate ?'), array('A', 'B', 'C', 'D', 'E', 'G', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'V')));
 		switch ($classToGenerate) {
@@ -217,8 +220,12 @@ class ShellShell extends SbShell {
 				$this->Menus();
 				break;
 			// Files: ---------------------------------------------------------
-			case 'I': // All files
+			case 'F': // All files
 				$this->Files();
+				break;
+			// Required: ---------------------------------------------------------
+			case 'I': // All files
+				$this->Required();
 				break;
 			// Misc: ---------------------------------------------------------
 			case 'J': // Outputs a complete config.
@@ -785,6 +792,7 @@ class ShellShell extends SbShell {
 				$this->_menu($plugin, $menu);
 			}
 		}
+		$this->speak(__d('superBake', 'Menu generation complete'), 'success', 0, 2, 2);
 	}
 
 	/**
@@ -825,6 +833,7 @@ class ShellShell extends SbShell {
 				$this->_file($plugin, $file);
 			}
 		}
+		$this->speak(__d('superBake', 'Files generation complete'), 'success', 0, 2, 2);
 	}
 
 	/**
@@ -852,6 +861,36 @@ class ShellShell extends SbShell {
 		$this->SuperFile->execute();
 	}
 
+	public function Required(){
+		// Finds required sections
+		$this->speak(__d('superBake', 'Copying all required files'), 'info', 0, 2, 2);
+		$requiredList = $this->sbc->getRequiredToBake();
+		foreach ($requiredList as $plugin => $required) {
+			foreach ($required as $requiredFile) {
+				$this->speak(__d('superBake', 'Copying required file/folder %s...', $plugin . '.' . $requiredFile), 'info', 0, 1, 1);
+				$this->_required($plugin, $requiredFile);
+			}
+		}
+		$this->speak(__d('superBake', 'Files and folders copied.'), 'success', 0, 2, 2);
+	}
+	
+	private function _required($plugin, $required){
+		// Template to use
+		$this->SuperRequired->params['theme'] = $this->sbc->getConfig('general.template');
+
+		// SuperBake
+		$this->SuperRequired->sbc = $this->sbc;
+
+		// Plugin:
+		$this->SuperRequired->plugin = ($plugin == $this->sbc->getAppBase()) ? null : $plugin;
+
+		// Current file config
+		$this->SuperRequired->required = $this->sbc->getConfig('plugins.' . $plugin . ".required.$required");
+
+		// Execute generation
+		$this->SuperRequired->execute();
+		
+	}
 	/**
 	 * get the option parser.
 	 *
@@ -899,6 +938,12 @@ class ShellShell extends SbShell {
 						// Menus
 				))->addSubcommand('menus', array(
 					'help' => __d('superBake', 'Creates the menu file(s).'),
+						// Files
+				))->addSubcommand('files', array(
+					'help' => __d('superBake', 'Generates standalone files.'),
+						// Required
+				))->addSubcommand('required', array(
+					'help' => __d('superBake', 'Copies files and folders.'),
 		));
 	}
 

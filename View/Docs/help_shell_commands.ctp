@@ -67,7 +67,10 @@ Path: <em>pathToCake/</em>app/
 |      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell menus"></i> M[<strong>E</strong>]nus (Generates menus)
 |                                                               
 +--[ <span class="text-danger"><a href="#file_generation_section">Files</a></span> ]
-|      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell files"></i> F[<strong>I</strong>]les (Generates files)
+|      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell files"></i> [<strong>F</strong>]Iles (Generates files)
+|                                                               
++--[ <span class="text-danger"><a href="#required_generation_section">Required files</a></span> ]
+|      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell files"></i> Required f[<strong>I</strong>]les (Copies files and dirs)
 |                                                               
 +--[ <span class="text-danger"><a href="#misc_generation_section">Misc</a></span> ]
 |      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell janitor"></i> Config [<strong>J</strong>]anitor (Cleans and fills your config. Outputs the result)
@@ -114,19 +117,20 @@ Actions in this section creates things for every plugins:
 <a name="menu_generation_section"></a>
 ## Menus generation		 
 
- * `Sb.Shell menus` will generate all the menus
+ * `Sb.Shell menus` will generate all the menus.
  
 <a name="file_generation_section"></a>
 ## Standalone file generation
 
- * `Sb.Shell files` will generate all the standalone files
+ * `Sb.Shell files` will generate all the standalone files.
+
+<a name="required_generation_section"></a>
+## Copies files and folders
+
+ * `Sb.Shell required` will copy all the required files/folders.
 
 <a name="misc_generation_section"></a>
 ## Misc
 
 * `Sb.Shell janitor` will output the YAML array of your config file, fully populated. You can also find this in [the superBake GUI](../../sb/check). Lanched with the `-q` option and outputed to a file with the `> filename.yml` direction can be usefull to keep tracks of your different configurations and take parts from them.
-
-## Requirements
-
- * *Sorry, this is not available yet.*
  

@@ -396,4 +396,26 @@ menu:
 </pre>
 
 ## Required
-This section is empty for now. Required files are a concept and I must work on it
+
+This section describes the configuration for file requirements. 
+
+<pre class="syntax yaml">
+##
+## Default configuration for a required file
+## 
+required:
+  ## Copy the files ?
+  generate: true
+  ## Target file or folder
+  target:
+  ## Source file or folder
+  source:
+  ## Type: file or folder
+  type:
+  ## List of tags to organize the files/folders.
+  ## This is used during copy to copy only certain files with same tag.
+  tags: []
+  ## For folders: Copy only the source content ?
+  ## If set to false, the source dir will be created too.
+  contentOnly: true
+</pre>

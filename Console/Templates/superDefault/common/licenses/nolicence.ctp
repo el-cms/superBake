@@ -34,7 +34,7 @@
  *
  * ----
  * 
- *  This file is part of <?php echo $projectConfig['general']['basePackage'] ?>.
+ *  This file is part of <?php echo $this->sbc->getConfig('general.basePackage')?>.
  *
  *  There is no license for this file, feel free to do what you want with it.
  

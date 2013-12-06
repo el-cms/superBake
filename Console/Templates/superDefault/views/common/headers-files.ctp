@@ -2,7 +2,7 @@
 /**
  * PHP file for EL-CMS
  * 
- * This file mus be included once in all of your template views, as it defines
+ * This file mus be included once in all of your template files, as it defines
  * some vars used in the process (and creates the copyright header)
  * 
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
@@ -40,10 +40,7 @@ echo "<?php\n";
 ?>
 
 /**
-* app/<?php echo $com_plugin . 'View/' . $pluralVar . '/' . $action ?>.php
-* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo stripslashes(str_replace(dirname($template), '', $template)); ?>".
-*
-* This file contains the <?php echo $action ?> view for <?php echo $pluralVar ?> controller.
+* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake.
 * 
 * @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->sbc->getConfig('general.editorName') ?> (<?php echo $this->sbc->getConfig('general.editorWebsite') ?>)
 * @author        <?php echo $this->sbc->getConfig('general.editorName') ?> <<?php echo $this->sbc->getConfig('general.editorEmail')?>><?php echo "\n";?>

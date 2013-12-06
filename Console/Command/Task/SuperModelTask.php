@@ -286,10 +286,10 @@ class SuperModelTask extends BakeTask {
 		}
 
 		$associations = array(
-			'belongsTo' => array(),
-			'hasMany' => array(),
-			'hasOne' => array(),
-			'hasAndBelongsToMany' => array()
+				'belongsTo' => array(),
+				'hasMany' => array(),
+				'hasOne' => array(),
+				'hasAndBelongsToMany' => array()
 		);
 
 		$associations = $this->findBelongsTo($model, $associations);
@@ -315,15 +315,15 @@ class SuperModelTask extends BakeTask {
 			if ($fieldName != $model->primaryKey && $fieldName !== 'parent_id' && $offset !== false) {
 				$tmpModelName = $this->_modelNameFromKey($fieldName);
 				$associations['belongsTo'][] = array(
-					'alias' => $tmpModelName,
-					'className' => $tmpModelName,
-					'foreignKey' => $fieldName,
+						'alias' => $tmpModelName,
+						'className' => $tmpModelName,
+						'foreignKey' => $fieldName,
 				);
 			} elseif ($fieldName === 'parent_id') {
 				$associations['belongsTo'][] = array(
-					'alias' => 'Parent' . $model->name,
-					'className' => $model->name,
-					'foreignKey' => $fieldName,
+						'alias' => 'Parent' . $model->name,
+						'className' => $model->name,
+						'foreignKey' => $fieldName,
 				);
 			}
 		}
@@ -352,15 +352,15 @@ class SuperModelTask extends BakeTask {
 				$assoc = false;
 				if ($fieldName != $model->primaryKey && $fieldName == $foreignKey) {
 					$assoc = array(
-						'alias' => $tempOtherModel->name,
-						'className' => $tempOtherModel->name,
-						'foreignKey' => $fieldName
+							'alias' => $tempOtherModel->name,
+							'className' => $tempOtherModel->name,
+							'foreignKey' => $fieldName
 					);
 				} elseif ($otherTable == $model->table && $fieldName === 'parent_id') {
 					$assoc = array(
-						'alias' => 'Child' . $model->name,
-						'className' => $model->name,
-						'foreignKey' => $fieldName
+							'alias' => 'Child' . $model->name,
+							'className' => $model->name,
+							'foreignKey' => $fieldName
 					);
 				}
 				if ($assoc) {
@@ -394,11 +394,11 @@ class SuperModelTask extends BakeTask {
 			if ($tableName && in_array($tableName, $this->_tables)) {
 				$habtmName = $this->_modelName($tableName);
 				$associations['hasAndBelongsToMany'][] = array(
-					'alias' => $habtmName,
-					'className' => $habtmName,
-					'foreignKey' => $foreignKey,
-					'associationForeignKey' => $this->_modelKey($habtmName),
-					'joinTable' => $otherTable
+						'alias' => $habtmName,
+						'className' => $habtmName,
+						'foreignKey' => $foreignKey,
+						'associationForeignKey' => $this->_modelKey($habtmName),
+						'joinTable' => $otherTable
 				);
 			}
 		}
@@ -453,12 +453,12 @@ class SuperModelTask extends BakeTask {
 			$data['name'] = $name;
 		}
 		$defaults = array(
-			'associations' => array(),
-			'validate' => array(),
-			'primaryKey' => 'id',
-			'useTable' => null,
-			'useDbConfig' => 'default',
-			'displayField' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.displayField'),
+				'associations' => array(),
+				'validate' => array(),
+				'primaryKey' => 'id',
+				'useTable' => null,
+				'useDbConfig' => 'default',
+				'displayField' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.displayField'),
 		);
 		$data = array_merge($defaults, $data);
 		$pluginPath = '';
@@ -471,17 +471,17 @@ class SuperModelTask extends BakeTask {
 			$this->Template->set($option, $value);
 		}
 
+		//Sbc
+		$this->Template->sbc = $this->sbc;
 		$this->Template->set($data);
 		$this->Template->set(array(
-			'plugin' => $this->plugin,
-			'pluginPath' => $pluginPath,
-			'theme' => $this->params['theme'],
-			// Part name
-			'part' => $this->currentPart,
-			// Entire model config for a quicker access in templates
-			'modelConfig' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model'),
-			// Sbc object
-			'sbc' => $this->sbc,
+				'plugin' => $this->plugin,
+				'pluginPath' => $pluginPath,
+				'theme' => $this->params['theme'],
+				// Part name
+				'part' => $this->currentPart,
+				// Entire model config for a quicker access in templates
+				'modelConfig' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model'),
 		));
 
 		$out = $this->Template->generate('classes', 'model');

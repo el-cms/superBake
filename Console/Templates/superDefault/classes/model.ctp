@@ -47,13 +47,13 @@ echo "<?php\n";
 *
 * This file contains the <?php echo $name ?> model.
 * 
-* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $sbc->getConfig('general.editorName') ?> (<?php echo $sbc->getConfig('general.editorWebsite') ?>)
-* @author        <?php echo $sbc->getConfig('general.editorName') ?> <<?php echo $sbc->getConfig('general.editorEmail') ?>>
-* @link          <?php echo $sbc->getConfig('general.editorWebsite') ?> <?php echo $sbc->getConfig('general.editorWebsiteName') . "\n" ?>
-* @package       <?php echo $sbc->getConfig('general.basePackage') ?>/<?php echo $plugin . "\n" ?>
+* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->sbc->getConfig('general.editorName') ?> (<?php echo $this->sbc->getConfig('general.editorWebsite') ?>)
+* @author        <?php echo $this->sbc->getConfig('general.editorName') ?> <<?php echo $this->sbc->getConfig('general.editorEmail') ?>>
+* @link          <?php echo $this->sbc->getConfig('general.editorWebsite') ?> <?php echo $this->sbc->getConfig('general.editorWebsiteName') . "\n" ?>
+* @package       <?php echo $this->sbc->getConfig('general.basePackage') ?>/<?php echo $plugin . "\n" ?>
 *
 <?php
-$licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
+$licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $this->sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
 if (file_exists($licenseTemplate)) {
 	include($licenseTemplate);
 } else {
@@ -186,8 +186,8 @@ foreach (array('hasOne', 'belongsTo') as $assocType):
 		echo "\n/**\n * $assocType associations\n *\n * @var array\n */";
 		echo "\n\tpublic \$$assocType = array(";
 		foreach ($associations[$assocType] as $i => $relation):
-			$relationPlugin = $sbc->getModelPlugin($relation['className']);
-			if ($relationPlugin != $sbc->getAppBase()) {
+			$relationPlugin = $this->sbc->getModelPlugin($relation['className']);
+			if ($relationPlugin != $this->sbc->getAppBase()) {
 				$relationFullName = $relationPlugin . '.' . $relation['className'];
 			} else {
 				$relationFullName = $relation['className'];
@@ -214,8 +214,8 @@ if (!empty($associations['hasMany'])):
 	echo "\n/**\n * hasMany associations\n *\n * @var array\n */";
 	echo "\n\tpublic \$hasMany = array(";
 	foreach ($associations['hasMany'] as $i => $relation):
-		$relationPlugin = $sbc->getModelPlugin($relation['className']);
-		if ($relationPlugin != $sbc->getAppBase()) {
+		$relationPlugin = $this->sbc->getModelPlugin($relation['className']);
+		if ($relationPlugin != $this->sbc->getAppBase()) {
 			$relationFullName = $relationPlugin . '.' . $relation['className'];
 		} else {
 			$relationFullName = $relation['className'];
@@ -246,8 +246,8 @@ if (!empty($associations['hasAndBelongsToMany'])):
 	echo "\n/**\n * hasAndBelongsToMany associations\n *\n * @var array\n */";
 	echo "\n\tpublic \$hasAndBelongsToMany = array(";
 	foreach ($associations['hasAndBelongsToMany'] as $i => $relation):
-		$relationPlugin = $sbc->getModelPlugin($relation['className']);
-		if ($relationPlugin != $sbc->getAppBase()) {
+		$relationPlugin = $this->sbc->getModelPlugin($relation['className']);
+		if ($relationPlugin != $this->sbc->getAppBase()) {
 			$relationFullName = $relationPlugin . '.' . $relation['className'];
 		} else {
 			$relationFullName = $relation['className'];

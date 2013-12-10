@@ -45,14 +45,14 @@ $compact = array(); ?>
 			$this->request->data['<?php echo $currentModelName ?>']['status'] = 1;
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(<?php echo $this->iString('Your account has been sucessfully created. Please log in.')?>);
+				<?php echo $this->setFlash('Your account has been successfully created. Please log in', 'success');?>
 				$this->redirect(<?php echo $this->url('login',$controllerName)?>);
 <?php else: ?>
 				$this->flash(<?php echo $this->iString('Your account has been sucessfully created. Please log in.')?>, <?php echo $this->url('login', $controllerName)?>);
 <?php endif; ?>
 			} else {
 <?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(<?php echo $this->iString('Your account could not be created. Please, try again.')?>);
+				<?php echo $this->setFlash('Your account could not be created. Please try again', 'error');?>
 <?php endif; ?>
 			}
 		}

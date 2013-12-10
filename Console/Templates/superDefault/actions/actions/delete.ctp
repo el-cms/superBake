@@ -50,14 +50,14 @@
 		$this->request->onlyAllow('post', 'delete');
 		if ($this-><?php echo $currentModelName; ?>->delete()) {
 <?php if ($wannaUseSession): ?>
-			$this->Session->setFlash(<?php echo $this->iString(ucfirst(strtolower($singularHumanName)).' deleted')?>);
+			<?php echo $this->setFlash(ucfirst(strtolower($singularHumanName)).' deleted', 'success');?>
 			$this->redirect(<?php echo $this->url('index', $controllerName)?>);
 <?php else: ?>
 			$this->flash(<?php echo $this->iString(ucfirst(strtolower($singularHumanName)).' deleted')?>, <?php echo $this->url('index', $controllerName)?>);
 <?php endif; ?>
 		}
 <?php if ($wannaUseSession): ?>
-		$this->Session->setFlash(<?php echo $this->iString(ucfirst(strtolower($singularHumanName)).' was not deleted')?>);
+		<?php echo $this->setFlash(ucfirst(strtolower($singularHumanName)).' was not deleted', 'error');?>
 <?php else: ?>
 		$this->flash(<?php echo $this->iString(ucfirst(strtolower($singularHumanName)).' was not deleted')?> , <?php echo $this->url('index', $controllerName)?>);
 <?php endif; ?>

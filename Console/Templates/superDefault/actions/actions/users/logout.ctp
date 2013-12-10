@@ -36,6 +36,6 @@
 	 * This methods logs an user out of the system
 	 */
 	public function <?php echo $admin.$a ?>() {
-		$this->Session->setFlash(<?php echo $this->iString('You are disconnected')?>);
+		<?php echo $this->setFlash('You are now disconnected', 'info');?>
 		$this->redirect($this->Auth->logout());
 	}

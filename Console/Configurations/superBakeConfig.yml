@@ -64,7 +64,15 @@ general:
   editorLicenseTemplate: gpl3
   ## Package name
   basePackage: BR
-  
+
+#--------------------------------------------------------------------------
+#
+# Global options for the theme
+# Here you can set settings for global behaviour
+#
+#--------------------------------------------------------------------------
+theme:
+
 #--------------------------------------------------------------------------
 #
 # Default values.
@@ -87,7 +95,11 @@ defaults:
     options:
       hiddenFields:
         password
-        username
+      unSortableFields:
+        id
+      hasMany_hiddenModelFields:
+        Users:
+          password
   
   ##
   ## This is a default action

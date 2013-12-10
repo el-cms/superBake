@@ -152,23 +152,22 @@ if (!isset($options['fileField'])) {
 						$thumb = new SimpleImage;
 						// loading uploaded image
 						if (!$thumb->load($file['tmp_name'])) {
-							$this->Session->setFlash(<?php echo $this->iString('Image cannot be opened. Please try again.')?>);
+							<?php echo $this->setFlash('Image cannot be opened. Please try again', 'error');?>
 							$this->redirect(<?php echo $this->url('add')?>);
 						}
 						<?php
 						// Must we create thumbnail ?
-						if(!empty($fileField['thumbs'])): ?>
+						if(isset($fileField['thumbs'])): ?>
 						// Thumb width
 						$thumb->resizeToWidth(<?php echo $fileField['thumbWidth']?>);
 						
 						// Saving thumbnail
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs'], true)?>' . $filename)) {
-							$this->Session->setFlash(<?php echo $this->iString('The thumbnail cannot be saved.')?>);
+							<?php echo $this->setFlash('The thumbnail cannot be saved.', 'error');?>
 							$this->redirect(<?php echo $this->url('add')?>);
 						}
 						
 						// Following lines are an example of croping for square thumbs
-						// Croping and saving image for square thumbs
 						// For cropping, we need to use an image larger as the previous thumb.
 						// So we reset the image to original. No need to do this if you want to create
 						// a cropped thumb smaller than the previous one.
@@ -178,7 +177,7 @@ if (!isset($options['fileField'])) {
 						// If final thumb isn't good for you, you can downsize image before croping it
 						$thumb->centerCrop(<?php echo $fileField['thumbWidth']?>, <?php echo $fileField['thumbWidth']?>);
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs']."::${fileField['thumbWidth']}x${fileField['thumbWidth']}", true)?>' . $filename)) {
-							$this->Session->setFlash(<?php echo $this->iString('The square thumbnail cannot be saved.')?>);
+							<?php echo $this->setFlash('The square thumb cannot be saved', 'error');?>
 							$this->redirect(<?php echo $this->url('add')?>);
 						}*/
 						<?php endif; ?>
@@ -190,7 +189,7 @@ if (!isset($options['fileField'])) {
 						
 						// Saving file
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'], true)?>' . $filename)) {
-							$this->Session->setFlash(<?php echo $this->iString('The file cannot be saved.')?>);
+							<?php echo $this->setFlash('The file cannot be saved.', 'error');?>
 							$this->redirect(<?php echo $this->url('add')?>);
 						}
 						<?php
@@ -206,25 +205,26 @@ if (!isset($options['fileField'])) {
 					$this->request->data['<?php echo $currentModelName;?>']['<?php echo $fileField['name']?>'] = $filename;
 				} else {
 					// An error has occured
-					$this->Session->setFlash(<?php echo $this->iString('Wrong file extension. Allowed extensions are: %s.', $fileExtsString)?>);
+					<?php /*$this->Session->setFlash(<?php echo $this->iString('Wrong file extension. Allowed extensions are: %s.', $fileExtsString)?>);*/ ?>
+					<?php echo $this->setFlash('Wrong file extension. Allowed extensions are $fileString', 'warning');?>
 					$this->redirect(array('admin' => 'admin_', 'plugin' => 'gallery', 'controller' => 'gallery_items', 'action' => 'index'));
 				}
 			}else {
-				$this->Session->setFlash(<?php echo $this->iString('No file has been uploaded') ?>);
+				<?php echo $this->setFlash('No file has been uploaded', 'error');?>
 				$this->redirect(array('admin' => 'admin_', 'plugin' => 'resellers', 'controller' => 'sellers', 'action' => 'index'));
 			}
 
 		 <?php endif;?>
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 			<?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(<?php echo $this->iString('The ' . strtolower($singularHumanName) . ' has been saved') ?>);
+				<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' has been saved', 'success');?>
 				$this->redirect(<?php echo $this->url('index', $controllerName) ?>);
 			<?php else: ?>
 				$this->flash(<?php echo $this->iString(ucfirst(strtolower($currentModelName)) . ' saved.') ?>, <?php echo $this->url('index', $controllerName) ?>);
 			<?php endif; ?>
 			} else {
 			<?php if ($wannaUseSession): ?>
-				$this->Session->setFlash(<?php echo $this->iString('The ' . strtolower($singularHumanName) . ' could not be saved. Please, try again.') ?>);
+				<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' could not be saved. Please try again.', 'error');?>
 			<?php endif; ?>
 			}
 		}

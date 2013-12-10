@@ -33,15 +33,6 @@ if (!isset($hasRegister)) {
 ?>
 
 <div>
-	<?php
-	if ($hasRegister === true) {
-		?>
-		<div>
-			<h2><?php echo "<?php echo __('Register');?>" ?></h2>
-		</div>
-		<?php
-	}
-	?>
 	<div>
 			<?php echo "<?php echo \$this->Form->create('User'); ?>"; ?>
 			<legend><?php echo "<?php echo __('Please, sign in');?>" ?></legend>
@@ -52,6 +43,5 @@ if (!isset($hasRegister)) {
 			?>\n";?>
 			</div>
 			<?php echo "<?php echo \$this->Form->end(array('label' => __('Login'))); ?>\n" ?>
-		</div>
 	</div>
 </div>

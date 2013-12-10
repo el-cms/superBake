@@ -20,12 +20,11 @@ If all your controllers need one of these, define it in the defaults.
 ##
 [...]
   controller:
-    options:
-      libraries:
-        Yaml: Spyc
-        ## this will generate
-        ## app::uses('Spyc', 'Yaml');
-        ## in the controller
+    libraries:
+      Yaml: Spyc
+      ## this will generate
+      ## app::uses('Spyc', 'Yaml');
+      ## in the controller
 </pre>
 
 ## Actions templates

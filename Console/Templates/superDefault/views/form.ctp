@@ -38,6 +38,7 @@ include($themePath . 'views/common/headers.ctp');
 if (!isset($additionnalCSS) || !is_array($additionnalCSS)) {
 	$additionnalCSS = array();
 }
+
 // Additionnal JS
 if (!isset($additionnalJS) || !is_array($additionnalJS)) {
 	$additionnalJS = array();

@@ -50,10 +50,10 @@
 		App::uses('String', 'Utility');
 
 		# empty password -> do not update
-		if (empty($this->data['<?php echo $name ?>']['<?php echo $options['passField'] ?>'])) {
-			unset($this->data['<?php echo $name ?>']['<?php echo $options['passField'] ?>']);
+		if (empty($this->data['<?php echo $name ?>']['<?php echo $passField ?>'])) {
+			unset($this->data['<?php echo $name ?>']['<?php echo $passField ?>']);
 		} else {
-			$this->data['<?php echo $name ?>']['<?php echo $options['passField'] ?>'] = Security::hash($this->data['<?php echo $name ?>']['<?php echo $options['passField'] ?>'], null, true);
+			$this->data['<?php echo $name ?>']['<?php echo $passField ?>'] = Security::hash($this->data['<?php echo $name ?>']['<?php echo $passField ?>'], null, true);
 		}
 		#@todo : See things about <?php echo $name ?>.key...
 		//$this->data['<?php echo $name ?>']['key'] = String::uuid();
@@ -68,7 +68,7 @@
 	 */
 	public function beforeValidate($options = array()) {
 		if (isset($this->data['<?php echo $name ?>']['id'])) {
-			$this->validate['<?php echo $options['passField'] ?>']['allowEmpty'] = true;
+			$this->validate['<?php echo $passField ?>']['allowEmpty'] = true;
 		}
 
 		return true;
@@ -80,24 +80,24 @@
 	 * @return boolean
 	 */
 	public function comparePwd($check) {
-		$check['<?php echo $options['passField'] ?>'] = trim($check['<?php echo $options['passField'] ?>']);
+		$check['<?php echo $passField ?>'] = trim($check['<?php echo $passField ?>']);
 
 		// User id not set, so we should be on an 'add' action
-		if (!isset($this->data['<?php echo $name ?>']['id']) && strlen($check['<?php echo $options['passField'] ?>']) < 6) {
+		if (!isset($this->data['<?php echo $name ?>']['id']) && strlen($check['<?php echo $passField ?>']) < 6) {
 			return false;
 		}
 
 		// User id set, we should be on an 'update' action
 		// User id set, AND
 		// empty password OR empty password2 (as browsers can autofill password field)
-		if (isset($this->data['<?php echo $name ?>']['id']) && (empty($check['<?php echo $options['passField'] ?>']) || empty($check['<?php echo $options['passCheckField'] ?>']))) {
+		if (isset($this->data['<?php echo $name ?>']['id']) && (empty($check['<?php echo $passField ?>']) || empty($check['<?php echo $passCheckField ?>']))) {
 			return true;
 		}
 
-		$r = ($check['<?php echo $options['passField'] ?>'] == $this->data['<?php echo $name ?>']['<?php echo $options['passCheckField'] ?>'] && strlen($check['<?php echo $options['passField'] ?>']) >= 6);
+		$r = ($check['<?php echo $passField ?>'] == $this->data['<?php echo $name ?>']['<?php echo $passCheckField ?>'] && strlen($check['<?php echo $passField ?>']) >= 6);
 
 		//if (!$r) {
-		//	$this->invalidate('<?php echo $options['passCheckField'] ?>', __d('user', 'Passwords missmatch.'));
+		//	$this->invalidate('<?php echo $passCheckField ?>', __d('user', 'Passwords missmatch.'));
 		//}
 
 		return $r;

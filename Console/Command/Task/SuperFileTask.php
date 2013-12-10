@@ -108,6 +108,13 @@ class SuperFileTask extends BakeTask {
 	 * @return mixed
 	 */
 	public function execute() {
+		// Dirty inclusion of the theme class that may contain logic to create HTML elements
+		$themeClass = $this->Template->getThemePath() . DS . 'theme.php';
+		if (!file_exists($themeClass)) {
+			$this->speak(__d('superBake', 'The current theme has no theme class. It is not necessary, but can help...'), 'warning', 1);
+		} else {
+			include_once($this->Template->getThemePath() . DS . 'theme.php');
+		}
 		// Generating content
 		$content = $this->getContent($this->currentFileConfig['template']);
 		if ($content) {

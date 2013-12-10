@@ -247,6 +247,10 @@ class SbShell extends AppShell {
 		}
 		return $url . ')';
 	}
+	
+	public function setFlash($content, $class){
+		return "\$this->Session->setFlash(".$this->iString($content).(($this->sbc->getConfig('theme.flashMessageElement') == true) ? ", 'flash_$class'" : '').");\n";
+	}
 
 	/**
 	 * Cleans a plugin name: remove the dot and keep the plugin

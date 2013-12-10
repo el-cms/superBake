@@ -732,7 +732,7 @@ class Sbc {
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
 					$this->log("Populating part \"<strong>$part</strong>\"", 'info', 4);
 					// Merge part with defaults
-					$partConfig = $this->updateArray($this->config['defaults']['part'], $partConfig);
+					$partConfig = $this->updateArray($this->config['defaults']['part'], $partConfig, true);
 
 					//
 					// Model

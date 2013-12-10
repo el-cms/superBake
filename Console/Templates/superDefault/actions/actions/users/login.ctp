@@ -35,28 +35,30 @@
 $strippedPrefix = str_replace('_', '', $admin);
 
 //Layout
-$layout=$this->sbc->getConfig('plugins.'.$this->sbc->pluginName($plugin).".parts.$currentPart.controller.actions.$strippedPrefix.$a.options.publicLayout");
-
-
+if(!isset($layout)){
+	$layout=null;
+}
+//$layout = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($plugin) . ".parts.$currentPart.controller.actions.$strippedPrefix.$a.options.publicLayout");
 ?>
 
 /**
 * This method logs an user in the ACL system
 */
 public function <?php echo $admin . $a ?>() {
-<?php if (!empty($layout)) {
+<?php
+if (!is_null($layout)) {
 	echo "\$this->layout = $layout;\n";
-} ?>
-if(is_array($this->Auth->User)){
-$this->Session->setFlash(__('You are already logged in'));
-$this->Flash->redirect('/');
-}
-if ($this->request->is('post')) {
-if ($this->Auth->login()) {
-$this->Session->setFlash(<?php echo $this->iString('You are now connected') ?>);
-$this->redirect($this->Auth->redirect());
-} else {
-$this->Session->setFlash(<?php echo $this->iString('Your username or password was incorrect.') ?>);
-}
-}
-}
+}?>
+		if(is_array($this->Auth->User)){
+			<?php echo $this->setFlash('You are already logged in', 'info');?>
+			$this->Flash->redirect('/');
+		}
+			if ($this->request->is('post')) {
+			if ($this->Auth->login()) {
+			<?php echo $this->setFlash('You are now connected', 'success');?>
+			$this->redirect($this->Auth->redirect());
+			} else {
+				<?php echo $this->setFlash('Your username or password was incorrect', 'error');?>
+			}
+		}
+	}

@@ -1,15 +1,30 @@
 <?php
+App::uses('Spyc', 'Sb.Yaml');
+App::uses('Sbc', 'Sb.Superbake');
+App::uses('Folder', 'Utility');
 
-app::uses('Spyc', 'Sb.Yaml');
-app::uses('Sbc', 'Sb.Superbake');
-app::uses('Folder', 'Utility');
-
+/**
+ * Sb Controller
+ *
+ * @property Sb $Sb
+ */
 class SbController extends SbAppController {
 
+/**
+ * index method
+ *
+ * @return void
+ */
 	public function index() {
 		
 	}
 
+/**
+ * _selectConfigFile method
+ *
+ * @access private
+ * @return void
+ */
 	private function _selectConfigFile() {
 		$sbc = new Sbc();
 
@@ -18,13 +33,13 @@ class SbController extends SbAppController {
 		} else {
 			$fileToLoad = Configure::read('Sb.defaultConfig');
 		}
-// Find the different configuration files
+		// Find the different configuration files
 		$configFolder = new Folder($sbc->getConfigPath());
 
-// Loads the file
+		// Loads the file
 		$sbc->loadFile($fileToLoad);
 
-// Giving the array to view
+		// Giving the array to view
 		$this->set('configFiles', $configFolder->find('(.*)\.yml', true));
 		$this->set('configFile', $fileToLoad);
 		$this->set('configFileDescription', $sbc->getConfig('description'));
@@ -35,14 +50,24 @@ class SbController extends SbAppController {
 		return $sbc;
 	}
 
+/**
+ * check method
+ *
+ * @return void
+ */
 	public function check() {
 		$sbc = $this->_selectConfigFile();
 		$this->set('completeConfig', Spyc::YAMLDump($sbc->getConfig()));
 	}
 
+/**
+ * tree method
+ *
+ * @return void
+ */
 	public function tree() {
 		$sbc = $this->_selectConfigFile();
-// Prefixes and actions list:
+		// Prefixes and actions list:
 		$defaults_prefixes_list = '';
 		foreach ($sbc->getConfig('defaults.actions') as $prefix => $action) {
 			$defaults_prefixes_list.=$prefix . ', ';
@@ -51,6 +76,11 @@ class SbController extends SbAppController {
 		$this->set('completeConfig', $sbc->getConfig());
 	}
 
+/**
+ * arraymerge method
+ *
+ * @return void
+ */
 	public function arraymerge() {
 		$result = '';
 		if ($this->request->is('post')) {

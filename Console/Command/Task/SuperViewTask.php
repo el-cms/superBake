@@ -109,6 +109,13 @@ class SuperViewTask extends BakeTask {
 	public $currentPrefix;
 
 	/**
+	 * List of options defined by the config files that should be accessible in view.
+	 * This list is here to clear these variables after the view generation, so they are not
+	 * passed through different views.
+	 * @var array
+	 */
+	public $templateOptions=array();
+	/**
 	 * Override initialize
 	 *
 	 * @return void
@@ -267,6 +274,7 @@ class SuperViewTask extends BakeTask {
 		$currentViewConfig = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . ((is_null($this->currentPrefix)) ? 'public' : $this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.options');
 		foreach ($currentViewConfig as $k => $v) {
 			$this->Template->set($k, $v);
+			$this->templateOptions[]=$k;
 		}
 		// Vars
 		$this->Template->set($vars);
@@ -274,7 +282,14 @@ class SuperViewTask extends BakeTask {
 		$template = $this->getTemplate($action);
 		$this->Template->set('template', $template);
 		if ($template) {
-			return $this->Template->generate('views', $template);
+			// Generate the content
+			$generatedContent= $this->Template->generate('views', $template);
+			// Clear template options
+			foreach($this->templateOptions as $k){
+				unset($this->Template->templateVars[$k]);
+			}
+			// Returning result.
+			return $generatedContent;
 		}
 
 		return false;

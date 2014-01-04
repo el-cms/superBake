@@ -2,7 +2,7 @@
 
 /**
  * SuperBake Shell script - SbShell - Contains methods used by superBake tasks
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
@@ -10,22 +10,22 @@
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @version       0.3
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 // Yaml
 App::uses('Spyc', 'Sb.Yaml');
@@ -45,14 +45,14 @@ class SbShell extends AppShell {
 
 	/**
 	 * A Sbc instance that gives all the methods to handle the config file.
-	 * 
+	 *
 	 * @var object sbc
 	 */
 	public $sbc;
 
 	/**
 	 * Method executed if the shell is executed by command line (cake superApp)
-	 * 
+	 *
 	 * As this file contains only shared methods with SuperBake commands and tasks,
 	 * this does nothing and exits.
 	 */
@@ -60,6 +60,31 @@ class SbShell extends AppShell {
 		$this->out('This is not a shell, sorry');
 		$this->_stop();
 	}
+
+	/**
+	 * Returns an action's prefix.
+	 * @param string $action Action to check
+	 * @return string Action prefix, null if none
+	 */
+	public function getActionPrefix($action){
+		$array=explode('_', $action);
+		if(count($array)>1){
+			if(in_array($array[0], $this->sbc->prefixesList())){
+				return $array[0];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns an action name, without its prefix.
+	 * @param string $action Action name
+	 * @return string
+	 */
+	public function getActionName($action){
+		return $this->sbc->actionRemovePrefix($action);
+	}
+
 
 	/**
 	 * Makes a config path value (path::to::file)
@@ -78,11 +103,11 @@ class SbShell extends AppShell {
 	/**
 	 * Returns true if an $action exists for the given $prefix/$controller
 	 * Use this to check links in templates
-	 * 
+	 *
 	 * @param string $action The action to check
 	 * @param string $prefix The prefix. If null, current prefix will be used
 	 * @param string $controller The controller, underscored_name. If null, current controller will be used.
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function canDo($action, $prefix = null, $controller = null) {
@@ -92,11 +117,11 @@ class SbShell extends AppShell {
 	/**
 	 * Returns a correct __(...) or __d(...) statement. If plugin is provided, will use
 	 * plugin as domain; If no plugin is provided, the current plugin will be used.
-	 * 
+	 *
 	 * @param string $string String to display.
 	 * @param string $args String array of args
 	 * @param string $plugin Plugin name.
-	 * 
+	 *
 	 * @return string Ready to use string.
 	 */
 	public function iString($string, $args = null, $plugin = null) {
@@ -131,10 +156,10 @@ class SbShell extends AppShell {
 
 	/**
 	 * Creates a pretty output
-	 * 
+	 *
 	 * If $decorations > 0, output will have an opening HR
 	 * If $decorations >= 2, output will have a closing HR
-	 * 
+	 *
 	 * @param mixed $text String to output, or array of strings.
 	 * @param string $class Class (info|warning|error|success|comment|bold)
 	 * @param int $force 1 for Normal, 2 for Verbose only and 0 for Quiet shells. Use 4 for debugs (you must set $this->debug=1 somewhere)
@@ -207,11 +232,11 @@ class SbShell extends AppShell {
 	}
 
 	/**
-	 * This function create a link array for controllers/views, taking in account of 
+	 * This function create a link array for controllers/views, taking in account of
 	 * the admin state and if the controller is in a plugin or not (and wich).
 	 * Behavior:
 	 *  - if $prefix is empty, current routing prefix will be used
-	 * 
+	 *
 	 * @param string $action	The target action
 	 * @param string $controller	Target controller (MUST be given to find good plugin)
 	 * @param array  $options		An array of options
@@ -247,14 +272,14 @@ class SbShell extends AppShell {
 		}
 		return $url . ')';
 	}
-	
+
 	public function setFlash($content, $class){
 		return "\$this->Session->setFlash(".$this->iString($content).(($this->sbc->getConfig('theme.flashMessageElement') == true) ? ", 'flash_$class'" : '').");\n";
 	}
 
 	/**
 	 * Cleans a plugin name: remove the dot and keep the plugin
-	 * 
+	 *
 	 * @param string $plugin Plugin to check
 	 * @return string
 	 */
@@ -262,4 +287,10 @@ class SbShell extends AppShell {
 		return (preg_match('/(.*)\.$/', $plugin)) ? rtrim($plugin, '.') : $plugin;
 	}
 
+	public function getControllerPluginName($underscored_controller_name){
+		$controller=  Inflector::camelize($underscored_controller_name);
+		$plugin_name=$this->sbc->getControllerPlugin($controller);
+		$plugin=($plugin_name==$this->sbc->getAppBase())? null:$plugin_name;
+		return Inflector::underscore($plugin);
+	}
 }

@@ -136,6 +136,7 @@ class ShellShell extends SbShell {
 		$this->out('|  ' . __d('superBake', '    [<bold>C</bold>]ontrollers (Generates all controllers)'), 1, 0);
 		$this->out('|  ' . __d('superBake', '    [<bold>V</bold>]iews (Generates all views)'), 1, 0);
 		$this->out('|  ' . __d('superBake', '    [<bold>A</bold>]ll (Models, Controllers and Views)'), 1, 0);
+		$this->out('|  ' . __d('superBake', '    Risk[<bold>Y</bold>] (Models, Controllers, Views, Menus, Files and copy required.)'), 1, 0);
 		$this->out('|', 1, 0);
 		$this->out('+--[ <error>' . __d('superBake', 'Model generation') . '</error> ]', 1, 0);
 		$this->out('|  ' . __d('superBake', '    One plugin mo[<bold>D</bold>]els (All models for a specific plugin)'), 1, 0);
@@ -168,9 +169,9 @@ class ShellShell extends SbShell {
 		$this->out('|', 1, 0);
 		// Used letters (just for info):
 		// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-		// = = = = = = =   = =   = = = = = = = =     =        
+		// = = = = = = =   = =   = = = = = = = =     =     =  
 
-		$classToGenerate = strtoupper($this->in('+--> ' . __d('superBake', 'What would you like to generate ?'), array('A', 'B', 'C', 'D', 'E', 'G', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'V')));
+		$classToGenerate = strtoupper($this->in('+--> ' . __d('superBake', 'What would you like to generate ?'), array('A', 'B', 'C', 'D', 'E', 'G', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'Y')));
 		switch ($classToGenerate) {
 			// Plugins: -------------------------------------------------------
 			case 'P': // Plugin structures
@@ -187,6 +188,9 @@ class ShellShell extends SbShell {
 				break;
 			case 'A': // MVC
 				$this->MVC();
+				break;
+			case 'Y': // Risky
+				$this->All();
 				break;
 			case 'S': // MVC of a given plugin
 				$this->pluginMVC();
@@ -243,10 +247,10 @@ class ShellShell extends SbShell {
 	}
 
 	/**
-	 * Generates Models, Controllers and Views for every plugins.
+	 * Generates models, views, controllers, menus, files and copies the required files.
 	 * 
 	 * Command line access:
-	 *  $ cake Sb.Shell MVC
+	 *  $ cake Sb.Shell all
 	 */
 	public function MVC() {
 		$this->speak(__d('superBake', 'Generating Models, Controllers and Views for ALL plugins.'), 'info', 0, 2, 2);
@@ -255,7 +259,24 @@ class ShellShell extends SbShell {
 		$this->Views();
 		$this->speak(__d('superBake', 'MVC generation complete.'), 'success', 0, 2, 2);
 	}
-
+	/**
+	 * Generates a controller from a plugin
+	 * 
+	 * Command line access :
+	 *  $ cake Sb.Shell controller
+	 *  $ cake Sb.Shell controller PluginName.ControllerName
+	 * 
+	 */
+	public function All() {
+		$this->speak(__d('superBake', 'models, views, controllers, menus, files and copying required stuff'), 'info', 0, 2, 2);
+		$this->Models();
+		$this->Controllers();
+		$this->Views();
+		$this->Menus();
+		$this->Files();
+		$this->Required();
+		$this->speak(__d('superBake', 'Generation complete.'), 'success', 0, 2, 2);
+	}
 	/**
 	 * Generates Models, Controllers and Views for a given plugin
 	 * 
@@ -909,6 +930,8 @@ class ShellShell extends SbShell {
 					'help' => __d('superBake', 'Creates all the plugins directories skeletons.'),
 				))->addSubcommand('mvc', array(
 					'help' => __d('superBake', 'Bakes all Models/Controllers/Views, in their specific plugin dirs.'),
+				))->addSubcommand('all', array(
+					'help' => __d('superBake', 'Bakes all Models/Controllers/Views/menus/files, in their specific plugin dirs, and copies required files. Use with care.'),
 				))->addSubcommand('models', array(
 					'help' => __d('superBake', 'Bakes all the models, in their specfic plugin dir.'),
 				))->addSubcommand('controllers', array(

@@ -118,7 +118,30 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 		endfor;
 		echo ");\n\n";
 	endif;
-
+  
+	//
+	// beforeFilter Method
+	// 
+	$beforeFilterContent='';
+	if ($this->sbc->getConfig('general.enableAcl') == true) {
+		// Load actions to bake.
+		$actionsToBake = $this->sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, 'public');
+		if (count($actionsToBake) > 0) {
+			foreach ($actionsToBake as $a=>$aConf) {
+				$bFActions[]="'$a'";
+			}
+			$beforeFilterContent.="\$this->Auth->allow(".  implode(',', $bFActions).");\n";
+		}
+	}
+	if(!empty($beforeFilterContent)){
+	?>
+	public function beforeFilter() {
+		parent::beforeFilter();
+		<?php echo $beforeFilterContent ?>
+	}
+	
+	<?php
+	}
 	echo "\t" . trim($actions) . "\n";
 
 ?>

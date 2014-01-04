@@ -1,36 +1,36 @@
 <?php
 /**
  * Controllers actions template for EL-CMS baking
- * 
+ *
  * This file is used during controllers generation and adds a basic "Add" actions
  * to the controller.
- * 
+ *
  * This file is an updated file from cakePHP.
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @package       ELCMS.superBake.Templates.Default.Actions
  * @version       0.3
- * 
+ *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 /* * *****************************************
  * Functions used during generation
@@ -40,9 +40,9 @@ if (!function_exists('parse_size')) {
 
 	/**
 	 * Parses a given byte count.
-	 * 
+	 *
 	 * Function from Drupal, found here : https://api.drupal.org/api/drupal/includes!common.inc/function/parse_size/6
-	 * 
+	 *
 	 * @param string A size expressed as a number of bytes with optional SI or IEC binary unit prefix (e.g. 2, 3K, 5MB, 10G, 6GiB, 8 bytes, 9mbytes).
 	 * @return int representation of the size, in bytes
 	 */
@@ -64,9 +64,9 @@ if (!function_exists('file_upload_max_size')) {
 
 	/**
 	 * Determine the maximum file upload size by querying the PHP settings.
-	 * 
+	 *
 	 * Function from Drupal, found here : https://api.drupal.org/api/drupal/includes!file.inc/function/file_upload_max_size/6
-	 * 
+	 *
 	 * @staticvar int $max_size
 	 * @return int A file size limit in bytes based on the PHP upload_max_filesize and post_max_size
 	 */
@@ -101,7 +101,7 @@ if (!isset($options['fileField'])) {
 	} else {
 		$fileField = $options['fileField'];
 	}
-	
+
 	// Prepares a string to display with a list of exts
 	// That's usefull to prepare error messages
 	$i = 0;
@@ -138,13 +138,13 @@ if (!isset($options['fileField'])) {
 					// Final file name
 					// By default, a time value is added at the end of the file to avoid filename problems. Feel free to change this.
 					$filename = substr($file['name'], 0, -(strlen($ext) + 1)) . '-' . time() . '.' . $ext;
-			<?php 
+			<?php
 			// Checking file type
 			switch ($fileField['type']) {
 					case 'file':
 						// Just move to dest folder
 						?>
-						move_uploaded_file($file['tmp_name'], WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'])?>' . $filename); 
+						move_uploaded_file($file['tmp_name'], WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'])?>' . $filename);
 						<?php
 						break;
 					case 'image':?>
@@ -160,13 +160,13 @@ if (!isset($options['fileField'])) {
 						if(isset($fileField['thumbs'])): ?>
 						// Thumb width
 						$thumb->resizeToWidth(<?php echo $fileField['thumbWidth']?>);
-						
+
 						// Saving thumbnail
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs'], true)?>' . $filename)) {
 							<?php echo $this->setFlash('The thumbnail cannot be saved.', 'error');?>
 							$this->redirect(<?php echo $this->url('add')?>);
 						}
-						
+
 						// Following lines are an example of croping for square thumbs
 						// For cropping, we need to use an image larger as the previous thumb.
 						// So we reset the image to original. No need to do this if you want to create
@@ -186,7 +186,7 @@ if (!isset($options['fileField'])) {
 						if($thumb->getWidth()>'<?php echo $fileField['imageMaxWidth']?>'){
 							$thumb->resizeToWidth(<?php echo $fileField['imageMaxWidth']?>);
 						}
-						
+
 						// Saving file
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'], true)?>' . $filename)) {
 							<?php echo $this->setFlash('The file cannot be saved.', 'error');?>
@@ -200,7 +200,7 @@ if (!isset($options['fileField'])) {
 						break;
 				}
 			?>
-						
+
 					//File name for DB entry
 					$this->request->data['<?php echo $currentModelName;?>']['<?php echo $fileField['name']?>'] = $filename;
 				} else {
@@ -228,7 +228,7 @@ if (!isset($options['fileField'])) {
 			<?php endif; ?>
 			}
 		}
-		$this->set('title_for_layout', 'Add <?php echo strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) ?>');
+		$this->set('title_for_layout', 'New <?php echo strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) ?>');
 		<?php
 		foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
 			foreach ($modelObj->{$assoc} as $associationName => $relation):

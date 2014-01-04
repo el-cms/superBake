@@ -22,4 +22,4 @@ $content = "<?php
 	}
 	?>";
 
-echo sTheme::alert($content, $alertClass, true);
+echo sTheme::v_alert($content, $alertClass, true);

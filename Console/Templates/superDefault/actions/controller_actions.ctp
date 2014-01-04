@@ -53,13 +53,18 @@ $prefix = (empty($admin)) ? 'public' : rtrim($admin, '_');
 
 // Load actions to bake.
 $actionsToBake = $this->sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, $prefix);
+
 //
 // Baking actions, using their respective templates
 //
 foreach ($actionsToBake as $a => $actionConfig) {
 	$this->speak("$prefix - $a");
+	// list of options to be unset after generation
+	$actionOptions = array(); 
+	// Making options available for action template
 	foreach ($actionConfig as $k => $v) {
 		${$k} = $v;
+		$actionOptions[] = $k;
 	}
 
 	// Action template. If none is provided, will use the action name as template.
@@ -76,5 +81,11 @@ foreach ($actionsToBake as $a => $actionConfig) {
 	} else {
 		$this->speak(__d('superBake', "Missing snippet:\n\"%s\"", $snippetFile), 'warning', 0);
 		include(dirname(__FILE__) . DS . 'actions' . DS . 'missing_action.ctp');
+	}
+	//
+	// Cleaning options
+	//
+	foreach ($actionOptions as $k) {
+		unset($k);
 	}
 }

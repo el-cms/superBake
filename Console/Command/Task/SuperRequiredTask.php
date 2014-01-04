@@ -97,8 +97,9 @@ class superRequiredTask extends SbShell {
 		} else {
 			$dest = $this->_pluginPath($this->plugin) . $this->cleanPath($this->required['target']);
 		}
-		// Folder
+
 		if ($this->required['type'] == 'folder') {
+			// Folder copy
 			$this->copyDir($source, $dest, $this->required['contentOnly']);
 		} else {
 			// File copy
@@ -110,14 +111,15 @@ class superRequiredTask extends SbShell {
 
 	/**
 	 * Copies the content for a $dir folder to a $dest folder. If $dest does not exists, it will be created.
-	 * @param string $dir
-	 * @param string $dest
-	 * @param bool $contentOnly
+	 * @param string $dir Source directory
+	 * @param string $dest Target directory
+	 * @param bool $contentOnly If set to true, only the content of the folder will be copied. Else, the container will be copied too.
 	 */
 	function copyDir($dir, $dest, $contentOnly) {
 		if (!file_exists($dir)) {
 			$this->speak(array("Source directory does not exists:", $dir), 'error', 0);
 		} else {
+
 			// Source folder
 			$source = new Folder($dir);
 			if ($contentOnly == false) {
@@ -128,22 +130,24 @@ class superRequiredTask extends SbShell {
 			} else {
 				$path = $dest;
 			}
-			$this->speak("Copying dir $dir\n to $dest", 'info', 2);
+			$this->speak("Copying folder $dir\n to $dest", 'info', 2);
 			// Creating the directory
 			$newDir = new Folder($path, true);
 
-			// Files in source dir
+			// Files and folders list
 			$sourceContent = $source->read(true);
-			if (count($sourceContent[1]) > 0) {
-				foreach ($sourceContent[1] as $file) {
-					$this->copyFile($dir . DS . $file, $path . DS . $file);
+
+			// Folders
+			if (count($sourceContent[0]) > 0) {
+				foreach ($sourceContent[0] as $folder) {
+					$this->copyDir($dir . DS . $folder, $path, false);
 				}
 			}
 
-			// Folders
-			if (count($sourceContent[0]) > 1) {
-				foreach ($sourceContent[0] as $folder) {
-					$this->copyDir($dir . DS . $folder, $dest, false);
+			// Files in source dir
+			if (count($sourceContent[1]) > 0) {
+				foreach ($sourceContent[1] as $file) {
+					$this->copyFile($dir . DS . $file, $path . DS . $file);
 				}
 			}
 		}
@@ -152,9 +156,14 @@ class superRequiredTask extends SbShell {
 	public function copyFile($source, $dest) {
 		if (!file_exists($source)) {
 			$this->speak(array("Source file does not exists:", $source), 'error', 0);
+			return false;
 		} else {
-			$this->speak("Copying file $source\n to $dest", 'info', 2);
-			copy($source, $dest);
+			$this->speak("Copying file $source\n to $dest", 'comment', 2);
+			if (copy($source, $dest)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 

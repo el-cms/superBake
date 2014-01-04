@@ -1,46 +1,43 @@
 <?php
 /**
  * Admin layout
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @package       ELCMS.superBake.Templates.Default.Files
  * @version       0.3
- * 
+ *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Page headers and licensing
 include($themePath . 'views/common/headers-files.ctp');
-
-echo "<?php
-\$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
-?>"
 ?>
+
 <!DOCTYPE html>
 <html>
-	<head>
+  <head>
 		<?php echo "<?php echo \$this->Html->charset(); ?>"; ?>
 		<title>
 			<?php echo "<?php echo \$cakeDescription ?>"; ?>:
-			<?php echo "<?php echo \$title_for_layout; ?>"; ?>
+			<?php echo "<?php echo \$title_for_layout; ?>"; ?> - <?php echo $this->sbc->getConfig('general.siteName'); ?>
 		</title>
 		<?php echo "<?php
 		echo \$this->Html->meta('icon');

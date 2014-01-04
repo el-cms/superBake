@@ -58,7 +58,7 @@ class AppController extends Controller {
 			// Login page
 			'loginAction' => array('admin' => null, 'plugin' => null, 'controller' => 'users', 'action' => 'login'),
 			// Logout page
-			'logoutRedirect' => array('admin' => 'admin', 'plugin' => null, 'controller' => 'users', 'action' => 'login'),
+			'logoutRedirect' => array('admin' => null, 'plugin' => null, 'controller' => 'users', 'action' => 'login'),
 			// After login page
 			'loginRedirect' => array('admin' => 'admin', 'plugin' => 'blog', 'controller' => 'posts', 'action' => 'index'),
 		),
@@ -94,11 +94,57 @@ class AppController extends Controller {
 				. "\t\t\t\$this->cacheAction = '1 hour';\n"
 								:"// Cache disabled. Set 'enableCache: true' in options for this file if you want it\n";
 			echo ($enableAcl)?"\t\t\t// Some available actions for public prefix.\n"
-				. "\t\t\t\$this->Auth->allow('index', 'view', 'login', 'display', 'register');\n"
+				. "\t\t\t\$this->Auth->allow('index', 'view', 'login', 'logout', 'display', 'register');\n"
 							:"\t\t\t// Acls are disabled. Set 'enableAcl: true' in options for this file.\n";
 			?>
 		}
+		<?php 
+		/* ************************************************************************
+		 * Language support: define current page language.
+		 */
+		if($this->sbc->getConfig('theme.language.useLanguages')==true){
+			?>
+			// Language
+			$curr_lang = $this->_setLanguage();
+			// Change language
+			$this->set('lang', $curr_lang);
+			$this->set('lang_fallback', DEFAULT_LANGUAGE);
+		<?php
+		}
+		?>
 	}
+	<?php
+	/* ************************************************************************
+	 * Language support : _setLanguage method
+	 */
+		if($this->sbc->getConfig('theme.language.useLanguages')==true){
+			?>
+			private function _setLanguage() {
+				// Available languages
+				$langs = array_keys(Configure::read('Config.languages'));
+				$newLang = DEFAULT_LANGUAGE;
+				// Checking if new language has been set
+				if (isset($this->request['language'])) {
+					$newLang = $this->request['language'];
+					if (!in_array($newLang, $langs)) {
+						$newLang = DEFAULT_LANGUAGE;
+					}
+				}
+				// Checking for passed parameters
+				if (isset($this->request->params['named']['language'])) {
+					$newLang = $this->request->params['named']['language'];
+					if (!in_array($newLang, $langs)) {
+						$newLang = DEFAULT_LANGUAGE;
+					}
+				}
+
+				Configure::write('Config.language', $newLang);
+				$this->Session->write('Config.language', $newLang);
+				return $newLang;
+			}
+		<?php
+		} // end _setLanguage
+	?>
 }
 
 

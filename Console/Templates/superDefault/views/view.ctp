@@ -1,14 +1,14 @@
 <?php
 /**
  * "View" view (used to display an item)
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @package       ELCMS.superBake.Templates.Default.Views
  * @version       0.3
- * 
+ *
  * ----
  *  This file is part of EL-CMS.
  *
@@ -16,31 +16,29 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Page headers and licensing
 include($themePath . 'views/common/headers.ctp');
 
 
 /* ----------------------------------------------------------------------------
- * Toolbar options
+ * Current template options
  */
+
 // No toolbar option
 if (!isset($noToolbar)) {
 	$noToolbar = false;
 }
 
-/* ----------------------------------------------------------------------------
- * Current template options
- */
 // Hidden fields for current model
 if (!isset($hiddenFields) || !is_array($hiddenFields)) {
 	$hiddenFields = array();
@@ -59,6 +57,7 @@ if (!isset($additionnalJS) || !is_array($additionnalJS)) {
 if (!isset($relatedDataHideActionsList)) {
 	$relatedDataHideActionsList = false;
 }
+
 /* ----------------------------------------------------------------------------
  * related data options
  */
@@ -66,25 +65,61 @@ if (!isset($relatedDataHideActionsList)) {
 if (!isset($hasMany_hideActions)) {
 	$hasMany_hideActions = false;
 }
+
 // Has Many : hidden models
 if (!isset($hasMany_hiddenModels) || !is_array($hasMany_hiddenModels)) {
 	$hasMany_hiddenModels = array();
 }
+
 // Has Many : hidden models fields
 if (!isset($hasMany_hiddenModelFields) || !is_array($hasMany_hiddenModelFields)) {
 	$hasMany_hiddenModelFields = array();
 }
 
+// Internationalized fields (for field display. If empty, selects all fields)
+$languageFields = (!isset($languageFields)) ? array() : $languageFields;
+
+/* ----------------------------------------------------------------------------
+ * Prepare fields to display
+ */
+if (count($languageFields) > 0) {
+	$diff = array();
+	$internationalizedFields = array();
+	foreach ($languageFields as $lf) {
+		foreach ($this->sbc->getConfig('theme.language.available') as $l) {
+			$diff[] = $lf . '_' . $l;
+		}
+		$fields[] = $lf;
+	}
+	$fields = array_diff($fields, $diff);
+}
+
+/* ----------------------------------------------------------------------------
+ *
+ * View
+ *
+ *---------------------------------------------------------------------------*/
+
+
+/* ----------------------------------------------------------------------------
+ * Toolbar
+ */
+// This view represents an item:
+$viewIsAnItem=true;
+if ($noToolbar === false) {
+	include(dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp');
+}
 /* ----------------------------------------------------------------------------
  * Current record values
  */
 ?>
+
 <div class="<?php echo $pluralVar; ?> view">
-	<h2><?php echo "<?php echo __('{$singularHumanName}'); ?>"; ?></h2>
 	<dl>
 		<?php
 		foreach ($fields as $field) {
 			if (!in_array($field, $hiddenFields)) {
+
 				$isKey = false;
 				if (!empty($associations['belongsTo'])) {
 					foreach ($associations['belongsTo'] as $alias => $details) {
@@ -97,8 +132,14 @@ if (!isset($hasMany_hiddenModelFields) || !is_array($hasMany_hiddenModelFields))
 					}
 				}
 				if ($isKey !== true) {
+					if (count($languageFields) > 0 && in_array($field, $languageFields)) {
+					$content="((!empty(\${$singularVar}['{$modelClass}']['{$field}']))?\${$singularVar}['{$modelClass}']['{$field}']:'<i ".stheme::v_tooltip("'.".$this->iString('This item has not been translated yet. This is the original version.').".'", 'fa fa-warning text-warning')." ></i> '.\${$singularVar}['{$modelClass}']['{$field}_default'])";
+				}
+				else{
+					$content="\${$singularVar}['{$modelClass}']['{$field}']";
+				}
 					echo "\t\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
-					echo "\t\t\t<dd>&nbsp;<?php echo \${$singularVar}['{$modelClass}']['{$field}']; ?></dd>\n";
+					echo "\t\t\t<dd><?php echo $content; ?></dd>\n";
 				}
 			}
 		}
@@ -227,15 +268,20 @@ foreach ($relations as $alias => $details) {
 	}
 }
 
-// Additionnal scripts and CSS
+/* -----------------------------------------------------------------------------
+ * Additionnal scripts and CSS
+ */
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
-	$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
+	if ($v == true) {
+		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
+	}
 }
 foreach ($additionnalJS as $k => $v) {
-	$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
+	if ($v == true) {
+		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
+	}
 }
-if (!empty($out)) {
-	echo "<?php \n $out\n?>";
+if(!empty($out)){
+	echo "<?php\n $out ?>";
 }
-?>

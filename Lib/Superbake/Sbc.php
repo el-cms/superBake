@@ -170,6 +170,15 @@ class Sbc {
 	}
 
 	/**
+	 * Returns null if appBase
+	 * @param string $plugin plugin name
+	 * @return string
+	 */
+	public function getPluginName($plugin) {
+		return ($plugin == $this->getAppBase()) ? null : $plugin;
+	}
+
+	/**
 	 * Returns the array of plugins to bake
 	 * 
 	 * @return array List of plugins to bake: array(pluginName))
@@ -837,7 +846,7 @@ class Sbc {
 								$partConfig['controller']['actions'][$prefix][$action] = $this->updateArray($this->config['defaults']['action'], $actionConfig, true);
 								// Options from part
 								$partConfig['controller']['actions'][$prefix][$action]['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['options'], true);
-								
+
 								//
 								// View
 								//
@@ -848,6 +857,8 @@ class Sbc {
 									$partConfig['controller']['actions'][$prefix][$action]['view'] = $this->updateArray($this->config['defaults']['view'], $actionConfig['view'], true);
 									// Options from part
 									$partConfig['controller']['actions'][$prefix][$action]['view']['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['view']['options'], true);
+									// Options from action
+									$partConfig['controller']['actions'][$prefix][$action]['view']['options'] = $this->updateArray($partConfig['controller']['actions'][$prefix][$action]['options'], $partConfig['controller']['actions'][$prefix][$action]['view']['options'], true);
 								}
 							}
 						}
@@ -929,7 +940,7 @@ class Sbc {
 						$error = 1;
 					} else {
 						$error = 0;
-						$this->log("Added $file", 'success', 4);
+						$this->log("Added $required", 'success', 4);
 					}
 				}
 				$this->log("Files population is over.", 'success', 3);

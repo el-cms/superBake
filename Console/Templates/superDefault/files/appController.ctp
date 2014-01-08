@@ -7,14 +7,17 @@
 // Options
 //
 
-// Enable the cache
+// Enable the cache : Default is false
 if(!isset($enableCache)){
 	$enableCache=false;
 }
+
+// Enable Acls: default is false
 if(!isset($enableAcl)){
 	$enableAcl=false;
 }
 
+// enableDebugKit: default is false
 if(!isset($enableDebugKit)){
 	$enableDebugKit=false;
 }
@@ -98,7 +101,7 @@ class AppController extends Controller {
 							:"\t\t\t// Acls are disabled. Set 'enableAcl: true' in options for this file.\n";
 			?>
 		}
-		<?php 
+		<?php
 		/* ************************************************************************
 		 * Language support: define current page language.
 		 */

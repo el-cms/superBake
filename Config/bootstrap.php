@@ -1,3 +1,3 @@
 <?php
-// Default bootstrap file to load:
+// Default config file to load:
 Configure::write('Sb.defaultConfig', 'superBakeConfig.yml');

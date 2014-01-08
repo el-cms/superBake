@@ -2,7 +2,7 @@
 
 /**
  * SuperBake Shell script - superFile Task - Generates standalone files
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
@@ -10,31 +10,33 @@
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @version       0.3
  *
- * This file is based on the lib/Cake/Console/Command/Task/ViewTask.php file 
+ * This file is based on the lib/Cake/Console/Command/Task/ViewTask.php file
  * from CakePHP.
- * 
+ *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
-// SbShell
+// SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
+
 // Bake from superBake
 App::uses('BakeTask', 'Sb.Console/Command/Task');
+
 // Template from superBake
 App::uses('TemplateTask', 'Sb.Console/Command/Task');
 
@@ -75,18 +77,18 @@ class SuperFileTask extends BakeTask {
 
 	/**
 	 * File type: menu or file
-	 * 
+	 *
 	 * @var string
 	 */
 	public $fileType;
 
 	/**
 	 * Configuration array for current file/menu
-	 * 
+	 *
 	 * @var array
 	 */
 	public $currentFileConfig;
-	
+
 	/**
 	 * Current plugin
 	 * @var string
@@ -99,13 +101,16 @@ class SuperFileTask extends BakeTask {
 	 * @return void
 	 */
 	public function initialize() {
+		//@todo There's something to do with this to point to "app" or "<plugin>" dir...
 		$this->path = current(App::path('View'));
 	}
 
 	/**
-	 * Execution method always used for tasks
+	 * Execution method always used for tasks.
 	 *
-	 * @return mixed
+	 * Note: no parent::execute() is used as arguments are handled in the shell.
+	 *
+	 * @return void
 	 */
 	public function execute() {
 		// Dirty inclusion of the theme class that may contain logic to create HTML elements
@@ -115,78 +120,86 @@ class SuperFileTask extends BakeTask {
 		} else {
 			include_once($this->Template->getThemePath() . DS . 'theme.php');
 		}
-		// Generating content
+
+		// Getting content from template
 		$content = $this->getContent($this->currentFileConfig['template']);
+
+		// Generating the whole file
 		if ($content) {
 			$this->bake($this->currentFileConfig['template'], $content);
 		}
 	}
 
 	/**
-	 * Assembles and writes bakes the view file.
+	 * Assembles and writes the file.
 	 *
-	 * @param string $action Action to bake
+	 * @param string $file File to bake
 	 * @param string $content Content to write
-	 * @return boolean Success
+	 * @return boolean Success/fail
 	 */
-	public function bake($action, $content = '') {
+	public function bake($file, $content = '') {
+		// Info
+		$this->speak(__d('superBake', 'Baking ' . $this->sbc->pluginName($this->plugin) . '.%s %s file...', array($file, $this->fileType)), 'info', 0, 0, 1);
+		// Checking if some content has been generated
 		if ($content === true) {
-			$content = $this->getContent($action);
+			$content = $this->getContent($file);
 		}
 		if (empty($content)) {
+			$this->speak(__d('superBake', 'Content is empty and file has not been writen. Check your template.'),'error', 0,0,1);
 			return false;
 		}
-		$this->out("\n" . __d('cake_console', 'Baking ' . $this->sbc->pluginName($this->plugin) . '.%s %s file...', array($action, $this->fileType)), 1, Shell::QUIET);
-		$path = $this->getFilePath();
 
+		// Finding the destination path
+		$path = $this->getFilePath();
 		$filename = $path . DS . (($this->fileType == 'menu') ? 'View' . DS : '') . $this->cleanPath($this->currentFileConfig['targetPath'] . DS . $this->currentFileConfig['targetFileName'] . '.' . $this->currentFileConfig['ext']);
+		// Saving the file.
 		return $this->createFile($filename, $content);
 	}
 
 	/**
 	 * Builds content from template and variables
 	 *
-	 * @param string $action name to generate content to
+	 * @param string $file name to generate content to
 	 * @param array $vars passed for use in templates
 	 * @return string content from template
 	 */
-	public function getContent($action, $vars = null) {
+	public function getContent($file, $vars = null) {
 		foreach ($this->currentFileConfig['options'] as $k => $v) {
 			$this->Template->set($k, $v);
 		}
 
-		$this->Template->set('action', $action);
+		// Current action (template filename)
+		$this->Template->set('file', $file);
 		// Plugin name
 		$this->Template->set('plugin', $this->plugin);
-		//Sbc
+		//Sbc object
 		$this->Template->sbc = $this->sbc;
-		// Other vars
+		// Vars passed as arguments
 		$this->Template->set($vars);
-		$template = $action;
-//		$template = $this->cleanPath((($this->fileType == 'menu') ? 'views::' : 'files::') . Inflector::pluralize($this->fileType) . '::' . ((empty($this->currentFileConfig['template'])) ? $this->fileName : $this->currentFileConfig['template'])) . '.ctp';
-		if ($template) {
-			return $this->Template->generate((($this->fileType == 'menu') ? 'menus' . DS : 'files'), $this->cleanPath($template));
+
+		if ($file) {
+			return $this->Template->generate((($this->fileType == 'menu') ? 'menus' . DS : 'files'), $this->cleanPath($file));
 		}
 
 		return false;
 	}
 
 	/**
-	 * get the option parser for this task
-	 *
+	 * Gets the option parser for this task
+	 * Removed because useless (need tests)
 	 * @return ConsoleOptionParser
 	 */
-	public function getOptionParser() {
-		$parser = parent::getOptionParser();
-		return $parser->description(__d('cake_console', 'Bake menus, using templates.'));
-	}
+//	public function getOptionParser() {
+//		$parser = parent::getOptionParser();
+//		return $parser->description(__d('superBake', 'Bake files, using templates.'));
+//	}
 
 	/**
 	 * Gets the path for the current file. Checks the plugin property
 	 * and returns the correct path.
 	 *
 	 * Orig. function from BakeTask.php (getPath())
-	 * 
+	 *
 	 * @return string Path to output.
 	 */
 	public function getFilePath() {

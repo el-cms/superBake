@@ -1,10 +1,13 @@
 <?php
 /**
- * superBake Bake task.
- * 
- * An indentical copy of Cake's Bake task, but this one extends SbShell instead
+ * Bake task from CakePHP 2.4
+ *
+ * This is an identical copy of Cake's Bake task, but this one extends SbShell instead
  * of AppShell.
  *
+ * This is made to make $sbc and other methods available to the bake task.
+ *
+ * ---
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -21,6 +24,7 @@
  */
 // SbShell
 App::uses('SbShell', 'Sb.Console/Command');
+
 /**
  * Base class for Bake Tasks.
  *

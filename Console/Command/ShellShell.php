@@ -2,15 +2,15 @@
 
 /**
  * SuperBake Shell script
- * 
+ *
  * This is the SuperBake shell.
  * Its goal is to allow quick generation of the app, based on a configuration file.
  * It will build all plugin dirs, all models/controllers/views, IN wanted plugins
  * and with ALL routing prefixes.
- * 
+ *
  * For controllers, it will bake ALL actions : public actions AND prefixed actions
  * for ALL prefixes.
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
@@ -19,22 +19,22 @@
  * @version       0.3
  *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 // SbShell
 App::uses('SbShell', 'Sb.Console/Command');
@@ -169,7 +169,7 @@ class ShellShell extends SbShell {
 		$this->out('|', 1, 0);
 		// Used letters (just for info):
 		// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-		// = = = = = = =   = =   = = = = = = = =     =     =  
+		// = = = = = = =   = =   = = = = = = = =     =     =
 
 		$classToGenerate = strtoupper($this->in('+--> ' . __d('superBake', 'What would you like to generate ?'), array('A', 'B', 'C', 'D', 'E', 'G', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'Y')));
 		switch ($classToGenerate) {
@@ -248,7 +248,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates models, views, controllers, menus, files and copies the required files.
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell all
 	 */
@@ -261,11 +261,11 @@ class ShellShell extends SbShell {
 	}
 	/**
 	 * Generates a controller from a plugin
-	 * 
+	 *
 	 * Command line access :
 	 *  $ cake Sb.Shell controller
 	 *  $ cake Sb.Shell controller PluginName.ControllerName
-	 * 
+	 *
 	 */
 	public function All() {
 		$this->speak(__d('superBake', 'models, views, controllers, menus, files and copying required stuff'), 'info', 0, 2, 2);
@@ -279,7 +279,7 @@ class ShellShell extends SbShell {
 	}
 	/**
 	 * Generates Models, Controllers and Views for a given plugin
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell pluginMVC
 	 *  $ cake Sb.Shell pluginMVC PluginName
@@ -301,7 +301,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all plugins structures
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell plugins
 	 */
@@ -351,8 +351,8 @@ class ShellShell extends SbShell {
 	}
 
 	/**
-	 * Asks the user for a plugin name 
-	 * 
+	 * Asks the user for a plugin name
+	 *
 	 * @return string Plugin name
 	 */
 	private function _getPluginName() {
@@ -386,7 +386,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates a given model
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell model
 	 *  $ cake Sb.Shell model PluginName.ModelName
@@ -401,7 +401,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all models in all plugins
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell models
 	 */
@@ -417,7 +417,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all models in a given plugin
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell pluginModels
 	 *  $ cake Sb.Shell pluginModels PluginName
@@ -434,7 +434,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates the model in the plugin
-	 * 
+	 *
 	 * @param string $plugin Plugin name, should not be null.
 	 * @param string $part Part name
 	 */
@@ -459,7 +459,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Asks the user to choose a model name in a plugin's model list.
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @return string Choosen model name
 	 */
@@ -494,11 +494,11 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates a controller from a plugin
-	 * 
+	 *
 	 * Command line access :
 	 *  $ cake Sb.Shell controller
 	 *  $ cake Sb.Shell controller PluginName.ControllerName
-	 * 
+	 *
 	 */
 	public function Controller() {
 		$this->speak(__d('superBake', 'Building unique controller'), 'info', 0, 2, 2);
@@ -510,7 +510,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all models in all plugins
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell controllers
 	 */
@@ -526,7 +526,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all controllers in a given plugin
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell pluginControllers
 	 *  $ cake Sb.Shell pluginControllers PluginName
@@ -542,7 +542,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Asks the user to choose a controller name in a plugin's model list.
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @return string Choosen controller name
 	 */
@@ -600,7 +600,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Bakes a controller
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @param string $part Part name
 	 */
@@ -628,7 +628,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates a view for a given plugin/controller/action
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell view
 	 *  $ cake Sb.Shell view PluginName.ControllerName.ActionName
@@ -643,7 +643,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all plugin's views
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell views
 	 */
@@ -667,7 +667,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all views of a given plugin
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell pluginViews
 	 *  $ cake Sb.Shell pluginViews PluginName
@@ -691,7 +691,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates all views of a given plugin/controller
-	 * 
+	 *
 	 * Command line access:
 	 *  $ cake Sb.Shell controllerViews
 	 *  $ cake Sb.Shell controllerViews PluginName.ControllerName
@@ -716,7 +716,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Generates a view for a given plugin/controller/action
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @param string $part Part name
 	 * @param string $action Action name with prefix (admin_index or index,...)
@@ -745,7 +745,6 @@ class ShellShell extends SbShell {
 		if ((count($actionParts) > 1 && in_array($actionParts[0], $cakePrefixes)) || count($actionParts) == 1) {
 			if (count($actionParts) > 1 && in_array($actionParts[0], $cakePrefixes)) {
 				$this->SuperView->currentPrefix = $actionParts[0];
-//				$action = $actionParts[1];
 				$this->SuperView->currentSimpleAction = $actionParts[1];
 			} else {
 				$this->SuperView->currentPrefix = null;
@@ -764,6 +763,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Ask user to choose an action for a given plugin/controller
+	 *
 	 * @param string $plugin Plugin name
 	 * @param string $controller Controller name
 	 * @return string Choosen action name
@@ -818,7 +818,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Creates a menu for a plugin.
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @param string $menu	Menu name
 	 */
@@ -894,7 +894,7 @@ class ShellShell extends SbShell {
 		}
 		$this->speak(__d('superBake', 'Files and folders copied.'), 'success', 0, 2, 2);
 	}
-	
+
 	private function _required($plugin, $required){
 		// Template to use
 		$this->SuperRequired->params['theme'] = $this->sbc->getConfig('general.template');
@@ -910,7 +910,7 @@ class ShellShell extends SbShell {
 
 		// Execute generation
 		$this->SuperRequired->execute();
-		
+
 	}
 	/**
 	 * get the option parser.
@@ -925,7 +925,7 @@ class ShellShell extends SbShell {
 								'for your application.' .
 								' If run with no command line arguments, superBake will guide you through the creation process.' .
 								' You can use arguments to a quicker generation.' . "\n\n This help system is quite broken, use the docs instead."
-								// General things
+				// Batch generation
 				))->addSubcommand('plugins', array(
 					'help' => __d('superBake', 'Creates all the plugins directories skeletons.'),
 				))->addSubcommand('mvc', array(
@@ -972,8 +972,8 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Checks if $this->args[0] has a $nb number of arguments and if the $types corresponds.
-	 * 
-	 * For $type, possible values are : 
+	 *
+	 * For $type, possible values are :
 	 * 		plugin, for plugin
 	 * 		model, for model
 	 * 		ccontroller, for controller
@@ -983,7 +983,7 @@ class ShellShell extends SbShell {
 	 * $this->checkArgs(3, array('plugin', 'ccontroller', 'view'));
 	 * It will return this array:
 	 * array('plugin'=>'PluginName', 'controller'=>ControllerName, 'view'=>'ActionName')
-	 * 
+	 *
 	 * @param int $nb Number of arguments wanted
 	 * @param array $types array of wanted types
 	 * @param string $message Message thrown if the number of arguments submited is invalid
@@ -1092,11 +1092,6 @@ class ShellShell extends SbShell {
 						$action = $this->_getViewName($plugin, $controller);
 						$return['view'] = $action;
 						break;
-//					case 'a': // action for actionView()
-//						$this->speak(__d('superBake', "Please, select an action below:"), 'warning', 0);
-//						$action = $this->_getAllViewName();
-//						$return['action'] = $action;
-//						break;
 					case 't': //template
 						break;
 					default:
@@ -1109,7 +1104,7 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Loads the configuration files and make an array of it.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private function _loadConfig() {

@@ -63,6 +63,7 @@ class SbShell extends AppShell {
 
 	/**
 	 * Returns an action's prefix.
+	 *
 	 * @param string $action Action to check
 	 * @return string Action prefix, null if none
 	 */
@@ -78,6 +79,7 @@ class SbShell extends AppShell {
 
 	/**
 	 * Returns an action name, without its prefix.
+	 *
 	 * @param string $action Action name
 	 * @return string
 	 */
@@ -88,6 +90,7 @@ class SbShell extends AppShell {
 
 	/**
 	 * Makes a config path value (path::to::file)
+	 *
 	 * @param string $path Path::to::file.ext
 	 * @param bool $dir If true, a trailing / will be added
 	 * @return string Good path format, with trailing slash
@@ -287,6 +290,13 @@ class SbShell extends AppShell {
 		return (preg_match('/(.*)\.$/', $plugin)) ? rtrim($plugin, '.') : $plugin;
 	}
 
+	/**
+	 * Returns the plugin name for the given $underscored_controller_name
+	 * Returns null for appBase
+	 *
+	 * @param string $underscored_controller_name
+	 * @return mixed string or null
+	 */
 	public function getControllerPluginName($underscored_controller_name){
 		$controller=  Inflector::camelize($underscored_controller_name);
 		$plugin_name=$this->sbc->getControllerPlugin($controller);

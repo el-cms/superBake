@@ -2,7 +2,7 @@
 
 /**
  * SuperBake Shell script - superView Task - Generates Views
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
@@ -10,26 +10,26 @@
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @version       0.3
  *
- * This file is based on the lib/Cake/Console/Command/Task/ViewTask.php file 
+ * This file is based on the lib/Cake/Console/Command/Task/ViewTask.php file
  * from CakePHP.
- * 
+ *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 // SbShell
 App::uses('SbShell', 'Sb.Console/Command');
@@ -127,11 +127,11 @@ class SuperViewTask extends BakeTask {
 	/**
 	 * Execution method always used for tasks
 	 *
+	 * Note: no parent::execute() is used as arguments are handled in the shell.
+	 *
 	 * @return mixed
 	 */
 	public function execute() {
-		// Removing parent::execute as arguments are handled in Shell.
-		// parent::execute();
 		// Dirty inclusion of the theme class that may contain logic to create HTML elements
 		$themeClass = $this->Template->getThemePath() . DS . 'theme.php';
 		if (!file_exists($themeClass)) {
@@ -142,11 +142,14 @@ class SuperViewTask extends BakeTask {
 		// Variables to be made available to a view template
 		$vars = $this->_loadController();
 
-		// Method to build
+		// Method to build an action for
 		$method = $this->currentAction;
+
 		$this->speak(__d('superBake', 'View for "%s" is being built', $method), 'info', 1);
+		// Getting view content from template
 		$content = $this->getContent($method, $vars);
 		if ($content) {
+			// Baking the file
 			$this->bake($this->currentAction, $content);
 		}
 	}
@@ -167,7 +170,7 @@ class SuperViewTask extends BakeTask {
 		);
 		// No methods
 		if (empty($methods)) {
-			$this->out(__d('superBake', '<warning>No method to bake for controller "%s". You should check your config.</warning>', $this->controllerName), 1, Shell::QUIET);
+			$this->out(__d('superBake', '<warning>No view to bake for controller "%s". You should check your config.</warning>', $this->controllerName), 1, Shell::QUIET);
 			return array();
 		}
 
@@ -182,22 +185,19 @@ class SuperViewTask extends BakeTask {
 
 	/**
 	 * Loads Controller and sets variables for the template
-	 * Available template variables
-	 * 	'modelClass', 'primaryKey', 'displayField', 'singularVar', 'pluralVar',
-	 * 	'singularHumanName', 'pluralHumanName', 'fields', 'foreignKeys',
-	 * 	'belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany'
 	 *
-	 * @return array Returns variables to be made available to a view template
+	 * @return array Returns an variables to be made available to a view template
 	 */
 	protected function _loadController() {
 		if (!$this->controllerName) {
-			$this->err(__d('cake_console', '<error>Controller not found</error>'));
+			$this->err(__d('cake_console', 'Controller not found'));
 		}
 
 		$plugin = null;
 		if ($this->plugin) {
 			$plugin = $this->plugin . '.';
 		}
+
 		$controllerClassName = $this->controllerName . 'Controller';
 		App::uses($controllerClassName, $plugin . 'Controller');
 		if (!class_exists($controllerClassName)) {
@@ -219,7 +219,8 @@ class SuperViewTask extends BakeTask {
 			$schema = $modelObj->schema(true);
 			$fields = array_keys($schema);
 			$associations = $this->_associations($modelObj);
-		} else {
+		} else{
+			//@todo do this with style.
 			die('Model does not exists');
 			$primaryKey = $displayField = null;
 			$singularVar = Inflector::variable(Inflector::singularize($this->controllerName));
@@ -263,6 +264,8 @@ class SuperViewTask extends BakeTask {
 		if (!$vars) {
 			$vars = $this->_loadController();
 		}
+
+		// Making the vars available in template
 		$this->Template->set('admin', $this->currentPrefix);
 		$this->Template->set('action', $action);
 		$this->Template->set('plugin', $this->plugin);
@@ -337,10 +340,10 @@ class SuperViewTask extends BakeTask {
 		$template = $view;
 
 		//
-		// At this point, the template file has not been found in views, so we  
+		// At this point, the template file has not been found in views, so we
 		// try combining different things
 		//
-		
+
 		// Removing the prefix from the views
 		$prefixes = Configure::read('Routing.prefixes');
 		foreach ((array) $prefixes as $prefix) {
@@ -369,6 +372,8 @@ class SuperViewTask extends BakeTask {
 	/**
 	 * Returns associations for controllers models.
 	 *
+	 * Unmodified method from Cake.
+	 *
 	 * @param Model $model
 	 * @return array $associations
 	 */
@@ -394,7 +399,7 @@ class SuperViewTask extends BakeTask {
 	 * and returns the correct path.
 	 *
 	 * Orig. function from BakeTask.php (getPath())
-	 * 
+	 *
 	 * @return string Path to output.
 	 */
 	public function getViewPath() {

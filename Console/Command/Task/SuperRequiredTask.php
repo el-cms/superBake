@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The Plugin Task handles creating an empty plugin, ready to be used
+ * The Required task handles needed files from the theme.
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -15,11 +15,14 @@
  * @since         CakePHP(tm) v 1.2
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+// SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 // Template from superBake
 App::uses('TemplateTask', 'Sb.Console/Command/Task');
 
+// File from Cake
 App::uses('File', 'Utility');
+// Folder from Cake
 App::uses('Folder', 'Utility');
 
 /**
@@ -87,6 +90,7 @@ class superRequiredTask extends SbShell {
 	 * @return boolean
 	 */
 	public function bake() {
+		// Theme path
 		$templatePath = $this->Template->getThemePath();
 		// Source dir
 		$source = $templatePath . 'required' . DS . $this->cleanPath($this->required['source']);
@@ -111,6 +115,7 @@ class superRequiredTask extends SbShell {
 
 	/**
 	 * Copies the content for a $dir folder to a $dest folder. If $dest does not exists, it will be created.
+	 *
 	 * @param string $dir Source directory
 	 * @param string $dest Target directory
 	 * @param bool $contentOnly If set to true, only the content of the folder will be copied. Else, the container will be copied too.
@@ -153,6 +158,13 @@ class superRequiredTask extends SbShell {
 		}
 	}
 
+	/**
+	 * Copies a $source file to its $dest.
+	 *
+	 * @param string $source file to copy
+	 * @param string $dest file name
+	 * @return boolean
+	 */
 	public function copyFile($source, $dest) {
 		if (!file_exists($source)) {
 			$this->speak(array("Source file does not exists:", $source), 'error', 0);
@@ -215,10 +227,10 @@ class superRequiredTask extends SbShell {
 	 *
 	 * @return void
 	 */
-	public function getOptionParser() {
-		$parser = parent::getOptionParser();
-		return $parser->description(__d('cake_console', 'Copy files from Templates/YourTemplate/ to any dir in the app. '
-		));
-	}
+//	public function getOptionParser() {
+//		$parser = parent::getOptionParser();
+//		return $parser->description(__d('cake_console', 'Copy files from Templates/YourTemplate/ to any dir in the app. '
+//		));
+//	}
 
 }

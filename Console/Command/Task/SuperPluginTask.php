@@ -2,7 +2,7 @@
 
 /**
  * SuperBake Shell script - superPlugin Task - Generates plugins structures
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
@@ -10,33 +10,34 @@
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @version       0.3
  *
- * This file is based on the lib/Cake/Console/Command/Task/PluginTask.php file 
+ * This file is based on the lib/Cake/Console/Command/Task/PluginTask.php file
  * from CakePHP.
- * 
+ *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 
-// SbShell
+// SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 
 // Files from Cake
 App::uses('File', 'Utility');
+
 // Folder from Cake
 App::uses('Folder', 'Utility');
 
@@ -80,6 +81,8 @@ class SuperPluginTask extends SbShell {
 	/**
 	 * initialize
 	 *
+	 * Unmodified method
+	 *
 	 * @return void
 	 */
 	public function initialize() {
@@ -93,8 +96,9 @@ class SuperPluginTask extends SbShell {
 	 * @return void
 	 */
 	public function execute() {
-		// No interactive mode. Creates the structure. Dot.
+		// Gets the plugin's destination folder from configuration file
 		$this->path = $this->cleanPath($this->pluginConfig['path'], true);
+		// Create the plugin
 		$this->bake($this->currentPlugin);
 	}
 
@@ -115,7 +119,8 @@ class SuperPluginTask extends SbShell {
 				$this->out(__d('superBake', 'The "%s" plugin will be created in the "%s" dir.', $plugin, $this->path), 1, Shell::VERBOSE);
 			}
 		}
-		if (!is_dir($this->path . $plugin)) {
+		// Checks if the plugin folder exists, and creates the directory structure
+		if (!is_dir($this->path . $plugin)){
 			$Folder = new Folder($this->path . $plugin);
 			$directories = array(
 				'Config' . DS . 'Schema',
@@ -140,7 +145,7 @@ class SuperPluginTask extends SbShell {
 			}
 
 			foreach ($Folder->messages() as $message) {
-				$this->out($message, 1, Shell::VERBOSE);
+				$this->speak($message, 'info', 2, 0, 0);
 			}
 
 			$errors = $Folder->errors();
@@ -168,11 +173,11 @@ class SuperPluginTask extends SbShell {
 			$this->createFile($this->path . $plugin . DS . 'Model' . DS . $modelFileName, $out);
 
 			/**	***************************************************************
-			 * 
+			 *
 			 * Additionnal files are handled here
-			 * 
+			 *
 			 */
-			
+
 			// Bootstrap file
 			if ($this->pluginConfig['haveBootstrap']) {
 				$out = "<?php\n\n";
@@ -184,7 +189,7 @@ class SuperPluginTask extends SbShell {
 			// Route file
 			if ($this->pluginConfig['haveRoutes']) {
 				$out = "<?php\n\n";
-				$out .="/* Here comes your plugin's routes here.\n * \n * @todo Remember to define the \"$plugin\" plugin's routes\n */\n";
+				$out .="/* Here comes your plugin's routes.\n * \n * @todo Remember to define the \"$plugin\" plugin's routes\n */\n";
 				$this->createFile($this->path . $plugin . DS . 'Config' . DS . 'routes.php', $out);
 			}
 

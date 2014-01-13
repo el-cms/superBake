@@ -2,42 +2,46 @@
 
 /**
  * SuperBake Shell script - superModel Task - Generates models
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @package       ELCMS.superBake.Task
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @version       0.3
- * 
- * This file is based on the lib/Cake/Console/Command/Task/ModelTask.php file 
+ *
+ * This file is based on the lib/Cake/Console/Command/Task/ModelTask.php file
  * from CakePHP.
- * 
+ *
+ *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
-// From superBake
+// SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
+// Bake from superBake
 App::uses('BakeTask', 'Sb.Console/Command/Task');
 
-// From Cake
+// ConnectionManager (to access DB) from Cake
 App::uses('ConnectionManager', 'Model');
+// Model from Cake
 App::uses('Model', 'Model');
+// Validation utility from Cake
 App::uses('Validation', 'Utility');
 
 /**
@@ -101,6 +105,8 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Override initialize
 	 *
+	 * Unmodified method.
+	 *
 	 * @return void
 	 */
 	public function initialize() {
@@ -110,22 +116,26 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Execution method always used for tasks
 	 *
+	 * Note: no parent::execute() is used as arguments are handled in the shell.
+	 *
 	 * @return void
 	 */
 	public function execute() {
-		// Removed parent::execute, as arguments are handled in sB Shell.
-		// parent::execute();
 		// DB connection to use
 		$this->connection = $this->sbc->getConfig('general.dbConnection');
 
 		// Model name
 		$model = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.name');
 
+		// Lists the tables
 		$this->listAll($this->connection);
+		// Use the table for current model
 		$useTable = $this->getTable($model);
 		$object = $this->_getModelObject($model, $useTable);
 
+		// Bake the model
 		if ($this->bake($object, false)) {
+			// Bake fixtures and tests
 			if ($this->_checkUnitTest()) {
 				$this->bakeFixture($model, $useTable);
 				$this->bakeTest($model);
@@ -135,6 +145,10 @@ class SuperModelTask extends BakeTask {
 
 	/**
 	 * Get a model object for a class name.
+	 *
+	 * Unmodified method.
+	 *
+	 * @todo: handle the $table argument in config file (issue #28)
 	 *
 	 * @param string $className Name of class you want model to be.
 	 * @param string $table Table name
@@ -158,11 +172,13 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Handles Generation and user interaction for creating validation.
 	 *
+	 * Unmodified method.
+	 *
 	 * @param Model $model Model to have validations generated for.
 	 * @return array $validate Array of user selected validations.
 	 */
 	public function doValidation($model) {
-		if (!is_object($model)) {
+		if (!$model instanceof Model) {
 			return false;
 		}
 		$fields = $model->schema();
@@ -184,6 +200,8 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Populate the _validations array
 	 *
+	 * Unmodified method.
+	 *
 	 * @return void
 	 */
 	public function initValidations() {
@@ -195,7 +213,7 @@ class SuperModelTask extends BakeTask {
 		$default = 1;
 		foreach ($options as $option) {
 			if ($option{0} !== '_') {
-				$choices[$default] = strtolower($option);
+				$choices[$default] = $option;
 				$default++;
 			}
 		}
@@ -207,6 +225,8 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Does individual field validation handling.
 	 *
+	 * @todo Handle basic field validation in cofnig file
+	 *
 	 * @param string $fieldName Name of field to be validated.
 	 * @param array $metaData metadata for field
 	 * @param string $primaryKey
@@ -216,63 +236,67 @@ class SuperModelTask extends BakeTask {
 		$defaultChoice = count($this->_validations);
 		$validate = $alreadyChosen = array();
 
-		$anotherValidator = 'y';
-		while ($anotherValidator === 'y') {
+//		$anotherValidator = 'y';
+//		while ($anotherValidator === 'y') {
 
-			$prompt = __d('cake_console', "... or enter in a valid regex validation string.\n");
-			$methods = array_flip($this->_validations);
-			$guess = $defaultChoice;
-			if ($metaData['null'] != 1 && !in_array($fieldName, array($primaryKey, 'created', 'modified', 'updated'))) {
-				if ($fieldName === 'email') {
-					$guess = $methods['email'];
-				} elseif ($metaData['type'] === 'string' && $metaData['length'] == 36) {
-					$guess = $methods['uuid'];
-				} elseif ($metaData['type'] === 'string') {
-					$guess = $methods['notempty'];
-				} elseif ($metaData['type'] === 'text') {
-					$guess = $methods['notempty'];
-				} elseif ($metaData['type'] === 'integer') {
-					$guess = $methods['numeric'];
-				} elseif ($metaData['type'] === 'boolean') {
-					$guess = $methods['boolean'];
-				} elseif ($metaData['type'] === 'date') {
-					$guess = $methods['date'];
-				} elseif ($metaData['type'] === 'time') {
-					$guess = $methods['time'];
-				} elseif ($metaData['type'] === 'datetime') {
-					$guess = $methods['datetime'];
-				} elseif ($metaData['type'] === 'inet') {
-					$guess = $methods['ip'];
-				}
+//		$prompt = __d('cake_console', "... or enter in a valid regex validation string.\n");
+		$methods = array_flip($this->_validations);
+		$guess = $defaultChoice;
+		if ($metaData['null'] != 1 && !in_array($fieldName, array($primaryKey, 'created', 'modified', 'updated'))) {
+			if ($fieldName === 'email') {
+				$guess = $methods['email'];
+			} elseif ($metaData['type'] === 'string' && $metaData['length'] == 36) {
+				$guess = $methods['uuid'];
+			} elseif ($metaData['type'] === 'string') {
+				$guess = $methods['notEmpty'];
+			} elseif ($metaData['type'] === 'text') {
+				$guess = $methods['notEmpty'];
+			} elseif ($metaData['type'] === 'integer') {
+				$guess = $methods['numeric'];
+			} elseif ($metaData['type'] === 'float') {
+				$guess = $methods['numeric'];
+			} elseif ($metaData['type'] === 'boolean') {
+				$guess = $methods['boolean'];
+			} elseif ($metaData['type'] === 'date') {
+				$guess = $methods['date'];
+			} elseif ($metaData['type'] === 'time') {
+				$guess = $methods['time'];
+			} elseif ($metaData['type'] === 'datetime') {
+				$guess = $methods['datetime'];
+			} elseif ($metaData['type'] === 'inet') {
+				$guess = $methods['ip'];
 			}
-
-			$choice = $guess;
-
-			if (isset($this->_validations[$choice])) {
-				$validatorName = $this->_validations[$choice];
-			} else {
-				$validatorName = Inflector::slug($choice);
-			}
-
-			if ($choice != $defaultChoice) {
-				$validate[$validatorName] = $choice;
-				if (is_numeric($choice) && isset($this->_validations[$choice])) {
-					$validate[$validatorName] = $this->_validations[$choice];
-				}
-			}
-			$anotherValidator = 'n';
 		}
+
+		$choice = $guess;
+
+		if (isset($this->_validations[$choice])) {
+			$validatorName = $this->_validations[$choice];
+		} else {
+			$validatorName = Inflector::slug($choice);
+		}
+
+		if ($choice != $defaultChoice) {
+			$validate[$validatorName] = $choice;
+			if (is_numeric($choice) && isset($this->_validations[$choice])) {
+				$validate[$validatorName] = $this->_validations[$choice];
+			}
+		}
+//			$anotherValidator = 'n';
+//		}
 		return $validate;
 	}
 
 	/**
 	 * Handles associations
 	 *
+	 * Same method as in the original file, with the "interactive" handling removed.
+	 *
 	 * @param Model $model
-	 * @return array $associations
+	 * @return array Associations
 	 */
 	public function doAssociations($model) {
-		if (!is_object($model)) {
+		if (!$model instanceof Model) {
 			return false;
 		}
 
@@ -304,9 +328,11 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Find belongsTo relations and add them to the associations list.
 	 *
+	 * Unmodified method.
+	 *
 	 * @param Model $model Model instance of model being generated.
 	 * @param array $associations Array of in progress associations
-	 * @return array $associations with belongsTo added in.
+	 * @return array Associations with belongsTo added in.
 	 */
 	public function findBelongsTo(Model $model, $associations) {
 		$fieldNames = array_keys($model->schema(true));
@@ -333,9 +359,11 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Find the hasOne and hasMany relations and add them to associations list
 	 *
+	 * Unmodified method.
+	 *
 	 * @param Model $model Model instance being generated
 	 * @param array $associations Array of in progress associations
-	 * @return array $associations with hasOne and hasMany added in.
+	 * @return array Associations with hasOne and hasMany added in.
 	 */
 	public function findHasOneAndMany(Model $model, $associations) {
 		$foreignKey = $this->_modelKey($model->name);
@@ -367,6 +395,7 @@ class SuperModelTask extends BakeTask {
 					$associations['hasOne'][] = $assoc;
 					$associations['hasMany'][] = $assoc;
 				}
+
 			}
 		}
 		return $associations;
@@ -375,9 +404,11 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Find the hasAndBelongsToMany relations and add them to associations list
 	 *
+	 * Unmodified method.
+	 *
 	 * @param Model $model Model instance being generated
 	 * @param array $associations Array of in-progress associations
-	 * @return array $associations with hasAndBelongsToMany added in.
+	 * @return array Associations with hasAndBelongsToMany added in.
 	 */
 	public function findHasAndBelongsToMany(Model $model, $associations) {
 		$foreignKey = $this->_modelKey($model->name);
@@ -408,6 +439,8 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Interact with the user and confirm associations.
 	 *
+	 * Unmodified method.
+	 *
 	 * @param array $model Temporary Model instance.
 	 * @param array $associations Array of associations to be confirmed.
 	 * @return array Array of confirmed associations
@@ -434,16 +467,24 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Assembles and writes a Model file.
 	 *
+	 * @todo : reimplement the doActAs() method from CakePHP in order to handle
+	 * the different behaviors.
 	 * @param string|object $name Model name or object
 	 * @param array|boolean $data if array and $name is not an object assume bake data, otherwise boolean.
 	 * @return string
 	 */
 	public function bake($name, $data = array()) {
-		if (is_object($name)) {
+		/* -------------------------------------------------------------------------
+		 * Preparing data for template
+		 * ---------------------------------------------------------------------- */
+		if ($name instanceof Model) {
 			if (!$data) {
 				$data = array();
+				// Associations
 				$data['associations'] = $this->doAssociations($name);
+				// Validation array
 				$data['validate'] = $this->doValidation($name);
+//				$data['actsAs'] = $this->doActsAs($name);
 			}
 			$data['primaryKey'] = $name->primaryKey;
 			$data['useTable'] = $name->table;
@@ -452,8 +493,10 @@ class SuperModelTask extends BakeTask {
 		} else {
 			$data['name'] = $name;
 		}
+
 		$defaults = array(
 				'associations' => array(),
+//			'actsAs' => array(),
 				'validate' => array(),
 				'primaryKey' => 'id',
 				'useTable' => null,
@@ -461,6 +504,8 @@ class SuperModelTask extends BakeTask {
 				'displayField' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.displayField'),
 		);
 		$data = array_merge($defaults, $data);
+
+		// Getting the file's target path
 		$pluginPath = '';
 		if ($this->plugin) {
 			$pluginPath = $this->plugin . '.';
@@ -471,18 +516,30 @@ class SuperModelTask extends BakeTask {
 			$this->Template->set($option, $value);
 		}
 
-		//Sbc
+		/* -------------------------------------------------------------------------
+		 * Making the prepared data available for template
+		 * ---------------------------------------------------------------------- */
+
+		//sbc class
 		$this->Template->sbc = $this->sbc;
+		// Prepared data
 		$this->Template->set($data);
+		// Additionnal data:
 		$this->Template->set(array(
+				// Current plugin
 				'plugin' => $this->plugin,
 				'pluginPath' => $pluginPath,
+				// Theme to use
 				'theme' => $this->params['theme'],
 				// Part name
 				'part' => $this->currentPart,
 				// Entire model config for a quicker access in templates
 				'modelConfig' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model'),
 		));
+
+		/* -------------------------------------------------------------------------
+		 * Generating and saving the file
+		 * ---------------------------------------------------------------------- */
 
 		$out = $this->Template->generate('classes', 'model');
 
@@ -509,10 +566,15 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Assembles and writes a unit test file
 	 *
+	 * Same method as in the original file, with the "interactive" handling removed.
+	 *
 	 * @param string $className Model class name
 	 * @return string
 	 */
 	public function bakeTest($className) {
+		// The only difference from original method is setting the interactive mode
+		// to false.
+		$this->Test->interactive = false;
 		$this->Test->plugin = $this->plugin;
 		$this->Test->connection = $this->connection;
 		return $this->Test->bake('Model', $className);
@@ -521,11 +583,13 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * outputs the a list of possible models or controllers from database
 	 *
+	 * Same method as in the original file, with the "interactive" handling removed.
+	 *
 	 * @param string $useDbConfig Database configuration name
 	 * @return array
 	 */
 	public function listAll($useDbConfig = null) {
-		$this->_tables = (array) $this->getAllTables($useDbConfig);
+		$this->_tables = $this->getAllTables($useDbConfig);
 
 		$this->_modelNames = array();
 		$count = count($this->_tables);
@@ -537,6 +601,8 @@ class SuperModelTask extends BakeTask {
 
 	/**
 	 * Interact with the user to determine the table name of a particular model
+	 *
+	 * Same method as in the original file, with the "interactive" handling removed.
 	 *
 	 * @param string $modelName Name of the model you want a table for.
 	 * @param string $useDbConfig Name of the database config you want to get tables from.
@@ -555,6 +621,8 @@ class SuperModelTask extends BakeTask {
 	/**
 	 * Get an Array of all the tables in the supplied connection
 	 * will halt the script if no tables are found.
+	 *
+	 * Unmodified method.
 	 *
 	 * @param string $useDbConfig Connection name to scan.
 	 * @return array Array of tables in the database.
@@ -581,6 +649,7 @@ class SuperModelTask extends BakeTask {
 			$this->err(__d('cake_console', 'Your database does not have any tables.'));
 			return $this->_stop();
 		}
+		sort($tables);
 		return $tables;
 	}
 
@@ -593,6 +662,9 @@ class SuperModelTask extends BakeTask {
 	 * @see FixtureTask::bake
 	 */
 	public function bakeFixture($className, $useTable = null) {
+		// The only difference from original method is setting the interactive mode
+		// to false.
+		$this->Fixture->interactive = false;
 		$this->Fixture->connection = $this->connection;
 		$this->Fixture->plugin = $this->plugin;
 		$this->Fixture->bake($className, $useTable);

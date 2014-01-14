@@ -217,7 +217,7 @@ function url($action, $controller = null, $prefix = null, $options = null) {}
 </pre>
 
 ### From Sbc
-Sbc is the library that do stuff around the configuration file (as population, getting values, ...). It's available with `$this->sbc`, and is located in `Sb/Lib/SuperBake/`.
+Sbc is the library that do stuff around the configuration file (as population, getting values, ...). It's available with `$this->Sbc`, and is located in `Sb/Lib/SuperBake/`.
 
 #### actionAddPrefix()
 

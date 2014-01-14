@@ -88,7 +88,7 @@ class SuperModelTask extends BakeTask {
 	 * Holds the project configuration array
 	 * @var array
 	 */
-	public $sbc;
+	public $Sbc;
 
 	/**
 	 * Holds some params (as theme)
@@ -122,10 +122,10 @@ class SuperModelTask extends BakeTask {
 	 */
 	public function execute() {
 		// DB connection to use
-		$this->connection = $this->sbc->getConfig('general.dbConnection');
+		$this->connection = $this->Sbc->getConfig('general.dbConnection');
 
 		// Model name
-		$model = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.name');
+		$model = $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.name');
 
 		// Lists the tables
 		$this->listAll($this->connection);
@@ -501,7 +501,7 @@ class SuperModelTask extends BakeTask {
 				'primaryKey' => 'id',
 				'useTable' => null,
 				'useDbConfig' => 'default',
-				'displayField' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.displayField'),
+				'displayField' => $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.displayField'),
 		);
 		$data = array_merge($defaults, $data);
 
@@ -512,7 +512,7 @@ class SuperModelTask extends BakeTask {
 		}
 
 		// Options
-		foreach ($this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.options') as $option => $value) {
+		foreach ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.options') as $option => $value) {
 			$this->Template->set($option, $value);
 		}
 
@@ -520,8 +520,8 @@ class SuperModelTask extends BakeTask {
 		 * Making the prepared data available for template
 		 * ---------------------------------------------------------------------- */
 
-		//sbc class
-		$this->Template->sbc = $this->sbc;
+		//Sbc class
+		$this->Template->Sbc = $this->Sbc;
 		// Prepared data
 		$this->Template->set($data);
 		// Additionnal data:
@@ -534,7 +534,7 @@ class SuperModelTask extends BakeTask {
 				// Part name
 				'part' => $this->currentPart,
 				// Entire model config for a quicker access in templates
-				'modelConfig' => $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model'),
+				'modelConfig' => $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model'),
 		));
 
 		/* -------------------------------------------------------------------------

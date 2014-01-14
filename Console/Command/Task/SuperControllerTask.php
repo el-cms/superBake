@@ -63,7 +63,7 @@ class SuperControllerTask extends BakeTask {
 	 * Holds the project configuration array
 	 * @var array
 	 */
-	public $sbc;
+	public $Sbc;
 
 	/**
 	 * Current part name
@@ -98,7 +98,7 @@ class SuperControllerTask extends BakeTask {
 		}
 
 		// Getting controller name from config file
-		$controller = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.name');
+		$controller = $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.name');
 
 		// -------------------------------------------------------------------------
 		// Public actions ("public" prefix)
@@ -151,7 +151,7 @@ class SuperControllerTask extends BakeTask {
 		// -------------------------------------------------------------------------
 		// Tie the controller to its model if "haveModel" is true in the part.
 		// -------------------------------------------------------------------------
-		if ($this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.haveModel') == true) {
+		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.haveModel') == true) {
 			App::uses($modelImport, $plugin . 'Model');
 			// Checks if Model has been loaded correctly
 			if (!class_exists($modelImport)) {
@@ -192,7 +192,7 @@ class SuperControllerTask extends BakeTask {
 		$pluralVar = $pluralName;
 
 		// Sbc object
-		$this->Template->sbc = $this->sbc;
+		$this->Template->Sbc = $this->Sbc;
 
 		// Passing all the above variables to template task to make them available in actions templates.
 		$this->Template->set(compact(
@@ -231,11 +231,11 @@ class SuperControllerTask extends BakeTask {
 				// Plugin path
 				'pluginPath' => empty($this->plugin) ? '' : $this->plugin . '.',
 				// Sbc object
-				'sbc' => $this->sbc,
+				'Sbc' => $this->Sbc,
 				// Config from config file for the current controller
-				'currentControllerConfig' => $this->sbc->getConfig("plugins."
-								. $this->sbc->getControllerPlugin($controllerName)
-								. ".parts." . $this->sbc->getControllerPart($controllerName)
+				'currentControllerConfig' => $this->Sbc->getConfig("plugins."
+								. $this->Sbc->getControllerPlugin($controllerName)
+								. ".parts." . $this->Sbc->getControllerPart($controllerName)
 								. ".controller"),
 		));
 		// Making the vars available

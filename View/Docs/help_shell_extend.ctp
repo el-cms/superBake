@@ -128,7 +128,7 @@ _/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`\_/`
     > And an array of messages
 </pre>
 
-## Methods from sbc
+## Methods from Sbc
 
 ### displayLog()
 

@@ -39,7 +39,7 @@ All the options defined in your view's section part are directly available.
  
 ### Access to superBake:
 
- * Both `$sbc` and `$this->sbc` refers to Sbc.
+ * Both `$Sbc` and `$this->Sbc` refers to Sbc.
  * `currentPart` - Current part name.
  * `plugin` - Current plugin name. Null for _appBase_.
  * `action` - Current action name with prefix, if any.

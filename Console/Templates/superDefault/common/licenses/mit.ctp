@@ -32,7 +32,7 @@
  *
  * ----
  *
- * This file is part of <?php echo $this->sbc->getConfig('general.basePackage') ?>.
+ * This file is part of <?php echo $this->Sbc->getConfig('general.basePackage') ?>.
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt

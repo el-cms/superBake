@@ -64,7 +64,7 @@ throw new NotFoundException(<?php echo $this->iString('Invalid ' . strtolower($s
 <?php
 // Fields
 $findFields='';
-if ($this->sbc->getConfig('theme.language.useLanguages') == true) {
+if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
 	// Language fields should be set in config, so we check
 	if (count($languageFields) == 0) {
 		$this->speak(__d('superBake', ' - No languageField defined. All fields will be returned.'), 'warning');
@@ -75,10 +75,10 @@ if ($this->sbc->getConfig('theme.language.useLanguages') == true) {
 		<?php
 		$findFields.="\t\t\t'fields' => array(\n\t\t\t\t// Fallback\n";
 		foreach ($languageFields as $l) {
-			'_' . $this->sbc->getConfig('theme.language.fallback');
+			'_' . $this->Sbc->getConfig('theme.language.fallback');
 			$findFields.="\t\t\t\t'$currentModelName.{$l}_' . \$fallback . ' as {$l}_default',\n";
 			$findFields.="\t\t\t\t'$currentModelName.{$l}_' . \$lang . ' as $l',\n";
-			foreach ($this->sbc->getConfig('theme.language.available') as $lang) {
+			foreach ($this->Sbc->getConfig('theme.language.available') as $lang) {
 				unset($fields[$l . '_' . $lang]);
 			}
 		}

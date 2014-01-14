@@ -83,7 +83,7 @@ if (count($languageFields) > 0) {
 	$diff = array();
 	$internationalizedFields = array();
 	foreach ($languageFields as $lf) {
-		foreach ($this->sbc->getConfig('theme.language.available') as $l) {
+		foreach ($this->Sbc->getConfig('theme.language.available') as $l) {
 			$diff[] = $lf . '_' . $l;
 		}
 		$fields[] = $lf;

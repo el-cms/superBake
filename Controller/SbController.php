@@ -23,14 +23,14 @@ class SbController extends SbAppController {
  * This method will load a config file submited in POST.
  * If nothing is set, it will use the default config file.
  *
- * Some vars from sbc will be available in views.
+ * Some vars from Sbc will be available in views.
  *
  *
  * @access private
  * @return void
  */
 	private function _selectConfigFile() {
-		$sbc = new Sbc();
+		$Sbc = new Sbc();
 
 		if ($this->request->is('post')) {
 			$fileToLoad = $this->request->data['configFile'];
@@ -38,31 +38,31 @@ class SbController extends SbAppController {
 			$fileToLoad = Configure::read('Sb.defaultConfig');
 		}
 		// Find the different configuration files
-		$configFolder = new Folder($sbc->getConfigPath());
+		$configFolder = new Folder($Sbc->getConfigPath());
 
 		// Loads the file
-		$sbc->loadFile($fileToLoad);
+		$Sbc->loadFile($fileToLoad);
 
 		// Giving the array to view
 		$this->set('configFiles', $configFolder->find('(.*)\.yml', true));
 		$this->set('configFile', $fileToLoad);
-		$this->set('configFileDescription', $sbc->getConfig('description'));
-		$this->set('log', $sbc->displayLog());
-		$this->set('logErrors', $sbc->getErrors());
-		$this->set('logWarnings', $sbc->getWarnings());
+		$this->set('configFileDescription', $Sbc->getConfig('description'));
+		$this->set('log', $Sbc->displayLog());
+		$this->set('logErrors', $Sbc->getErrors());
+		$this->set('logWarnings', $Sbc->getWarnings());
 
-		return $sbc;
+		return $Sbc;
 	}
 
 /**
  * This action will display the final configuration file, after population.
- * In addition, the view displays the logs from sbc::populate() to check for errors.
+ * In addition, the view displays the logs from Sbc::populate() to check for errors.
  *
  * @return void
  */
 	public function check() {
-		$sbc = $this->_selectConfigFile();
-		$this->set('completeConfig', Spyc::YAMLDump($sbc->getConfig()));
+		$Sbc = $this->_selectConfigFile();
+		$this->set('completeConfig', Spyc::YAMLDump($Sbc->getConfig()));
 	}
 
 /**
@@ -72,18 +72,18 @@ class SbController extends SbAppController {
  * @return void
  */
 	public function tree() {
-		$sbc = $this->_selectConfigFile();
+		$Sbc = $this->_selectConfigFile();
 		// Prefixes and actions list:
 		$defaults_prefixes_list = '';
-		foreach ($sbc->getConfig('defaults.actions') as $prefix => $action) {
+		foreach ($Sbc->getConfig('defaults.actions') as $prefix => $action) {
 			$defaults_prefixes_list.=$prefix . ', ';
 		}
 		$this->set('defaults_prefixes_list', rtrim($defaults_prefixes_list, ', '));
-		$this->set('completeConfig', $sbc->getConfig());
+		$this->set('completeConfig', $Sbc->getConfig());
 	}
 
 /**
- * Method to test the sbc::arrayMerge() method.
+ * Method to test the Sbc::arrayMerge() method.
  * Here for testing only.
  *
  * @return void
@@ -91,12 +91,12 @@ class SbController extends SbAppController {
 	public function arraymerge() {
 		$result = '';
 		if ($this->request->is('post')) {
-			$sbc = new Sbc();
+			$Sbc = new Sbc();
 			$spyc = new Spyc();
 			$default = $this->request->data['default'];
 			$defined = $this->request->data['defined'];
 			$keep = (isset($this->request->data['keepRest']) && $this->request->data['keepRest'] == 'keep') ? true : false;
-			$result = $spyc->YAMLDump($sbc->updateArray($spyc->YAMLLoadString($default), $spyc->YAMLLoadString($defined), $keep));
+			$result = $spyc->YAMLDump($Sbc->updateArray($spyc->YAMLLoadString($default), $spyc->YAMLLoadString($defined), $keep));
 		} else {
 			$default = null;
 			$defined = null;

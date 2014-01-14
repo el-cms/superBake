@@ -46,13 +46,13 @@ $pluginName = (!empty($plugin)) ? rtrim($plugin, '.') : '';
 
 // Plugin name in configuration.
 // Not empty for appBase
-$configPluginName = $this->sbc->pluginName($pluginName);
+$configPluginName = $this->Sbc->pluginName($pluginName);
 
 // Prefix
 $prefix = (empty($admin)) ? 'public' : rtrim($admin, '_');
 
 // Load actions to bake.
-$actionsToBake = $this->sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, $prefix);
+$actionsToBake = $this->Sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, $prefix);
 
 //
 // Baking actions, using their respective templates

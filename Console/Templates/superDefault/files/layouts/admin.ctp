@@ -37,7 +37,7 @@ include($themePath . 'views/common/headers-files.ctp');
 		<?php echo "<?php echo \$this->Html->charset(); ?>"; ?>
 		<title>
 			<?php echo "<?php echo \$cakeDescription ?>"; ?>:
-			<?php echo "<?php echo \$title_for_layout; ?>"; ?> - <?php echo $this->sbc->getConfig('general.siteName'); ?>
+			<?php echo "<?php echo \$title_for_layout; ?>"; ?> - <?php echo $this->Sbc->getConfig('general.siteName'); ?>
 		</title>
 		<?php echo "<?php
 		echo \$this->Html->meta('icon');

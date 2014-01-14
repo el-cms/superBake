@@ -70,10 +70,10 @@ class SuperFileTask extends BakeTask {
 	public $template = null;
 
 	/**
-	 * Reference to the sbc object
+	 * Reference to the Sbc object
 	 * @var object
 	 */
-	public $sbc;
+	public $Sbc;
 
 	/**
 	 * File type: menu or file
@@ -139,7 +139,7 @@ class SuperFileTask extends BakeTask {
 	 */
 	public function bake($file, $content = '') {
 		// Info
-		$this->speak(__d('superBake', 'Baking ' . $this->sbc->pluginName($this->plugin) . '.%s %s file...', array($file, $this->fileType)), 'info', 0, 0, 1);
+		$this->speak(__d('superBake', 'Baking ' . $this->Sbc->pluginName($this->plugin) . '.%s %s file...', array($file, $this->fileType)), 'info', 0, 0, 1);
 		// Checking if some content has been generated
 		if ($content === true) {
 			$content = $this->getContent($file);
@@ -173,7 +173,7 @@ class SuperFileTask extends BakeTask {
 		// Plugin name
 		$this->Template->set('plugin', $this->plugin);
 		//Sbc object
-		$this->Template->sbc = $this->sbc;
+		$this->Template->Sbc = $this->Sbc;
 		// Vars passed as arguments
 		$this->Template->set($vars);
 

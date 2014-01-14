@@ -46,9 +46,9 @@ class SbShell extends AppShell {
 	/**
 	 * A Sbc instance that gives all the methods to handle the config file.
 	 *
-	 * @var object sbc
+	 * @var object Sbc
 	 */
-	public $sbc;
+	public $Sbc;
 
 	/**
 	 * Method executed if the shell is executed by command line (cake superApp)
@@ -70,7 +70,7 @@ class SbShell extends AppShell {
 	public function getActionPrefix($action){
 		$array=explode('_', $action);
 		if(count($array)>1){
-			if(in_array($array[0], $this->sbc->prefixesList())){
+			if(in_array($array[0], $this->Sbc->prefixesList())){
 				return $array[0];
 			}
 		}
@@ -84,7 +84,7 @@ class SbShell extends AppShell {
 	 * @return string
 	 */
 	public function getActionName($action){
-		return $this->sbc->actionRemovePrefix($action);
+		return $this->Sbc->actionRemovePrefix($action);
 	}
 
 
@@ -114,7 +114,7 @@ class SbShell extends AppShell {
 	 * @return bool
 	 */
 	public function canDo($action, $prefix = null, $controller = null) {
-		return $this->sbc->isActionnable((is_null($prefix)) ? $this->templateVars['admin'] : $prefix, (is_null($controller)) ? ucfirst(Inflector::camelize($this->templateVars['pluralVar'])) : ucfirst(Inflector::camelize($controller)), $action);
+		return $this->Sbc->isActionnable((is_null($prefix)) ? $this->templateVars['admin'] : $prefix, (is_null($controller)) ? ucfirst(Inflector::camelize($this->templateVars['pluralVar'])) : ucfirst(Inflector::camelize($controller)), $action);
 	}
 
 	/**
@@ -260,8 +260,8 @@ class SbShell extends AppShell {
 		$controller = (!is_null($controller)) ? $controller : $this->templateVars['pluralVar'];
 
 		// Plugin
-		$plugin = $this->sbc->getControllerPlugin(ucfirst(Inflector::camelize($controller)));
-		$url.=(empty($plugin) || $plugin == $this->sbc->getAppBase()) ? " 'plugin' => null," : " 'plugin' => '" . Inflector::underscore($plugin) . "',";
+		$plugin = $this->Sbc->getControllerPlugin(ucfirst(Inflector::camelize($controller)));
+		$url.=(empty($plugin) || $plugin == $this->Sbc->getAppBase()) ? " 'plugin' => null," : " 'plugin' => '" . Inflector::underscore($plugin) . "',";
 
 		// Controller
 		$url .= " 'controller' => '" . Inflector::underscore($controller) . "',";
@@ -277,7 +277,7 @@ class SbShell extends AppShell {
 	}
 
 	public function setFlash($content, $class){
-		return "\$this->Session->setFlash(".$this->iString($content).(($this->sbc->getConfig('theme.flashMessageElement') == true) ? ", 'flash_$class'" : '').");\n";
+		return "\$this->Session->setFlash(".$this->iString($content).(($this->Sbc->getConfig('theme.flashMessageElement') == true) ? ", 'flash_$class'" : '').");\n";
 	}
 
 	/**
@@ -299,8 +299,8 @@ class SbShell extends AppShell {
 	 */
 	public function getControllerPluginName($underscored_controller_name){
 		$controller=  Inflector::camelize($underscored_controller_name);
-		$plugin_name=$this->sbc->getControllerPlugin($controller);
-		$plugin=($plugin_name==$this->sbc->getAppBase())? null:$plugin_name;
+		$plugin_name=$this->Sbc->getControllerPlugin($controller);
+		$plugin=($plugin_name==$this->Sbc->getAppBase())? null:$plugin_name;
 		return Inflector::underscore($plugin);
 	}
 }

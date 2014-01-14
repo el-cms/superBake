@@ -5,7 +5,7 @@
  * This is an identical copy of Cake's Bake task, but this one extends SbShell instead
  * of AppShell.
  *
- * This is made to make $sbc and other methods available to the bake task.
+ * This is made to make $Sbc and other methods available to the bake task.
  *
  * ---
  * PHP 5

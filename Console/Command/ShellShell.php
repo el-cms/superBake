@@ -124,7 +124,7 @@ class ShellShell extends SbShell {
 		$this->out('|                                                               |', 1, 0);
 		$this->out('+---------------------------------------------------------------+', 1, 0);
 		$this->out('| <info>Config file: "' . Configure::read('Sb.defaultConfig') . '".</info>', 1, 0);
-		if ($this->sbc->getErrors() > 0) {
+		if ($this->Sbc->getErrors() > 0) {
 			$this->out('| <warning>--> This file contains errors. Check it.</warning>', 1, 0);
 		}
 		$this->out('+--[ <error>' . __d('superBake', 'Plugin creation') . '</error> ]', 1, 0);
@@ -308,7 +308,7 @@ class ShellShell extends SbShell {
 	public function Plugins() {
 		$this->speak(__d('superBake', 'Building all plugins structure'), 'info', 0, 2, 2);
 		$this->out();
-		$updateBootstrap = strtoupper($this->in(__d('superBake', 'Do we have to update the app\'s bootstrap file ?'), array('y', 'n'), ($this->sbc->getConfig('general.updateBootstrap') ? 'y' : 'n')));
+		$updateBootstrap = strtoupper($this->in(__d('superBake', 'Do we have to update the app\'s bootstrap file ?'), array('y', 'n'), ($this->Sbc->getConfig('general.updateBootstrap') ? 'y' : 'n')));
 		$this->out();
 		$this->hr();
 		$this->out();
@@ -317,17 +317,17 @@ class ShellShell extends SbShell {
 		$this->SuperPlugin->updateBootstrap = $updateBootstrap;
 
 		// Plugin list
-		$plugins = $this->sbc->getPluginsToBake();
+		$plugins = $this->Sbc->getPluginsToBake();
 		$i = 0; // Used to count generated plugins
 
 		foreach ($plugins as $plugin) {
 			// Executes generation
-			if ($plugin != $this->sbc->getAppBase()) {
+			if ($plugin != $this->Sbc->getAppBase()) {
 				$this->speak(__d('superBake', "Building $plugin"), 'info', 0, 2, 1);
 				//Giving the name of the current plugin to the task
 				$this->SuperPlugin->currentPlugin = $plugin;
 				// Giving the plugin configuration to the task
-				$this->SuperPlugin->pluginConfig = $this->sbc->getConfig("plugins.$plugin");
+				$this->SuperPlugin->pluginConfig = $this->Sbc->getConfig("plugins.$plugin");
 				$this->SuperPlugin->execute();
 			}
 			$i++;
@@ -356,7 +356,7 @@ class ShellShell extends SbShell {
 	 * @return string Plugin name
 	 */
 	private function _getPluginName() {
-		$plugins = $this->sbc->getPluginsToBake();
+		$plugins = $this->Sbc->getPluginsToBake();
 
 		$count = count($plugins);
 
@@ -394,7 +394,7 @@ class ShellShell extends SbShell {
 	public function Model() {
 		$this->speak(__d('superBake', 'Building unique model'), 'info', 0, 2, 2);
 		$args = $this->_checkArgs(2, array('plugin', 'model'));
-		$part = $this->sbc->getModelPart($args['model']);
+		$part = $this->Sbc->getModelPart($args['model']);
 		$this->_model($args['plugin'], $part);
 		$this->speak(__d('superBake', '"%s" model has been generated in plugin "%s"', array($args['model'], $args['plugin'])), 'success', 0, 2, 2);
 	}
@@ -407,7 +407,7 @@ class ShellShell extends SbShell {
 	 */
 	public function Models() {
 		$this->speak(__d('superBake', 'Building ALL models for ALL plugins'), 'info', 0, 2, 2);
-		$models = $this->sbc->getModelsToBake();
+		$models = $this->Sbc->getModelsToBake();
 		foreach ($models as $model => $modelConfig) {
 			$this->speak(__d('superBake', 'Generating model %s...', $modelConfig['plugin'] . '.' . $model), 'info', 0, 1, 1);
 			$this->_model($modelConfig['plugin'], $modelConfig['part']);
@@ -425,9 +425,9 @@ class ShellShell extends SbShell {
 	public function pluginModels() {
 		$this->speak(__d('superBake', 'Building ALL models for a plugin'), 'info', 0, 2, 2);
 		$args = $this->_checkArgs(1, array('plugin'));
-		$models = $this->sbc->getModelsList($args['plugin']);
+		$models = $this->Sbc->getModelsList($args['plugin']);
 		foreach ($models as $model) {
-			$part = $this->sbc->getModelPart($model);
+			$part = $this->Sbc->getModelPart($model);
 			$this->_model($args['plugin'], $part);
 		}
 	}
@@ -440,13 +440,13 @@ class ShellShell extends SbShell {
 	 */
 	private function _model($plugin, $part) {
 		// Template to use
-		$this->SuperModel->params['theme'] = $this->sbc->getConfig('general.template');
+		$this->SuperModel->params['theme'] = $this->Sbc->getConfig('general.template');
 
 		// SuperBake
-		$this->SuperModel->sbc = $this->sbc;
+		$this->SuperModel->Sbc = $this->Sbc;
 
 		// Curent plugin
-		if ($plugin == $this->sbc->getAppBase()) {
+		if ($plugin == $this->Sbc->getAppBase()) {
 			$this->SuperModel->plugin = null;
 		} else {
 			$this->SuperModel->plugin = $plugin;
@@ -464,7 +464,7 @@ class ShellShell extends SbShell {
 	 * @return string Choosen model name
 	 */
 	private function _getModelName($plugin) {
-		$models = $this->sbc->getModelsList($plugin);
+		$models = $this->Sbc->getModelsList($plugin);
 
 		$count = count($models);
 
@@ -516,7 +516,7 @@ class ShellShell extends SbShell {
 	 */
 	public function Controllers() {
 		$this->speak(__d('superBake', 'Building ALL controllers, for ALL plugins'), 'info', 0, 2, 2);
-		$controllers = $this->sbc->getControllersToBake();
+		$controllers = $this->Sbc->getControllersToBake();
 		foreach ($controllers as $controller => $controllerConfig) {
 			$this->speak(__d('superBake', 'Generating controller %s...', $controllerConfig['plugin'] . '.' . $controller), 'info', 0, 1, 1);
 			$this->_controller($controllerConfig['plugin'], $controllerConfig['part']);
@@ -534,7 +534,7 @@ class ShellShell extends SbShell {
 	public function pluginControllers() {
 		$this->speak(__d('superBake', 'Building ALL controllers for a plugin'), 'info', 0, 2, 2);
 		$args = $this->_checkArgs(1, array('plugin'));
-		$controllers = $this->sbc->getControllersList($args['plugin']);
+		$controllers = $this->Sbc->getControllersList($args['plugin']);
 		foreach ($controllers as $controller) {
 			$this->_controller($args['plugin'], $controller);
 		}
@@ -547,7 +547,7 @@ class ShellShell extends SbShell {
 	 * @return string Choosen controller name
 	 */
 	private function _getControllerName($plugin) {
-		$controllers = $this->sbc->getControllersList($plugin);
+		$controllers = $this->Sbc->getControllersList($plugin);
 
 		$count = count($controllers);
 
@@ -594,7 +594,7 @@ class ShellShell extends SbShell {
 		$this->out('## ' . __d('superBake', 'What\'s next ?'), 1, 0);
 		$this->out('## ' . __d('superBake', 'Next, you should copy/paste parts that are important to you, and replace them in your configuration file. And customize them :)'), 1, 0);
 		$this->out('##', 1, 0);
-		$this->out(Spyc::YAMLDump($this->sbc->getConfig()), 1, 0);
+		$this->out(Spyc::YAMLDump($this->Sbc->getConfig()), 1, 0);
 		$this->_stop();
 	}
 
@@ -607,17 +607,17 @@ class ShellShell extends SbShell {
 	private function _controller($plugin, $part) {
 		// First of all, checking if the controller have a model associated.
 		// If not, file creation mmethods will be used instead.
-		if ($this->sbc->getConfig('plugins.' . $this->sbc->pluginName($plugin) . ".parts.$part.haveModel") == false) {
+		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($plugin) . ".parts.$part.haveModel") == false) {
 			$this->speak(__d('superBake', 'ShellShell:662: Controller does not have a model. It should be generated using another method.'), 'warning', 0);
 		} else {
 			// Passing theme
-			$this->SuperController->params['theme'] = $this->sbc->getConfig('general.template');
+			$this->SuperController->params['theme'] = $this->Sbc->getConfig('general.template');
 
 			// SuperBake
-			$this->SuperController->sbc = $this->sbc;
+			$this->SuperController->Sbc = $this->Sbc;
 
 			// Current plugin
-			$this->SuperController->plugin = ($plugin == $this->sbc->getAppBase()) ? null : $plugin;
+			$this->SuperController->plugin = ($plugin == $this->Sbc->getAppBase()) ? null : $plugin;
 
 			// Part  name
 			$this->SuperController->currentPart = $part;
@@ -651,7 +651,7 @@ class ShellShell extends SbShell {
 
 		$this->speak(__d('superBake', 'Building ALL views for ALL controllers'), 'info', 0, 2, 2);
 
-		$views = $this->sbc->getViewsToBake();
+		$views = $this->Sbc->getViewsToBake();
 		foreach ($views as $plugin => $parts) {
 			foreach ($parts as $part => $prefixes) {
 				foreach ($prefixes as $prefix => $actions) {
@@ -678,12 +678,12 @@ class ShellShell extends SbShell {
 		$args = $this->_checkArgs(1, array('plugin'));
 
 		$plugin = $args['plugin'];
-		$views = $this->sbc->getViewsToBake();
+		$views = $this->Sbc->getViewsToBake();
 //		$controllers = $this->_getControllerList($plugin);
 		foreach ($views[$plugin] as $part => $prefixes) {
 			foreach ($prefixes as $prefix => $actions) {
 				foreach ($actions as $action) {
-					$this->_view($plugin, $part, $this->sbc->actionAddPrefix($action, $prefix));
+					$this->_view($plugin, $part, $this->Sbc->actionAddPrefix($action, $prefix));
 				}
 			}
 		}
@@ -702,14 +702,14 @@ class ShellShell extends SbShell {
 
 		$plugin = $args['plugin'];
 		$controller = $args['controller'];
-		$part = $this->sbc->getControllerPart($controller);
+		$part = $this->Sbc->getControllerPart($controller);
 
 		$this->speak(__d('superBake', 'Building views for controller "%s.%s"', array($plugin, $controller)), 'info', 0, 2);
-		$views = $this->sbc->getViewsToBake();
+		$views = $this->Sbc->getViewsToBake();
 
 		foreach ($views[$plugin][$part] as $prefix => $actions) {
 			foreach ($actions as $action)
-				$this->_view($plugin, $part, $this->sbc->actionAddPrefix($action, $prefix));
+				$this->_view($plugin, $part, $this->Sbc->actionAddPrefix($action, $prefix));
 		}
 		$this->speak(__d('superBake', 'Views for "%s.%s" have been generated', array($plugin, $controller)), 'success', 0, 2, 2);
 	}
@@ -722,19 +722,19 @@ class ShellShell extends SbShell {
 	 * @param string $action Action name with prefix (admin_index or index,...)
 	 */
 	private function _view($plugin, $part, $action) {
-		$this->SuperView->params['theme'] = $this->sbc->getConfig('general.template');
+		$this->SuperView->params['theme'] = $this->Sbc->getConfig('general.template');
 
 		// SuperBake
-		$this->SuperView->sbc = $this->sbc;
+		$this->SuperView->Sbc = $this->Sbc;
 
 		// Current plugin
-		$this->SuperView->plugin = ($plugin == $this->sbc->getAppBase()) ? null : $plugin;
+		$this->SuperView->plugin = ($plugin == $this->Sbc->getAppBase()) ? null : $plugin;
 
 		// Part name
 		$this->SuperView->currentPart = $part;
 
 		// Controller Name
-		$this->SuperView->controllerName = $this->sbc->getConfig("plugins.$plugin.parts.$part.controller.name");
+		$this->SuperView->controllerName = $this->Sbc->getConfig("plugins.$plugin.parts.$part.controller.name");
 
 		// Verifying prefix
 		$cakePrefixes = Configure::read('Routing.prefixes');
@@ -769,10 +769,10 @@ class ShellShell extends SbShell {
 	 * @return string Choosen action name
 	 */
 	private function _getViewName($plugin, $controller) {
-		$views = $this->sbc->getViewsToBake($plugin, $controller);
+		$views = $this->Sbc->getViewsToBake($plugin, $controller);
 		foreach ($views as $prefix => $acts) {
 			foreach ($acts as $act) {
-				$actions[] = $this->sbc->actionAddPrefix($act, $prefix);
+				$actions[] = $this->Sbc->actionAddPrefix($act, $prefix);
 			}
 		}
 		$count = count($actions);
@@ -806,7 +806,7 @@ class ShellShell extends SbShell {
 	 */
 	public function Menus() {
 		$this->speak(__d('superBake', 'Building ALL menus'), 'info', 0, 2, 2);
-		$menusList = $this->sbc->getMenusToBake();
+		$menusList = $this->Sbc->getMenusToBake();
 		foreach ($menusList as $plugin => $menus) {
 			foreach ($menus as $menu) {
 				$this->speak(__d('superBake', 'Generating menu %s...', $plugin . '.' . $menu), 'info', 0, 1, 1);
@@ -824,19 +824,19 @@ class ShellShell extends SbShell {
 	 */
 	private function _menu($plugin, $menu) {
 		// Template to use
-		$this->SuperFile->params['theme'] = $this->sbc->getConfig('general.template');
+		$this->SuperFile->params['theme'] = $this->Sbc->getConfig('general.template');
 
 		// SuperBake
-		$this->SuperFile->sbc = $this->sbc;
+		$this->SuperFile->Sbc = $this->Sbc;
 
 		// File type:
 		$this->SuperFile->fileType = 'menu';
 
 		// Plugin:
-		$this->SuperFile->plugin = ($plugin == $this->sbc->getAppBase()) ? null : $plugin;
+		$this->SuperFile->plugin = ($plugin == $this->Sbc->getAppBase()) ? null : $plugin;
 
 		// Current menu config
-		$this->SuperFile->currentFileConfig = $this->sbc->getConfig('plugins.' . $plugin . ".menus.$menu");
+		$this->SuperFile->currentFileConfig = $this->Sbc->getConfig('plugins.' . $plugin . ".menus.$menu");
 
 		// Execute generation
 		$this->SuperFile->execute();
@@ -847,7 +847,7 @@ class ShellShell extends SbShell {
 	 */
 	public function Files() {
 		$this->speak(__d('superBake', 'Building ALL files'), 'info', 0, 2, 2);
-		$filesList = $this->sbc->getFilesToBake();
+		$filesList = $this->Sbc->getFilesToBake();
 		foreach ($filesList as $plugin => $files) {
 			foreach ($files as $file) {
 				$this->speak(__d('superBake', 'Generating file %s...', $plugin . '.' . $file), 'info', 0, 1, 1);
@@ -864,19 +864,19 @@ class ShellShell extends SbShell {
 	 */
 	private function _file($plugin, $file) {
 		// Template to use
-		$this->SuperFile->params['theme'] = $this->sbc->getConfig('general.template');
+		$this->SuperFile->params['theme'] = $this->Sbc->getConfig('general.template');
 
 		// SuperBake
-		$this->SuperFile->sbc = $this->sbc;
+		$this->SuperFile->Sbc = $this->Sbc;
 
 		// File type:
 		$this->SuperFile->fileType = 'file';
 
 		// Plugin:
-		$this->SuperFile->plugin = ($plugin == $this->sbc->getAppBase()) ? null : $plugin;
+		$this->SuperFile->plugin = ($plugin == $this->Sbc->getAppBase()) ? null : $plugin;
 
 		// Current file config
-		$this->SuperFile->currentFileConfig = $this->sbc->getConfig('plugins.' . $plugin . ".files.$file");
+		$this->SuperFile->currentFileConfig = $this->Sbc->getConfig('plugins.' . $plugin . ".files.$file");
 
 		// Execute generation
 		$this->SuperFile->execute();
@@ -885,7 +885,7 @@ class ShellShell extends SbShell {
 	public function Required(){
 		// Finds required sections
 		$this->speak(__d('superBake', 'Copying all required files'), 'info', 0, 2, 2);
-		$requiredList = $this->sbc->getRequiredToBake();
+		$requiredList = $this->Sbc->getRequiredToBake();
 		foreach ($requiredList as $plugin => $required) {
 			foreach ($required as $requiredFile) {
 				$this->speak(__d('superBake', 'Copying required file/folder %s...', $plugin . '.' . $requiredFile), 'info', 0, 1, 1);
@@ -897,16 +897,16 @@ class ShellShell extends SbShell {
 
 	private function _required($plugin, $required){
 		// Template to use
-		$this->SuperRequired->params['theme'] = $this->sbc->getConfig('general.template');
+		$this->SuperRequired->params['theme'] = $this->Sbc->getConfig('general.template');
 
 		// SuperBake
-		$this->SuperRequired->sbc = $this->sbc;
+		$this->SuperRequired->Sbc = $this->Sbc;
 
 		// Plugin:
-		$this->SuperRequired->plugin = ($plugin == $this->sbc->getAppBase()) ? null : $plugin;
+		$this->SuperRequired->plugin = ($plugin == $this->Sbc->getAppBase()) ? null : $plugin;
 
 		// Current file config
-		$this->SuperRequired->required = $this->sbc->getConfig('plugins.' . $plugin . ".required.$required");
+		$this->SuperRequired->required = $this->Sbc->getConfig('plugins.' . $plugin . ".required.$required");
 
 		// Execute generation
 		$this->SuperRequired->execute();
@@ -1003,9 +1003,9 @@ class ShellShell extends SbShell {
 					switch ($type) {
 						case 'plugin': //plugin
 							$plugin = null;
-							if (in_array($args[$i], $this->sbc->getPluginsList())) {
+							if (in_array($args[$i], $this->Sbc->getPluginsList())) {
 								// Is generate set to true ?
-								if (!in_array($args[$i], $this->sbc->getPluginsToBake())) {
+								if (!in_array($args[$i], $this->Sbc->getPluginsToBake())) {
 									$this->speak(__d('superBake', "The submited plugin has 'generate' set to false.\nNothing must be done in it. Do something else :)"), 'warning', 0);
 									$this->_stop();
 								} else {
@@ -1019,7 +1019,7 @@ class ShellShell extends SbShell {
 							break;
 						case 'model': //model
 							$model = null;
-							if (in_array($args[$i], $this->sbc->getModelsList($plugin))) {
+							if (in_array($args[$i], $this->Sbc->getModelsList($plugin))) {
 								$model = $args[$i];
 							} else {
 								$this->speak(__d('superBake', "The submited model doesn't exists in config file\nMaybe it's just a typo...\nPlease, select one below:"), 'warning', 0);
@@ -1029,7 +1029,7 @@ class ShellShell extends SbShell {
 							break;
 						case 'controller': //controller
 							$controller = null;
-							$controllers = $this->sbc->getControllersList($plugin);
+							$controllers = $this->Sbc->getControllersList($plugin);
 							if (in_array($args[$i], $controllers)) {
 								$controller = $args[$i];
 							} else {
@@ -1040,10 +1040,10 @@ class ShellShell extends SbShell {
 							break;
 						case 'view': //action in controller
 							$action = null;
-							$actions = $this->sbc->getViewsToBake($plugin, $controller);
+							$actions = $this->Sbc->getViewsToBake($plugin, $controller);
 							foreach ($actions as $prefix => $views) {
 								foreach ($views as $view) {
-									$viewList[] = $this->sbc->actionAddPrefix($view, $prefix);
+									$viewList[] = $this->Sbc->actionAddPrefix($view, $prefix);
 								}
 							}
 							if (in_array($args[$i], $viewList)) {
@@ -1115,9 +1115,9 @@ class ShellShell extends SbShell {
 
 		$configFile = Configure::read('Sb.defaultConfig');
 
-		// Loading sbc
-		$this->sbc = new Sbc;
-		$this->sbc->loadFile($configFile);
+		// Loading Sbc
+		$this->Sbc = new Sbc;
+		$this->Sbc->loadFile($configFile);
 
 		$this->initialized = 1;
 		return true;

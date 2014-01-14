@@ -9,7 +9,7 @@
  * 		c_ are for controllers
  * 		m_ are for models
  *
- * @todo Find a way to access to the sbc object
+ * @todo Find a way to access to the Sbc object
  *
  * @author Manuel Tancoigne
  */

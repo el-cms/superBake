@@ -74,7 +74,7 @@ $paginateOptions = null;
 public function <?php echo $admin . $a ?>() {
 $this-><?php echo $currentModelName ?>->recursive = <?php echo $recursiveDepth ?>;
 <?php
-if ($this->sbc->getConfig('theme.language.useLanguages') == true) {
+if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
 	// Language fields should be set in config, so we check
 	if (count($languageFields) == 0) {
 		$this->speak(__d('superBake', ' - No languageField defined. All fields will be returned.'), 'warning');
@@ -85,10 +85,10 @@ if ($this->sbc->getConfig('theme.language.useLanguages') == true) {
 		<?php
 		$paginateOptions.="\t\t\t'fields' => array(\n\t\t\t\t// Fallback\n";
 		foreach ($languageFields as $l) {
-			'_' . $this->sbc->getConfig('theme.language.fallback');
+			'_' . $this->Sbc->getConfig('theme.language.fallback');
 			$paginateOptions.="\t\t\t\t'$currentModelName.{$l}_' . \$fallback . ' as {$l}_default',\n";
 			$paginateOptions.="\t\t\t\t'$currentModelName.{$l}_' . \$lang . ' as $l',\n";
-			foreach ($this->sbc->getConfig('theme.language.available') as $lang) {
+			foreach ($this->Sbc->getConfig('theme.language.available') as $lang) {
 				unset($fields[$l . '_' . $lang]);
 			}
 		}

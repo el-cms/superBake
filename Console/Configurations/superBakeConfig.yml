@@ -42,7 +42,7 @@ description: Testing config file with minimal configuration.
 #--------------------------------------------------------------------------
 general:
   ## Name of the "plugin that isn't one"
-  appBase: appBase
+  appBase: AppBase
   ## SuperBake template to use
   template: superDefault
   ## Use routing prefixes

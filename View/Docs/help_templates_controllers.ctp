@@ -33,7 +33,7 @@ All action templates have access to these variables:
 
  * **Vars from superBake:**
  
-  * `$sbc` - an instance of the Sbc object.
+  * `$Sbc` - an instance of the Sbc object.
   * `$currentPart` - The current part name
   * `$currentController` - The current controller name
   * `$prefix` - Prefix for the current action ("public" for no prefixes) 

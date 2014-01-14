@@ -43,22 +43,22 @@ echo "<?php\n";
 
 /**
 * app/<?php echo $com_plugin . 'Controller/' . $controllerName ?>.php
-* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo $sbc->getConfig('general.defaultTemplate'); ?>".
+* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo $Sbc->getConfig('general.defaultTemplate'); ?>".
 *
 * This file contains the <?php echo $currentController ?> controller.
 * 
-* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $sbc->getConfig('general.editorName') ?> (<?php echo $sbc->getConfig('general.editorWebsite') ?>)
-* @author        <?php echo $sbc->getConfig('general.editorName') ?> <<?php echo $sbc->getConfig('general.editorEmail') ?>>
-* @link          <?php echo $sbc->getConfig('general.editorWebsite') ?> <?php echo $sbc->getConfig('general.editorWebsiteName') . "\n" ?>
-* @package       <?php echo $sbc->getConfig('general.basePackage') ?>/<?php echo $plugin . "\n" ?>
+* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $Sbc->getConfig('general.editorName') ?> (<?php echo $Sbc->getConfig('general.editorWebsite') ?>)
+* @author        <?php echo $Sbc->getConfig('general.editorName') ?> <<?php echo $Sbc->getConfig('general.editorEmail') ?>>
+* @link          <?php echo $Sbc->getConfig('general.editorWebsite') ?> <?php echo $Sbc->getConfig('general.editorWebsiteName') . "\n" ?>
+* @package       <?php echo $Sbc->getConfig('general.basePackage') ?>/<?php echo $plugin . "\n" ?>
 *
 <?php
-$licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
+$licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $Sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
 if (file_exists($licenseTemplate)) {
 	include($licenseTemplate);
 } else {
 	include(dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . 'nolicence' . '.ctp');
-	$this->speak(__d('superBake', 'The license template is invalid (%s). A blank one has been used, but you should check the config file.', $sbc->getConfig('general.editorLicenseTemplate')), 'error', 0, 1);
+	$this->speak(__d('superBake', 'The license template is invalid (%s). A blank one has been used, but you should check the config file.', $Sbc->getConfig('general.editorLicenseTemplate')), 'error', 0, 1);
 }
 ?>
 */
@@ -88,7 +88,7 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 
 	<?php
 	// Model
-	if($sbc->getConfig('plugins.'.$sbc->pluginName($plugin).".parts.$currentPart.haveModel")==false){
+	if($Sbc->getConfig('plugins.'.$Sbc->pluginName($plugin).".parts.$currentPart.haveModel")==false){
 		echo "\t/**\n\t * Model to use\n\t * @var string\n\t */\n\tpublic \$uses=null;\n\n";
 	}
 	
@@ -123,9 +123,9 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 	// beforeFilter Method
 	// 
 	$beforeFilterContent='';
-	if ($this->sbc->getConfig('general.enableAcl') == true) {
+	if ($this->Sbc->getConfig('general.enableAcl') == true) {
 		// Load actions to bake.
-		$actionsToBake = $this->sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, 'public');
+		$actionsToBake = $this->Sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, 'public');
 		if (count($actionsToBake) > 0) {
 			foreach ($actionsToBake as $a=>$aConf) {
 				$bFActions[]="'$a'";

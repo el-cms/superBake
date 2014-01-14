@@ -12,7 +12,7 @@ All model snippets have access to these variables:
 
  * **Vars from superBake:**
  
-  * `$sbc` - A copy of the superBake object. You have now access to the whole config file and the methods to play with it.
+  * `$Sbc` - A copy of the superBake object. You have now access to the whole config file and the methods to play with it.
   * `$options` - An array of options defined in your snippets + the options from the part.
   * `$displayField` - The display field name - If empty, CakePHP will use the primary key.
   * `$part` - Part name

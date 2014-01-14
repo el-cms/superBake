@@ -13,9 +13,7 @@ if(!isset($enableCache)){
 }
 
 // Enable Acls: default is false
-if(!isset($enableAcl)){
-	$enableAcl=false;
-}
+	$enableAcl=$this->Sbc->getConfig('theme.enableAcl');
 
 // enableDebugKit: default is false
 if(!isset($enableDebugKit)){
@@ -105,7 +103,7 @@ class AppController extends Controller {
 		/* ************************************************************************
 		 * Language support: define current page language.
 		 */
-		if($this->sbc->getConfig('theme.language.useLanguages')==true){
+		if($this->Sbc->getConfig('theme.language.useLanguages')==true){
 			?>
 			// Language
 			$curr_lang = $this->_setLanguage();
@@ -120,7 +118,7 @@ class AppController extends Controller {
 	/* ************************************************************************
 	 * Language support : _setLanguage method
 	 */
-		if($this->sbc->getConfig('theme.language.useLanguages')==true){
+		if($this->Sbc->getConfig('theme.language.useLanguages')==true){
 			?>
 			private function _setLanguage() {
 				// Available languages

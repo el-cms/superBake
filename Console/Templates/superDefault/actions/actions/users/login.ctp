@@ -38,7 +38,6 @@ $strippedPrefix = str_replace('_', '', $admin);
 if(!isset($layout)){
 	$layout=null;
 }
-//$layout = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($plugin) . ".parts.$currentPart.controller.actions.$strippedPrefix.$a.options.publicLayout");
 ?>
 
 /**
@@ -46,9 +45,11 @@ if(!isset($layout)){
 */
 public function <?php echo $admin . $a ?>() {
 <?php
-if (!is_null($layout)) {
+if (!is_null($layout)) :
 	echo "\$this->layout = $layout;\n";
-}?>
+endif;
+// theme.enableAcl should be true to enable this action.
+if($this->Sbc->getConfig('theme.enableAcl')==true): ?>
 		if($this->Auth->loggedIn()){
 			<?php echo $this->setFlash('You are already logged in', 'info');?>
 			$this->redirect('/');
@@ -61,5 +62,10 @@ if (!is_null($layout)) {
 				<?php echo $this->setFlash('Your username or password was incorrect', 'error');?>
 			}
 		}
+<?php
+else:
+	echo $this->setFlash('Acls are not enabled, you can\\\'t use this action. To enable Acls, set the <code>theme.enableAcl</code> to true in your config file, and run superBake again.', 'error');
+endif;
+		?>
 		$this->set('title_for_layout', <?php echo $this->iString(ucfirst(Inflector::humanize(Inflector::underscore($a))))?>);
 	}

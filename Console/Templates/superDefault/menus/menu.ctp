@@ -47,7 +47,7 @@ if (!isset($hiddenActions) || !is_array($hiddenActions)) {
 }
 
 // Getting all actions
-$menu = $this->sbc->getActionsAll();
+$menu = $this->Sbc->getActionsAll();
 
 // plugins
 foreach ($menu as $plugin => $pluginConfig) {

@@ -85,10 +85,10 @@ class SuperViewTask extends BakeTask {
 	public $currentSimpleAction = null;
 
 	/**
-	 * The sbc object
+	 * The Sbc object
 	 * @var type Sbc object
 	 */
-	public $sbc;
+	public $Sbc;
 
 	/**
 	 * Current part name.
@@ -269,12 +269,12 @@ class SuperViewTask extends BakeTask {
 		$this->Template->set('admin', $this->currentPrefix);
 		$this->Template->set('action', $action);
 		$this->Template->set('plugin', $this->plugin);
-		$this->Template->set('sbc', $this->sbc);
+		$this->Template->set('Sbc', $this->Sbc);
 		$this->Template->set('currentPart', $this->currentPart);
-		$this->Template->sbc = $this->sbc;
+		$this->Template->Sbc = $this->Sbc;
 
 		// Making view's options directly available in template.
-		$currentViewConfig = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . ((is_null($this->currentPrefix)) ? 'public' : $this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.options');
+		$currentViewConfig = $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . ((is_null($this->currentPrefix)) ? 'public' : $this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.options');
 		foreach ($currentViewConfig as $k => $v) {
 			$this->Template->set($k, $v);
 			$this->templateOptions[]=$k;
@@ -319,7 +319,7 @@ class SuperViewTask extends BakeTask {
 		// Default: current action.
 		$view = $action;
 		// Alternative view
-		$template = $this->sbc->getConfig('plugins.' . $this->sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . $this->sbc->prefixName($this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.template');
+		$template = $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . $this->Sbc->prefixName($this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.template');
 		if (!empty($template)) {
 			$view = $template;
 			$this->speak(__d('superBake', 'We want to use the "%s" template for "%s" action view', array($view, $action)), 'info', 1);

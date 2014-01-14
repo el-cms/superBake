@@ -45,13 +45,13 @@ echo "<?php\n";
 *
 * This file contains the <?php echo $action ?> view for <?php echo $pluralVar ?> controller.
 *
-* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->sbc->getConfig('general.editorName') ?> (<?php echo $this->sbc->getConfig('general.editorWebsite') ?>)
-* @author        <?php echo $this->sbc->getConfig('general.editorName') ?> <<?php echo $this->sbc->getConfig('general.editorEmail')?>><?php echo "\n";?>
-* @link          <?php echo $this->sbc->getConfig('general.editorWebsite') ?> <?php echo $this->sbc->getConfig('general.editorWebsiteName') . "\n" ?>
-* @package       <?php echo $this->sbc->getConfig('general.basePackage') ?>/<?php echo $plugin . "\n" ?>
+* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->Sbc->getConfig('general.editorName') ?> (<?php echo $this->Sbc->getConfig('general.editorWebsite') ?>)
+* @author        <?php echo $this->Sbc->getConfig('general.editorName') ?> <<?php echo $this->Sbc->getConfig('general.editorEmail')?>><?php echo "\n";?>
+* @link          <?php echo $this->Sbc->getConfig('general.editorWebsite') ?> <?php echo $this->Sbc->getConfig('general.editorWebsiteName') . "\n" ?>
+* @package       <?php echo $this->Sbc->getConfig('general.basePackage') ?>/<?php echo $plugin . "\n" ?>
 *
 <?php
-$licenseTemplate = dirname(dirname(dirname(__FILE__))) . DS . 'common' . DS . 'licenses' . DS . $this->sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
+$licenseTemplate = dirname(dirname(dirname(__FILE__))) . DS . 'common' . DS . 'licenses' . DS . $this->Sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
 if (file_exists($licenseTemplate)) {
 	include($licenseTemplate);
 	echo "\n";

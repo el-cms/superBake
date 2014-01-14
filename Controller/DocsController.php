@@ -3,7 +3,7 @@
 class DocsController extends SbAppController{
 	public $uses=array();
 	/**
-	 * Displays a help file. 
+	 * Displays a help file formatted in markdown. Files are in '<Sb>/Views/Docs/'
 	 * Original method from CakePHP's PagesController file.
 	 *
 	 * @param mixed What page to display

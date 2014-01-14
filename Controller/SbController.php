@@ -16,11 +16,15 @@ class SbController extends SbAppController {
  * @return void
  */
 	public function index() {
-		
+
 	}
 
 /**
- * _selectConfigFile method
+ * This method will load a config file submited in POST.
+ * If nothing is set, it will use the default config file.
+ *
+ * Some vars from sbc will be available in views.
+ *
  *
  * @access private
  * @return void
@@ -51,7 +55,8 @@ class SbController extends SbAppController {
 	}
 
 /**
- * check method
+ * This action will display the final configuration file, after population.
+ * In addition, the view displays the logs from sbc::populate() to check for errors.
  *
  * @return void
  */
@@ -61,7 +66,8 @@ class SbController extends SbAppController {
 	}
 
 /**
- * tree method
+ * Displays the configuration file in a more readable way.
+ * (Named 'tree' because the very first version was a tree-like render)
  *
  * @return void
  */
@@ -77,7 +83,8 @@ class SbController extends SbAppController {
 	}
 
 /**
- * arraymerge method
+ * Method to test the sbc::arrayMerge() method.
+ * Here for testing only.
  *
  * @return void
  */

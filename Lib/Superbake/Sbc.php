@@ -2,14 +2,14 @@
 
 /**
  * Sbc class
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @package       ELCMS.superBake.Lib
  * @version       0.3
- * 
+ *
  * ----
  *  This file is part of EL-CMS.
  *
@@ -17,15 +17,15 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 
 /**
@@ -37,19 +37,19 @@ class Sbc {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Number of errors logged
+	 * Number of errors logged by the log() method
 	 * @var int
 	 */
 	private $errors = 0;
 
 	/**
-	 * Number of warnings logged
+	 * Number of warnings logged by the log() method
 	 * @var type int
 	 */
 	private $warnings = 0;
 
 	/**
-	 * The logs
+	 * The logs created by the log() method
 	 * @var type array
 	 */
 	private $log = array();
@@ -69,7 +69,7 @@ class Sbc {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Spyc object of YAML operations
+	 * Spyc object for YAML operations
 	 * @var Spyc object
 	 */
 	private $spyc;
@@ -116,7 +116,7 @@ class Sbc {
 
 	/**
 	 * Array of all the app's action, mainly used in menu generation.
-	 * 
+	 *
 	 * @var array
 	 */
 	private $actionsAll;
@@ -129,14 +129,14 @@ class Sbc {
 
 	/**
 	 * List of menus to generate, saved from getMenusToBake()
-	 * 
+	 *
 	 * @var array
 	 */
 	private $menusToBake;
 
 	/**
 	 * List of files to generate, saved from getFilesToBake()
-	 * 
+	 *
 	 * @var array
 	 */
 	private $filesToBake;
@@ -161,7 +161,7 @@ class Sbc {
 
 	/**
 	 * returns the appBase value if $plugin is null or empty
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @return string Plugin name
 	 */
@@ -180,14 +180,16 @@ class Sbc {
 
 	/**
 	 * Returns the array of plugins to bake
-	 * 
+	 *
 	 * @return array List of plugins to bake: array(pluginName))
 	 */
 	public function getPluginsToBake() {
 		// Checking if this op has been done before
 		if (!is_array($this->pluginsToBake)) {
 			$plugins = array();
+			// Search in plugins
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+				// Check if plugin must be generated
 				if ($pluginConfig['generate'] == true) {
 					$plugins[] = $plugin;
 				}
@@ -199,7 +201,7 @@ class Sbc {
 
 	/**
 	 * Returns the list of plugins whatever is their 'generate' state.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getPluginsList() {
@@ -221,17 +223,20 @@ class Sbc {
 
 	/**
 	 * Returns the array of models to bake
-	 * 
+	 *
 	 * @return array List of models to bake: array(modelName=>array(part, plugin))
 	 */
 	public function getModelsToBake() {
 		// Checking if this op has been done before
 		if (!is_array($this->modelsToBake)) {
 			$models = array();
+			// Plugin list
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
 				if ($pluginConfig['generate'] == true) {
+					// Parts
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
 						if ($partConfig['generate'] == true && $partConfig['haveModel'] == true) {
+							// Model must be generated
 							if ($partConfig['model']['generate'] == true) {
 								$models[$partConfig['model']['name']] = array('part' => $part, 'plugin' => $plugin);
 							}
@@ -246,7 +251,7 @@ class Sbc {
 
 	/**
 	 * Returns a list of models that must be generated in a given plugin.
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @return array
 	 */
@@ -254,7 +259,9 @@ class Sbc {
 		// Searching all models to store in a variable for quicker access
 		if (!is_array($this->modelsList)) {
 			$models = array();
+			// Plugins
 			foreach ($this->config['plugins'] as $currentPlugin => $pluginConfig) {
+				// Parts
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
 					if ($partConfig['haveModel'] == true && $partConfig['model']['generate'] == true && $partConfig['generate'] == true) {
 						$models[$currentPlugin][] = $partConfig['model']['name'];
@@ -273,7 +280,7 @@ class Sbc {
 
 	/**
 	 * This will search for a model in plugins, and RETURN THE FIRST RESULT.
-	 * 
+	 *
 	 * @param string $model Model name to search for
 	 * @return string or false
 	 */
@@ -292,7 +299,7 @@ class Sbc {
 
 	/**
 	 * This will search for a model in plugins parts, and RETURN THE FIRST RESULT.
-	 * 
+	 *
 	 * @param string $model Model name to search for
 	 * @return string or false
 	 */
@@ -316,7 +323,7 @@ class Sbc {
 	// --------------------------------------------------------------------------
 	/**
 	 * Returns the array of controllers to bake
-	 * 
+	 *
 	 * @return array List of controllers to bake: array(controllerName=>array(part, plugin))
 	 */
 	public function getControllersToBake() {
@@ -341,7 +348,7 @@ class Sbc {
 
 	/**
 	 * This will search for a controller in plugins, and RETURN THE FIRST RESULT.
-	 * 
+	 *
 	 * @param string $controller Controller name to search for
 	 * @return string or false
 	 */
@@ -360,7 +367,7 @@ class Sbc {
 
 	/**
 	 * This will search for a controller in plugins parts, and RETURN THE FIRST RESULT.
-	 * 
+	 *
 	 * @param string $controller Controller name to search for
 	 * @return string or false
 	 */
@@ -379,7 +386,7 @@ class Sbc {
 
 	/**
 	 * Returns the list of actions to bake for a given plugin/part/prefix.
-	 * 
+	 *
 	 * @param string $plugin
 	 * @param string $part
 	 * @param string $prefix
@@ -418,7 +425,7 @@ class Sbc {
 
 	/**
 	 * Returns a list of controllers that must be generated in a given plugin.
-	 * 
+	 *
 	 * @param string $plugin Plugin name
 	 * @return array
 	 */
@@ -448,12 +455,13 @@ class Sbc {
 	// View manipulation
 	//
 	// --------------------------------------------------------------------------
+
 	/**
 	 * Returns the array of views to bake
-	 * 
+	 *
 	 * @param string $plugin Plugin name.
 	 * @param string $controller Controller name
-	 * 
+	 *
 	 * @return array List of views to bake: array(plugin=> part=> prefix=>array(action))
 	 */
 	public function getViewsToBake($plugin = null, $controller = null) {
@@ -497,7 +505,7 @@ class Sbc {
 
 	/**
 	 * Returns the list of menus with "generate" set to true.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getMenusToBake() {
@@ -577,7 +585,7 @@ class Sbc {
 	/**
 	 * Returns true if the controller/prefix/action exists in config (that means
 	 * the current prefix have access to this action).
-	 * 
+	 *
 	 * @param string $prefix Prefix to check
 	 * @param string $controller Controller to check
 	 * @param string $action Action to check
@@ -601,7 +609,7 @@ class Sbc {
 	/**
 	 * Returns public if $prefix is null, or $prefix.
 	 * @param string $prefix Prefix to test
-	 * @return string 
+	 * @return string
 	 */
 	public function prefixName($prefix) {
 		return (is_null($prefix)) ? 'public' : $prefix;
@@ -633,7 +641,7 @@ class Sbc {
 
 	/**
 	 * Removes the prefix from an action name.
-	 * 
+	 *
 	 * @param string $action prefixed_action
 	 * @return string action
 	 */
@@ -651,7 +659,7 @@ class Sbc {
 
 	/**
 	 * Loads the configuration file and populates the array
-	 * 
+	 *
 	 * @param string $file Configuration file name
 	 */
 	public function loadFile($file) {
@@ -666,7 +674,7 @@ class Sbc {
 
 	/**
 	 * Returns the appBase value
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getAppBase() {
@@ -675,7 +683,7 @@ class Sbc {
 
 	/**
 	 * Returns the path to Console/Configurations/
-	 * 
+	 *
 	 * @return string Path to the configuration file
 	 */
 	public function getConfigPath() {
@@ -686,7 +694,7 @@ class Sbc {
 	/**
 	 * Searches for the value of the given key in the config array.
 	 * Key must be in the format of "key.subKey.subSubKey", as for Configure::read()
-	 * 
+	 *
 	 * @param string $key
 	 * @return mixed Key's value
 	 */
@@ -705,9 +713,9 @@ class Sbc {
 
 		// @todo must run checks to check defaults
 		// @todo must run checks to check general
-		// 
+		//
 		// Prefixes
-		// 
+		//
 		foreach ($this->config['defaults']['actions'] as $prefix => $actions) {
 			$routingPrefixes = (is_array(Configure::read('Routing.prefixes'))) ? Configure::read('Routing.prefixes') : array();
 			if ($prefix != 'public' && !in_array($prefix, $routingPrefixes)) {
@@ -723,7 +731,7 @@ class Sbc {
 
 			//
 			// Plugin configuration
-			// 
+			//
 			if (is_array($pluginConfig) && isset($pluginConfig['parts']) && !is_null($pluginConfig['parts']) && is_array($pluginConfig['parts'])) {
 				// Plugin has no displayName
 				if (!isset($pluginConfig['displayName'])) {
@@ -946,7 +954,7 @@ class Sbc {
 				$this->log("Files population is over.", 'success', 3);
 
 				// @todo maybe check the templates existence.
-				// 
+				//
 				$this->config['plugins'][$plugin] = $pluginConfig;
 				$this->log("Plugin \"$plugin\" populated.", 'success', 2);
 				//
@@ -962,7 +970,7 @@ class Sbc {
 	 * Complete one array of default values with an array of defined values.
 	 * Default values are overwriten if in the defined array.
 	 * Keys from the defined array that are absent from the default array are added.
-	 * 
+	 *
 	 * @param array $default An array of default values
 	 * @param array $defined An array of defined values
 	 * @param bool $keep If set to true, keep values defined in defined array and not in default array
@@ -1012,7 +1020,7 @@ class Sbc {
 
 	/**
 	 * Logs a message in an array of messages.
-	 * 
+	 *
 	 * @param string $message The message
 	 * @param string $type Message type: info|warning|success|error
 	 * @param int $level Level of the message. The lower the message is, the less it is important.
@@ -1029,7 +1037,7 @@ class Sbc {
 
 	/**
 	 * Returns the log array
-	 * 
+	 *
 	 * @return array
 	 */
 	public function displayLog() {
@@ -1038,7 +1046,7 @@ class Sbc {
 
 	/**
 	 * Returns the number of errors generated by the log() function.
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getErrors() {
@@ -1047,7 +1055,7 @@ class Sbc {
 
 	/**
 	 * Returns the number of warnings generated by the log() function.
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getWarnings() {

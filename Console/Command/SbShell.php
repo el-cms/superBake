@@ -113,7 +113,9 @@ class SbShell extends AppShell {
 	 * @return bool
 	 */
 	public function canDo($action, $prefix = null, $controller = null) {
-		return $this->Sbc->isActionnable((is_null($prefix)) ? $this->templateVars['admin'] : $prefix, (is_null($controller)) ? ucfirst(Inflector::camelize($this->templateVars['pluralVar'])) : ucfirst(Inflector::camelize($controller)), $action);
+		$action = is_null($prefix) ? $this->templateVars['admin'] : $prefix;
+		$prefix = is_null($controller) ? ucfirst(Inflector::camelize($this->templateVars['pluralVar'])) : ucfirst(Inflector::camelize($controller));
+		return $this->Sbc->isActionnable($action, $prefix, $action);
 	}
 
 	/**

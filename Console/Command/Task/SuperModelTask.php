@@ -238,7 +238,6 @@ class SuperModelTask extends BakeTask {
 
 //		$anotherValidator = 'y';
 //		while ($anotherValidator === 'y') {
-
 //		$prompt = __d('cake_console', "... or enter in a valid regex validation string.\n");
 		$methods = array_flip($this->_validations);
 		$guess = $defaultChoice;
@@ -395,7 +394,6 @@ class SuperModelTask extends BakeTask {
 					$associations['hasOne'][] = $assoc;
 					$associations['hasMany'][] = $assoc;
 				}
-
 			}
 		}
 		return $associations;

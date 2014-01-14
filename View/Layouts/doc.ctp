@@ -50,7 +50,7 @@
 
 		<div class="container">
 
-			<div class="flashMessages">				
+			<div class="flashMessages">
 				<?php echo $this->Session->flash(); ?>
 			</div>
 

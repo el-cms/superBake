@@ -114,7 +114,8 @@ class SuperViewTask extends BakeTask {
 	 * passed through different views.
 	 * @var array
 	 */
-	public $templateOptions=array();
+	public $templateOptions = array();
+
 	/**
 	 * Override initialize
 	 *
@@ -219,7 +220,7 @@ class SuperViewTask extends BakeTask {
 			$schema = $modelObj->schema(true);
 			$fields = array_keys($schema);
 			$associations = $this->_associations($modelObj);
-		} else{
+		} else {
 			//@todo do this with style.
 			die('Model does not exists');
 			$primaryKey = $displayField = null;
@@ -277,7 +278,7 @@ class SuperViewTask extends BakeTask {
 		$currentViewConfig = $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . ((is_null($this->currentPrefix)) ? 'public' : $this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.options');
 		foreach ($currentViewConfig as $k => $v) {
 			$this->Template->set($k, $v);
-			$this->templateOptions[]=$k;
+			$this->templateOptions[] = $k;
 		}
 		// Vars
 		$this->Template->set($vars);
@@ -286,9 +287,9 @@ class SuperViewTask extends BakeTask {
 		$this->Template->set('template', $template);
 		if ($template) {
 			// Generate the content
-			$generatedContent= $this->Template->generate('views', $template);
+			$generatedContent = $this->Template->generate('views', $template);
 			// Clear template options
-			foreach($this->templateOptions as $k){
+			foreach ($this->templateOptions as $k) {
 				unset($this->Template->templateVars[$k]);
 			}
 			// Returning result.

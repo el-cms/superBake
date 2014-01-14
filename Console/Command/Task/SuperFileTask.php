@@ -145,7 +145,7 @@ class SuperFileTask extends BakeTask {
 			$content = $this->getContent($file);
 		}
 		if (empty($content)) {
-			$this->speak(__d('superBake', 'Content is empty and file has not been writen. Check your template.'),'error', 0,0,1);
+			$this->speak(__d('superBake', 'Content is empty and file has not been writen. Check your template.'), 'error', 0, 0, 1);
 			return false;
 		}
 
@@ -205,7 +205,7 @@ class SuperFileTask extends BakeTask {
 	public function getFilePath() {
 		$path = $this->path;
 		if (isset($this->plugin)) {
-			$path = $this->_pluginPath($this->plugin) .$this->name. DS;
+			$path = $this->_pluginPath($this->plugin) . $this->name . DS;
 		}
 		return dirname($path);
 	}

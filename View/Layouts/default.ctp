@@ -50,7 +50,7 @@
 
 		<div class="container">
 
-			<div class="flashMessages">				
+			<div class="flashMessages">
 				<?php echo $this->Session->flash(); ?>
 			</div>
 
@@ -81,11 +81,11 @@
 			// TOC
 			$(function() {
 				$("#toc").tableOfContents(null,
-						{
-							startLevel: 1,
-							levelClass: "toc-depth-%",
-							depth: 4,
-						}
+								{
+									startLevel: 1,
+									levelClass: "toc-depth-%",
+									depth: 4,
+								}
 				);
 			});
 

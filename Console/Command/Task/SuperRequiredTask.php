@@ -232,5 +232,4 @@ class superRequiredTask extends SbShell {
 //		return $parser->description(__d('cake_console', 'Copy files from Templates/YourTemplate/ to any dir in the app. '
 //		));
 //	}
-
 }

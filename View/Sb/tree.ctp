@@ -156,18 +156,18 @@ function dGIcon($text = null, $size = null) {
 							<?php
 						}
 						?>
-					</dl>	
+					</dl>
 
 					<h4>Required files and folders</h4>
 					<dl>
-					<?php
-					foreach ($pluginConfig['required'] as $required => $requiredConfig) {
-						?>
-						<dt><?php echo ($requiredConfig['generate'] == true) ? gIcon('This will be copied') : dGIcon('This won\'t be copied') ?><?php echo $required; ?></dt>
-						<dl><i class="icon-file"></i> <?php echo str_replace('::', DS, $requiredConfig['source']); ?> <i class="icon-chevron-sign-right"></i> <?php echo str_replace('::', DS, $plugin . DS . $requiredConfig['target']); ?></dl>
 						<?php
-					}
-					?>
+						foreach ($pluginConfig['required'] as $required => $requiredConfig) {
+							?>
+							<dt><?php echo ($requiredConfig['generate'] == true) ? gIcon('This will be copied') : dGIcon('This won\'t be copied') ?><?php echo $required; ?></dt>
+							<dl><i class="icon-file"></i> <?php echo str_replace('::', DS, $requiredConfig['source']); ?> <i class="icon-chevron-sign-right"></i> <?php echo str_replace('::', DS, $plugin . DS . $requiredConfig['target']); ?></dl>
+							<?php
+						}
+						?>
 					</dl>
 				</div>
 			</div>

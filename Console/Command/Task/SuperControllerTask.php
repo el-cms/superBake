@@ -244,7 +244,6 @@ class SuperControllerTask extends BakeTask {
 		// -------------------------------------------------------------------------
 		// File generation
 		// -------------------------------------------------------------------------
-
 		// Generate the file
 		$contents = $this->Template->generate('classes', 'controller');
 

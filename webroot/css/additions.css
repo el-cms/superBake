@@ -102,7 +102,7 @@ pre .tooltip{
 .col-lg-3:nth-child(odd) .block,.col-lg-9:nth-child(odd) .block{
 	background-color:#EFEFEF;
 	border:1px solid #D5D5D5;
-	
+
 }
 .col-lg-3:nth-child(even) .block,.col-lg-9:nth-child(even) .block{
 	background-color:#F5F5F5;

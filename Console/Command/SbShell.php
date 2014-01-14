@@ -67,10 +67,10 @@ class SbShell extends AppShell {
 	 * @param string $action Action to check
 	 * @return string Action prefix, null if none
 	 */
-	public function getActionPrefix($action){
-		$array=explode('_', $action);
-		if(count($array)>1){
-			if(in_array($array[0], $this->Sbc->prefixesList())){
+	public function getActionPrefix($action) {
+		$array = explode('_', $action);
+		if (count($array) > 1) {
+			if (in_array($array[0], $this->Sbc->prefixesList())) {
 				return $array[0];
 			}
 		}
@@ -83,10 +83,9 @@ class SbShell extends AppShell {
 	 * @param string $action Action name
 	 * @return string
 	 */
-	public function getActionName($action){
+	public function getActionName($action) {
 		return $this->Sbc->actionRemovePrefix($action);
 	}
-
 
 	/**
 	 * Makes a config path value (path::to::file)
@@ -276,8 +275,8 @@ class SbShell extends AppShell {
 		return $url . ')';
 	}
 
-	public function setFlash($content, $class){
-		return "\$this->Session->setFlash(".$this->iString($content).(($this->Sbc->getConfig('theme.flashMessageElement') == true) ? ", 'flash_$class'" : '').");\n";
+	public function setFlash($content, $class) {
+		return "\$this->Session->setFlash(" . $this->iString($content) . (($this->Sbc->getConfig('theme.flashMessageElement') == true) ? ", 'flash_$class'" : '') . ");\n";
 	}
 
 	/**
@@ -297,10 +296,11 @@ class SbShell extends AppShell {
 	 * @param string $underscored_controller_name
 	 * @return mixed string or null
 	 */
-	public function getControllerPluginName($underscored_controller_name){
-		$controller=  Inflector::camelize($underscored_controller_name);
-		$plugin_name=$this->Sbc->getControllerPlugin($controller);
-		$plugin=($plugin_name==$this->Sbc->getAppBase())? null:$plugin_name;
+	public function getControllerPluginName($underscored_controller_name) {
+		$controller = Inflector::camelize($underscored_controller_name);
+		$plugin_name = $this->Sbc->getControllerPlugin($controller);
+		$plugin = ($plugin_name == $this->Sbc->getAppBase()) ? null : $plugin_name;
 		return Inflector::underscore($plugin);
 	}
+
 }

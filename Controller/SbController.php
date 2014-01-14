@@ -1,4 +1,5 @@
 <?php
+
 App::uses('Spyc', 'Sb.Yaml');
 App::uses('Sbc', 'Sb.Superbake');
 App::uses('Folder', 'Utility');
@@ -10,25 +11,25 @@ App::uses('Folder', 'Utility');
  */
 class SbController extends SbAppController {
 
-/**
- * index method
- *
- * @return void
- */
+	/**
+	 * index method
+	 *
+	 * @return void
+	 */
 	public function index() {
 
 	}
 
-/**
- * This method will load a config file submited in POST.
- * If nothing is set, it will use the default config file.
- *
- * Some vars from Sbc will be available in views.
- *
- *
- * @access private
- * @return void
- */
+	/**
+	 * This method will load a config file submited in POST.
+	 * If nothing is set, it will use the default config file.
+	 *
+	 * Some vars from Sbc will be available in views.
+	 *
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function _selectConfigFile() {
 		$Sbc = new Sbc();
 
@@ -54,23 +55,23 @@ class SbController extends SbAppController {
 		return $Sbc;
 	}
 
-/**
- * This action will display the final configuration file, after population.
- * In addition, the view displays the logs from Sbc::populate() to check for errors.
- *
- * @return void
- */
+	/**
+	 * This action will display the final configuration file, after population.
+	 * In addition, the view displays the logs from Sbc::populate() to check for errors.
+	 *
+	 * @return void
+	 */
 	public function check() {
 		$Sbc = $this->_selectConfigFile();
 		$this->set('completeConfig', Spyc::YAMLDump($Sbc->getConfig()));
 	}
 
-/**
- * Displays the configuration file in a more readable way.
- * (Named 'tree' because the very first version was a tree-like render)
- *
- * @return void
- */
+	/**
+	 * Displays the configuration file in a more readable way.
+	 * (Named 'tree' because the very first version was a tree-like render)
+	 *
+	 * @return void
+	 */
 	public function tree() {
 		$Sbc = $this->_selectConfigFile();
 		// Prefixes and actions list:
@@ -82,12 +83,12 @@ class SbController extends SbAppController {
 		$this->set('completeConfig', $Sbc->getConfig());
 	}
 
-/**
- * Method to test the Sbc::arrayMerge() method.
- * Here for testing only.
- *
- * @return void
- */
+	/**
+	 * Method to test the Sbc::arrayMerge() method.
+	 * Here for testing only.
+	 *
+	 * @return void
+	 */
 	public function arraymerge() {
 		$result = '';
 		if ($this->request->is('post')) {

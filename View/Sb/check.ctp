@@ -66,7 +66,7 @@ echo $this->element('config_file_changer');
 		</div>
 		<div id="render">
 			<pre class="syntax yaml">
-<?php echo $completeConfig ?>
+				<?php echo $completeConfig ?>
 			</pre>
 		</div>
 	</div>

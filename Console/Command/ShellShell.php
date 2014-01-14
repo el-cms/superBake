@@ -259,6 +259,7 @@ class ShellShell extends SbShell {
 		$this->Views();
 		$this->speak(__d('superBake', 'MVC generation complete.'), 'success', 0, 2, 2);
 	}
+
 	/**
 	 * Generates a controller from a plugin
 	 *
@@ -277,6 +278,7 @@ class ShellShell extends SbShell {
 		$this->Required();
 		$this->speak(__d('superBake', 'Generation complete.'), 'success', 0, 2, 2);
 	}
+
 	/**
 	 * Generates Models, Controllers and Views for a given plugin
 	 *
@@ -339,7 +341,7 @@ class ShellShell extends SbShell {
 			// Bootstrap file updated ?
 			if ($updateBootstrap == 'Y') {
 				$this->speak(__d('superBake', "The bootstrap file has been updated. Please re-launch SuperBake\n" .
-								"to reload the new configuration (if you want to use it more)"), 'info', 0, 0, 0);
+												"to reload the new configuration (if you want to use it more)"), 'info', 0, 0, 0);
 				$this->hr();
 				$this->_stop();
 			}
@@ -377,7 +379,7 @@ class ShellShell extends SbShell {
 			$intEnteredPlugin = intval($enteredPlugin);
 			if (empty($intEnteredPlugin) || $intEnteredPlugin > $count) {
 				$this->err(__d('cake_console', "The plugin name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+												"or the number you selected was not an option. Please try again."));
 				$enteredPlugin = '';
 			}
 		}
@@ -485,7 +487,7 @@ class ShellShell extends SbShell {
 			$intEnteredModel = intval($enteredModel);
 			if (empty($intEnteredModel) || $intEnteredModel > $count) {
 				$this->err(__d('cake_console', "The Model name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+												"or the number you selected was not an option. Please try again."));
 				$enteredModel = '';
 			}
 		}
@@ -568,7 +570,7 @@ class ShellShell extends SbShell {
 			$intEnteredController = intval($enteredController);
 			if (empty($intEnteredController) || $intEnteredController > $count) {
 				$this->err(__d('cake_console', "The Controller name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+												"or the number you selected was not an option. Please try again."));
 				$enteredController = '';
 			}
 		}
@@ -794,7 +796,7 @@ class ShellShell extends SbShell {
 
 			if (!$enteredAction || intval($enteredAction) > $count) {
 				$this->err(__d('cake_console', "The Action name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+												"or the number you selected was not an option. Please try again."));
 				$enteredAction = '';
 			}
 		}
@@ -882,7 +884,7 @@ class ShellShell extends SbShell {
 		$this->SuperFile->execute();
 	}
 
-	public function Required(){
+	public function Required() {
 		// Finds required sections
 		$this->speak(__d('superBake', 'Copying all required files'), 'info', 0, 2, 2);
 		$requiredList = $this->Sbc->getRequiredToBake();
@@ -895,7 +897,7 @@ class ShellShell extends SbShell {
 		$this->speak(__d('superBake', 'Files and folders copied.'), 'success', 0, 2, 2);
 	}
 
-	private function _required($plugin, $required){
+	private function _required($plugin, $required) {
 		// Template to use
 		$this->SuperRequired->params['theme'] = $this->Sbc->getConfig('general.template');
 
@@ -910,8 +912,8 @@ class ShellShell extends SbShell {
 
 		// Execute generation
 		$this->SuperRequired->execute();
-
 	}
+
 	/**
 	 * get the option parser.
 	 *
@@ -922,51 +924,51 @@ class ShellShell extends SbShell {
 		$name = ($this->plugin ? $this->plugin . '.' : '') . $this->name;
 		$parser = new ConsoleOptionParser($name);
 		return $parser->description(__d('superBake', 'The Super Bake shell generates plugins, models, views, files and menus ' .
-								'for your application.' .
-								' If run with no command line arguments, superBake will guide you through the creation process.' .
-								' You can use arguments to a quicker generation.' . "\n\n This help system is quite broken, use the docs instead."
-				// Batch generation
-				))->addSubcommand('plugins', array(
-					'help' => __d('superBake', 'Creates all the plugins directories skeletons.'),
-				))->addSubcommand('mvc', array(
-					'help' => __d('superBake', 'Bakes all Models/Controllers/Views, in their specific plugin dirs.'),
-				))->addSubcommand('all', array(
-					'help' => __d('superBake', 'Bakes all Models/Controllers/Views/menus/files, in their specific plugin dirs, and copies required files. Use with care.'),
-				))->addSubcommand('models', array(
-					'help' => __d('superBake', 'Bakes all the models, in their specfic plugin dir.'),
-				))->addSubcommand('controllers', array(
-					'help' => __d('superBake', 'Bakes all controllers in their specific plugin dir.'),
-				))->addSubcommand('views', array(
-					'help' => __d('superBake', 'Bakes all views, for controllers methods, in their specific plugin dir'),
-						// Plugins
-				))->addSubcommand('pluginMVC', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all MVC for a specific plugin.'),
-						// Models
-				))->addSubcommand('pluginModels', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all models in a plugin.'),
-				))->addSubcommand('model', array(
-					'help' => __d('superBake', '<pluginName>.<modelName> - Bakes a specific model.'),
-						// Controllers
-				))->addSubcommand('pluginControllers', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all controllers in a plugin.'),
-				))->addSubcommand('controller', array(
-					'help' => __d('superBake', '<pluginName>.<controllerName> - Bakes a specific controller.'),
-						// Views
-				))->addSubcommand('pluginViews', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all views in a plugin.'),
-				))->addSubcommand('controllerViews', array(
-					'help' => __d('superBake', '<pluginName>.<ControllerName> - Bakes all views in a plugin.'),
-				))->addSubcommand('view', array(
-					'help' => __d('superBake', '<pluginName>.<controllerName>.<actionName> - Bakes a specific view.'),
-						// Menus
-				))->addSubcommand('menus', array(
-					'help' => __d('superBake', 'Creates the menu file(s).'),
-						// Files
-				))->addSubcommand('files', array(
-					'help' => __d('superBake', 'Generates standalone files.'),
-						// Required
-				))->addSubcommand('required', array(
-					'help' => __d('superBake', 'Copies files and folders.'),
+														'for your application.' .
+														' If run with no command line arguments, superBake will guide you through the creation process.' .
+														' You can use arguments to a quicker generation.' . "\n\n This help system is quite broken, use the docs instead."
+														// Batch generation
+						))->addSubcommand('plugins', array(
+								'help' => __d('superBake', 'Creates all the plugins directories skeletons.'),
+						))->addSubcommand('mvc', array(
+								'help' => __d('superBake', 'Bakes all Models/Controllers/Views, in their specific plugin dirs.'),
+						))->addSubcommand('all', array(
+								'help' => __d('superBake', 'Bakes all Models/Controllers/Views/menus/files, in their specific plugin dirs, and copies required files. Use with care.'),
+						))->addSubcommand('models', array(
+								'help' => __d('superBake', 'Bakes all the models, in their specfic plugin dir.'),
+						))->addSubcommand('controllers', array(
+								'help' => __d('superBake', 'Bakes all controllers in their specific plugin dir.'),
+						))->addSubcommand('views', array(
+								'help' => __d('superBake', 'Bakes all views, for controllers methods, in their specific plugin dir'),
+										// Plugins
+						))->addSubcommand('pluginMVC', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all MVC for a specific plugin.'),
+										// Models
+						))->addSubcommand('pluginModels', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all models in a plugin.'),
+						))->addSubcommand('model', array(
+								'help' => __d('superBake', '<pluginName>.<modelName> - Bakes a specific model.'),
+										// Controllers
+						))->addSubcommand('pluginControllers', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all controllers in a plugin.'),
+						))->addSubcommand('controller', array(
+								'help' => __d('superBake', '<pluginName>.<controllerName> - Bakes a specific controller.'),
+										// Views
+						))->addSubcommand('pluginViews', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all views in a plugin.'),
+						))->addSubcommand('controllerViews', array(
+								'help' => __d('superBake', '<pluginName>.<ControllerName> - Bakes all views in a plugin.'),
+						))->addSubcommand('view', array(
+								'help' => __d('superBake', '<pluginName>.<controllerName>.<actionName> - Bakes a specific view.'),
+										// Menus
+						))->addSubcommand('menus', array(
+								'help' => __d('superBake', 'Creates the menu file(s).'),
+										// Files
+						))->addSubcommand('files', array(
+								'help' => __d('superBake', 'Generates standalone files.'),
+										// Required
+						))->addSubcommand('required', array(
+								'help' => __d('superBake', 'Copies files and folders.'),
 		));
 	}
 

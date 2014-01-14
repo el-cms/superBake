@@ -31,7 +31,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
-
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 
@@ -120,22 +119,22 @@ class SuperPluginTask extends SbShell {
 			}
 		}
 		// Checks if the plugin folder exists, and creates the directory structure
-		if (!is_dir($this->path . $plugin)){
+		if (!is_dir($this->path . $plugin)) {
 			$Folder = new Folder($this->path . $plugin);
 			$directories = array(
-				'Config' . DS . 'Schema',
-				'Model' . DS . 'Behavior',
-				'Model' . DS . 'Datasource',
-				'Console' . DS . 'Command' . DS . 'Task',
-				'Controller' . DS . 'Component',
-				'Lib',
-				'View' . DS . 'Helper',
-				'Test' . DS . 'Case' . DS . 'Controller' . DS . 'Component',
-				'Test' . DS . 'Case' . DS . 'View' . DS . 'Helper',
-				'Test' . DS . 'Case' . DS . 'Model' . DS . 'Behavior',
-				'Test' . DS . 'Fixture',
-				'Vendor',
-				'webroot'
+					'Config' . DS . 'Schema',
+					'Model' . DS . 'Behavior',
+					'Model' . DS . 'Datasource',
+					'Console' . DS . 'Command' . DS . 'Task',
+					'Controller' . DS . 'Component',
+					'Lib',
+					'View' . DS . 'Helper',
+					'Test' . DS . 'Case' . DS . 'Controller' . DS . 'Component',
+					'Test' . DS . 'Case' . DS . 'View' . DS . 'Helper',
+					'Test' . DS . 'Case' . DS . 'Model' . DS . 'Behavior',
+					'Test' . DS . 'Fixture',
+					'Vendor',
+					'webroot'
 			);
 
 			foreach ($directories as $directory) {
@@ -172,12 +171,11 @@ class SuperPluginTask extends SbShell {
 			$out .= "}\n";
 			$this->createFile($this->path . $plugin . DS . 'Model' . DS . $modelFileName, $out);
 
-			/**	***************************************************************
+			/**			 * **************************************************************
 			 *
 			 * Additionnal files are handled here
 			 *
 			 */
-
 			// Bootstrap file
 			if ($this->pluginConfig['haveBootstrap']) {
 				$out = "<?php\n\n";

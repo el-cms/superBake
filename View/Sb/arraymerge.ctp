@@ -23,12 +23,12 @@
 				echo $default;
 			} else {
 				?>
-Test:
-  options:
-    option1: val1
-    option2: val2
-    option3: val2
-    option5: val2
+				Test:
+				  options:
+				    option1: val1
+				    option2: val2
+				    option3: val2
+				    option5: val2
 			<?php } ?>
 		</textarea>
 	</div>
@@ -39,12 +39,12 @@ Test:
 				echo $defined;
 			} else {
 				?>
-Test:
-  options:
-    option1: value1
-    option2: value2
-    option3: 
-    option4: value4
+				Test:
+				  options:
+				    option1: value1
+				    option2: value2
+				    option3:
+				    option4: value4
 			<?php } ?>
 		</textarea>
 		<input type="checkbox" name="keepRest" value="keep" <?php echo ($keepRest == true) ? 'CHECKED' : ''; ?>/> Keep the rest (defined keys absent from the default list)

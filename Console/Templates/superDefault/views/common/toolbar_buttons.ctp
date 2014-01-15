@@ -74,7 +74,7 @@ if (!function_exists('newBtGroup')) {
 }
 
 
-if ($noToolbar == false) {
+if ($noToolbar === false) {
 	// ---
 	// Creating the toolbar
 	// ---
@@ -140,7 +140,7 @@ if ($noToolbar == false) {
 					?>";
 				}
 				// Creating toolbar for controller and adding to the /global/ toolbar
-				if ($current_controller_actions == 1) {
+				if ($current_controller_actions === 1) {
 					$toolbar.='<h3><?php
 						echo ' . $this->iString(Inflector::humanize($details['controller'])) . "?></h3>\n" . newBtGroup($current_toolbar);
 				}

@@ -115,7 +115,7 @@ CakeLog::config('error', array(
 /* -----------------------------------------------------------------------------
  * Language support
  * -------------------------------------------------------------------------- */
-if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
+if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 	?>
 	// Default language
 	<?php echo "define('DEFAULT_LANGUAGE', '" . $this->Sbc->getConfig('theme.language.fallback') . "');\n"; ?>
@@ -143,7 +143,7 @@ if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
 Configure::write('website', array(
 'redactor' => '<?php echo $this->Sbc->getConfig('general.siteEditor') ?>',
 'name' => '<?php echo $this->Sbc->getConfig('general.siteName') ?>',
-<?php if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
+<?php if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 	echo "'defaultLang' => DEFAULT_LANGUAGE, // Used for replacements";
 } ?>
 'home_url' => array('admin' => null, 'plugin' => null, 'controller' => 'pages', 'action' => 'display', 'home'), // Home url
@@ -170,7 +170,7 @@ foreach ($plugins as $plugin) {
 	if (isset($known[$plugin])) {
 		echo $known[$plugin];
 	} else {
-		echo "CakePlugin::load('$plugin', array('bootstrap' => " . (($this->Sbc->getConfig("plugins.$plugin.haveBootstrap") == true) ? 'true' : 'false' ) . ", 'routes'=>" . (($this->Sbc->getConfig("plugins.$plugin.haveRoutes") == true) ? 'true' : 'false' ) . "));\n";
+		echo "CakePlugin::load('$plugin', array('bootstrap' => " . (($this->Sbc->getConfig("plugins.$plugin.haveBootstrap") === true) ? 'true' : 'false' ) . ", 'routes'=>" . (($this->Sbc->getConfig("plugins.$plugin.haveRoutes") === true) ? 'true' : 'false' ) . "));\n";
 	}
 }
 ?>

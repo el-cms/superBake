@@ -218,7 +218,7 @@ foreach ($relations as $alias => $details) {
 					}
 				}
 
-				if ($relatedDataHideActionsList === false && $hasMany_hideActions == false) {
+				if ($relatedDataHideActionsList === false && $hasMany_hideActions === false) {
 					echo "\t<th class=\"actions\"><?php echo __('Actions'); ?></th>\n";
 				}
 				?> 
@@ -234,7 +234,7 @@ foreach ($relations as $alias => $details) {
 
 			// Testing actions
 			if ($relatedDataHideActionsList === false) {
-				if ($hasMany_hideActions == false) {
+				if ($hasMany_hideActions === false) {
 					$hasActions = 0;
 					$disabled = '';
 					// "View" action
@@ -273,12 +273,12 @@ foreach ($relations as $alias => $details) {
  */
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
-	if ($v == true) {
+	if ($v === true) {
 		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
 	}
 }
 foreach ($additionnalJS as $k => $v) {
-	if ($v == true) {
+	if ($v === true) {
 		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
 	}
 }

@@ -64,9 +64,9 @@ throw new NotFoundException(<?php echo $this->iString('Invalid ' . strtolower($s
 <?php
 // Fields
 $findFields='';
-if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
+if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 	// Language fields should be set in config, so we check
-	if (count($languageFields) == 0) {
+	if (count($languageFields) === 0) {
 		$this->speak(__d('superBake', ' - No languageField defined. All fields will be returned.'), 'warning');
 	} else {
 		?>

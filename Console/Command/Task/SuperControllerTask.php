@@ -151,7 +151,7 @@ class SuperControllerTask extends BakeTask {
 		// -------------------------------------------------------------------------
 		// Tie the controller to its model if "haveModel" is true in the part.
 		// -------------------------------------------------------------------------
-		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.haveModel') == true) {
+		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.haveModel') === true) {
 			App::uses($modelImport, $plugin . 'Model');
 			// Checks if Model has been loaded correctly
 			if (!class_exists($modelImport)) {
@@ -196,7 +196,7 @@ class SuperControllerTask extends BakeTask {
 
 		// Passing all the above variables to template task to make them available in actions templates.
 		$this->Template->set(compact(
-										'pluralVar', 'currentPart', 'currentController', 'plugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
+						'pluralVar', 'currentPart', 'currentController', 'plugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
 		));
 
 		// -------------------------------------------------------------------------
@@ -226,17 +226,17 @@ class SuperControllerTask extends BakeTask {
 		// Passing vars to template task
 		// -------------------------------------------------------------------------
 		$this->Template->set(array(
-				// Plugin name
-				'plugin' => $this->plugin,
-				// Plugin path
-				'pluginPath' => empty($this->plugin) ? '' : $this->plugin . '.',
-				// Sbc object
-				'Sbc' => $this->Sbc,
-				// Config from config file for the current controller
-				'currentControllerConfig' => $this->Sbc->getConfig("plugins."
-								. $this->Sbc->getControllerPlugin($controllerName)
-								. ".parts." . $this->Sbc->getControllerPart($controllerName)
-								. ".controller"),
+			// Plugin name
+			'plugin' => $this->plugin,
+			// Plugin path
+			'pluginPath' => empty($this->plugin) ? '' : $this->plugin . '.',
+			// Sbc object
+			'Sbc' => $this->Sbc,
+			// Config from config file for the current controller
+			'currentControllerConfig' => $this->Sbc->getConfig("plugins."
+					. $this->Sbc->getControllerPlugin($controllerName)
+					. ".parts." . $this->Sbc->getControllerPart($controllerName)
+					. ".controller"),
 		));
 		// Making the vars available
 		$this->Template->set(compact('controllerName', 'actions', 'helpers', 'components', 'isScaffold'));
@@ -301,7 +301,7 @@ class SuperControllerTask extends BakeTask {
 
 		// Reads prefixes from core.php
 		$prefixes = Configure::read('Routing.prefixes');
-		if (count($prefixes) == 0) {
+		if (count($prefixes) === 0) {
 			$this->speak('You have no routing prefixes enabled. Only public actions will be generated.', 'warning', 1);
 			return array();
 		}

@@ -46,7 +46,7 @@ class SbShell extends AppShell {
 	/**
 	 * A Sbc instance that gives all the methods to handle the config file.
 	 *
-	 * @var object Sbc
+	 * @var Sbc
 	 */
 	public $Sbc;
 
@@ -132,7 +132,7 @@ class SbShell extends AppShell {
 		// Plugin argument
 		if (is_null($plugin)) {
 			$plugin = strtolower($this->templateVars['plugin']);
-		} elseif ($plugin == $this->projectConfig['general']['appBase']) {
+		} elseif ($plugin === $this->projectConfig['general']['appBase']) {
 			$plugin = null;
 		} else {
 			$plugin = strtolower($plugin);
@@ -230,7 +230,7 @@ class SbShell extends AppShell {
 		$this->out($finalText, 1, $force);
 		$this->out('', $newLines, $force);
 
-		if ($decorations == 2) {
+		if ($decorations === 2) {
 			$this->out($hrC, 1, $force);
 		}
 	}
@@ -254,7 +254,7 @@ class SbShell extends AppShell {
 		if (is_null($prefix)) {
 			$prefix = $this->templateVars['admin'];
 		}
-		$prefix = ($prefix == 'public') ? null : $prefix;
+		$prefix = ($prefix === 'public') ? null : $prefix;
 		$url .= (!is_null($prefix)) ? " '$prefix' => true," : " 'admin' => false,";
 
 		// Finding controller
@@ -262,7 +262,7 @@ class SbShell extends AppShell {
 
 		// Plugin
 		$plugin = $this->Sbc->getControllerPlugin(ucfirst(Inflector::camelize($controller)));
-		$url.=(empty($plugin) || $plugin == $this->Sbc->getAppBase()) ? " 'plugin' => null," : " 'plugin' => '" . Inflector::underscore($plugin) . "',";
+		$url.=(empty($plugin) || $plugin === $this->Sbc->getAppBase()) ? " 'plugin' => null," : " 'plugin' => '" . Inflector::underscore($plugin) . "',";
 
 		// Controller
 		$url .= " 'controller' => '" . Inflector::underscore($controller) . "',";
@@ -278,7 +278,7 @@ class SbShell extends AppShell {
 	}
 
 	public function setFlash($content, $class) {
-		return "\$this->Session->setFlash(" . $this->iString($content) . (($this->Sbc->getConfig('theme.flashMessageElement') == true) ? ", 'flash_$class'" : '') . ");\n";
+		return "\$this->Session->setFlash(" . $this->iString($content) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", 'flash_$class'" : '') . ");\n";
 	}
 
 	/**
@@ -301,7 +301,7 @@ class SbShell extends AppShell {
 	public function getControllerPluginName($underscored_controller_name) {
 		$controller = Inflector::camelize($underscored_controller_name);
 		$plugin_name = $this->Sbc->getControllerPlugin($controller);
-		$plugin = ($plugin_name == $this->Sbc->getAppBase()) ? null : $plugin_name;
+		$plugin = ($plugin_name === $this->Sbc->getAppBase()) ? null : $plugin_name;
 		return Inflector::underscore($plugin);
 	}
 

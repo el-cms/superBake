@@ -107,7 +107,7 @@ if (!isset($options['fileField'])) {
 	$i = 0;
 	$fileExtsString = '';
 	foreach ($fileField['allowedExts'] as $ext) {
-		if ($i == 0) {
+		if ($i === 0) {
 			$fileExtsString.=$ext;
 		}
 		$fileExtsString.=", $ext";

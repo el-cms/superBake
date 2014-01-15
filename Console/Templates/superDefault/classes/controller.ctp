@@ -123,7 +123,7 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 	// beforeFilter Method
 	// 
 	$beforeFilterContent='';
-	if ($this->Sbc->getConfig('general.enableAcl') == true) {
+	if ($this->Sbc->getConfig('general.enableAcl') === true) {
 		// Load actions to bake.
 		$actionsToBake = $this->Sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, 'public');
 		if (count($actionsToBake) > 0) {

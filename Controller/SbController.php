@@ -96,7 +96,7 @@ class SbController extends SbAppController {
 			$spyc = new Spyc();
 			$default = $this->request->data['default'];
 			$defined = $this->request->data['defined'];
-			$keep = (isset($this->request->data['keepRest']) && $this->request->data['keepRest'] == 'keep') ? true : false;
+			$keep = (isset($this->request->data['keepRest']) && $this->request->data['keepRest'] === 'keep') ? true : false;
 			$result = $spyc->YAMLDump($Sbc->updateArray($spyc->YAMLLoadString($default), $spyc->YAMLLoadString($defined), $keep));
 		} else {
 			$default = null;

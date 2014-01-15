@@ -47,7 +47,7 @@
 				    option4: value4
 			<?php } ?>
 		</textarea>
-		<input type="checkbox" name="keepRest" value="keep" <?php echo ($keepRest == true) ? 'CHECKED' : ''; ?>/> Keep the rest (defined keys absent from the default list)
+		<input type="checkbox" name="keepRest" value="keep" <?php echo ($keepRest === true) ? 'CHECKED' : ''; ?>/> Keep the rest (defined keys absent from the default list)
 	</div>
 </div>
 <div class="row">

@@ -79,7 +79,7 @@ if (!isset($noToolbar)) {
 		echo "\t<?php\n";
 		foreach ($fields as $field) {
 			//Skipping primary key
-			if ((strpos($action, 'add') !== false && $field == $primaryKey) || in_array($field, $hiddenFields)) {
+			if ((strpos($action, 'add') !== false && $field === $primaryKey) || in_array($field, $hiddenFields)) {
 				continue;
 			} elseif (!in_array($field, array('created', 'modified', 'updated'))) {
 				echo "\t\techo \$this->Form->input('{$field}');\n";
@@ -105,12 +105,12 @@ if (!isset($noToolbar)) {
  */
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
-	if ($v == true) {
+	if ($v === true) {
 		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "', array('inline'=>false));\n";
 	}
 }
 foreach ($additionnalJS as $k => $v) {
-	if ($v == true) {
+	if ($v === true) {
 		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "', array('inline'=>false));\n";
 	}
 }

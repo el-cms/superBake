@@ -244,7 +244,7 @@ class SuperModelTask extends BakeTask {
 		if ($metaData['null'] != 1 && !in_array($fieldName, array($primaryKey, 'created', 'modified', 'updated'))) {
 			if ($fieldName === 'email') {
 				$guess = $methods['email'];
-			} elseif ($metaData['type'] === 'string' && $metaData['length'] == 36) {
+			} elseif ($metaData['type'] === 'string' && $metaData['length'] === 36) {
 				$guess = $methods['uuid'];
 			} elseif ($metaData['type'] === 'string') {
 				$guess = $methods['notEmpty'];
@@ -377,13 +377,13 @@ class SuperModelTask extends BakeTask {
 			}
 			foreach ($tempFieldNames as $fieldName) {
 				$assoc = false;
-				if ($fieldName != $model->primaryKey && $fieldName == $foreignKey) {
+				if ($fieldName != $model->primaryKey && $fieldName === $foreignKey) {
 					$assoc = array(
 							'alias' => $tempOtherModel->name,
 							'className' => $tempOtherModel->name,
 							'foreignKey' => $fieldName
 					);
-				} elseif ($otherTable == $model->table && $fieldName === 'parent_id') {
+				} elseif ($otherTable === $model->table && $fieldName === 'parent_id') {
 					$assoc = array(
 							'alias' => 'Child' . $model->name,
 							'className' => $model->name,

@@ -177,7 +177,7 @@ class SuperViewTask extends BakeTask {
 
 		foreach ($methods as $i => $method) {
 			//Remove _methods and self controller named methods
-			if ($method[0] === '_' || $method == strtolower($this->controllerName . 'Controller')) {
+			if ($method[0] === '_' || $method === strtolower($this->controllerName . 'Controller')) {
 				unset($methods[$i]);
 			}
 		}

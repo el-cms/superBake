@@ -94,7 +94,7 @@
 			return true;
 		}
 
-		$r = ($check['<?php echo $passField ?>'] == $this->data['<?php echo $name ?>']['<?php echo $passCheckField ?>'] && strlen($check['<?php echo $passField ?>']) >= 6);
+		$r = ($check['<?php echo $passField ?>'] === $this->data['<?php echo $name ?>']['<?php echo $passCheckField ?>'] && strlen($check['<?php echo $passField ?>']) >= 6);
 
 		//if (!$r) {
 		//	$this->invalidate('<?php echo $passCheckField ?>', __d('user', 'Passwords missmatch.'));

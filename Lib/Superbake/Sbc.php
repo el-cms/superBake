@@ -166,7 +166,7 @@ class Sbc {
 	 * @return string Plugin name
 	 */
 	public function pluginName($plugin = null) {
-		return ($plugin == null) ? $this->getAppBase() : $plugin;
+		return ($plugin === null) ? $this->getAppBase() : $plugin;
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Sbc {
 	 * @return string
 	 */
 	public function getPluginName($plugin) {
-		return ($plugin == $this->getAppBase()) ? null : $plugin;
+		return ($plugin === $this->getAppBase()) ? null : $plugin;
 	}
 
 	/**
@@ -190,7 +190,7 @@ class Sbc {
 			// Search in plugins
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
 				// Check if plugin must be generated
-				if ($pluginConfig['generate'] == true) {
+				if ($pluginConfig['generate'] === true) {
 					$plugins[] = $plugin;
 				}
 			}
@@ -232,12 +232,12 @@ class Sbc {
 			$models = array();
 			// Plugin list
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
-				if ($pluginConfig['generate'] == true) {
+				if ($pluginConfig['generate'] === true) {
 					// Parts
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
-						if ($partConfig['generate'] == true && $partConfig['haveModel'] == true) {
+						if ($partConfig['generate'] === true && $partConfig['haveModel'] === true) {
 							// Model must be generated
-							if ($partConfig['model']['generate'] == true) {
+							if ($partConfig['model']['generate'] === true) {
 								$models[$partConfig['model']['name']] = array('part' => $part, 'plugin' => $plugin);
 							}
 						}
@@ -263,7 +263,7 @@ class Sbc {
 			foreach ($this->config['plugins'] as $currentPlugin => $pluginConfig) {
 				// Parts
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
-					if ($partConfig['haveModel'] == true && $partConfig['model']['generate'] == true && $partConfig['generate'] == true) {
+					if ($partConfig['haveModel'] === true && $partConfig['model']['generate'] === true && $partConfig['generate'] === true) {
 						$models[$currentPlugin][] = $partConfig['model']['name'];
 					}
 				}
@@ -287,8 +287,8 @@ class Sbc {
 	public function getModelPlugin($model) {
 		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
-				if ($partConfig['haveModel'] == true) {
-					if ($partConfig['model']['name'] == $model) {
+				if ($partConfig['haveModel'] === true) {
+					if ($partConfig['model']['name'] === $model) {
 						return $this->pluginName($plugin);
 					}
 				}
@@ -306,8 +306,8 @@ class Sbc {
 	public function getModelPart($model) {
 		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
-				if ($partConfig['haveModel'] == true) {
-					if ($partConfig['model']['name'] == $model) {
+				if ($partConfig['haveModel'] === true) {
+					if ($partConfig['model']['name'] === $model) {
 						return $part;
 					}
 				}
@@ -331,10 +331,10 @@ class Sbc {
 		if (!is_array($this->controllersToBake)) {
 			$controllers = array();
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
-				if ($pluginConfig['generate'] == true) {
+				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
-						if ($partConfig['generate'] == true && $partConfig['haveController'] == true) {
-							if ($partConfig['controller']['generate'] == true) {
+						if ($partConfig['generate'] === true && $partConfig['haveController'] === true) {
+							if ($partConfig['controller']['generate'] === true) {
 								$controllers[$partConfig['controller']['name']] = array('part' => $part, 'plugin' => $plugin);
 							}
 						}
@@ -355,8 +355,8 @@ class Sbc {
 	public function getControllerPlugin($controller) {
 		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
-				if ($partConfig['haveController'] == true) {
-					if ($partConfig['controller']['name'] == $controller) {
+				if ($partConfig['haveController'] === true) {
+					if ($partConfig['controller']['name'] === $controller) {
 						return $this->pluginName($plugin);
 					}
 				}
@@ -374,8 +374,8 @@ class Sbc {
 	public function getControllerPart($controller) {
 		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
-				if ($partConfig['haveController'] == true) {
-					if ($partConfig['controller']['name'] == $controller) {
+				if ($partConfig['haveController'] === true) {
+					if ($partConfig['controller']['name'] === $controller) {
 						return $part;
 					}
 				}
@@ -408,7 +408,7 @@ class Sbc {
 			foreach ($this->getConfig('plugins') as $plugin => $pluginConfig) {
 				$actionsList[$plugin] = array('displayName' => $pluginConfig['displayName'], 'controllers' => array());
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
-					if ($partConfig['haveController'] == true) {
+					if ($partConfig['haveController'] === true) {
 						$actionsList[$plugin]['controllers'][$partConfig['controller']['name']] = array('prefixes' => array(), 'displayName' => $partConfig['controller']['displayName']);
 						foreach ($partConfig['controller']['actions'] as $prefix => $actions) {
 							foreach ($actions as $action => $actionConfig) {
@@ -435,7 +435,7 @@ class Sbc {
 			$controllers = array();
 			foreach ($this->config['plugins'] as $currentPlugin => $pluginConfig) {
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
-					if ($partConfig['haveController'] == true && $partConfig['controller']['generate'] == true && $partConfig['generate'] == true) {
+					if ($partConfig['haveController'] === true && $partConfig['controller']['generate'] === true && $partConfig['generate'] === true) {
 						$controllers[$currentPlugin][] = $partConfig['controller']['name'];
 					}
 				}
@@ -469,13 +469,13 @@ class Sbc {
 		if (!is_array($this->viewsToBake)) {
 			$views = array();
 			foreach ($this->config['plugins'] as $tPlugin => $pluginConfig) {
-				if ($pluginConfig['generate'] == true) {
+				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
-						if ($partConfig['generate'] == true && $partConfig['haveController'] == true) {
-							if ($partConfig['controller']['generateViews'] == true) {
+						if ($partConfig['generate'] === true && $partConfig['haveController'] === true) {
+							if ($partConfig['controller']['generateViews'] === true) {
 								foreach ($partConfig['controller']['actions'] as $prefix => $actions) {
 									foreach ($actions as $action => $actionConfig) {
-										if ($actionConfig['haveView'] == true && (isset($actionConfig['view']['generate']) && $actionConfig['view']['generate'] == true)) {
+										if ($actionConfig['haveView'] === true && (isset($actionConfig['view']['generate']) && $actionConfig['view']['generate'] === true)) {
 											$views[$tPlugin][$part][$prefix][] = $action;
 										}
 									}
@@ -513,9 +513,9 @@ class Sbc {
 		if (!is_array($this->menusToBake)) {
 			$menus = array();
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
-				if ($pluginConfig['generate'] == true) {
+				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['menus'] as $menu => $menuConfig) {
-						if ($menuConfig['generate'] == true) {
+						if ($menuConfig['generate'] === true) {
 							$menus[$plugin][] = $menu;
 						}
 					}
@@ -541,9 +541,9 @@ class Sbc {
 		if (!is_array($this->filesToBake)) {
 			$files = array();
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
-				if ($pluginConfig['generate'] == true) {
+				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['files'] as $file => $fileConfig) {
-						if ($fileConfig['generate'] == true) {
+						if ($fileConfig['generate'] === true) {
 							$files[$plugin][] = $file;
 						}
 					}
@@ -563,9 +563,9 @@ class Sbc {
 		if (!is_array($this->requiredToBake)) {
 			$required = array();
 			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
-				if ($pluginConfig['generate'] == true) {
+				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['required'] as $file => $fileConfig) {
-						if ($fileConfig['generate'] == true) {
+						if ($fileConfig['generate'] === true) {
 							$required[$plugin][] = $file;
 						}
 					}
@@ -593,7 +593,7 @@ class Sbc {
 	 */
 	public function isActionnable($prefix, $controller, $action) {
 		$tmp = $this->getConfig("plugins." . $this->getControllerPlugin($controller) . ".parts." . $this->getControllerPart($controller) . ".controller.actions." . ((is_null($prefix)) ? 'public' : $prefix) . ".$action");
-		if (is_array($tmp) && $tmp['blackListed'] == false) {
+		if (is_array($tmp) && $tmp['blackListed'] === false) {
 			return true;
 		} else {
 			return false;
@@ -636,7 +636,7 @@ class Sbc {
 	 * @return string
 	 */
 	public function actionAddPrefix($action, $prefix = null) {
-		return (($prefix == 'public' || is_null($prefix)) ? '' : $prefix . '_') . $action;
+		return (($prefix === 'public' || is_null($prefix)) ? '' : $prefix . '_') . $action;
 	}
 
 	/**
@@ -708,6 +708,8 @@ class Sbc {
 
 	/**
 	 * Populates the configuration array with defaults values.
+	 * 
+	 * @return void
 	 */
 	public function populate() {
 
@@ -755,7 +757,7 @@ class Sbc {
 					// Model
 					//
 					// Must have a model ?
-					if ($partConfig['haveModel'] == true) {
+					if ($partConfig['haveModel'] === true) {
 						$this->log("Model configuration", 'info', 5);
 						// String definition
 						if (!is_array($partConfig['model'])) {
@@ -800,12 +802,12 @@ class Sbc {
 					// Controller
 					//
 					// Must have a controller ?
-					if ($partConfig['haveController'] == true) {
+					if ($partConfig['haveController'] === true) {
 						$this->log("Controller configuration", 'info', 5);
 						// String definition
 						if (!is_array($partConfig['controller'])) {
 							if (empty($partConfig['controller'])) {
-								if ($partConfig['haveModel'] == false) {
+								if ($partConfig['haveModel'] === false) {
 									$this->log("The controller should be defined as an array.<br>"
 													. "   => I'll use \"<strong>" . $part . "</strong>\" as name (part name)", 'warning', 6);
 									$partConfig['controller'] = array('name' => $part);
@@ -824,7 +826,7 @@ class Sbc {
 						else {
 							// Empty 'name' attribute
 							if (!isset($partConfig['controller']['name']) || empty($partConfig['controller']['name'])) {
-								if ($partConfig['haveModel'] == false) {
+								if ($partConfig['haveModel'] === false) {
 									$this->log("The controller definition should have a name.<br>"
 													. "   => I'll use \"<strong>" . $part . "</strong>\" as name (part name)", 'warning', 6);
 									$partConfig['controller']['name'] = $part;
@@ -873,7 +875,7 @@ class Sbc {
 						// Now, searching for actions to remove
 						foreach ($partConfig['controller']['actions'] as $prefix => $actions) {
 							foreach ($actions as $action => $actionConfig) {
-								if ($actionConfig['blackListed'] == true) {
+								if ($actionConfig['blackListed'] === true) {
 									$this->log("Removing blacklisted action \"<strong>$prefix.$action</strong>\"", 'info', 6);
 									unset($partConfig['controller']['actions'][$prefix][$action]);
 								}
@@ -1027,10 +1029,10 @@ class Sbc {
 	 */
 	public function log($message, $type = 'info', $level = 0) {
 		$this->log[] = array('level' => $level, 'type' => $type, 'message' => $message);
-		if ($type == 'error') {
+		if ($type === 'error') {
 			$this->errors++;
 		}
-		if ($type == 'warning') {
+		if ($type === 'warning') {
 			$this->warnings++;
 		}
 	}

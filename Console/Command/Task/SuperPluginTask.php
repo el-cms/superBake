@@ -192,7 +192,7 @@ class SuperPluginTask extends SbShell {
 			}
 
 			// Main bootstrap file update
-			if ($this->updateBootstrap == 'Y') {
+			if ($this->updateBootstrap === 'Y') {
 				$this->_modifyBootstrap($plugin);
 			}
 

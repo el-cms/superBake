@@ -3,12 +3,12 @@
 /**
  * SuperBake Shell script - superFile Task - Generates standalone files
  *
- * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
- * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
- * @link          http://experimentslabs.com Experiments Labs
- * @package       ELCMS.superBake.Task
- * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
- * @version       0.3
+ * @copyright	 Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+ * @author		Manuel Tancoigne <m.tancoigne@gmail.com>
+ * @link		  http://experimentslabs.com Experiments Labs
+ * @package	   ELCMS.superBake.Task
+ * @license	   GPL v3 (http://www.gnu.org/licenses/gpl.html)
+ * @version	   0.3
  *
  * This file is based on the lib/Cake/Console/Command/Task/ViewTask.php file
  * from CakePHP.
@@ -151,7 +151,7 @@ class SuperFileTask extends BakeTask {
 
 		// Finding the destination path
 		$path = $this->getFilePath();
-		$filename = $path . DS . (($this->fileType == 'menu') ? 'View' . DS : '') . $this->cleanPath($this->currentFileConfig['targetPath'] . DS . $this->currentFileConfig['targetFileName'] . '.' . $this->currentFileConfig['ext']);
+		$filename = $path . DS . (($this->fileType === 'menu') ? 'View' . DS : '') . $this->cleanPath($this->currentFileConfig['targetPath'] . DS . $this->currentFileConfig['targetFileName'] . '.' . $this->currentFileConfig['ext']);
 		// Saving the file.
 		return $this->createFile($filename, $content);
 	}
@@ -178,7 +178,7 @@ class SuperFileTask extends BakeTask {
 		$this->Template->set($vars);
 
 		if ($file) {
-			return $this->Template->generate((($this->fileType == 'menu') ? 'menus' . DS : 'files'), $this->cleanPath($file));
+			return $this->Template->generate((($this->fileType === 'menu') ? 'menus' . DS : 'files'), $this->cleanPath($file));
 		}
 
 		return false;

@@ -125,7 +125,7 @@ if (!empty($validate)):
 	echo "\tpublic \$validate = array(\n";
 	foreach ($validate as $field => $validations):
 		echo "\t\t'$field' => array(\n";
-		if ($name == 'User') {
+		if ($name === 'User') {
 			switch ($field) {
 				case 'username':
 					// Unique
@@ -174,7 +174,7 @@ endif;
 //	if (!empty($assoc)):
 //		
 ?>
-//The Associations below have been created with all possible keys, those that are not needed can be removed
+// The Associations below have been created with all possible keys, those that are not needed can be removed
 //<?php
 //		break;
 //	endif;

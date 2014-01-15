@@ -74,9 +74,9 @@ $paginateOptions = null;
 public function <?php echo $admin . $a ?>() {
 $this-><?php echo $currentModelName ?>->recursive = <?php echo $recursiveDepth ?>;
 <?php
-if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
+if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 	// Language fields should be set in config, so we check
-	if (count($languageFields) == 0) {
+	if (count($languageFields) === 0) {
 		$this->speak(__d('superBake', ' - No languageField defined. All fields will be returned.'), 'warning');
 	} else {
 		?>

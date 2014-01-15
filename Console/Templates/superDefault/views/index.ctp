@@ -70,7 +70,7 @@ $languageFields = (!isset($languageFields)) ? array() : $languageFields;
 /* ----------------------------------------------------------------------------
  * Prepare actions for each item
  */
-if ($this->canDo('view') == true || $this->canDo('edit') == true || $this->canDo('delete') == true) {
+if ($this->canDo('view') === true || $this->canDo('edit') === true || $this->canDo('delete') === true) {
 	$haveActions = true;
 } else {
 	$haveActions = false;
@@ -173,12 +173,12 @@ if ($noToolbar === false) {
  */
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
-	if ($v == true) {
+	if ($v === true) {
 		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
 	}
 }
 foreach ($additionnalJS as $k => $v) {
-	if ($v == true) {
+	if ($v === true) {
 		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
 	}
 }

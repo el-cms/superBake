@@ -4,7 +4,7 @@
 		<select name="configFile">
 			<?php
 			foreach ($configFiles as $file) {
-				echo "<option value=\"$file\"" . (($file == $configFile) ? ' SELECTED' : '') . ">" . (($file == $configFile) ? ' > ' : '') . "$file</option>";
+				echo "<option value=\"$file\"" . (($file === $configFile) ? ' SELECTED' : '') . ">" . (($file === $configFile) ? ' > ' : '') . "$file</option>";
 			}
 			?>
 		</select>

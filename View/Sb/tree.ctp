@@ -54,7 +54,7 @@ function dGIcon($text = null, $size = null) {
 					</a>
 				</h3>
 			</div>
-			<div id="collapse_P_<?php echo $plugin ?>" class="panel-collapse collapse <?php echo (($i == 0) ? 'in' : '') ?>">
+			<div id="collapse_P_<?php echo $plugin ?>" class="panel-collapse collapse <?php echo (($i === 0) ? 'in' : '') ?>">
 				<div class="panel-body">
 					<h4>Parts</h4>
 					<?php
@@ -66,7 +66,7 @@ function dGIcon($text = null, $size = null) {
 								<div class="panel-heading">
 									<h5 class="panel-title">
 										<a data-toggle="collapse" data-parent="#accordion_plugin_<?php echo $plugin ?>_parts" href="#accordion_plugin_<?php echo $plugin ?>_parts_collapse<?php echo $part ?>">
-											<?php echo (($pluginConfig['generate'] == true) ? (($partConfig['generate'] == true) ? gIcon('This part will be generated') : dGIcon('This part will NOT be generated')) : dGIcon('Plugin state will prevent this part generation')) . $part ?>
+											<?php echo (($pluginConfig['generate'] === true) ? (($partConfig['generate'] === true) ? gIcon('This part will be generated') : dGIcon('This part will NOT be generated')) : dGIcon('Plugin state will prevent this part generation')) . $part ?>
 										</a>
 									</h5>
 								</div>
@@ -78,7 +78,7 @@ function dGIcon($text = null, $size = null) {
 													<div class="block-header">
 														Model
 													</div>
-													<?php echo ($partConfig['haveModel'] == true) ? (($pluginConfig['generate'] == true) ? (($partConfig['generate'] == true) ? (($partConfig['model']['generate'] == true) ? gIcon('This model will be generated') : dGIcon('This model should not be generated')) : dGIcon('This model should not be generated because of part state')) : dGIcon('This model should not be generated because of plugin state.')) . $partConfig['model']['name'] : '<span class="text-muted">This part have no model</span>' ?>
+													<?php echo ($partConfig['haveModel'] === true) ? (($pluginConfig['generate'] === true) ? (($partConfig['generate'] === true) ? (($partConfig['model']['generate'] === true) ? gIcon('This model will be generated') : dGIcon('This model should not be generated')) : dGIcon('This model should not be generated because of part state')) : dGIcon('This model should not be generated because of plugin state.')) . $partConfig['model']['name'] : '<span class="text-muted">This part have no model</span>' ?>
 												</div>
 											</div>
 											<div class="col-lg-8">
@@ -86,8 +86,8 @@ function dGIcon($text = null, $size = null) {
 													<div class="block-header">
 														Controller
 													</div>
-													<?php echo ($partConfig['haveController'] == true) ? (($pluginConfig['generate'] == true) ? (($partConfig['generate'] == true) ? (($partConfig['controller']['generate'] == true) ? gIcon('This controller will be generated') : dGIcon('This controller should not be generated')) : dGIcon('This controller should not be generated because of part state')) : dGIcon('This controller should not be generated because of plugin state.')) . $partConfig['controller']['name'] : '<span class="text-muted">This part have no controller</span>' ?>
-													<?php if ($partConfig['haveController'] == true) { ?>
+													<?php echo ($partConfig['haveController'] === true) ? (($pluginConfig['generate'] === true) ? (($partConfig['generate'] === true) ? (($partConfig['controller']['generate'] === true) ? gIcon('This controller will be generated') : dGIcon('This controller should not be generated')) : dGIcon('This controller should not be generated because of part state')) : dGIcon('This controller should not be generated because of plugin state.')) . $partConfig['controller']['name'] : '<span class="text-muted">This part have no controller</span>' ?>
+													<?php if ($partConfig['haveController'] === true) { ?>
 														<div class="block-sub-wrapper">
 															<div class="block-subtitle" style="width:50%">
 																Actions
@@ -103,12 +103,12 @@ function dGIcon($text = null, $size = null) {
 																?>
 																<div class="row rowLine">
 																	<div class="col-lg-6">
-																		<?php echo (($actionConfig['haveView'] == true) ? '<i class="icon-eye-open" data-toggle="tooltip" title="This action have a view"></i> ' : '<i class="icon-eye-close" data-toggle="tooltip" title="This action have no view"></i> ') . $action; ?>
+																		<?php echo (($actionConfig['haveView'] === true) ? '<i class="icon-eye-open" data-toggle="tooltip" title="This action have a view"></i> ' : '<i class="icon-eye-close" data-toggle="tooltip" title="This action have no view"></i> ') . $action; ?>
 																	</div>
 																	<div class="col-lg-6">
 																		<?php
-																		if ($actionConfig['haveView'] == true) {
-																			echo (($pluginConfig['generate'] == true) ? (($partConfig['generate'] == true) ? (($actionConfig['view']['generate'] == true) ? gIcon('This view will be generated') : dGIcon('This view will not be generated')) : dGIcon('This view will not be generated, according to part state')) : dGIcon('This view will not be generated, according to plugin state.')) . ' ' . ((!empty($actionConfig['view']['template'])) ? $actionConfig['view']['template'] : '<span class="text-muted">No template specified</span>');
+																		if ($actionConfig['haveView'] === true) {
+																			echo (($pluginConfig['generate'] === true) ? (($partConfig['generate'] === true) ? (($actionConfig['view']['generate'] === true) ? gIcon('This view will be generated') : dGIcon('This view will not be generated')) : dGIcon('This view will not be generated, according to part state')) : dGIcon('This view will not be generated, according to plugin state.')) . ' ' . ((!empty($actionConfig['view']['template'])) ? $actionConfig['view']['template'] : '<span class="text-muted">No template specified</span>');
 																		} else {
 																			echo '<div class="text-center text-muted">-</div>';
 																		}
@@ -138,7 +138,7 @@ function dGIcon($text = null, $size = null) {
 						<?php
 						foreach ($pluginConfig['menus'] as $menu => $menuConfig) {
 							?>
-							<dt><?php echo ($menuConfig['generate'] == true) ? gIcon('This menu will be generated') : dGIcon('This menu won\'t be generated') ?><?php echo $menu; ?></dt>
+							<dt><?php echo ($menuConfig['generate'] === true) ? gIcon('This menu will be generated') : dGIcon('This menu won\'t be generated') ?><?php echo $menu; ?></dt>
 							<dl>
 								<?php echo str_replace('::', DS, $menuConfig['template']); ?> <i class="icon-chevron-sign-right"></i> <?php echo str_replace('::', DS, $plugin . DS . 'View' . DS . $menuConfig['targetPath'] . DS . $menuConfig['targetFileName'] . '.' . $menuConfig['ext']); ?>
 							</dl>
@@ -151,7 +151,7 @@ function dGIcon($text = null, $size = null) {
 						<?php
 						foreach ($pluginConfig['files'] as $file => $fileConfig) {
 							?>
-							<dt><?php echo ($fileConfig['generate'] == true) ? gIcon('This file will be generated') : dGIcon('This file won\'t be generated') ?><?php echo $file; ?></dt>
+							<dt><?php echo ($fileConfig['generate'] === true) ? gIcon('This file will be generated') : dGIcon('This file won\'t be generated') ?><?php echo $file; ?></dt>
 							<dl><?php echo str_replace('::', DS, $fileConfig['template']); ?> <i class="icon-chevron-sign-right"></i> <?php echo str_replace('::', DS, $plugin . DS . $fileConfig['targetPath'] . DS . $fileConfig['targetFileName'] . '.' . $fileConfig['ext']); ?></dl>
 							<?php
 						}
@@ -163,7 +163,7 @@ function dGIcon($text = null, $size = null) {
 						<?php
 						foreach ($pluginConfig['required'] as $required => $requiredConfig) {
 							?>
-							<dt><?php echo ($requiredConfig['generate'] == true) ? gIcon('This will be copied') : dGIcon('This won\'t be copied') ?><?php echo $required; ?></dt>
+							<dt><?php echo ($requiredConfig['generate'] === true) ? gIcon('This will be copied') : dGIcon('This won\'t be copied') ?><?php echo $required; ?></dt>
 							<dl><i class="icon-file"></i> <?php echo str_replace('::', DS, $requiredConfig['source']); ?> <i class="icon-chevron-sign-right"></i> <?php echo str_replace('::', DS, $plugin . DS . $requiredConfig['target']); ?></dl>
 							<?php
 						}

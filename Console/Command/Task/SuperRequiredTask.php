@@ -102,7 +102,7 @@ class superRequiredTask extends SbShell {
 			$dest = $this->_pluginPath($this->plugin) . $this->cleanPath($this->required['target']);
 		}
 
-		if ($this->required['type'] == 'folder') {
+		if ($this->required['type'] === 'folder') {
 			// Folder copy
 			$this->copyDir($source, $dest, $this->required['contentOnly']);
 		} else {
@@ -127,7 +127,7 @@ class superRequiredTask extends SbShell {
 
 			// Source folder
 			$source = new Folder($dir);
-			if ($contentOnly == false) {
+			if ($contentOnly === false) {
 				// Find the source folder name
 				$pathes = explode(DS, $dir);
 				//Destination

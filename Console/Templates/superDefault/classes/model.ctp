@@ -1,36 +1,36 @@
 <?php
 /**
  * Model template for EL-CMS baking
- * 
+ *
  * This file is used during models generation and adds custom snippets to models
- * 
+ *
  * ---
  * This file is an updated file from cakePHP.
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @package       ELCMS.superBake.Templates.Default.Classes
  * @version       0.3
- * 
+ *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Plugin name used in headers, with trailing slash
 $com_plugin = '';
@@ -46,7 +46,7 @@ echo "<?php\n";
 * File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake with template "<?php echo $theme; ?>".
 *
 * This file contains the <?php echo $name ?> model.
-* 
+*
 * @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->Sbc->getConfig('general.editorName') ?> (<?php echo $this->Sbc->getConfig('general.editorWebsite') ?>)
 * @author        <?php echo $this->Sbc->getConfig('general.editorName') ?> <<?php echo $this->Sbc->getConfig('general.editorEmail') ?>>
 * @link          <?php echo $this->Sbc->getConfig('general.editorWebsite') ?> <?php echo $this->Sbc->getConfig('general.editorWebsiteName') . "\n" ?>
@@ -55,9 +55,9 @@ echo "<?php\n";
 <?php
 $licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $this->Sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
 if (file_exists($licenseTemplate)) {
-	include($licenseTemplate);
+	include $licenseTemplate;
 } else {
-	include(dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . 'nolicence' . '.ctp');
+	include dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . 'nolicence' . '.ctp';
 	$this->speak(__d('superBake', 'The license template is invalid (%s). A blank one has been used, but you should check the config file.', $projectConfig['general']['editorLicenseTemplate']), 'warning', 1, 2);
 }
 ?>
@@ -172,7 +172,7 @@ endif;
 //hasOne
 //foreach ($associations as $assoc):
 //	if (!empty($assoc)):
-//		
+//
 ?>
 // The Associations below have been created with all possible keys, those that are not needed can be removed
 //<?php
@@ -287,9 +287,9 @@ foreach ($modelConfig['snippets'] as $snippet => $snippetConfig) {
 	$additionnalCode = dirname(dirname(__FILE__)) . DS . 'models' . DS . $this->cleanPath($snippetConfig['path']) . '.ctp';
 	// Checking
 	if (file_exists($additionnalCode)) {
-		include($additionnalCode);
+		include $additionnalCode;
 	} else {
-		include(dirname(dirname(__FILE__)) . DS . 'models' . DS . 'missing_code.ctp');
+		include dirname(dirname(__FILE__)) . DS . 'models' . DS . 'missing_code.ctp';
 		$this->speak(__d('superBake', 'Snippet file "%s" was not found. Default code has been set as replacement.', $additionnalCode), 'warning', 0);
 	}
 }

@@ -33,7 +33,7 @@ App::uses('Folder', 'Utility');
 class superRequiredTask extends SbShell {
 
 	/**
-	 * path to plugins directory
+	 * Path to plugins directory
 	 *
 	 * @var array
 	 */
@@ -41,18 +41,21 @@ class superRequiredTask extends SbShell {
 
 	/**
 	 * Tasks to be loaded by this Task
+	 *
 	 * @var array
 	 */
 	public $tasks = array('Sb.Template');
 
 	/**
 	 * Configuration for the current file/folder
+	 *
 	 * @var array
 	 */
 	public $required = array();
 
 	/**
 	 * Plugin in wich the files must be copied
+	 *
 	 * @var string
 	 */
 	public $plugin = null;
@@ -65,7 +68,9 @@ class superRequiredTask extends SbShell {
 //	public $bootstrap = null;
 
 	/**
-	 * initialize
+	 * Override initialize
+	 *
+	 * Unmodified method.
 	 *
 	 * @return void
 	 */
@@ -87,6 +92,7 @@ class superRequiredTask extends SbShell {
 	 * Bake the plugin, create directories and files
 	 *
 	 * @param string $plugin Name of the plugin in CamelCased format
+	 *
 	 * @return boolean
 	 */
 	public function bake() {
@@ -118,7 +124,9 @@ class superRequiredTask extends SbShell {
 	 *
 	 * @param string $dir Source directory
 	 * @param string $dest Target directory
-	 * @param bool $contentOnly If set to true, only the content of the folder will be copied. Else, the container will be copied too.
+	 * @param boolean $contentOnly If set to true, only the content of the folder will be copied. Else, the container will be copied too.
+	 *
+	 * @return boolean False on errors
 	 */
 	function copyDir($dir, $dest, $contentOnly) {
 		if (!file_exists($dir)) {
@@ -142,18 +150,37 @@ class superRequiredTask extends SbShell {
 			// Files and folders list
 			$sourceContent = $source->read(true);
 
+			// Initializing errors
+			$errors = 0;
 			// Folders
 			if (count($sourceContent[0]) > 0) {
 				foreach ($sourceContent[0] as $folder) {
-					$this->copyDir($dir . DS . $folder, $path, false);
+					if (!$this->copyDir($dir . DS . $folder, $path, false)) {
+						$this->speak(__d('superBake', 'Error while copying folder %s', $folder), 'error', 1);
+						$errors++;
+					} else {
+						// Verbose
+						$this->speak(__d('superBake', 'Folder %s created in %s', array($folder, $path)), 'error', 2);
+					}
 				}
 			}
 
 			// Files in source dir
 			if (count($sourceContent[1]) > 0) {
 				foreach ($sourceContent[1] as $file) {
-					$this->copyFile($dir . DS . $file, $path . DS . $file);
+					if (!$this->copyFile($dir . DS . $file, $path . DS . $file)) {
+						// Output in case of failure/success is handled in copyFile().
+						$errors++;
+					}
 				}
+			}
+
+			// Return:
+			if ($errors > 0) {
+				$this->speak(__d('superBake', 'Some errors were encountered during the copy. Check your permissions.', $file), 'error', 1);
+				return false;
+			} else {
+				return true;
 			}
 		}
 	}
@@ -163,67 +190,27 @@ class superRequiredTask extends SbShell {
 	 *
 	 * @param string $source file to copy
 	 * @param string $dest file name
-	 * @return boolean
+	 *
+	 * @return boolean Success state
 	 */
 	public function copyFile($source, $dest) {
 		if (!file_exists($source)) {
 			$this->speak(array("Source file does not exists:", $source), 'error', 0);
 			return false;
 		} else {
-			$this->speak("Copying file $source\n to $dest", 'comment', 2);
 			if (copy($source, $dest)) {
+				$this->speak(array(__d('superBake', "file $source\n copied in $dest")), 'comment', 2, 0, 1);
 				return true;
 			} else {
+				// Verbose
+				$this->speak(__d('superBake', 'Copied file %s.', $source), 'error', 2);
 				return false;
 			}
 		}
 	}
 
-//	/**
-//	 * Update the app's bootstrap.php file.
-//	 *
-//	 * @param string $plugin Name of plugin
-//	 * @return void
-//	 */
-//	protected function _modifyBootstrap($plugin) {
-//		$bootstrap = new File($this->bootstrap, false);
-//		$contents = $bootstrap->read();
-//		if (!preg_match("@\n\s*CakePlugin::loadAll@", $contents)) {
-//			$bootstrap->append("\nCakePlugin::load('$plugin', array('bootstrap' => false, 'routes' => false));\n");
-//			$this->out('');
-//			$this->out(__d('cake_dev', '%s modified', $this->bootstrap));
-//		}
-//	}
-
 	/**
-	 * find and change $this->path to the user selection
-	 *
-	 * @param array $pathOptions
-	 * @return void
-	 */
-//	public function findPath($pathOptions) {
-//		$valid = false;
-//		foreach ($pathOptions as $i => $path) {
-//			if (!is_dir($path)) {
-//				array_splice($pathOptions, $i, 1);
-//			}
-//		}
-//		$max = count($pathOptions);
-//		while (!$valid) {
-//			foreach ($pathOptions as $i => $option) {
-//				$this->out($i + 1 . '. ' . $option);
-//			}
-//			$prompt = __d('cake_console', 'Choose a plugin path from the paths above.');
-//			$choice = $this->in($prompt, null, 1);
-//			if (intval($choice) > 0 && intval($choice) <= $max) {
-//				$valid = true;
-//			}
-//		}
-//		$this->path = $pathOptions[$choice - 1];
-//	}
-
-	/**
-	 * get the option parser for the plugin task
+	 * get the option parser for the required task
 	 *
 	 * @return void
 	 */

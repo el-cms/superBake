@@ -56,7 +56,7 @@ class SuperFileTask extends BakeTask {
 	public $tasks = array('Project', 'Controller', 'DbConfig', 'Sb.Template');
 
 	/**
-	 * path to View directory
+	 * Path to View directory
 	 *
 	 * @var array
 	 */
@@ -70,8 +70,9 @@ class SuperFileTask extends BakeTask {
 	public $template = null;
 
 	/**
-	 * Reference to the Sbc object
-	 * @var object
+	 * A Sbc instance that gives all the methods to handle the config file.
+	 *
+	 * @var Sbc
 	 */
 	public $Sbc;
 
@@ -91,6 +92,7 @@ class SuperFileTask extends BakeTask {
 
 	/**
 	 * Current plugin
+	 *
 	 * @var string
 	 */
 	public $plugin;
@@ -135,6 +137,7 @@ class SuperFileTask extends BakeTask {
 	 *
 	 * @param string $file File to bake
 	 * @param string $content Content to write
+	 *
 	 * @return boolean Success/fail
 	 */
 	public function bake($file, $content = '') {
@@ -161,6 +164,7 @@ class SuperFileTask extends BakeTask {
 	 *
 	 * @param string $file name to generate content to
 	 * @param array $vars passed for use in templates
+	 *
 	 * @return string content from template
 	 */
 	public function getContent($file, $vars = null) {
@@ -187,6 +191,7 @@ class SuperFileTask extends BakeTask {
 	/**
 	 * Gets the option parser for this task
 	 * Removed because useless (need tests)
+	 *
 	 * @return ConsoleOptionParser
 	 */
 //	public function getOptionParser() {

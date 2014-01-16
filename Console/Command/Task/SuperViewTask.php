@@ -52,7 +52,7 @@ class SuperViewTask extends BakeTask {
 	public $tasks = array('Project', 'Controller', 'DbConfig', 'Sb.Template');
 
 	/**
-	 * path to View directory
+	 * Path to View directory
 	 *
 	 * @var array
 	 */
@@ -74,36 +74,42 @@ class SuperViewTask extends BakeTask {
 
 	/**
 	 * Current action to bake, with prefix if any.
+	 *
 	 * @var type string
 	 */
 	public $currentAction = null;
 
 	/**
 	 * Current action name, without prefix.
+	 *
 	 * @var type string
 	 */
 	public $currentSimpleAction = null;
 
 	/**
 	 * The Sbc object
-	 * @var type Sbc object
+	 *
+	 * @var Sbc
 	 */
 	public $Sbc;
 
 	/**
 	 * Current part name.
+	 *
 	 * @var type srting
 	 */
 	public $currentPart;
 
 	/**
 	 * Current plugin name. Null for appBase
+	 *
 	 * @var type string
 	 */
 	public $plugin;
 
 	/**
 	 * Current prefix without the dash. Null for public.
+	 *
 	 * @var type string
 	 */
 	public $currentPrefix;
@@ -112,12 +118,15 @@ class SuperViewTask extends BakeTask {
 	 * List of options defined by the config files that should be accessible in view.
 	 * This list is here to clear these variables after the view generation, so they are not
 	 * passed through different views.
+	 *
 	 * @var array
 	 */
 	public $templateOptions = array();
 
 	/**
 	 * Override initialize
+	 *
+	 * Unmodified method.
 	 *
 	 * @return void
 	 */
@@ -159,30 +168,31 @@ class SuperViewTask extends BakeTask {
 	 * Get a list of actions that can / should have views baked for them.
 	 *
 	 * @return array Array of action names that should be baked
+	 *
 	 * @todo : filter method which must not have views.
 	 */
-	protected function _methodsToBake() {
-		$this->out(__d('superBake', 'Searching for methods to bake for controller "' . $this->controllerName . '"'), 1, Shell::VERBOSE);
-		$methods = array_diff(
-						//Current controller
-						array_map('strtolower', get_class_methods($this->controllerName . 'Controller')),
-						//methods from appcontroller
-						array_map('strtolower', get_class_methods('AppController'))
-		);
-		// No methods
-		if (empty($methods)) {
-			$this->out(__d('superBake', '<warning>No view to bake for controller "%s". You should check your config.</warning>', $this->controllerName), 1, Shell::QUIET);
-			return array();
-		}
-
-		foreach ($methods as $i => $method) {
-			//Remove _methods and self controller named methods
-			if ($method[0] === '_' || $method === strtolower($this->controllerName . 'Controller')) {
-				unset($methods[$i]);
-			}
-		}
-		return $methods;
-	}
+//	protected function _getMethodsToBake() {
+//		$this->out(__d('superBake', 'Searching for methods to bake for controller "' . $this->controllerName . '"'), 1, Shell::VERBOSE);
+//		$methods = array_diff(
+//						//Current controller
+//						array_map('strtolower', get_class_methods($this->controllerName . 'Controller')),
+//						//methods from appcontroller
+//						array_map('strtolower', get_class_methods('AppController'))
+//		);
+//		// No methods
+//		if (empty($methods)) {
+//			$this->out(__d('superBake', '<warning>No view to bake for controller "%s". You should check your config.</warning>', $this->controllerName), 1, Shell::QUIET);
+//			return array();
+//		}
+//
+//		foreach ($methods as $i => $method) {
+//			//Remove _methods and self controller named methods
+//			if ($method[0] === '_' || $method === strtolower($this->controllerName . 'Controller')) {
+//				unset($methods[$i]);
+//			}
+//		}
+//		return $methods;
+//	}
 
 	/**
 	 * Loads Controller and sets variables for the template
@@ -239,6 +249,7 @@ class SuperViewTask extends BakeTask {
 	 *
 	 * @param string $action Action to bake
 	 * @param string $content Content to write
+	 *
 	 * @return boolean Success
 	 */
 	public function bake($action, $content = '') {
@@ -259,6 +270,7 @@ class SuperViewTask extends BakeTask {
 	 *
 	 * @param string $action name to generate content to
 	 * @param array $vars passed for use in templates
+	 *
 	 * @return string content from template
 	 */
 	public function getContent($action, $vars = null) {
@@ -303,6 +315,7 @@ class SuperViewTask extends BakeTask {
 	 * Gets the template name based on the action name
 	 *
 	 * @param string $action name
+	 *
 	 * @return string template name
 	 */
 	public function getTemplate($action) {
@@ -376,6 +389,7 @@ class SuperViewTask extends BakeTask {
 	 * Unmodified method from Cake.
 	 *
 	 * @param Model $model
+	 * 
 	 * @return array $associations
 	 */
 	protected function _associations(Model $model) {

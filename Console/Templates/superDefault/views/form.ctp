@@ -29,7 +29,7 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Page headers and licensing
-include($themePath . 'views/common/headers.ctp');
+include $themePath . 'views/common/headers.ctp';
 
 /* ----------------------------------------------------------------------------
  * Current template options

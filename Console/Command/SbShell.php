@@ -55,6 +55,8 @@ class SbShell extends AppShell {
 	 *
 	 * As this file contains only shared methods with SuperBake commands and tasks,
 	 * this does nothing and exits.
+	 *
+	 * @return void
 	 */
 	public function main() {
 		$this->out('This is not a shell, sorry');
@@ -65,7 +67,8 @@ class SbShell extends AppShell {
 	 * Returns an action's prefix.
 	 *
 	 * @param string $action Action to check
-	 * @return string Action prefix, null if none
+	 *
+	 * @return mixed Action prefix, null if none
 	 */
 	public function getActionPrefix($action) {
 		$array = explode('_', $action);
@@ -81,6 +84,7 @@ class SbShell extends AppShell {
 	 * Returns an action name, without its prefix.
 	 *
 	 * @param string $action Action name
+	 *
 	 * @return string
 	 */
 	public function getActionName($action) {
@@ -91,7 +95,8 @@ class SbShell extends AppShell {
 	 * Makes a config path value (path::to::file)
 	 *
 	 * @param string $path Path::to::file.ext
-	 * @param bool $dir If true, a trailing / will be added
+	 * @param boolean $dir If true, a trailing / will be added
+	 *
 	 * @return string Good path format, with trailing slash
 	 */
 	public function cleanPath($path, $dir = false) {
@@ -110,15 +115,17 @@ class SbShell extends AppShell {
 	 * @param string $prefix The prefix. If null, current prefix will be used
 	 * @param string $controller The controller, underscored_name. If null, current controller will be used.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function canDo($action, $prefix = null, $controller = null) {
 		$action = is_null($prefix) ? $this->templateVars['admin'] : $prefix;
 		$prefix = is_null($controller) ? ucfirst(Inflector::camelize($this->templateVars['pluralVar'])) : ucfirst(Inflector::camelize($controller));
+
 		return $this->Sbc->isActionnable($action, $prefix, $action);
 	}
 
 	/**
+	 * Internationalizes String:
 	 * Returns a correct __(...) or __d(...) statement. If plugin is provided, will use
 	 * plugin as domain; If no plugin is provided, the current plugin will be used.
 	 *
@@ -159,16 +166,18 @@ class SbShell extends AppShell {
 	}
 
 	/**
-	 * Creates a pretty output
+	 * Creates a pretty output for shell messages
 	 *
 	 * If $decorations > 0, output will have an opening HR
 	 * If $decorations >= 2, output will have a closing HR
 	 *
 	 * @param mixed $text String to output, or array of strings.
 	 * @param string $class Class (info|warning|error|success|comment|bold)
-	 * @param int $force 1 for Normal, 2 for Verbose only and 0 for Quiet shells. Use 4 for debugs (you must set $this->debug=1 somewhere)
-	 * @param int $decorations If >0, text will be surrounded by hr and $decorations new lines.
-	 * @param int $newLines Number of empty lines to insert before and after text.
+	 * @param integer $force 1 for Normal, 2 for Verbose only and 0 for Quiet shells. Use 4 for debugs (you must set $this->debug=1 somewhere)
+	 * @param integer $decorations If >0, text will be surrounded by hr and $decorations new lines.
+	 * @param integer $newLines Number of empty lines to insert before and after text.
+	 *
+	 * @return void
 	 */
 	public function speak($text, $class = null, $force = 1, $decorations = 0, $newLines = 0) {
 		switch ($class) {
@@ -244,6 +253,7 @@ class SbShell extends AppShell {
 	 * @param string $action	The target action
 	 * @param string $controller	Target controller (MUST be given to find good plugin)
 	 * @param array  $options		An array of options
+	 *
 	 * @return string Like "array('admin'=>'string|false', 'plugin'=>'string', 'controller'=>'controller', 'action'=>'action', 'options')"
 	 */
 	function url($action, $controller = null, $prefix = null, $options = null) {
@@ -277,6 +287,15 @@ class SbShell extends AppShell {
 		return $url . ')';
 	}
 
+	/**
+	 * Returns a string to create Flash messages with correct flash message element
+	 * The presence of flash message elements is defined in the config file.
+	 *
+	 * @param string $content Message content
+	 * @param string $class Message class: error/succes/... Must match a valid flash message element
+	 *
+	 * @return string
+	 */
 	public function setFlash($content, $class) {
 		return "\$this->Session->setFlash(" . $this->iString($content) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", 'flash_$class'" : '') . ");\n";
 	}
@@ -285,6 +304,7 @@ class SbShell extends AppShell {
 	 * Cleans a plugin name: remove the dot and keep the plugin
 	 *
 	 * @param string $plugin Plugin to check
+	 *
 	 * @return string
 	 */
 	public function cleanPlugin($plugin) {
@@ -296,6 +316,7 @@ class SbShell extends AppShell {
 	 * Returns null for appBase
 	 *
 	 * @param string $underscored_controller_name
+	 *
 	 * @return mixed string or null
 	 */
 	public function getControllerPluginName($underscored_controller_name) {

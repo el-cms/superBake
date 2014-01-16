@@ -46,7 +46,7 @@ App::uses('Folder', 'Utility');
 class SuperPluginTask extends SbShell {
 
 	/**
-	 * path to plugins directory
+	 * Path to plugins directory
 	 *
 	 * @var array
 	 */
@@ -78,9 +78,9 @@ class SuperPluginTask extends SbShell {
 	public $updateBootstrap = null;
 
 	/**
-	 * initialize
+	 * Override initialize
 	 *
-	 * Unmodified method
+	 * Unmodified method.
 	 *
 	 * @return void
 	 */
@@ -102,9 +102,10 @@ class SuperPluginTask extends SbShell {
 	}
 
 	/**
-	 * Bake the plugin, create directories and files
+	 * Bakes the plugin, create directories and files
 	 *
 	 * @param string $plugin Name of the plugin in CamelCased format
+	 *
 	 * @return boolean
 	 */
 	public function bake($plugin) {
@@ -171,7 +172,7 @@ class SuperPluginTask extends SbShell {
 			$out .= "}\n";
 			$this->createFile($this->path . $plugin . DS . 'Model' . DS . $modelFileName, $out);
 
-			/**			 * **************************************************************
+			/**	**********************************************************************
 			 *
 			 * Additionnal files are handled here
 			 *
@@ -206,9 +207,10 @@ class SuperPluginTask extends SbShell {
 	}
 
 	/**
-	 * Update the app's bootstrap.php file.
+	 * Updates the app's bootstrap.php file.
 	 *
 	 * @param string $plugin Name of plugin
+	 *
 	 * @return void
 	 */
 	protected function _modifyBootstrap($plugin) {

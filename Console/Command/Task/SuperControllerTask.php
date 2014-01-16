@@ -60,13 +60,15 @@ class SuperControllerTask extends BakeTask {
 	public $path = null;
 
 	/**
-	 * Holds the project configuration array
+	 * A Sbc instance that gives all the methods to handle the config file.
+	 *
 	 * @var array
 	 */
 	public $Sbc;
 
 	/**
 	 * Current part name
+	 *
 	 * @var string
 	 */
 	public $currentPart = null;
@@ -136,6 +138,7 @@ class SuperControllerTask extends BakeTask {
 	 * @param string $controllerName Controller name
 	 * @param string $admin Admin route to use
 	 * @param boolean $wannaUseSession Set to true to use sessions, false otherwise
+	 *
 	 * @return string Baked actions
 	 */
 	public function bakeActions($controllerName, $admin = null, $wannaUseSession = true) {
@@ -216,6 +219,7 @@ class SuperControllerTask extends BakeTask {
 	 * @param string $actions Generated actions from `bakeActions()`
 	 * @param array $helpers Helpers to use in controller
 	 * @param array $components Components to use in controller
+	 *
 	 * @return string Baked controller
 	 */
 	public function bake($controllerName, $actions = '', $helpers = null, $components = null) {
@@ -263,6 +267,7 @@ class SuperControllerTask extends BakeTask {
 	 * This method is the original one from CakePHP.
 	 *
 	 * @param string $className Controller class name
+	 *
 	 * @return string Baked test
 	 */
 	public function bakeTest($className) {

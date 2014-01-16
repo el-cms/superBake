@@ -12,7 +12,8 @@ App::uses('Folder', 'Utility');
 class SbController extends SbAppController {
 
 	/**
-	 * index method
+	 * Index method
+	 * Only returns the view.
 	 *
 	 * @return void
 	 */

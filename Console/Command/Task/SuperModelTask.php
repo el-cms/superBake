@@ -85,13 +85,15 @@ class SuperModelTask extends BakeTask {
 	protected $_validations = array();
 
 	/**
-	 * Holds the project configuration array
-	 * @var array
+	 * A Sbc instance that gives all the methods to handle the config file.
+	 *
+	 * @var Sbc
 	 */
 	public $Sbc;
 
 	/**
 	 * Holds some params (as theme)
+	 *
 	 * @var array
 	 */
 	public $params = array();
@@ -152,6 +154,7 @@ class SuperModelTask extends BakeTask {
 	 *
 	 * @param string $className Name of class you want model to be.
 	 * @param string $table Table name
+	 *
 	 * @return Model Model instance
 	 */
 	protected function _getModelObject($className, $table = null) {
@@ -175,6 +178,7 @@ class SuperModelTask extends BakeTask {
 	 * Unmodified method.
 	 *
 	 * @param Model $model Model to have validations generated for.
+	 *
 	 * @return array $validate Array of user selected validations.
 	 */
 	public function doValidation($model) {
@@ -230,6 +234,7 @@ class SuperModelTask extends BakeTask {
 	 * @param string $fieldName Name of field to be validated.
 	 * @param array $metaData metadata for field
 	 * @param string $primaryKey
+	 *
 	 * @return array Array of validation for the field.
 	 */
 	public function fieldValidation($fieldName, $metaData, $primaryKey = 'id') {
@@ -292,6 +297,7 @@ class SuperModelTask extends BakeTask {
 	 * Same method as in the original file, with the "interactive" handling removed.
 	 *
 	 * @param Model $model
+	 *
 	 * @return array Associations
 	 */
 	public function doAssociations($model) {
@@ -331,6 +337,7 @@ class SuperModelTask extends BakeTask {
 	 *
 	 * @param Model $model Model instance of model being generated.
 	 * @param array $associations Array of in progress associations
+	 *
 	 * @return array Associations with belongsTo added in.
 	 */
 	public function findBelongsTo(Model $model, $associations) {
@@ -362,6 +369,7 @@ class SuperModelTask extends BakeTask {
 	 *
 	 * @param Model $model Model instance being generated
 	 * @param array $associations Array of in progress associations
+	 *
 	 * @return array Associations with hasOne and hasMany added in.
 	 */
 	public function findHasOneAndMany(Model $model, $associations) {
@@ -406,6 +414,7 @@ class SuperModelTask extends BakeTask {
 	 *
 	 * @param Model $model Model instance being generated
 	 * @param array $associations Array of in-progress associations
+	 *
 	 * @return array Associations with hasAndBelongsToMany added in.
 	 */
 	public function findHasAndBelongsToMany(Model $model, $associations) {
@@ -441,6 +450,7 @@ class SuperModelTask extends BakeTask {
 	 *
 	 * @param array $model Temporary Model instance.
 	 * @param array $associations Array of associations to be confirmed.
+	 *
 	 * @return array Array of confirmed associations
 	 */
 	public function confirmAssociations(Model $model, $associations) {
@@ -469,7 +479,8 @@ class SuperModelTask extends BakeTask {
 	 * the different behaviors.
 	 * @param string|object $name Model name or object
 	 * @param array|boolean $data if array and $name is not an object assume bake data, otherwise boolean.
-	 * @return string
+	 *
+	 * @return mixed
 	 */
 	public function bake($name, $data = array()) {
 		/* -------------------------------------------------------------------------
@@ -551,6 +562,7 @@ class SuperModelTask extends BakeTask {
 
 	/**
 	 * Returns the path where model should be created.
+	 *
 	 * @return string
 	 */
 	public function getPath() {
@@ -567,6 +579,7 @@ class SuperModelTask extends BakeTask {
 	 * Same method as in the original file, with the "interactive" handling removed.
 	 *
 	 * @param string $className Model class name
+	 *
 	 * @return string
 	 */
 	public function bakeTest($className) {
@@ -584,6 +597,7 @@ class SuperModelTask extends BakeTask {
 	 * Same method as in the original file, with the "interactive" handling removed.
 	 *
 	 * @param string $useDbConfig Database configuration name
+	 *
 	 * @return array
 	 */
 	public function listAll($useDbConfig = null) {
@@ -604,6 +618,7 @@ class SuperModelTask extends BakeTask {
 	 *
 	 * @param string $modelName Name of the model you want a table for.
 	 * @param string $useDbConfig Name of the database config you want to get tables from.
+	 *
 	 * @return string Table name
 	 */
 	public function getTable($modelName, $useDbConfig = null) {
@@ -623,6 +638,7 @@ class SuperModelTask extends BakeTask {
 	 * Unmodified method.
 	 *
 	 * @param string $useDbConfig Connection name to scan.
+	 *
 	 * @return array Array of tables in the database.
 	 */
 	public function getAllTables($useDbConfig = null) {
@@ -656,7 +672,9 @@ class SuperModelTask extends BakeTask {
 	 *
 	 * @param string $className Name of class to bake fixture for
 	 * @param string $useTable Optional table name for fixture to use.
+	 *
 	 * @return void
+	 *
 	 * @see FixtureTask::bake
 	 */
 	public function bakeFixture($className, $useTable = null) {

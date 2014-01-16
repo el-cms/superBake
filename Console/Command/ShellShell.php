@@ -68,15 +68,17 @@ class ShellShell extends SbShell {
 
 	/**
 	 * Determines if the current generation is interactive or not
+	 *
 	 * @var Boolean
 	 */
 	public $interactive = true;
 
 	/**
 	 * 1 if the config is loaded. Defined by loadConfig();
+	 *
 	 * @var boolean
 	 */
-	private $initialized = 0;
+	protected $_initialized = 0;
 
 	/**
 	 * Assign $this->connection to the active task if a connection param is set.
@@ -99,9 +101,9 @@ class ShellShell extends SbShell {
 	}
 
 	/**
-	 * Main "screen"
+	 * Main menu
 	 *
-	 * @return mixed
+	 * @return void
 	 */
 	public function main() {
 		// This adds a style for console formatting. It's used in the menu to better recognize
@@ -357,7 +359,7 @@ class ShellShell extends SbShell {
 	 *
 	 * @return string Plugin name
 	 */
-	private function _getPluginName() {
+	protected function _getPluginName() {
 		$plugins = $this->Sbc->getPluginsToBake();
 
 		$count = count($plugins);
@@ -440,7 +442,7 @@ class ShellShell extends SbShell {
 	 * @param string $plugin Plugin name, should not be null.
 	 * @param string $part Part name
 	 */
-	private function _model($plugin, $part) {
+	protected function _model($plugin, $part) {
 		// Template to use
 		$this->SuperModel->params['theme'] = $this->Sbc->getConfig('general.template');
 
@@ -465,7 +467,7 @@ class ShellShell extends SbShell {
 	 * @param string $plugin Plugin name
 	 * @return string Choosen model name
 	 */
-	private function _getModelName($plugin) {
+	protected function _getModelName($plugin) {
 		$models = $this->Sbc->getModelsList($plugin);
 
 		$count = count($models);
@@ -548,7 +550,7 @@ class ShellShell extends SbShell {
 	 * @param string $plugin Plugin name
 	 * @return string Choosen controller name
 	 */
-	private function _getControllerName($plugin) {
+	protected function _getControllerName($plugin) {
 		$controllers = $this->Sbc->getControllersList($plugin);
 
 		$count = count($controllers);
@@ -606,7 +608,7 @@ class ShellShell extends SbShell {
 	 * @param string $plugin Plugin name
 	 * @param string $part Part name
 	 */
-	private function _controller($plugin, $part) {
+	protected function _controller($plugin, $part) {
 		// First of all, checking if the controller have a model associated.
 		// If not, file creation mmethods will be used instead.
 		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($plugin) . ".parts.$part.haveModel") === false) {
@@ -722,8 +724,10 @@ class ShellShell extends SbShell {
 	 * @param string $plugin Plugin name
 	 * @param string $part Part name
 	 * @param string $action Action name with prefix (admin_index or index,...)
+	 *
+	 * @return void
 	 */
-	private function _view($plugin, $part, $action) {
+	protected function _view($plugin, $part, $action) {
 		$this->SuperView->params['theme'] = $this->Sbc->getConfig('general.template');
 
 		// SuperBake
@@ -768,9 +772,10 @@ class ShellShell extends SbShell {
 	 *
 	 * @param string $plugin Plugin name
 	 * @param string $controller Controller name
+	 *
 	 * @return string Choosen action name
 	 */
-	private function _getViewName($plugin, $controller) {
+	protected function _getViewName($plugin, $controller) {
 		$views = $this->Sbc->getViewsToBake($plugin, $controller);
 		foreach ($views as $prefix => $acts) {
 			foreach ($acts as $act) {
@@ -824,7 +829,7 @@ class ShellShell extends SbShell {
 	 * @param string $plugin Plugin name
 	 * @param string $menu	Menu name
 	 */
-	private function _menu($plugin, $menu) {
+	protected function _menu($plugin, $menu) {
 		// Template to use
 		$this->SuperFile->params['theme'] = $this->Sbc->getConfig('general.template');
 
@@ -864,7 +869,7 @@ class ShellShell extends SbShell {
 	 * @param string $plugin Plugin name
 	 * @param string $file File name in configuration
 	 */
-	private function _file($plugin, $file) {
+	protected function _file($plugin, $file) {
 		// Template to use
 		$this->SuperFile->params['theme'] = $this->Sbc->getConfig('general.template');
 
@@ -897,7 +902,7 @@ class ShellShell extends SbShell {
 		$this->speak(__d('superBake', 'Files and folders copied.'), 'success', 0, 2, 2);
 	}
 
-	private function _required($plugin, $required) {
+	protected function _required($plugin, $required) {
 		// Template to use
 		$this->SuperRequired->params['theme'] = $this->Sbc->getConfig('general.template');
 
@@ -986,12 +991,12 @@ class ShellShell extends SbShell {
 	 * It will return this array:
 	 * array('plugin'=>'PluginName', 'controller'=>ControllerName, 'view'=>'ActionName')
 	 *
-	 * @param int $nb Number of arguments wanted
+	 * @param integer $nb Number of arguments wanted
 	 * @param array $types array of wanted types
 	 * @param string $message Message thrown if the number of arguments submited is invalid
 	 * @return array An array with associated plugins/controllers...
 	 */
-	private function _checkArgs($nb, $types, $message = null) {
+	protected function _checkArgs($nb, $types, $message = null) {
 		$args = array();
 		$return = array();
 		$interactive = true;
@@ -1109,8 +1114,8 @@ class ShellShell extends SbShell {
 	 *
 	 * @return boolean
 	 */
-	private function _loadConfig() {
-		if ($this->initialized === 1) {
+	protected function _loadConfig() {
+		if ($this->_initialized === 1) {
 			$this->out('AppShell already initialized');
 			return true;
 		}
@@ -1121,7 +1126,7 @@ class ShellShell extends SbShell {
 		$this->Sbc = new Sbc;
 		$this->Sbc->loadFile($configFile);
 
-		$this->initialized = 1;
+		$this->_initialized = 1;
 		return true;
 	}
 

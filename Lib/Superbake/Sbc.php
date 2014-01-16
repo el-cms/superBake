@@ -38,21 +38,24 @@ class Sbc {
 
 	/**
 	 * Number of errors logged by the log() method
+	 *
 	 * @var int
 	 */
-	private $errors = 0;
+	protected $_errors = 0;
 
 	/**
 	 * Number of warnings logged by the log() method
+	 *
 	 * @var type int
 	 */
-	private $warnings = 0;
+	protected $_warnings = 0;
 
 	/**
 	 * The logs created by the log() method
+	 *
 	 * @var type array
 	 */
-	private $log = array();
+	protected $_log = array();
 
 	// --------------------------------------------------------------------------
 	// Config
@@ -60,9 +63,10 @@ class Sbc {
 
 	/**
 	 * THE configuration array
+	 *
 	 * @var array
 	 */
-	private $config = array();
+	protected $_config = array();
 
 	// --------------------------------------------------------------------------
 	// YAML
@@ -70,9 +74,10 @@ class Sbc {
 
 	/**
 	 * Spyc object for YAML operations
+	 *
 	 * @var Spyc object
 	 */
-	private $spyc;
+	protected $_Spyc;
 
 	// --------------------------------------------------------------------------
 	// Data
@@ -80,78 +85,87 @@ class Sbc {
 
 	/**
 	 * List of plugins to bake, saved from getPluginsToBake()
+	 *
 	 * @var array
 	 */
-	private $pluginsToBake;
+	protected $_pluginsToBake;
 
 	/**
 	 * List of plugins, whatever ther 'generate' state is. Saved from getPluginsList()
+	 *
 	 * @var array
 	 */
-	private $pluginsList;
+	protected $_pluginsList;
 
 	/**
 	 * List of models to bake, saved from getModelsToBake()
+	 *
 	 * @var array
 	 */
-	private $modelsToBake;
+	protected $_modelsToBake;
 
 	/**
 	 * List of models in their respective plugins, whatever their generate state is.
+	 *
 	 * @var array
 	 */
-	private $modelsList;
+	protected $_modelsList;
 
 	/**
 	 * List of controllers in their respective plugins, whatever their generate state is.
+	 *
 	 * @var array
 	 */
-	private $controllersList;
+	protected $_controllersList;
 
 	/**
 	 * List of controllers to bake, saved from getControllersToBake()
+	 *
 	 * @var array
 	 */
-	private $controllersToBake;
+	protected $_controllersToBake;
 
 	/**
 	 * Array of all the app's action, mainly used in menu generation.
 	 *
 	 * @var array
 	 */
-	private $actionsAll;
+	protected $_actionsAll;
 
 	/**
 	 * List of views to bake, saved from getViewsToBake()
+	 *
 	 * @var array
 	 */
-	private $viewsToBake;
+	protected $_viewsToBake;
 
 	/**
 	 * List of menus to generate, saved from getMenusToBake()
 	 *
 	 * @var array
 	 */
-	private $menusToBake;
+	protected $_menusToBake;
 
 	/**
 	 * List of files to generate, saved from getFilesToBake()
 	 *
 	 * @var array
 	 */
-	private $filesToBake;
+	protected $_filesToBake;
 
 	/**
 	 * List of required file, saved from getRequiredToBake()
+	 *
 	 * @var array
 	 */
-	private $requiredToBake;
+	protected $_requiredToBake;
 
 	/**
 	 * List of prefixes in default actions list.
+	 *
 	 * @var array
 	 */
-	private $prefixesList;
+	protected $_prefixesList;
 
 	// --------------------------------------------------------------------------
 	//
@@ -163,6 +177,7 @@ class Sbc {
 	 * returns the appBase value if $plugin is null or empty
 	 *
 	 * @param string $plugin Plugin name
+	 *
 	 * @return string Plugin name
 	 */
 	public function pluginName($plugin = null) {
@@ -171,7 +186,9 @@ class Sbc {
 
 	/**
 	 * Returns null if appBase
+	 *
 	 * @param string $plugin plugin name
+	 *
 	 * @return string
 	 */
 	public function getPluginName($plugin) {
@@ -185,18 +202,18 @@ class Sbc {
 	 */
 	public function getPluginsToBake() {
 		// Checking if this op has been done before
-		if (!is_array($this->pluginsToBake)) {
+		if (!is_array($this->_pluginsToBake)) {
 			$plugins = array();
 			// Search in plugins
-			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 				// Check if plugin must be generated
 				if ($pluginConfig['generate'] === true) {
 					$plugins[] = $plugin;
 				}
 			}
-			$this->pluginsToBake = $plugins;
+			$this->_pluginsToBake = $plugins;
 		}
-		return $this->pluginsToBake;
+		return $this->_pluginsToBake;
 	}
 
 	/**
@@ -205,14 +222,14 @@ class Sbc {
 	 * @return array
 	 */
 	public function getPluginsList() {
-		if (is_null($this->pluginsList)) {
+		if (is_null($this->_pluginsList)) {
 			$plugins = array();
-			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 				$plugins[] = $plugin;
 			}
-			$this->pluginsList = $plugins;
+			$this->_pluginsList = $plugins;
 		}
-		return $this->pluginsList;
+		return $this->_pluginsList;
 	}
 
 	// --------------------------------------------------------------------------
@@ -228,10 +245,10 @@ class Sbc {
 	 */
 	public function getModelsToBake() {
 		// Checking if this op has been done before
-		if (!is_array($this->modelsToBake)) {
+		if (!is_array($this->_modelsToBake)) {
 			$models = array();
 			// Plugin list
-			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 				if ($pluginConfig['generate'] === true) {
 					// Parts
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
@@ -244,23 +261,24 @@ class Sbc {
 					}
 				}
 			}
-			$this->modelsToBake = $models;
+			$this->_modelsToBake = $models;
 		}
-		return $this->modelsToBake;
+		return $this->_modelsToBake;
 	}
 
 	/**
 	 * Returns a list of models that must be generated in a given plugin.
 	 *
 	 * @param string $plugin Plugin name
+	 *
 	 * @return array
 	 */
 	public function getModelsList($plugin = null) {
 		// Searching all models to store in a variable for quicker access
-		if (!is_array($this->modelsList)) {
+		if (!is_array($this->_modelsList)) {
 			$models = array();
 			// Plugins
-			foreach ($this->config['plugins'] as $currentPlugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $currentPlugin => $pluginConfig) {
 				// Parts
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
 					if ($partConfig['haveModel'] === true && $partConfig['model']['generate'] === true && $partConfig['generate'] === true) {
@@ -268,13 +286,13 @@ class Sbc {
 					}
 				}
 			}
-			$this->modelsList = $models;
+			$this->_modelsList = $models;
 		}
 		// returns plugin models
 		if (!is_null($plugin)) {
-			return $this->modelsList[$plugin];
+			return $this->_modelsList[$plugin];
 		} else {// returns all plugins models
-			return $this->modelsList;
+			return $this->_modelsList;
 		}
 	}
 
@@ -282,10 +300,11 @@ class Sbc {
 	 * This will search for a model in plugins, and RETURN THE FIRST RESULT.
 	 *
 	 * @param string $model Model name to search for
+	 *
 	 * @return string or false
 	 */
 	public function getModelPlugin($model) {
-		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+		foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
 				if ($partConfig['haveModel'] === true) {
 					if ($partConfig['model']['name'] === $model) {
@@ -301,10 +320,11 @@ class Sbc {
 	 * This will search for a model in plugins parts, and RETURN THE FIRST RESULT.
 	 *
 	 * @param string $model Model name to search for
+	 *
 	 * @return string or false
 	 */
 	public function getModelPart($model) {
-		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+		foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
 				if ($partConfig['haveModel'] === true) {
 					if ($partConfig['model']['name'] === $model) {
@@ -328,9 +348,9 @@ class Sbc {
 	 */
 	public function getControllersToBake() {
 		// Checking if this op has been done before
-		if (!is_array($this->controllersToBake)) {
+		if (!is_array($this->_controllersToBake)) {
 			$controllers = array();
-			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
 						if ($partConfig['generate'] === true && $partConfig['haveController'] === true) {
@@ -341,19 +361,20 @@ class Sbc {
 					}
 				}
 			}
-			$this->controllersToBake = $controllers;
+			$this->_controllersToBake = $controllers;
 		}
-		return $this->controllersToBake;
+		return $this->_controllersToBake;
 	}
 
 	/**
 	 * This will search for a controller in plugins, and RETURN THE FIRST RESULT.
 	 *
 	 * @param string $controller Controller name to search for
+	 *
 	 * @return string or false
 	 */
 	public function getControllerPlugin($controller) {
-		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+		foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
 				if ($partConfig['haveController'] === true) {
 					if ($partConfig['controller']['name'] === $controller) {
@@ -369,10 +390,11 @@ class Sbc {
 	 * This will search for a controller in plugins parts, and RETURN THE FIRST RESULT.
 	 *
 	 * @param string $controller Controller name to search for
+	 *
 	 * @return string or false
 	 */
 	public function getControllerPart($controller) {
-		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+		foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 			foreach ($pluginConfig['parts'] as $part => $partConfig) {
 				if ($partConfig['haveController'] === true) {
 					if ($partConfig['controller']['name'] === $controller) {
@@ -390,6 +412,7 @@ class Sbc {
 	 * @param string $plugin
 	 * @param string $part
 	 * @param string $prefix
+	 *
 	 * @return array
 	 */
 	public function getActionsToBake($plugin, $part, $prefix) {
@@ -399,11 +422,12 @@ class Sbc {
 	/**
 	 * Returns the list of all actions for all controllers, whatever is the "generate" state of the controller
 	 * array(plugin=>controllerName=>prefix=>action)
+	 *
 	 * @return array
 	 */
 	public function getActionsAll() {
 
-		if (!is_array($this->actionsAll)) {
+		if (!is_array($this->_actionsAll)) {
 			$actionsList = array();
 			foreach ($this->getConfig('plugins') as $plugin => $pluginConfig) {
 				$actionsList[$plugin] = array('displayName' => $pluginConfig['displayName'], 'controllers' => array());
@@ -418,35 +442,36 @@ class Sbc {
 					}
 				}
 			}
-			$this->actionsAll = $actionsList;
+			$this->_actionsAll = $actionsList;
 		}
-		return $this->actionsAll;
+		return $this->_actionsAll;
 	}
 
 	/**
 	 * Returns a list of controllers that must be generated in a given plugin.
 	 *
 	 * @param string $plugin Plugin name
+	 *
 	 * @return array
 	 */
 	public function getControllersList($plugin = null) {
 		// Searching all controllers to store in a variable for quicker access
-		if (!is_array($this->controllersList)) {
+		if (!is_array($this->_controllersList)) {
 			$controllers = array();
-			foreach ($this->config['plugins'] as $currentPlugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $currentPlugin => $pluginConfig) {
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
 					if ($partConfig['haveController'] === true && $partConfig['controller']['generate'] === true && $partConfig['generate'] === true) {
 						$controllers[$currentPlugin][] = $partConfig['controller']['name'];
 					}
 				}
 			}
-			$this->controllersList = $controllers;
+			$this->_controllersList = $controllers;
 		}
 		// returns plugin controllers
 		if (!is_null($plugin)) {
-			return $this->controllersList[$plugin];
+			return $this->_controllersList[$plugin];
 		} else {// returns all plugins controllers
-			return $this->controllersList;
+			return $this->_controllersList;
 		}
 	}
 
@@ -466,9 +491,9 @@ class Sbc {
 	 */
 	public function getViewsToBake($plugin = null, $controller = null) {
 		// Checking if this op has been done before
-		if (!is_array($this->viewsToBake)) {
+		if (!is_array($this->_viewsToBake)) {
 			$views = array();
-			foreach ($this->config['plugins'] as $tPlugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $tPlugin => $pluginConfig) {
 				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
 						if ($partConfig['generate'] === true && $partConfig['haveController'] === true) {
@@ -485,16 +510,16 @@ class Sbc {
 					}
 				}
 			}
-			$this->viewsToBake = $views;
+			$this->_viewsToBake = $views;
 		}
 		if (!is_null($plugin)) {
 			if (!is_null($controller)) {
-				return $this->viewsToBake[$plugin][$this->getControllerPart($controller)];
+				return $this->_viewsToBake[$plugin][$this->getControllerPart($controller)];
 			} else {
-				return $this->viewsToBake[$plugin];
+				return $this->_viewsToBake[$plugin];
 			}
 		}
-		return $this->viewsToBake;
+		return $this->_viewsToBake;
 	}
 
 	// --------------------------------------------------------------------------
@@ -510,9 +535,9 @@ class Sbc {
 	 */
 	public function getMenusToBake() {
 		// Checking if this op has been done before
-		if (!is_array($this->menusToBake)) {
+		if (!is_array($this->_menusToBake)) {
 			$menus = array();
-			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['menus'] as $menu => $menuConfig) {
 						if ($menuConfig['generate'] === true) {
@@ -521,9 +546,9 @@ class Sbc {
 					}
 				}
 			}
-			$this->menusToBake = $menus;
+			$this->_menusToBake = $menus;
 		}
-		return $this->menusToBake;
+		return $this->_menusToBake;
 	}
 
 	// --------------------------------------------------------------------------
@@ -534,13 +559,14 @@ class Sbc {
 
 	/**
 	 * Returns the list of files to bake with "generate" set to true.
+	 *
 	 * @return array
 	 */
 	public function getFilesToBake() {
 		// Checking if this op has been done before
-		if (!is_array($this->filesToBake)) {
+		if (!is_array($this->_filesToBake)) {
 			$files = array();
-			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['files'] as $file => $fileConfig) {
 						if ($fileConfig['generate'] === true) {
@@ -549,20 +575,21 @@ class Sbc {
 					}
 				}
 			}
-			$this->filesToBake = $files;
+			$this->_filesToBake = $files;
 		}
-		return $this->filesToBake;
+		return $this->_filesToBake;
 	}
 
 	/**
 	 * Returns the required files/dirs to copy
+	 *
 	 * @return array
 	 */
 	public function getRequiredToBake() {
 		// Checking if this op has been done before
-		if (!is_array($this->requiredToBake)) {
+		if (!is_array($this->_requiredToBake)) {
 			$required = array();
-			foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+			foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['required'] as $file => $fileConfig) {
 						if ($fileConfig['generate'] === true) {
@@ -571,9 +598,9 @@ class Sbc {
 					}
 				}
 			}
-			$this->requiredToBake = $required;
+			$this->_requiredToBake = $required;
 		}
-		return $this->requiredToBake;
+		return $this->_requiredToBake;
 	}
 
 	// --------------------------------------------------------------------------
@@ -589,6 +616,7 @@ class Sbc {
 	 * @param string $prefix Prefix to check
 	 * @param string $controller Controller to check
 	 * @param string $action Action to check
+	 *
 	 * @return boolean
 	 */
 	public function isActionnable($prefix, $controller, $action) {
@@ -609,6 +637,7 @@ class Sbc {
 	/**
 	 * Returns public if $prefix is null, or $prefix.
 	 * @param string $prefix Prefix to test
+	 *
 	 * @return string
 	 */
 	public function prefixName($prefix) {
@@ -617,22 +646,25 @@ class Sbc {
 
 	/**
 	 * Returns the list of prefixes in default actions list.
+	 *
 	 * @return array
 	 */
 	public function prefixesList() {
-		if (!is_array($this->prefixesList)) {
+		if (!is_array($this->_prefixesList)) {
 			foreach ($this->getConfig('defaults.actions') as $prefix => $actions) {
 				$list[] = $prefix;
 			}
-			$this->prefixesList = $list;
+			$this->_prefixesList = $list;
 		}
-		return $this->prefixesList;
+		return $this->_prefixesList;
 	}
 
 	/**
 	 * Creates a prefix_action string, and returns only action if prefix is public.
+	 *
 	 * @param string $action Action name
 	 * @param string $prefix Prefix
+	 *
 	 * @return string
 	 */
 	public function actionAddPrefix($action, $prefix = null) {
@@ -643,6 +675,7 @@ class Sbc {
 	 * Removes the prefix from an action name.
 	 *
 	 * @param string $action prefixed_action
+	 *
 	 * @return string action
 	 */
 	public function actionRemovePrefix($action) {
@@ -661,13 +694,15 @@ class Sbc {
 	 * Loads the configuration file and populates the array
 	 *
 	 * @param string $file Configuration file name
+	 *
+	 * @return void
 	 */
 	public function loadFile($file) {
 		$file = $this->getConfigPath() . $file;
 		$this->log("Loading configuration file:"
 						. "<br/><small>\"$file\"...</small>", 'info', 1);
-		$this->spyc = new Spyc();
-		$this->config = $this->spyc->YAMLLoad($file);
+		$this->_Spyc = new Spyc();
+		$this->_config = $this->_Spyc->YAMLLoad($file);
 		$this->log('Configuration file loaded.', 'success');
 		$this->populate();
 	}
@@ -696,19 +731,20 @@ class Sbc {
 	 * Key must be in the format of "key.subKey.subSubKey", as for Configure::read()
 	 *
 	 * @param string $key
+	 *
 	 * @return mixed Key's value
 	 */
 	public function getConfig($key = null) {
 		if ($key === null) {
-			return $this->config;
+			return $this->_config;
 		} else {
-			return Hash::get($this->config, $key);
+			return Hash::get($this->_config, $key);
 		}
 	}
 
 	/**
 	 * Populates the configuration array with defaults values.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function populate() {
@@ -718,7 +754,7 @@ class Sbc {
 		//
 		// Prefixes
 		//
-		foreach ($this->config['defaults']['actions'] as $prefix => $actions) {
+		foreach ($this->_config['defaults']['actions'] as $prefix => $actions) {
 			$routingPrefixes = (is_array(Configure::read('Routing.prefixes'))) ? Configure::read('Routing.prefixes') : array();
 			if ($prefix != 'public' && !in_array($prefix, $routingPrefixes)) {
 				$this->log("Prefix <strong>$prefix</strong> is not enabled in core.php but is used in your config file.", 'error', 1);
@@ -728,7 +764,7 @@ class Sbc {
 		// Plugins
 		//
 		$this->log('Populating plugins.', 'info', 1);
-		foreach ($this->config['plugins'] as $plugin => $pluginConfig) {
+		foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
 			$this->log("Populating \"<strong>$plugin</strong>\".", 'info', 2);
 
 			//
@@ -742,7 +778,7 @@ class Sbc {
 									. "   =>I'll use \"<strong>${pluginConfig['displayName']}</strong>\" instead.", 'warning', 3);
 				}
 				// Merging with default plugin
-				$pluginConfig = $this->updateArray($this->config['defaults']['plugin'], $pluginConfig);
+				$pluginConfig = $this->updateArray($this->_config['defaults']['plugin'], $pluginConfig);
 
 				//
 				// Parts
@@ -751,7 +787,7 @@ class Sbc {
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
 					$this->log("Populating part \"<strong>$part</strong>\"", 'info', 4);
 					// Merge part with defaults
-					$partConfig = $this->updateArray($this->config['defaults']['part'], $partConfig, true);
+					$partConfig = $this->updateArray($this->_config['defaults']['part'], $partConfig, true);
 
 					//
 					// Model
@@ -782,7 +818,7 @@ class Sbc {
 						}
 
 						// Model population
-						$partConfig['model'] = $this->updateArray($this->config['defaults']['model'], $partConfig['model']);
+						$partConfig['model'] = $this->updateArray($this->_config['defaults']['model'], $partConfig['model']);
 						// Merging part config with model options
 						$partConfig['model']['options'] = $this->updateArray($partConfig['options'], $partConfig['model']['options'], 1);
 						// Snippets
@@ -838,7 +874,7 @@ class Sbc {
 							}
 						}
 						// Controller population
-						$partConfig['controller'] = $this->updateArray($this->config['defaults']['controller'], $partConfig['controller'], true);
+						$partConfig['controller'] = $this->updateArray($this->_config['defaults']['controller'], $partConfig['controller'], true);
 						// Display name check
 						if (empty($partConfig['controller']['displayName'])) {
 							$this->log("The controller should have display name.<br>"
@@ -848,12 +884,12 @@ class Sbc {
 						//
 						// Actions
 						//
-						$partConfig['controller']['actions'] = $this->updateArray($this->config['defaults']['actions'], $partConfig['controller']['actions'], true);
+						$partConfig['controller']['actions'] = $this->updateArray($this->_config['defaults']['actions'], $partConfig['controller']['actions'], true);
 						// Merge each action with the defaults for it, and fill the view array
 						foreach ($partConfig['controller']['actions'] as $prefix => $actions) {
 							foreach ($actions as $action => $actionConfig) {
 								// Action
-								$partConfig['controller']['actions'][$prefix][$action] = $this->updateArray($this->config['defaults']['action'], $actionConfig, true);
+								$partConfig['controller']['actions'][$prefix][$action] = $this->updateArray($this->_config['defaults']['action'], $actionConfig, true);
 								// Options from part
 								$partConfig['controller']['actions'][$prefix][$action]['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['options'], true);
 
@@ -864,7 +900,7 @@ class Sbc {
 									if (empty($actionConfig['view'])) {
 										$actionConfig['view'] = array();
 									}
-									$partConfig['controller']['actions'][$prefix][$action]['view'] = $this->updateArray($this->config['defaults']['view'], $actionConfig['view'], true);
+									$partConfig['controller']['actions'][$prefix][$action]['view'] = $this->updateArray($this->_config['defaults']['view'], $actionConfig['view'], true);
 									// Options from part
 									$partConfig['controller']['actions'][$prefix][$action]['view']['options'] = $this->updateArray($partConfig['options'], $partConfig['controller']['actions'][$prefix][$action]['view']['options'], true);
 									// Options from action
@@ -898,7 +934,7 @@ class Sbc {
 				//
 				$this->log("Populating menus...", 'info', 3);
 				foreach ($pluginConfig['menus'] as $menu => $menuConfig) {
-					$pluginConfig['menus'][$menu] = $this->updateArray($this->config['defaults']['menu'], $menuConfig, true);
+					$pluginConfig['menus'][$menu] = $this->updateArray($this->_config['defaults']['menu'], $menuConfig, true);
 					if (empty($pluginConfig['menus'][$menu]['template'])) {
 						$this->log("No template set, using \"" . $menu . "\" as template name", 'warning', 5);
 						$pluginConfig['menus'][$menu]['fileName'] = $menu;
@@ -917,7 +953,7 @@ class Sbc {
 				//
 				$this->log("Populating files...", 'info', 3);
 				foreach ($pluginConfig['files'] as $file => $fileConfig) {
-					$pluginConfig['files'][$file] = $this->updateArray($this->config['defaults']['file'], $fileConfig, true);
+					$pluginConfig['files'][$file] = $this->updateArray($this->_config['defaults']['file'], $fileConfig, true);
 					if (empty($pluginConfig['files'][$file]['template'])) {
 						$this->log("No fileName set, using \"" . $file . "\" as template name", 'warning', 5);
 						$pluginConfig['files'][$file]['fileName'] = $file;
@@ -935,7 +971,7 @@ class Sbc {
 				//
 				$this->log("Populating required files...", 'info', 3);
 				foreach ($pluginConfig['required'] as $required => $requiredConfig) {
-					$pluginConfig['required'][$required] = $this->updateArray($this->config['defaults']['required'], $requiredConfig, true);
+					$pluginConfig['required'][$required] = $this->updateArray($this->_config['defaults']['required'], $requiredConfig, true);
 					if (empty($pluginConfig['required'][$required]['type'])) {
 						$this->log("No file type set, removing $required from configuration.", 'error', 5);
 						unset($pluginConfig['required'][$required]);
@@ -957,13 +993,13 @@ class Sbc {
 
 				// @todo maybe check the templates existence.
 				//
-				$this->config['plugins'][$plugin] = $pluginConfig;
+				$this->_config['plugins'][$plugin] = $pluginConfig;
 				$this->log("Plugin \"$plugin\" populated.", 'success', 2);
 				//
 			} else {
 				$this->log("Plugin <strong>\"$plugin\"</strong> is empty or have no parts.<br>"
 								. "   => It will now be removed from configuration.", 'error', 3);
-				unset($this->config['plugins'][$plugin]);
+				unset($this->_config['plugins'][$plugin]);
 			}
 		}
 	}
@@ -975,7 +1011,7 @@ class Sbc {
 	 *
 	 * @param array $default An array of default values
 	 * @param array $defined An array of defined values
-	 * @param bool $keep If set to true, keep values defined in defined array and not in default array
+	 * @param boolean $keep If set to true, keep values defined in defined array and not in default array
 	 *                   will be kept and returned.
 	 * @return array Default array updated with defined array
 	 */
@@ -1025,15 +1061,17 @@ class Sbc {
 	 *
 	 * @param string $message The message
 	 * @param string $type Message type: info|warning|success|error
-	 * @param int $level Level of the message. The lower the message is, the less it is important.
+	 * @param integer $level Level of the message. The lower the message is, the less it is important.
+	 *
+	 * @return void
 	 */
 	public function log($message, $type = 'info', $level = 0) {
-		$this->log[] = array('level' => $level, 'type' => $type, 'message' => $message);
+		$this->_log[] = array('level' => $level, 'type' => $type, 'message' => $message);
 		if ($type === 'error') {
-			$this->errors++;
+			$this->_errors++;
 		}
 		if ($type === 'warning') {
-			$this->warnings++;
+			$this->_warnings++;
 		}
 	}
 
@@ -1043,7 +1081,7 @@ class Sbc {
 	 * @return array
 	 */
 	public function displayLog() {
-		return $this->log;
+		return $this->_log;
 	}
 
 	/**
@@ -1052,7 +1090,7 @@ class Sbc {
 	 * @return int
 	 */
 	public function getErrors() {
-		return $this->errors;
+		return $this->_errors;
 	}
 
 	/**
@@ -1061,7 +1099,7 @@ class Sbc {
 	 * @return int
 	 */
 	public function getWarnings() {
-		return $this->warnings;
+		return $this->_warnings;
 	}
 
 }

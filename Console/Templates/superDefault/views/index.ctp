@@ -27,7 +27,7 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Page headers and licensing
-include($themePath . 'views/common/headers.ctp');
+include $themePath . 'views/common/headers.ctp';
 
 
 /* ----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ if (count($languageFields) > 0) {
  */
 // Toolbar : Hidden controllers are handled in the toolbar template file
 if ($noToolbar === false) {
-	include(dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp');
+	include dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp';
 }
 
 /* ----------------------------------------------------------------------------
@@ -163,7 +163,7 @@ if ($noToolbar === false) {
 	/* ---------------------------------------------------------------------------
 	 * Pagination
 	 */
-	include($themePath . 'views/common/pagination.ctp');
+	include $themePath . 'views/common/pagination.ctp';
 	?>
 </div>
 

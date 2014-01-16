@@ -7,7 +7,7 @@ Directory structure is as follow:
 
   <template dir>
   +---actions/
-  |   |   
+  |   |
   |   |---controller_actions.ctp - This file includes all the actions for a  controller.
   |   +---actions/
   |       |---<actions templates>
@@ -39,7 +39,7 @@ Directory structure is as follow:
 Common elements such as the licenses templates for the generated files can be found in `common/` directory.
 
 ### Base licenses:
-superBake's default model is shipped with three license to protect your generated files: 
+superBake's default model is shipped with three license to protect your generated files:
 
 * **`licenses/gpl3.ctp`** - GPL 3 license files headers.
 * **`licenses/mit.ctp`** - MIT license files headers.
@@ -60,11 +60,11 @@ Methods from SbShell are available in every template:
 /**
  * Returns true if an $action exists for the given $prefix/$controller
  * Use this to check links in templates
- * 
+ *
  * @param string $action The action to check
  * @param string $prefix The prefix. If null, current prefix will be used
  * @param string $controller The controller. If null, current controller will be used.
- * 
+ *
  * @return bool
  */
 function canDo($action, $prefix = null, $controller = null){}
@@ -90,7 +90,7 @@ if($this->canDo('delete', 'user')){
 /**
  * Makes a config path value (path::to::file)
  * @param string $path Path::to::file.ext
- * @param bool $dir If true, a trailing / will be added
+ * @param boolean $dir If true, a trailing / will be added
  * @return string Good path format, with trailing slash
  */
 public function cleanPath($path, $dir = false) {}
@@ -103,7 +103,7 @@ public function cleanPath($path, $dir = false) {}
 &lt;?php
 /**
  * Cleans a plugin name: remove the dot and keep the plugin
- * 
+ *
  * @param string $plugin Plugin to check
  * @return string
  */
@@ -118,11 +118,11 @@ public function cleanPlugin($plugin) {}
 /**
  * Returns a correct __(...) or __d(...) statement. If plugin is provided, will use
  * plugin as domain; If no plugin is provided, the current plugin will be used.
- * 
+ *
  * @param string $string String to display.
  * @param string $args String array of args
  * @param string $plugin Plugin name.
- * 
+ *
  * @return string Ready to use string.
  */
 public function iString($string, $args = null, $plugin = null) {}
@@ -142,7 +142,7 @@ public function iString($string, $args = null, $plugin = null) {}
 // Will create
 &lt;div class="someClass"&gt;
 	&lt;?php echo __('Some stuff'); ?&gt;
-&lt;/div&gt;				
+&lt;/div&gt;
 </pre>
 	</div>
 	<div class="col-lg-6 col-md-6">
@@ -158,7 +158,7 @@ public function iString($string, $args = null, $plugin = null) {}
 	&lt;?php echo __d('Projects', 'Some stuff'); ?&gt;
 &lt;/div&gt;
 
-			
+
 </pre>
 	</div>
 </div>
@@ -186,13 +186,13 @@ You can pass the same arguments as for a default `__()` or `__d()`.
 	<div class="col-lg-6 col-md-6">
 		<em></em>
 		<pre class="syntax brush-html">
-			
+
 		</pre>
 	</div>
 	<div class="col-lg-6 col-md-6">
 		<em></em>
 		<pre class="syntax brush-html">
-			
+
 		</pre>
 	</div>
 </div> -->
@@ -202,11 +202,11 @@ You can pass the same arguments as for a default `__()` or `__d()`.
 <pre class="syntax brush-html">
 &lt;?php
 /**
- * This function create a link array for controllers/views, taking in account of 
+ * This function create a link array for controllers/views, taking in account of
  * the admin state and if the controller is in a plugin or not (and wich).
  * Behavior:
  *  - if $prefix is empty, current routing prefix will be used
- * 
+ *
  * @param string $action	The target action
  * @param string $controller	Target controller (MUST be given to find good plugin)
  * @param array  $options		An array of options
@@ -252,7 +252,7 @@ public function getActionsAll() {}
 &lt;?php
 /**
  * Returns the list of actions to bake for a given plugin/part/prefix.
- * 
+ *
  * @param string $plugin
  * @param string $part
  * @param string $prefix
@@ -268,7 +268,7 @@ public function getActionsToBake($plugin, $part, $prefix) {}
 &lt;?php
 	/**
  * Returns the appBase value
- * 
+ *
  * @return string
  */
 	 public function getAppBase() {}
@@ -282,7 +282,7 @@ public function getActionsToBake($plugin, $part, $prefix) {}
 /**
  * Searches for the value of the given key in the config array.
  * Key must be in the format of "key.subKey.subSubKey", as for Configure::read()
- * 
+ *
  * @param string $key
  * @return mixed Key's value
  */
@@ -296,7 +296,7 @@ public function getConfig($key = null) {}
 &lt;?php
 /**
  * This will search for a controller in plugins parts, and RETURN THE FIRST RESULT.
- * 
+ *
  * @param string $controller Controller name to search for
  * @return string or false
  */
@@ -310,7 +310,7 @@ public function getControllerPart($controller) {}
 &lt;?php
 /**
  * This will search for a controller in plugins, and RETURN THE FIRST RESULT.
- * 
+ *
  * @param string $controller Controller name to search for
  * @return string or false
  */
@@ -324,7 +324,7 @@ public function getControllerPlugin($controller) {}
 &lt;?php
 /**
  * Returns a list of controllers that must be generated in a given plugin.
- * 
+ *
  * @param string $plugin Plugin name
  * @return array
  */
@@ -338,7 +338,7 @@ public function getControllersList($plugin = null) {}
 &lt;?php
 /**
  * Returns the array of controllers to bake
- * 
+ *
  * @return array List of controllers to bake: array(controllerName=>array(part, plugin))
  */
 public function getControllersToBake() {}
@@ -363,7 +363,7 @@ public function getFilesToBake() {}
 &lt;?php
 /**
  * Returns the list of menus with "generate" set to true.
- * 
+ *
  * @return array
  */
 public function getMenusToBake() {}
@@ -376,7 +376,7 @@ public function getMenusToBake() {}
 &lt;?php
 /**
  * This will search for a model in plugins parts, and RETURN THE FIRST RESULT.
- * 
+ *
  * @param string $model Model name to search for
  * @return string or false
  */
@@ -390,7 +390,7 @@ public function getModelPart($model) {}
 &lt;?php
 /**
  * This will search for a model in plugins, and RETURN THE FIRST RESULT.
- * 
+ *
  * @param string $model Model name to search for
  * @return string or false
  */
@@ -404,7 +404,7 @@ public function getModelPlugin($model) {}
 &lt;?php
 /**
  * Returns a list of models that must be generated in a given plugin.
- * 
+ *
  * @param string $plugin Plugin name
  * @return array
  */
@@ -418,7 +418,7 @@ public function getModelsList($plugin = null) {}
 &lt;?php
 /**
  * Returns the array of models to bake
- * 
+ *
  * @return array List of models to bake: array(modelName=>array(part, plugin))
  */
 public function getModelsToBake() {}
@@ -431,7 +431,7 @@ public function getModelsToBake() {}
 &lt;?php
 /**
  * Returns the list of plugins whatever is their 'generate' state.
- * 
+ *
  * @return array
  */
 public function getPluginsList() {}
@@ -444,7 +444,7 @@ public function getPluginsList() {}
 &lt;?php
 /**
  * Returns the array of plugins to bake
- * 
+ *
  * @return array List of plugins to bake: array(pluginName))
  */
 public function getPluginsToBake() {}
@@ -457,10 +457,10 @@ public function getPluginsToBake() {}
 &lt;?php
 /**
  * Returns the array of views to bake
- * 
+ *
  * @param string $plugin Plugin name.
  * @param string $controller Controller name
- * 
+ *
  * @return array List of views to bake: array(plugin=> part=> prefix=>array(action))
  */
 public function getViewsToBake($plugin = null, $controller = null) {}
@@ -477,7 +477,7 @@ public function getViewsToBake($plugin = null, $controller = null) {}
 /**
  * Returns true if the controller/prefix/action exists in config (that means
  * the current prefix have access to this action).
- * 
+ *
  * @param string $prefix Prefix to check
  * @param string $controller Controller to check
  * @param string $action Action to check
@@ -493,7 +493,7 @@ public function isActionnable($prefix, $controller, $action) {}
 &lt;?php
 /**
  * returns the appBase value if $plugin is null or empty
- * 
+ *
  * @param string $plugin Plugin name
  * @return string Plugin name
  */
@@ -508,7 +508,7 @@ public function pluginName($plugin = null) {}
 /**
  * Returns public if $prefix is null, or $prefix.
  * @param string $prefix Prefix to test
- * @return string 
+ * @return string
  */
 public function prefixName($prefix) {}
 ?&gt;

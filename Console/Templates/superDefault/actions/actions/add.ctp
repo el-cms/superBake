@@ -44,7 +44,7 @@ if (!function_exists('parse_size')) {
 	 * Function from Drupal, found here : https://api.drupal.org/api/drupal/includes!common.inc/function/parse_size/6
 	 *
 	 * @param string A size expressed as a number of bytes with optional SI or IEC binary unit prefix (e.g. 2, 3K, 5MB, 10G, 6GiB, 8 bytes, 9mbytes).
-	 * @return int representation of the size, in bytes
+	 * @return integer representation of the size, in bytes
 	 */
 	function parse_size($size) {
 		$suffixes = array(
@@ -67,8 +67,8 @@ if (!function_exists('file_upload_max_size')) {
 	 *
 	 * Function from Drupal, found here : https://api.drupal.org/api/drupal/includes!file.inc/function/file_upload_max_size/6
 	 *
-	 * @staticvar int $max_size
-	 * @return int A file size limit in bytes based on the PHP upload_max_filesize and post_max_size
+	 * @staticvar integer $max_size
+	 * @return integer A file size limit in bytes based on the PHP upload_max_filesize and post_max_size
 	 */
 	function file_upload_max_size() {
 		static $max_size = -1;

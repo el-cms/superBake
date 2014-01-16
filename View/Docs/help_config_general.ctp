@@ -28,7 +28,7 @@ general:
 #  ## Empty parts must have a controller ?
 #  ## If set to false, you will have to define each of your controllers yourself
 #  partsHaveController: true
-  
+
   ##
   ## Personnal informations, mostly here to use in generated headers.
   ##
@@ -36,9 +36,9 @@ general:
   ## Your name
   editorName: John Doe
   ## Your email adress
-  editorEmail: john@mem-recovery.com
+  editorEmail: john@example.com
   ## Your website
-  editorWebsite: http://i-remember.com
+  editorWebsite: http://example.com
   ## Your website name
   editorWebsiteName: I remember nothing.
   ## Your license template (find out all licenses in templates/<defaultTemplate>/commons/licenses/)

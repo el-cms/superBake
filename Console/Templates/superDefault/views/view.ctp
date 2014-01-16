@@ -27,7 +27,7 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Page headers and licensing
-include($themePath . 'views/common/headers.ctp');
+include $themePath . 'views/common/headers.ctp';
 
 
 /* ----------------------------------------------------------------------------
@@ -98,16 +98,16 @@ if (count($languageFields) > 0) {
  *
  * View
  *
- *---------------------------------------------------------------------------*/
+ * --------------------------------------------------------------------------- */
 
 
 /* ----------------------------------------------------------------------------
  * Toolbar
  */
 // This view represents an item:
-$viewIsAnItem=true;
+$viewIsAnItem = true;
 if ($noToolbar === false) {
-	include(dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp');
+	include dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp';
 }
 /* ----------------------------------------------------------------------------
  * Current record values
@@ -133,11 +133,10 @@ if ($noToolbar === false) {
 				}
 				if ($isKey !== true) {
 					if (count($languageFields) > 0 && in_array($field, $languageFields)) {
-					$content="((!empty(\${$singularVar}['{$modelClass}']['{$field}']))?\${$singularVar}['{$modelClass}']['{$field}']:'<i ".stheme::v_tooltip("'.".$this->iString('This item has not been translated yet. This is the original version.').".'", 'fa fa-warning text-warning')." ></i> '.\${$singularVar}['{$modelClass}']['{$field}_default'])";
-				}
-				else{
-					$content="\${$singularVar}['{$modelClass}']['{$field}']";
-				}
+						$content = "((!empty(\${$singularVar}['{$modelClass}']['{$field}']))?\${$singularVar}['{$modelClass}']['{$field}']:'<i " . stheme::v_tooltip("'." . $this->iString('This item has not been translated yet. This is the original version.') . ".'", 'fa fa-warning text-warning') . " ></i> '.\${$singularVar}['{$modelClass}']['{$field}_default'])";
+					} else {
+						$content = "\${$singularVar}['{$modelClass}']['{$field}']";
+					}
 					echo "\t\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
 					echo "\t\t\t<dd><?php echo $content; ?></dd>\n";
 				}
@@ -149,7 +148,7 @@ if ($noToolbar === false) {
 <?php
 // Toolbar : Hidden controllers are handled in the toolbar template file
 if ($noToolbar === false) {
-	include(dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp');
+	include dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp';
 }
 /* ----------------------------------------------------------------------------
  * HasOne associations
@@ -221,7 +220,7 @@ foreach ($relations as $alias => $details) {
 				if ($relatedDataHideActionsList === false && $hasMany_hideActions === false) {
 					echo "\t<th class=\"actions\"><?php echo __('Actions'); ?></th>\n";
 				}
-				?> 
+				?>
 			</tr>
 			<?php
 			echo "\t<?php foreach (\${$singularVar}['{$alias}'] as \${$otherSingularVar}): ?>\n";
@@ -282,6 +281,6 @@ foreach ($additionnalJS as $k => $v) {
 		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
 	}
 }
-if(!empty($out)){
+if (!empty($out)) {
 	echo "<?php\n $out ?>";
 }

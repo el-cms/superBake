@@ -103,7 +103,7 @@ class AppController extends Controller {
 		/* ************************************************************************
 		 * Language support: define current page language.
 		 */
-		if($this->Sbc->getConfig('theme.language.useLanguages')==true){
+		if($this->Sbc->getConfig('theme.language.useLanguages') === true){
 			?>
 			// Language
 			$curr_lang = $this->_setLanguage();
@@ -118,7 +118,7 @@ class AppController extends Controller {
 	/* ************************************************************************
 	 * Language support : _setLanguage method
 	 */
-		if($this->Sbc->getConfig('theme.language.useLanguages')==true){
+		if($this->Sbc->getConfig('theme.language.useLanguages') === true){
 			?>
 			private function _setLanguage() {
 				// Available languages

@@ -88,7 +88,7 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 
 	<?php
 	// Model
-	if($Sbc->getConfig('plugins.'.$Sbc->pluginName($plugin).".parts.$currentPart.haveModel")==false){
+	if($Sbc->getConfig('plugins.'.$Sbc->pluginName($plugin).".parts.$currentPart.haveModel") === false){
 		echo "\t/**\n\t * Model to use\n\t * @var string\n\t */\n\tpublic \$uses=null;\n\n";
 	}
 

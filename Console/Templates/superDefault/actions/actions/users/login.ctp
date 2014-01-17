@@ -50,7 +50,7 @@ public function <?php echo $admin . $a ?>() {
 include $themePath . 'actions/snippets/layout_support.ctp';
 
 // 'theme.enableAcl' should be true to enable this action.
-if($this->Sbc->getConfig('theme.enableAcl')==true): ?>
+if($this->Sbc->getConfig('theme.enableAcl') === true): ?>
 	if($this->Auth->loggedIn()){
 		<?php echo $this->setFlash('You are already logged in', 'info');?>
 		$this->redirect('/');

@@ -133,7 +133,7 @@ if ($noToolbar === false) {
 				}
 				if ($isKey !== true) {
 					if (count($languageFields) > 0 && in_array($field, $languageFields)) {
-						$content = "((!empty(\${$singularVar}['{$modelClass}']['{$field}']))?\${$singularVar}['{$modelClass}']['{$field}']:'<i " . stheme::v_tooltip("'." . $this->iString('This item has not been translated yet. This is the original version.') . ".'", 'fa fa-warning text-warning') . " ></i> '.\${$singularVar}['{$modelClass}']['{$field}_default'])";
+						$content = "((!empty(\${$singularVar}['{$modelClass}']['{$field}']))?\${$singularVar}['{$modelClass}']['{$field}']:'<i " . sTheme::v_tooltip("'." . $this->iString('This item has not been translated yet. This is the original version.') . ".'", 'fa fa-warning text-warning') . " ></i> '.\${$singularVar}['{$modelClass}']['{$field}_default'])";
 					} else {
 						$content = "\${$singularVar}['{$modelClass}']['{$field}']";
 					}

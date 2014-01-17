@@ -72,7 +72,11 @@ $paginateOptions = null;
 * @return void
 */
 public function <?php echo $admin . $a ?>() {
-$this-><?php echo $currentModelName ?>->recursive = <?php echo $recursiveDepth ?>;
+	<?php
+	// Support for a different layout. Look at the snippet for more info.
+	include $themePath . 'actions/snippets/layout_support.ctp';
+	?>
+	$this-><?php echo $currentModelName ?>->recursive = <?php echo $recursiveDepth ?>;
 <?php
 if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 	// Language fields should be set in config, so we check
@@ -136,7 +140,7 @@ if (!is_null($defaultSortBy)) {
 if (count($conditions) > 0) {
 	$paginateOptions.="\t\t\t'conditions'=>array(\n";
 	foreach ($conditions as $k => $v) {
-		$paginateOptions.="'$k' => " . stheme::c_indexConditions($v) . ",\n";
+		$paginateOptions.="'$k' => " . sTheme::c_indexConditions($v) . ",\n";
 	}
 	$paginateOptions.="\t\t\t),\n";
 }

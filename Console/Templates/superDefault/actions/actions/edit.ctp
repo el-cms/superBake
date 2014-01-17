@@ -43,6 +43,10 @@ $compact = array();
 	 * @return void
 	 */
 	public function <?php echo $admin . $a; ?>($id = null) {
+		<?php
+		// Support for a different layout. Look at the snippet for more info.
+		include $themePath . 'actions/snippets/layout_support.ctp';
+		?>
 		if (!$this-><?php echo $currentModelName; ?>->exists($id)) {
 			throw new NotFoundException(<?php echo $this->iString('Invalid ' . strtolower($singularHumanName)) ?>);
 		}

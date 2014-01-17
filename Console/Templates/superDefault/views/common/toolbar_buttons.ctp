@@ -52,27 +52,6 @@ if (!isset($noToolbar)) {
 // ---
 // Some functions
 // ---
-if (!function_exists('newBtGroup')) {
-
-	/**
-	 * Creates a new buttons group
-	 *
-	 * @param string $title Group name
-	 * @param array $content Array of toolbar elements
-	 *
-	 * @return string String to add in the HTML
-	 */
-	function newBtGroup($content) {
-		$toolbar = "\t<ul>\n";
-		foreach ($content as $item) {
-			$toolbar.= "\t\t<li>" . $item . "</li>\n";
-		}
-		$toolbar .= "\t</ul>\n";
-		return $toolbar;
-	}
-
-}
-
 
 if ($noToolbar === false) {
 	// ---
@@ -111,7 +90,7 @@ if ($noToolbar === false) {
 // Toolbar : Current controller
 	if (count($current_toolbar) > 0) {
 		// Element
-		$toolbar.= '<h3><?php echo ' . $this->iString($pluralHumanName) . "?></h3>\n" . newBtGroup($current_toolbar);
+		$toolbar.= '<h3><?php echo ' . $this->iString($pluralHumanName) . "?></h3>\n" . sTheme::v_newBtGroup($current_toolbar);
 		$toolbarElements++;
 	}
 
@@ -142,7 +121,7 @@ if ($noToolbar === false) {
 				// Creating toolbar for controller and adding to the /global/ toolbar
 				if ($current_controller_actions === 1) {
 					$toolbar.='<h3><?php
-						echo ' . $this->iString(Inflector::humanize($details['controller'])) . "?></h3>\n" . newBtGroup($current_toolbar);
+						echo ' . $this->iString(Inflector::humanize($details['controller'])) . "?></h3>\n" . sTheme::v_newBtGroup($current_toolbar);
 				}
 				$done[] = $details['controller'];
 				$toolbarElements++;

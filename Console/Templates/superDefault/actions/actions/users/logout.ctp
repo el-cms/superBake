@@ -4,6 +4,8 @@
  *
  * This file is used during UsersController generation. It adds the "logout"
  * action to the controller.
+ * 
+ * 'theme.enableAcl' must be true to use this method.
  *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -40,7 +42,11 @@
 		<?php echo $this->setFlash('You are now disconnected', 'info');?>
 		$this->redirect($this->Auth->logout());
 <?php else:
-		echo "\n\t\t".$this->setFlash('Acls are not enabled, you can\\\'t use this action. To enable Acls, set the <code>theme.enableAcl</code> to true in your config file, and run superBake again.', 'error');
+		// 'theme.enableAcl' set to false, so the methods will display a flash
+		// message and do nothing.
+		echo "\n\t\t".$this->setFlash('Acls are not enabled, you can\\\'t use this action.'
+				. ' To enable Acls, set the <code>theme.enableAcl</code> to true in your config file,'
+				. ' and run superBake again.', 'error');
 		echo "\n\t\t\$this->redirect('/');";
 endif;?>
 	}

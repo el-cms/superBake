@@ -32,57 +32,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
-/* * *****************************************
- * Functions used during generation
- */
-
-if (!function_exists('parse_size')) {
-
-	/**
-	 * Parses a given byte count.
-	 *
-	 * Function from Drupal, found here : https://api.drupal.org/api/drupal/includes!common.inc/function/parse_size/6
-	 *
-	 * @param string A size expressed as a number of bytes with optional SI or IEC binary unit prefix (e.g. 2, 3K, 5MB, 10G, 6GiB, 8 bytes, 9mbytes).
-	 * @return integer representation of the size, in bytes
-	 */
-	function parse_size($size) {
-		$suffixes = array(
-			'' => 1,
-			'k' => 1024,
-			'm' => 1048576, // 1024 * 1024
-			'g' => 1073741824, // 1024 * 1024 * 1024
-		);
-		if (preg_match('/([0-9]+)\s*(k|m|g)?(b?(ytes?)?)/i', $size, $match)) {
-			return $match[1] * $suffixes[strtolower($match[2])];
-		}
-	}
-
-}
-
-if (!function_exists('file_upload_max_size')) {
-
-	/**
-	 * Determine the maximum file upload size by querying the PHP settings.
-	 *
-	 * Function from Drupal, found here : https://api.drupal.org/api/drupal/includes!file.inc/function/file_upload_max_size/6
-	 *
-	 * @staticvar integer $max_size
-	 * @return integer A file size limit in bytes based on the PHP upload_max_filesize and post_max_size
-	 */
-	function file_upload_max_size() {
-		static $max_size = -1;
-
-		if ($max_size < 0) {
-			$upload_max = parse_size(ini_get('upload_max_filesize'));
-			$post_max = parse_size(ini_get('post_max_size'));
-			$max_size = ($upload_max < $post_max) ? $upload_max : $post_max;
-		}
-		return $max_size;
-	}
-
-}
-
 /* ******************************************
  * Options for this action
  */
@@ -94,7 +43,7 @@ if (!isset($options['fileField'])) {
 		$fileField = array('type' => 'file',
 			'name' => (empty($options['fileField']) ? 'file' : $options['fileField']),
 			'allowedExts' => array('zip', 'jpg', 'cvs'), // Put whatever here.
-			'maximumSize' => file_upload_max_size(), // Maximum size defined by server max upload by default
+			'maximumSize' => sTheme::c_getFileUploadMaxSize(), // Maximum size defined by server max upload by default
 			'path' => 'uploads',
 			'type' => 'file',
 		);

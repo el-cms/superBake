@@ -58,6 +58,10 @@ $conditions = (!isset($options['conditions'])) ? array() : $options['conditions'
 * @return void
 */
 public function <?php echo $admin . $a ?>($id = null) {
+<?php
+	// Support for a different layout. Look at the snippet for more info.
+	include $themePath . 'actions/snippets/layout_support.ctp';
+	?>
 if (!$this-><?php echo $currentModelName; ?>->exists($id)) {
 throw new NotFoundException(<?php echo $this->iString('Invalid ' . strtolower($singularHumanName)) ?>);
 }
@@ -121,7 +125,7 @@ if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 $findConditions = '';
 if (count($conditions) > 0) {
 	foreach ($conditions as $k => $v) {
-		$findConditions.="'$k' => " . stheme::c_indexConditions($v) . ",\n";
+		$findConditions.="'$k' => " . sTheme::c_indexConditions($v) . ",\n";
 	}
 }
 ?>
@@ -131,7 +135,7 @@ $options = array(
 		<?php echo $findConditions?>
 		),
 		<?php echo $findFields;?>);
-$<?php echo lcfirst($currentModelName); ?>Data = $this-><?php echo $currentModelName; ?>->find('first', $options);
-$this->set('<?php echo $singularName; ?>', $<?php echo lcfirst($currentModelName); ?>Data);
-$this->set('title_for_layout', <?php echo $this->iString(ucfirst(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) . ': %s', '$' . lcfirst($currentModelName) . "Data['$currentModelName'][\$this->${currentModelName}->" . ((!empty($modelObj->displayField)) ? 'displayField' : 'primaryKey') . "]"); ?>);
+	$<?php echo lcfirst($currentModelName); ?>Data = $this-><?php echo $currentModelName; ?>->find('first', $options);
+	$this->set('<?php echo $singularName; ?>', $<?php echo lcfirst($currentModelName); ?>Data);
+	$this->set('title_for_layout', <?php echo $this->iString(ucfirst(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) . ': %s', '$' . lcfirst($currentModelName) . "Data['$currentModelName'][\$this->${currentModelName}->" . ((!empty($modelObj->displayField)) ? 'displayField' : 'primaryKey') . "]"); ?>);
 }

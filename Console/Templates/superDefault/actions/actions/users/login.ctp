@@ -30,42 +30,46 @@
  *  You should have received a copy of the GNU General Public License
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
+// Routing prefix without the _
+//$strippedPrefix = str_replace('_', '', $admin);
+/* ----------------------------------------------------------------------------
+ * Current template options
+ */
 
-//Prefix without the _
-$strippedPrefix = str_replace('_', '', $admin);
-
-//Layout
-if(!isset($layout)){
-	$layout=null;
-}
+/* ----------------------------------------------------------------------------
+ * Action
+ */
 ?>
 
 /**
-* This method logs an user in the ACL system
+* This method logs an user in the ACL system or displays a form to log an user in.
 */
 public function <?php echo $admin . $a ?>() {
 <?php
-if (!is_null($layout)) :
-	echo "\$this->layout = $layout;\n";
-endif;
-// theme.enableAcl should be true to enable this action.
+// Support for a different layout. Look at the snippet for more info.
+include $themePath . 'actions/snippets/layout_support.ctp';
+
+// 'theme.enableAcl' should be true to enable this action.
 if($this->Sbc->getConfig('theme.enableAcl')==true): ?>
-		if($this->Auth->loggedIn()){
-			<?php echo $this->setFlash('You are already logged in', 'info');?>
-			$this->redirect('/');
-		}
-			if ($this->request->is('post')) {
-			if ($this->Auth->login()) {
+	if($this->Auth->loggedIn()){
+		<?php echo $this->setFlash('You are already logged in', 'info');?>
+		$this->redirect('/');
+	}
+	if ($this->request->is('post')) {
+		if ($this->Auth->login()) {
 			<?php echo $this->setFlash('You are now connected', 'success');?>
 			$this->redirect($this->Auth->redirect());
-			} else {
-				<?php echo $this->setFlash('Your username or password was incorrect', 'error');?>
-			}
+		} else {
+			<?php echo $this->setFlash('Your username or password was incorrect', 'error');?>
 		}
+	}
 <?php
 else:
-	echo $this->setFlash('Acls are not enabled, you can\\\'t use this action. To enable Acls, set the <code>theme.enableAcl</code> to true in your config file, and run superBake again.', 'error');
+	// Acls not enabled, so a flash message is displayed upon the form.
+	echo $this->setFlash('Acls are not enabled, you can\\\'t use this action.'
+			. ' To enable Acls, set the <code>theme.enableAcl</code> to true in your config file,'
+			. ' and run superBake again.', 'error');
 endif;
-		?>
-		$this->set('title_for_layout', <?php echo $this->iString(ucfirst(Inflector::humanize(Inflector::underscore($a))))?>);
-	}
+?>
+	$this->set('title_for_layout', <?php echo $this->iString(ucfirst(Inflector::humanize(Inflector::underscore($a))))?>);
+}

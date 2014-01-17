@@ -4,7 +4,7 @@
  *
  * This file contains methods and vars used in the User model to make it works
  * as requester (for ACLs), hash and compare passwords.
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
@@ -13,22 +13,22 @@
  * @version       0.3
  *
  * ----
- * 
+ *
  *  This file is part of EL-CMS.
  *
  *  EL-CMS is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  EL-CMS is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *
  *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/> 
+ *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 
 //
@@ -44,6 +44,7 @@
 	/**
 	 * Hash passwords before save
 	 *
+	 * @return void
 	 */
 	public function beforeSave($options = array()) {
 		App::uses('Security', 'Utility');
@@ -60,10 +61,10 @@
 
 		return true;
 	}
-	
+
 	/**
 	 * Validate empty passwords for users updates
-	 * 
+	 *
 	 * @return true
 	 */
 	public function beforeValidate($options = array()) {
@@ -73,7 +74,7 @@
 
 		return true;
 	}
-	
+
 	/**
 	 * Compares passwords
 	 * @param array $check
@@ -102,8 +103,8 @@
 
 		return $r;
 	}
-	
-	
+
+
 	/**
 	 * Binds <?php echo $name ?> to roles model for ACL
 	 */

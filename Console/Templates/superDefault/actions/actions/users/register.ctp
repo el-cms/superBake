@@ -31,49 +31,54 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 
-$compact = array(); ?>
+//$compact = array(); ?>
 
-	/**
-	 * <?php echo $admin.$a ?> method
-	 *
-	 * @return void
-	 */
-	public function <?php echo $admin.$a ?>() {
-		if ($this->request->is('post')) {
-			$this-><?php echo $currentModelName; ?>->create();
-			$this->request->data['<?php echo $currentModelName ?>']['group_id'] = 2;
-			$this->request->data['<?php echo $currentModelName ?>']['status'] = 1;
-			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
+/**
+ * <?php echo $admin.$a ?> method
+ *
+ * @return void
+ */
+public function <?php echo $admin.$a ?>() {
+	<?php
+	// Support for a different layout. Look at the snippet for more info.
+	include $themePath . 'actions/snippets/layout_support.ctp';
+	?>
+	if ($this->request->is('post')) {
+		$this-><?php echo $currentModelName; ?>->create();
+		$this->request->data['<?php echo $currentModelName ?>']['group_id'] = 2;
+		$this->request->data['<?php echo $currentModelName ?>']['status'] = 1;
+		if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
 <?php if ($wannaUseSession): ?>
-				<?php echo $this->setFlash('Your account has been successfully created. Please log in', 'success');?>
-				$this->redirect(<?php echo $this->url('login',$controllerName)?>);
+			<?php echo $this->setFlash('Your account has been successfully created. Please log in', 'success');?>
+			$this->redirect(<?php echo $this->url('login',$controllerName)?>);
 <?php else: ?>
-				$this->flash(<?php echo $this->iString('Your account has been sucessfully created. Please log in.')?>, <?php echo $this->url('login', $controllerName)?>);
+			$this->flash(<?php echo $this->iString('Your account has been sucessfully created. Please log in.')?>, <?php echo $this->url('login', $controllerName)?>);
 <?php endif; ?>
-			} else {
+		} else {
 <?php if ($wannaUseSession): ?>
-				<?php echo $this->setFlash('Your account could not be created. Please try again', 'error');?>
+			<?php echo $this->setFlash('Your account could not be created. Please try again', 'error');?>
 <?php endif; ?>
-			}
-			$this->set('title_for_layout', <?php echo $this->iString($a)?>);
 		}
-<?php
-	/**
-	 * Fetching associations. Maybe no needs, depending on your set-up.
-	 *
-	 */
-	foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
-		foreach ($modelObj->{$assoc} as $associationName => $relation):
-			if (!empty($associationName)):
-				$otherModelName = $this->_modelName($associationName);
-				$otherPluralName = $this->_pluralName($associationName);
-				echo "\t\t\${$otherPluralName} = \$this->{$currentModelName}->{$otherModelName}->find('list');\n";
-				$compact[] = "'{$otherPluralName}'";
-			endif;
-		endforeach;
-	endforeach;
-	if (!empty($compact)):
-		echo "\t\t\$this->set(compact(".join(', ', $compact)."));\n";
-	endif;
-?>
+		$this->set('title_for_layout', <?php echo $this->iString($a)?>);
 	}
+<?php
+/**
+ * Fetching associations to make them available for the view
+ * 
+ * @todo add an option in config to hide some associations (ex: groups)
+ */
+foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
+	foreach ($modelObj->{$assoc} as $associationName => $relation):
+		if (!empty($associationName)):
+			$otherModelName = $this->_modelName($associationName);
+			$otherPluralName = $this->_pluralName($associationName);
+			echo "\t\t\${$otherPluralName} = \$this->{$currentModelName}->{$otherModelName}->find('list');\n";
+			$compact[] = "'{$otherPluralName}'";
+		endif;
+	endforeach;
+endforeach;
+if (!empty($compact)):
+	echo "\t\t\$this->set(compact(".join(', ', $compact)."));\n";
+endif;
+?>
+}

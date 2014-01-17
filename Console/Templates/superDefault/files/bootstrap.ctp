@@ -115,7 +115,7 @@ CakeLog::config('error', array(
 /* -----------------------------------------------------------------------------
  * Language support
  * -------------------------------------------------------------------------- */
-if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
+if ($this->Sbc->getConfig('theme.language.useLanguages') === true):
 	?>
 	// Default language
 	<?php echo "define('DEFAULT_LANGUAGE', '" . $this->Sbc->getConfig('theme.language.fallback') . "');\n"; ?>
@@ -124,13 +124,13 @@ if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 	// Avail languages
 	Configure::write('Config.languages', array(
 	<?php
-	foreach ($this->Sbc->getConfig('theme.language.available') as $lang) {
+	foreach ($this->Sbc->getConfig('theme.language.available') as $lang):
 		echo "'$lang' => '" . $this->Sbc->getConfig(["theme.language.descriptions.$lang"]) . "', \n";
-	}
+	endforeach;
 	?>
 	));
 	<?php
-}
+endif;
 ?>
 
 
@@ -143,9 +143,9 @@ if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
 Configure::write('website', array(
 'redactor' => '<?php echo $this->Sbc->getConfig('general.siteEditor') ?>',
 'name' => '<?php echo $this->Sbc->getConfig('general.siteName') ?>',
-<?php if ($this->Sbc->getConfig('theme.language.useLanguages') === true) {
+<?php if ($this->Sbc->getConfig('theme.language.useLanguages') === true):
 	echo "'defaultLang' => DEFAULT_LANGUAGE, // Used for replacements";
-} ?>
+endif; ?>
 'home_url' => array('admin' => null, 'plugin' => null, 'controller' => 'pages', 'action' => 'display', 'home'), // Home url
 'contact_email' => '<?php echo $this->Sbc->getConfig('general.siteEditorEmail') ?>',
 'admin_email' => '<?php echo $this->Sbc->getConfig('general.editorEmail') ?>', // Adresse créateur du site :)
@@ -166,11 +166,12 @@ $known = array(
 		'DebugKit' => "CakePlugin::load('DebugKit');\n",
 		'Sb' => "CakePlugin::load('Sb', array('bootstrap' => true, 'routes'=> false));\n",
 );
-foreach ($plugins as $plugin) {
-	if (isset($known[$plugin])) {
+foreach ($plugins as $plugin):
+	if (isset($known[$plugin])):
 		echo $known[$plugin];
-	} else {
-		echo "CakePlugin::load('$plugin', array('bootstrap' => " . (($this->Sbc->getConfig("plugins.$plugin.haveBootstrap") === true) ? 'true' : 'false' ) . ", 'routes'=>" . (($this->Sbc->getConfig("plugins.$plugin.haveRoutes") === true) ? 'true' : 'false' ) . "));\n";
-	}
-}
-?>
+	else:
+		$haveBootstrap = ($this->Sbc->getConfig("plugins.$plugin.haveBootstrap") === true) ? 'true' : 'false';
+		$haveRoutes = ($this->Sbc->getConfig("plugins.$plugin.haveRoutes") === true) ? 'true' : 'false';
+		echo "CakePlugin::load('$plugin', array('bootstrap' => $haveBootstrap, 'routes' => $haveRoutes));\n";
+	endif;
+endforeach;

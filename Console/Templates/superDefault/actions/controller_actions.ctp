@@ -68,7 +68,8 @@ foreach ($actionsToBake as $a => $actionConfig) {
 	}
 
 	// Action template. If none is provided, will use the action name as template.
-	$snippetFile = dirname(__FILE__) . DS . 'actions' . ((empty($template)) ? DS . str_replace($admin, '', $a) : DS . $this->cleanPath($template)) . '.ctp';
+	$templateFile = (empty($template)) ? DS . str_replace($admin, '', $a) : DS . $this->cleanPath($template);
+	$snippetFile = dirname(__FILE__) . DS . 'actions' . $templateFile . '.ctp';
 
 	$this->speak("$snippetFile", 'comment', 2);
 

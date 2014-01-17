@@ -77,20 +77,20 @@ if (!isset($noToolbar)) {
 		<legend><?php printf("<?php echo __('%s %s'); ?>", Inflector::humanize($action), $singularHumanName); ?></legend>
 		<?php
 		echo "\t<?php\n";
-		foreach ($fields as $field) {
+		foreach ($fields as $field):
 			//Skipping primary key
-			if ((strpos($action, 'add') !== false && $field === $primaryKey) || in_array($field, $hiddenFields)) {
+			if ((strpos($action, 'add') !== false && $field === $primaryKey) || in_array($field, $hiddenFields)):
 				continue;
-			} elseif (!in_array($field, array('created', 'modified', 'updated'))) {
+			elseif (!in_array($field, array('created', 'modified', 'updated'))):
 				echo "\t\techo \$this->Form->input('{$field}');\n";
-			}
-		}
-		if (!empty($associations['hasAndBelongsToMany'])) {
+			endif;
+		endforeach;
+		if (!empty($associations['hasAndBelongsToMany'])):
 			echo '<h2>Associated data:</h2>';
-			foreach ($associations['hasAndBelongsToMany'] as $assocName => $assocData) {
+			foreach ($associations['hasAndBelongsToMany'] as $assocName => $assocData):
 				echo "\t\techo \$this->Form->input('{$assocName}');\n";
-			}
-		}
+			endforeach;
+		endif;
 		echo "?>\n";
 		?>
 	</fieldset>
@@ -105,15 +105,15 @@ if (!isset($noToolbar)) {
  */
 $out = '';
 foreach ($additionnalCSS as $k => $v) {
-	if ($v === true) {
+	if ($v === true):
 		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "', array('inline'=>false));\n";
-	}
+	endif;
 }
 foreach ($additionnalJS as $k => $v) {
-	if ($v === true) {
+	if ($v === true):
 		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "', array('inline'=>false));\n";
-	}
+	endif;
 }
-if(!empty($out)){
+if(!empty($out)):
 	echo "<?php\n $out ?>";
-}
+endif;

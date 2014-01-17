@@ -50,33 +50,33 @@ if (!isset($hiddenActions) || !is_array($hiddenActions)) {
 $menu = $this->Sbc->getActionsAll();
 
 // plugins
-foreach ($menu as $plugin => $pluginConfig) {
-	if (!in_array($plugin, $hiddenPlugins)) {
+foreach ($menu as $plugin => $pluginConfig):
+	if (!in_array($plugin, $hiddenPlugins)):
 		?>
 		<div class="menu-plugin">
 			<div class="menu-header"><?php echo "<?php echo " . $this->iString($pluginConfig['displayName']) . "?>" ?></div>
 			<ul>
 				<?php
 				//Controllers
-				foreach ($pluginConfig['controllers'] as $controller => $controllerConfig) {
-					if (!in_array($controller, $hiddenControllers)) {
+				foreach ($pluginConfig['controllers'] as $controller => $controllerConfig):
+					if (!in_array($controller, $hiddenControllers)):
 						?>
 						<li><?php echo "<?php echo " . $this->iString($controllerConfig['displayName']) . "?>" ?></li>
 						<ul>
 							<?php
 							// Prefixes
-							foreach ($controllerConfig['prefixes'] as $prefix => $actions) {
+							foreach ($controllerConfig['prefixes'] as $prefix => $actions):
 								// Adding controller to hidden controllers to avoid index notices later.
-								if (!isset($hiddenControllerActions[$controller])) {
+								if (!isset($hiddenControllerActions[$controller])):
 									$hiddenControllerActions[$controller] = array();
-								}
+								endif;
 
 								// $prefixes is one option from the config file.
-								if (in_array($prefix, $prefixes)) {
+								if (in_array($prefix, $prefixes)):
 									// Actions
-									foreach ($actions as $action) {
-										if (!in_array($action, $hiddenActions) && !in_array($action, $hiddenControllerActions[$controller])) {
-											switch ($action) {
+									foreach ($actions as $action):
+										if (!in_array($action, $hiddenActions) && !in_array($action, $hiddenControllerActions[$controller])):
+											switch ($action):
 												case 'index':
 													$actionName = "List " . strtolower($controllerConfig['displayName']);
 													break;
@@ -95,21 +95,20 @@ foreach ($menu as $plugin => $pluginConfig) {
 												default:
 													$actionName = Inflector::humanize(Inflector::underscore($action)) . ' ' . $controllerConfig['displayName'];
 													break;
-											}
+												endswitch;
 											echo "<li><?php echo \$this->Html->link(" . $this->iString($actionName) . ', ' . $this->url($action, $controller, $prefix) . "); ?></li>\n";
-										}
-									}
-								}
-							}
+										endif;
+									endforeach;
+								endif;
+							endforeach;
 							?>
 						</ul>
 						<?php
-					}
-				}
+					endif;
+				endforeach;
 				?>
 			</ul>
 		</div>
 		<?php
-	}
-}
-?>
+	endif;
+endforeach;

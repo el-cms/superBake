@@ -68,7 +68,12 @@ $compact = array();
 			$<?php echo lcfirst($currentModelName); ?>Data = $this-><?php echo $currentModelName; ?>->find('first', $options);
 			$this->request->data = $<?php echo lcfirst($currentModelName); ?>Data;
 		}
-		$this->set('title_for_layout', <?php echo $this->iString('Edit ' . strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) . ' %s', '$' . lcfirst($currentModelName) . "Data['$currentModelName'][\$this->${currentModelName}->" . ((!empty($modelObj->displayField)) ? 'displayField' : 'primaryKey') . "]"); ?>);
+		<?php
+		$fieldToDisplay = (!empty($modelObj->displayField)) ? 'displayField' : 'primaryKey';
+		?>
+		$this->set('title_for_layout', <?php echo $this->iString(
+						'Edit ' . strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) . ' %s',
+						'$' . lcfirst($currentModelName) . "Data['$currentModelName'][\$this->${currentModelName}->$fieldToDisplay]"); ?>);
 <?php
 foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
 	foreach ($modelObj->{$assoc} as $associationName => $relation):
@@ -76,7 +81,7 @@ foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
 			$otherModelName = $this->_modelName($associationName);
 			$otherPluralName = $this->_pluralName($associationName);
 			echo "\t\t\${$otherPluralName} = \$this->{$currentModelName}->{$otherModelName}->find('list');\n";
-			$compact[] = "'{$otherPluralName}'";
+			$compact[] = "'$otherPluralName'";
 		endif;
 	endforeach;
 endforeach;

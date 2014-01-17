@@ -54,12 +54,12 @@ echo "<?php\n";
 *
 <?php
 $licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $this->Sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
-if (file_exists($licenseTemplate)) {
+if (file_exists($licenseTemplate)):
 	include $licenseTemplate;
-} else {
+else:
 	include dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . 'nolicence' . '.ctp';
 	$this->speak(__d('superBake', 'The license template is invalid (%s). A blank one has been used, but you should check the config file.', $projectConfig['general']['editorLicenseTemplate']), 'warning', 1, 2);
-}
+endif;
 ?>
 */
 
@@ -68,13 +68,13 @@ if (file_exists($licenseTemplate)) {
 * <?php echo $name ?> Model
 *
 <?php
-foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $assocType) {
-	if (!empty($associations[$assocType])) {
-		foreach ($associations[$assocType] as $relation) {
+foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $assocType):
+	if (!empty($associations[$assocType])):
+		foreach ($associations[$assocType] as $relation):
 			echo " * @property {$relation['className']} \${$relation['alias']}\n";
-		}
-	}
-}
+		endforeach;
+	endif;
+endforeach;
 ?>
 */
 class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
@@ -125,8 +125,8 @@ if (!empty($validate)):
 	echo "\tpublic \$validate = array(\n";
 	foreach ($validate as $field => $validations):
 		echo "\t\t'$field' => array(\n";
-		if ($name === 'User') {
-			switch ($field) {
+		if ($name === 'User'):
+			switch ($field):
 				case 'username':
 					// Unique
 					echo "\t\t\t'isUnique' => array(\n";
@@ -151,8 +151,8 @@ if (!empty($validate)):
 					echo "\t\t\t),\n";
 				default:
 					break;
-			}
-		}
+			endswitch;
+		endif;
 		foreach ($validations as $key => $validator):
 			echo "\t\t\t'$key' => array(\n";
 			echo "\t\t\t\t'rule' => array('$validator'),\n";
@@ -169,17 +169,11 @@ if (!empty($validate)):
 endif;
 
 
-//hasOne
-//foreach ($associations as $assoc):
-//	if (!empty($assoc)):
-//
 ?>
+//
 // The Associations below have been created with all possible keys, those that are not needed can be removed
-//<?php
-//		break;
-//	endif;
-//endforeach;
-
+//
+<?php
 foreach (array('hasOne', 'belongsTo') as $assocType):
 	if (!empty($associations[$assocType])):
 		$typeCount = count($associations[$assocType]);
@@ -187,11 +181,11 @@ foreach (array('hasOne', 'belongsTo') as $assocType):
 		echo "\n\tpublic \$$assocType = array(";
 		foreach ($associations[$assocType] as $i => $relation):
 			$relationPlugin = $this->Sbc->getModelPlugin($relation['className']);
-			if ($relationPlugin != $this->Sbc->getAppBase()) {
+			if ($relationPlugin != $this->Sbc->getAppBase()):
 				$relationFullName = $relationPlugin . '.' . $relation['className'];
-			} else {
+			else:
 				$relationFullName = $relation['className'];
-			}
+			endif;
 			$out = "\n\t\t'{$relation['alias']}' => array(\n";
 			$out .= "\t\t\t'className' => '$relationFullName',\n";
 			$out .= "\t\t\t'foreignKey' => '{$relation['foreignKey']}',\n";
@@ -199,9 +193,9 @@ foreach (array('hasOne', 'belongsTo') as $assocType):
 			$out .= "\t\t\t'fields' => '',\n";
 			$out .= "\t\t\t'order' => ''\n";
 			$out .= "\t\t)";
-			if ($i + 1 < $typeCount) {
+			if ($i + 1 < $typeCount):
 				$out .= ",";
-			}
+			endif;
 			echo $out;
 		endforeach;
 		echo "\n\t);\n";
@@ -215,11 +209,11 @@ if (!empty($associations['hasMany'])):
 	echo "\n\tpublic \$hasMany = array(";
 	foreach ($associations['hasMany'] as $i => $relation):
 		$relationPlugin = $this->Sbc->getModelPlugin($relation['className']);
-		if ($relationPlugin != $this->Sbc->getAppBase()) {
+		if ($relationPlugin != $this->Sbc->getAppBase()):
 			$relationFullName = $relationPlugin . '.' . $relation['className'];
-		} else {
+		else:
 			$relationFullName = $relation['className'];
-		}
+		endif;
 		$out = "\n\t\t'{$relation['alias']}' => array(\n";
 		$out .= "\t\t\t'className' => '$relationFullName',\n";
 		$out .= "\t\t\t'foreignKey' => '{$relation['foreignKey']}',\n";
@@ -233,9 +227,9 @@ if (!empty($associations['hasMany'])):
 		$out .= "\t\t\t'finderQuery' => '',\n";
 		$out .= "\t\t\t'counterQuery' => ''\n";
 		$out .= "\t\t)";
-		if ($i + 1 < $belongsToCount) {
+		if ($i + 1 < $belongsToCount):
 			$out .= ",";
-		}
+		endif;
 		echo $out;
 	endforeach;
 	echo "\n\t);\n\n";
@@ -247,11 +241,11 @@ if (!empty($associations['hasAndBelongsToMany'])):
 	echo "\n\tpublic \$hasAndBelongsToMany = array(";
 	foreach ($associations['hasAndBelongsToMany'] as $i => $relation):
 		$relationPlugin = $this->Sbc->getModelPlugin($relation['className']);
-		if ($relationPlugin != $this->Sbc->getAppBase()) {
+		if ($relationPlugin != $this->Sbc->getAppBase()):
 			$relationFullName = $relationPlugin . '.' . $relation['className'];
-		} else {
+		else:
 			$relationFullName = $relation['className'];
-		}
+		endif;
 		$out = "\n\t\t'{$relation['alias']}' => array(\n";
 		$out .= "\t\t\t'className' => '$relationFullName',\n";
 		$out .= "\t\t\t'joinTable' => '{$relation['joinTable']}',\n";
@@ -267,9 +261,9 @@ if (!empty($associations['hasAndBelongsToMany'])):
 		$out .= "\t\t\t'deleteQuery' => '',\n";
 		$out .= "\t\t\t'insertQuery' => ''\n";
 		$out .= "\t\t)";
-		if ($i + 1 < $habtmCount) {
+		if ($i + 1 < $habtmCount):
 			$out .= ",";
-		}
+		endif;
 		echo $out;
 	endforeach;
 	echo "\n\t);\n\n";
@@ -279,19 +273,19 @@ echo ("//\n// Your snippets are included below\n//\n");
 /**
  * Additional snippets are handled here.
  */
-foreach ($modelConfig['snippets'] as $snippet => $snippetConfig) {
+foreach ($modelConfig['snippets'] as $snippet => $snippetConfig):
 	echo "\n//Snippet \"$snippet\":\n";
 	// making options available:
 	$options = $snippetConfig['options'];
 	// Loading the file
 	$additionnalCode = dirname(dirname(__FILE__)) . DS . 'models' . DS . $this->cleanPath($snippetConfig['path']) . '.ctp';
 	// Checking
-	if (file_exists($additionnalCode)) {
+	if (file_exists($additionnalCode)):
 		include $additionnalCode;
-	} else {
+	else:
 		include dirname(dirname(__FILE__)) . DS . 'models' . DS . 'missing_code.ctp';
 		$this->speak(__d('superBake', 'Snippet file "%s" was not found. Default code has been set as replacement.', $additionnalCode), 'warning', 0);
-	}
-}
+	endif;
+endforeach;
 ?>
 }

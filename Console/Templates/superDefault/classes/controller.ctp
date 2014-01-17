@@ -54,12 +54,12 @@ echo "<?php\n";
 *
 <?php
 $licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $Sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
-if (file_exists($licenseTemplate)) {
+if (file_exists($licenseTemplate)):
 	include $licenseTemplate;
-} else {
+else:
 	include dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . 'nolicence' . '.ctp';
 	$this->speak(__d('superBake', 'The license template is invalid (%s). A blank one has been used, but you should check the config file.', $Sbc->getConfig('general.editorLicenseTemplate')), 'error', 0, 1);
-}
+endif;
 ?>
 */
 
@@ -67,9 +67,9 @@ if (file_exists($licenseTemplate)) {
 // AppController file
 echo "App::uses('{$plugin}AppController', '{$pluginPath}Controller');\n";
 // Additionnal libraries
-foreach ($currentControllerConfig['libraries'] as $folder => $lib) {
+foreach ($currentControllerConfig['libraries'] as $folder => $lib):
 	echo "App::uses('$lib', '$folder');\n";
-}
+endforeach
 ?>
 /**
 * <?php echo $controllerName; ?> Controller
@@ -77,20 +77,20 @@ foreach ($currentControllerConfig['libraries'] as $folder => $lib) {
 <?php
 $defaultModel = Inflector::singularize($controllerName);
 echo " * @property {$defaultModel} \${$defaultModel}\n";
-if (!empty($components)) {
-	foreach ($components as $component) {
+if (!empty($components)):
+	foreach ($components as $component):
 		echo " * @property {$component}Component \${$component}\n";
-	}
-}
+	endforeach;
+endif;
 ?>
 */
 class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>AppController {
 
 	<?php
 	// Model
-	if($Sbc->getConfig('plugins.'.$Sbc->pluginName($plugin).".parts.$currentPart.haveModel") === false){
+	if($Sbc->getConfig('plugins.'.$Sbc->pluginName($plugin).".parts.$currentPart.haveModel") === false):
 		echo "\t/**\n\t * Model to use\n\t * @var string\n\t */\n\tpublic \$uses=null;\n\n";
-	}
+	endif;
 
 	//Helpers
 	if (count($helpers)):
@@ -123,17 +123,17 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 	// beforeFilter Method
 	//
 	$beforeFilterContent='';
-	if ($this->Sbc->getConfig('general.enableAcl') === true) {
+	if ($this->Sbc->getConfig('general.enableAcl') === true):
 		// Load actions to bake.
 		$actionsToBake = $this->Sbc->getActionsToBake($this->cleanPlugin($plugin), $currentPart, 'public');
-		if (count($actionsToBake) > 0) {
-			foreach ($actionsToBake as $a=>$aConf) {
+		if (count($actionsToBake) > 0):
+			foreach ($actionsToBake as $a=>$aConf):
 				$bFActions[]="'$a'";
-			}
+			endforeach;
 			$beforeFilterContent.="\$this->Auth->allow(".  implode(',', $bFActions).");\n";
-		}
-	}
-	if(!empty($beforeFilterContent)){
+		endif;
+	endif;
+	if(!empty($beforeFilterContent)):
 	?>
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -141,7 +141,7 @@ class <?php echo $controllerName; ?>Controller extends <?php echo $plugin; ?>App
 	}
 
 	<?php
-	}
+	endif;
 	echo "\t" . trim($actions) . "\n";
 
 ?>

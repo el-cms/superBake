@@ -106,9 +106,9 @@ if (count($languageFields) > 0) {
  */
 // This view represents an item:
 $viewIsAnItem = true;
-if ($noToolbar === false) {
+if ($noToolbar === false):
 	include dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp';
-}
+endif;
 /* ----------------------------------------------------------------------------
  * Current record values
  */
@@ -117,43 +117,43 @@ if ($noToolbar === false) {
 <div class="<?php echo $pluralVar; ?> view">
 	<dl>
 		<?php
-		foreach ($fields as $field) {
-			if (!in_array($field, $hiddenFields)) {
+		foreach ($fields as $field):
+			if (!in_array($field, $hiddenFields)):
 
 				$isKey = false;
-				if (!empty($associations['belongsTo'])) {
-					foreach ($associations['belongsTo'] as $alias => $details) {
-						if ($field === $details['foreignKey']) {
+				if (!empty($associations['belongsTo'])):
+					foreach ($associations['belongsTo'] as $alias => $details):
+						if ($field === $details['foreignKey']):
 							$isKey = true;
 							echo "\t\t\t<dt><?php echo " . $this->iString(Inflector::humanize(Inflector::underscore($alias))) . "; ?></dt>\n";
 							echo "\t\t\t<dd><?php echo \$this->Html->link(\${$singularVar}['{$alias}']['{$details['displayField']}'], " . $this->url('view', $details['controller'], null, "\${$singularVar}['{$alias}']['{$details['primaryKey']}']") . "); ?></dd>\n";
 							break;
-						}
-					}
-				}
-				if ($isKey !== true) {
-					if (count($languageFields) > 0 && in_array($field, $languageFields)) {
+						endif;
+					endforeach;
+				endif;
+				if ($isKey !== true):
+					if (count($languageFields) > 0 && in_array($field, $languageFields)):
 						$content = "((!empty(\${$singularVar}['{$modelClass}']['{$field}']))?\${$singularVar}['{$modelClass}']['{$field}']:'<i " . sTheme::v_tooltip("'." . $this->iString('This item has not been translated yet. This is the original version.') . ".'", 'fa fa-warning text-warning') . " ></i> '.\${$singularVar}['{$modelClass}']['{$field}_default'])";
-					} else {
+					else:
 						$content = "\${$singularVar}['{$modelClass}']['{$field}']";
-					}
+					endif;
 					echo "\t\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
 					echo "\t\t\t<dd><?php echo $content; ?></dd>\n";
-				}
-			}
-		}
+				endif;
+			endif;
+		endforeach;
 		?>
 	</dl>
 </div>
 <?php
 // Toolbar : Hidden controllers are handled in the toolbar template file
-if ($noToolbar === false) {
+if ($noToolbar === false):
 	include dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp';
-}
+endif;
 /* ----------------------------------------------------------------------------
  * HasOne associations
  */
-if (!empty($associations['hasOne'])) :
+if (!empty($associations['hasOne'])):
 	foreach ($associations['hasOne'] as $alias => $details):
 		?>
 		<div class="related">
@@ -161,10 +161,10 @@ if (!empty($associations['hasOne'])) :
 			<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
 			<dl>
 				<?php
-				foreach ($details['fields'] as $field) {
+				foreach ($details['fields'] as $field):
 					echo "\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
 					echo "\t\t<dd>\n\t<?php echo \${$singularVar}['{$alias}']['{$field}']; ?>\n&nbsp;</dd>\n";
-				}
+				endforeach;
 				?>
 			</dl>
 			<?php echo "<?php endif; ?>\n"; ?>
@@ -181,12 +181,12 @@ endif;
 /* ----------------------------------------------------------------------------
  * HasMany associations
  */
-if (empty($associations['hasMany'])) {
+if (empty($associations['hasMany'])):
 	$associations['hasMany'] = array();
-}
-if (empty($associations['hasAndBelongsToMany'])) {
+endif;
+if (empty($associations['hasAndBelongsToMany'])):
 	$associations['hasAndBelongsToMany'] = array();
-}
+endif;
 $relations = array_merge($associations['hasMany'], $associations['hasAndBelongsToMany']);
 $i = 0;
 
@@ -195,12 +195,10 @@ $active = 'class="active"';
 $inline_active = ' active';
 $lis = '';
 $divs = '';
-foreach ($relations as $alias => $details) {
-// CamelCasing controller name
+foreach ($relations as $alias => $details):
+	// CamelCasing controller name
 	$ccController = Inflector::camelize($details['controller']);
-	if (!in_array($ccController, $hasMany_hiddenModels)) {
-//Allowed actions for this controller/prefix
-//$allowedActions = $this->allowedActions($ccController, $admin);
+	if (!in_array($ccController, $hasMany_hiddenModels)):
 		$has_assoc+=1;
 
 		$otherSingularVar = Inflector::variable($alias);
@@ -211,48 +209,48 @@ foreach ($relations as $alias => $details) {
 		<table cellpadding = "0" cellspacing = "0">
 			<tr>
 				<?php
-				foreach ($details['fields'] as $field) {
-					if (empty($hasMany_hiddenModelFields) || (!empty($hasMany_hiddenModelFields[$details['controller']]) && !in_array($field, $hasMany_hiddenModelFields[$details['controller']]))) {
+				foreach ($details['fields'] as $field):
+					if (empty($hasMany_hiddenModelFields) || (!empty($hasMany_hiddenModelFields[$details['controller']]) && !in_array($field, $hasMany_hiddenModelFields[$details['controller']]))):
 						echo "\t<th><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></th>\n";
-					}
-				}
+					endif;
+				endforeach;
 
-				if ($relatedDataHideActionsList === false && $hasMany_hideActions === false) {
+				if ($relatedDataHideActionsList === false && $hasMany_hideActions === false):
 					echo "\t<th class=\"actions\"><?php echo __('Actions'); ?></th>\n";
-				}
+				endif;
 				?>
 			</tr>
 			<?php
 			echo "\t<?php foreach (\${$singularVar}['{$alias}'] as \${$otherSingularVar}): ?>\n";
 			echo "\t\t<tr>\n";
-			foreach ($details['fields'] as $field) {
+			foreach ($details['fields'] as $field):
 				echo "\t\t\t<td><?php echo \${$otherSingularVar}['{$field}']; ?></td>\n";
-			}
+			endforeach;
 
 			echo "\t\t\t<td class=\"actions\">\n";
 
 			// Testing actions
-			if ($relatedDataHideActionsList === false) {
-				if ($hasMany_hideActions === false) {
+			if ($relatedDataHideActionsList === false):
+				if ($hasMany_hideActions === false):
 					$hasActions = 0;
 					$disabled = '';
 					// "View" action
-					if ($this->canDo('view', null, $ccController)) {
+					if ($this->canDo('view', null, $ccController)):
 						$hasActions = 1;
 						echo "\t\t\t\t<?php echo \$this->Html->Link(__('View')," . $this->url('view', $details['controller'], null, "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('title'=>__('View'), 'escape'=> false));?>\n";
-					}
+					endif;
 					// "Edit" action
-					if ($this->canDo('edit', null, $ccController)) {
+					if ($this->canDo('edit', null, $ccController)):
 						$hasActions = 1;
 						echo"\t\t\t\t<?php echo \$this->Html->Link(__('Edit')," . $this->url('edit', $details['controller'], null, "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('title'=>__('Edit'), 'escape'=> false));?>\n";
-					}
+					endif;
 					// "Delete" action
-					if ($this->canDo('view', null, $ccController)) {
+					if ($this->canDo('view', null, $ccController)):
 						$hasActions = 1;
 						echo "\t\t\t\t<?php echo \$this->Form->postLink(__('Delete'), " . $this->url('delete', $details['controller'], null, "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('confirm'=>__('Are you sure you want to delete %s?', \${$otherSingularVar}['{$details['primaryKey']}']), 'title'=>__('Delete'), 'escape'=>false)); ?>\n";
-					}
-				}
-			}
+					endif;
+				endif;
+			endif;
 
 			echo "\t\t\t</td>\n";
 			echo "\t\t</tr>\n";
@@ -264,23 +262,23 @@ foreach ($relations as $alias => $details) {
 		echo "<?php else:?>\n";
 		echo "<div><?php echo " . $this->iString('There is no ' . strtolower(Inflector::humanize(Inflector::underscore($alias))) . " related to this " . strtolower($singularHumanName)) . ";?></div>\n";
 		echo "<?php endif;?>\n";
-	}
-}
+	endif;
+endforeach;
 
 /* -----------------------------------------------------------------------------
  * Additionnal scripts and CSS
  */
 $out = '';
-foreach ($additionnalCSS as $k => $v) {
-	if ($v === true) {
+foreach ($additionnalCSS as $k => $v):
+	if ($v === true):
 		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
-	}
-}
-foreach ($additionnalJS as $k => $v) {
-	if ($v === true) {
+	endif;
+endforeach;
+foreach ($additionnalJS as $k => $v):
+	if ($v === true):
 		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
-	}
-}
-if (!empty($out)) {
+	endif;
+endforeach;
+if (!empty($out)):
 	echo "<?php\n $out ?>";
-}
+endif;

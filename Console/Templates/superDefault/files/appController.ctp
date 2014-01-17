@@ -44,7 +44,7 @@ class AppController extends Controller {
 	public $components = array(
 		<?php echo ($enableDebugKit)?"'DebugKit.Toolbar',\n":"// DebugKit is disabled\n\t\t//'DebugKit.Toolbar',\n";?>
 		'Session',
-		<?php if($enableAcl){ ?>
+		<?php if($enableAcl): ?>
 		'Acl',
 		'Auth' => array(
 			'authenticate' => array(
@@ -64,12 +64,14 @@ class AppController extends Controller {
 			'loginRedirect' => array('admin' => 'admin', 'plugin' => 'blog', 'controller' => 'posts', 'action' => 'index'),
 		),
 		<?php
-		}
+		endif;
 		?>);
 	public $helpers = array(
 		'Form',
 		'Html',
-		<?php if($enableCache){echo "'Cache',";}?>
+		<?php if($enableCache):
+			echo "'Cache',";
+		endif;?>
 	);
 
 	public function beforeFilter() {
@@ -103,7 +105,7 @@ class AppController extends Controller {
 		/* ************************************************************************
 		 * Language support: define current page language.
 		 */
-		if($this->Sbc->getConfig('theme.language.useLanguages') === true){
+		if($this->Sbc->getConfig('theme.language.useLanguages') === true):
 			?>
 			// Language
 			$curr_lang = $this->_setLanguage();
@@ -111,14 +113,14 @@ class AppController extends Controller {
 			$this->set('lang', $curr_lang);
 			$this->set('lang_fallback', DEFAULT_LANGUAGE);
 		<?php
-		}
+		endif;
 		?>
 	}
 	<?php
 	/* ************************************************************************
 	 * Language support : _setLanguage method
 	 */
-		if($this->Sbc->getConfig('theme.language.useLanguages') === true){
+		if($this->Sbc->getConfig('theme.language.useLanguages') === true):
 			?>
 			private function _setLanguage() {
 				// Available languages
@@ -144,7 +146,7 @@ class AppController extends Controller {
 				return $newLang;
 			}
 		<?php
-		} // end _setLanguage
+		endif; // end _setLanguage
 	?>
 }
 

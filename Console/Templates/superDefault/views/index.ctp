@@ -101,9 +101,9 @@ if (count($languageFields) > 0) {
  * Toolbar include
  */
 // Toolbar : Hidden controllers are handled in the toolbar template file
-if ($noToolbar === false) {
+if ($noToolbar === false):
 	include dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp';
-}
+endif;
 
 /* ----------------------------------------------------------------------------
  * List
@@ -113,40 +113,40 @@ if ($noToolbar === false) {
 	<table cellpadding="0" cellspacing="0">
 		<tr>
 			<?php
-			foreach ($fields as $field) {
-				if (!in_array($field, $hiddenFields)) {
-					if (!in_array($field, $unSortableFields)) {
+			foreach ($fields as $field):
+				if (!in_array($field, $hiddenFields)):
+					if (!in_array($field, $unSortableFields)):
 						?>
 						<th><?php echo "<?php echo \$this->Paginator->sort('{$field}'); ?>"; ?></th>
 						<?php
-					} else {
+					else:
 						?>
 						<th><?php echo "<?php echo " . $this->iString($field) . "; ?>"; ?></th>
 						<?php
-					}
-				}
-			}
+					endif;
+				endif;
+			endforeach;
 			?>
 			<th class="actions"><?php echo "<?php echo " . $this->iString('Actions') . "; ?>"; ?></th>
 		</tr>
 		<?php
 		echo "<?php foreach (\${$pluralVar} as \${$singularVar}): ?>\n";
 		echo "\t<tr>\n";
-		foreach ($fields as $field) {
+		foreach ($fields as $field):
 			$isKey = false;
-			if (!empty($associations['belongsTo'])) {
-				foreach ($associations['belongsTo'] as $alias => $details) {
-					if ($field === $details['foreignKey']) {
+			if (!empty($associations['belongsTo'])):
+				foreach ($associations['belongsTo'] as $alias => $details):
+					if ($field === $details['foreignKey']):
 						$isKey = true;
 						echo "\t\t<td>\n\t\t\t<?php echo \$this->Html->link(\${$singularVar}['{$alias}']['{$details['displayField']}'], array('controller' => '{$details['controller']}', 'action' => 'view', \${$singularVar}['{$alias}']['{$details['primaryKey']}'])); ?>\n\t\t</td>\n";
 						break;
-					}
-				}
-			}
-			if ($isKey !== true) {
+					endif;
+				endforeach;
+			endif;
+			if ($isKey !== true):
 				echo "\t\t<td><?php echo h(\${$singularVar}['{$modelClass}']['{$field}']); ?>&nbsp;</td>\n";
-			}
-		}
+			endif;
+		endforeach;
 
 		echo "\t\t<td class=\"actions\">\n";
 		echo "\t\t\t<?php echo \$this->Html->link(" . $this->iString('View') . ", array('action' => 'view', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
@@ -172,16 +172,16 @@ if ($noToolbar === false) {
  * Additionnal scripts and CSS
  */
 $out = '';
-foreach ($additionnalCSS as $k => $v) {
-	if ($v === true) {
+foreach ($additionnalCSS as $k => $v):
+	if ($v === true):
 		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
-	}
-}
-foreach ($additionnalJS as $k => $v) {
-	if ($v === true) {
+	endif;
+endforeach;
+foreach ($additionnalJS as $k => $v):
+	if ($v === true):
 		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
-	}
-}
-if (!empty($out)) {
+	endif;
+endforeach;
+if (!empty($out)):
 	echo "<?php\n $out ?>";
-}
+endif;

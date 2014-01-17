@@ -154,7 +154,6 @@ if (!isset($options['fileField'])) {
 					$this->request->data['<?php echo $currentModelName;?>']['<?php echo $fileField['name']?>'] = $filename;
 				} else {
 					// An error has occured
-					<?php /*$this->Session->setFlash(<?php echo $this->iString('Wrong file extension. Allowed extensions are: %s.', $fileExtsString)?>);*/ ?>
 					<?php echo $this->setFlash('Wrong file extension. Allowed extensions are $fileString', 'warning');?>
 					$this->redirect(array('admin' => 'admin_', 'plugin' => 'gallery', 'controller' => 'gallery_items', 'action' => 'index'));
 				}

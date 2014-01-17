@@ -52,10 +52,10 @@ echo "<?php\n";
 *
 <?php
 $licenseTemplate = dirname(dirname(dirname(__FILE__))) . DS . 'common' . DS . 'licenses' . DS . $this->Sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
-if (file_exists($licenseTemplate)) {
+if (file_exists($licenseTemplate)):
 	include $licenseTemplate;
 	echo "\n";
-}
+endif;
 ?>
 */
 

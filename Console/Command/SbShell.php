@@ -155,13 +155,22 @@ class SbShell extends AppShell {
 		if (!is_null($args)) {
 			$args = ", $args";
 		}
-		// Final string
-		if ($plugin != '') {
-			// Trim '.' ending plugin name (passed to bake on command line)
-			$out = "__d('" . trim($plugin, '.') . "',$string $args)";
+		// Support for internationalized strings
+		if ($this->Sbc->getConfig('general.useInternationalizedStrings') === true) {// Arguments
+			if ($plugin != '') {
+				// Trim '.' ending plugin name (passed to bake on command line)
+				$out = "__d('" . trim($plugin, '.') . "', " . __d('superBake', $string) . "$args)";
+			} else {
+				$out = "__(" . __d('superBake', $string) . " $args)";
+			}
 		} else {
-			$out = "__($string $args)";
+			if (!is_null($args)) {
+				$out = "vsprintf(" . __d('superBake', $string) . " $args)";
+			} else {
+				$out = __d('superBake', $string);
+			}
 		}
+
 		return $out;
 	}
 

@@ -154,7 +154,8 @@ class SuperFileTask extends BakeTask {
 
 		// Finding the destination path
 		$path = $this->getFilePath();
-		$filename = $path . DS . (($this->fileType === 'menu') ? 'View' . DS : '') . $this->cleanPath($this->currentFileConfig['targetPath'] . DS . $this->currentFileConfig['targetFileName'] . '.' . $this->currentFileConfig['ext']);
+//		$filename = $path . DS . (($this->fileType === 'menu') ? 'View' . DS : '') . $this->cleanPath($this->currentFileConfig['targetPath'] . DS . $this->currentFileConfig['targetFileName'] . '.' . $this->currentFileConfig['ext']);
+		$filename = $path . DS . (($this->fileType === 'menu') ? 'View' . DS : '') . $this->cleanPath($this->currentFileConfig['targetPath']);
 		// Saving the file.
 		return $this->createFile($filename, $content);
 	}

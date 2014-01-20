@@ -90,7 +90,15 @@ general:
   ## Else, they will be copied in their repsective plugins.
   ## THIS IS NOT YET IMPLEMENTED AND WILL CERTAINLY MOVE
   #copyRequiredToAppBase: false
+  
+  ##
+  ## Other options for superBake
+  ##
 
+  ## Language support: if set to true, app and plugin string will use the
+  ## internationalization methods for strings (`__()`, `__d()`). Set it to false,
+  ## and strings will be plain text.
+  useInternationalizedStrings: true
 #--------------------------------------------------------------------------
 #
 # Global options for the theme
@@ -344,9 +352,9 @@ defaults:
     ## Folder where the file must be copied (relative to final plugin directory)
     targetPath:
     ## Final file name
-    targetFileName:
+#    targetFileName:
     ## Target extension
-    ext: ctp
+#    ext: ctp
     ## Options for the file templates
     options: []
     ## Generate the file ?
@@ -363,9 +371,9 @@ defaults:
     ## Target folder (relative to detination plugin's "View/" folder)
     targetPath: Elements::menus
     ## Final file name
-    targetFileName:
+#    targetFileName:
     ## Target extension
-    ext: ctp
+#    ext: ctp
     ## Options
     options:
       ## List of routing prefixes to be displayed in the menu.
@@ -485,7 +493,8 @@ plugins:
       ## ---
       admin_menu:
         template: menu
-        targetFileName: admin
+        targetPath: elements::menus::admin.ctp
+#        targetFileName: admin
         options:
           prefixes:
             admin
@@ -504,7 +513,8 @@ plugins:
       public_menu:
         generate: true
         template: menu
-        targetFileName: public
+#        targetFileName: public
+        targetPath: elements::menus::public.ctp
         options:
           prefixes:
             public
@@ -535,17 +545,17 @@ plugins:
       ##
       ## Custom bootstrap file
       bootstrap:
-        targetPath: Config
-        targetFileName: bootstrap
-        ext: php
+        targetPath: Config::bootstrap.php
+#        targetFileName: bootstrap
+#        ext: php
         template: bootstrap
 
       ##
       ## Custom AppController
       AppController:
-        targetPath: Controller
-        targetFileName: AppController
-        ext: php
+        targetPath: Controller::AppController.php
+#        targetFileName: AppController
+#        ext: php
         template: appController
         options:
           ## Enable the Auth component
@@ -554,43 +564,43 @@ plugins:
       ##
       ## Layouts
       public_layout:
-        targetPath: View::Layouts
-        targetFileName: default
-        ext: ctp
+        targetPath: View::Layouts::default.ctp
+#        targetFileName: default
+#        ext: ctp
         template: layouts::default
       admin_layout:
-        targetPath: View::Layouts
-        targetFileName: admin
-        ext: ctp
+        targetPath: View::Layouts::admin.ctp
+#        targetFileName: admin
+#        ext: ctp
         template: layouts::admin
 
       ##
       ## Flash messages elements
       flash_error:
-        targetPath: View::Elements
-        targetFileName: flash_error
-        ext: ctp
+        targetPath: View::Elements::flash_error.ctp
+#        targetFileName: flash_error
+#        ext: ctp
         template: elements::flash_message
         options:
           alertClass: danger
       flash_warning:
-        targetPath: View::Elements
-        targetFileName: flash_warning
-        ext: ctp
+        targetPath: View::Elements::flash_warning.ctp
+#        targetFileName: flash_warning
+#        ext: ctp
         template: elements::flash_message
         options:
           alertClass: warning
       flash_info:
-        targetPath: View::Elements
-        targetFileName: flash_info
-        ext: ctp
+        targetPath: View::Elements::flash_info.ctp
+#        targetFileName: flash_info
+#        ext: ctp
         template: elements::flash_message
         options:
           alertClass: info
       flash_succcess:
-        targetPath: View::Elements
-        targetFileName: flash_success
-        ext: ctp
+        targetPath: View::Elements::flash_success.ctp
+#        targetFileName: flash_success
+#        ext: ctp
         template: elements::flash_message
         options:
           alertClass: success

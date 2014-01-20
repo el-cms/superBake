@@ -88,6 +88,14 @@ general:
   ## THIS IS NOT YET IMPLEMENTED AND WILL CERTAINLY MOVE
   #copyRequiredToAppBase: false
 
+  ##
+  ## Other options for superBake
+  ##
+
+  ## Language support: if set to true, app and plugin string will use the
+  ## internationalization methods for strings (`__()`, `__d()`). Set it to false,
+  ## and strings will be plain text.
+  useInternationalizedStrings: true
 #--------------------------------------------------------------------------
 #
 # Global options for the theme
@@ -309,9 +317,9 @@ defaults:
     ## Folder where the file must be copied (relative to final plugin directory)
     targetPath:
     ## Final file name
-    targetFileName:
+#    targetFileName:
     ## Target extension
-    ext: ctp
+#    ext: ctp
     ## Options for the file templates
     options: []
     ## Generate the file ?
@@ -328,9 +336,9 @@ defaults:
     ## Target folder (relative to detination plugin's "View/" folder)
     targetPath: Elements::menus
     ## Final file name
-    targetFileName:
+#    targetFileName:
     ## Target extension
-    ext: ctp
+#    ext: ctp
     ## Options
     options:
       ## List of routing prefixes to be displayed in the menu.

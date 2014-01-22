@@ -29,6 +29,10 @@
  */
 //Page headers and licensing
 include $themePath . 'views/common/headers-files.ctp';
+
+echo "<?php
+\$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+?>";
 ?>
 
 <!DOCTYPE html>

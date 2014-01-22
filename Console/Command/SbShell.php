@@ -261,11 +261,21 @@ class SbShell extends AppShell {
 	 *
 	 * @param string $action	The target action
 	 * @param string $controller	Target controller (MUST be given to find good plugin)
-	 * @param array  $options		An array of options
+	 * @param string $prefix Optionnal target prefix. If null, current prefix will be used.
+	 * @param string $options	An array of options as string
+	 * @param boolean $special If set to true, $action will be returned "as-is",
+	 * 		to allow the use of special links in methods that use url().
 	 *
 	 * @return string Like "array('admin'=>'string|false', 'plugin'=>'string', 'controller'=>'controller', 'action'=>'action', 'options')"
+	 * 		or $action if $special is on.
 	 */
-	function url($action, $controller = null, $prefix = null, $options = null) {
+	function url($action, $controller = null, $prefix = null, $options = null, $special = false) {
+
+		// In certain cases, you need to redirect to '/' or to methods outputs or variables.
+		if ($special === true) {
+			return $action;
+		}
+
 		// Beggining the url
 		$url = 'array(';
 
@@ -300,13 +310,66 @@ class SbShell extends AppShell {
 	 * Returns a string to create Flash messages with correct flash message element
 	 * The presence of flash message elements is defined in the config file.
 	 *
+	 * To enable setFlash messages using sessions, 'general.useSessions' must be true
+	 * in config file.
+	 *
 	 * @param string $content Message content
 	 * @param string $class Message class: error/succes/... Must match a valid flash message element
+	 * @param string $action Action to redirect the user to (in controllers, use $a
+	 * 		for current action)
+	 * @param array $options Array of options: controllerName, useSession, redirect, specialUrl
 	 *
-	 * @return string
+	 * Options:
+	 * 		- controllerName (String, default NULL) Target controller name
+	 * 		- redirect (Bool, default true) Redirect the user after flash or not.
+	 * 		//- useSession (Bool, default false) Forces the use of setFlash or not
+	 * 		- specialUrl (Bool, default false) If set to true, target action will be used as the
+	 * 			target url, so it will not be passed to $this->url()
+	 *
+	 * @return string setFlash()+redirect, setFlash() only or flash() if session is disabled.
 	 */
-	public function setFlash($content, $class) {
-		return "\$this->Session->setFlash(" . $this->iString($content) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", 'flash_$class'" : '') . ");\n";
+	public function setFlash($content, $class, $action, $options = array()) {
+		// Default values for $options
+		$optionsDefaults = array('controllerName' => null,
+				'redirect' => true,
+//			'useSession' => false,
+				'specialUrl' => false);
+
+		// Creating the array of options with passed and default ones.
+		$options = $this->Sbc->updateArray($optionsDefaults, $options);
+		// Creating variables from options.
+		foreach ($options as $k => $v) {
+			${$k} = $v;
+		}
+
+		// Preparing output
+		$out = null;
+
+		// Checking for controller name. If empty, use the current controller name.
+		if (is_null($controllerName)) {
+			$controllerName = $this->templateVars['pluralVar'];
+		}
+		// Checks for the global use of sessions
+		if ($this->Sbc->getConfig('general.useSessions') === true) {// || $useSession === true) {
+			// Flash message and redirect
+			$out = "\$this->Session->setFlash(" . $this->iString($content) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", 'flash_$class'" : '') . ");\n";
+			// Checks if the user must be redirected straight after the message (sometimes,
+			//  in case of errors)
+			if ($redirect === true) {
+				$out.= "\$this->redirect(" . $this->url($action, $controllerName, null, null, $specialUrl) . ");\n";
+			}
+		} else {
+			// Flash redirect
+			if ($redirect === true) {
+				$out = "\$this->flash(".$this->iString($content).", " . $this->url($action, $controllerName, null, null, $specialUrl) . ");\n";
+			} else {
+				// @todo Find something else to handle the situation where a message must be displayed
+				// but with no redirection.
+				// By the way, flash will be deprecated in 3.0
+				echo "echo '$content';\n";
+			}
+		}
+		return $out;
 	}
 
 	/**

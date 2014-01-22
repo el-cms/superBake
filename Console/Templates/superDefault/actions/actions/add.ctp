@@ -101,8 +101,7 @@ if (!isset($options['fileField'])) {
 						$thumb = new SimpleImage;
 						// loading uploaded image
 						if (!$thumb->load($file['tmp_name'])) {
-							<?php echo $this->setFlash('Image cannot be opened. Please try again', 'error');?>
-							$this->redirect(<?php echo $this->url('add')?>);
+							<?php echo $this->setFlash('Image cannot be opened. Please try again', 'error', $a, array('redirect'=>false));?>
 						}
 						<?php
 						// Must we create thumbnail ?
@@ -112,8 +111,7 @@ if (!isset($options['fileField'])) {
 
 						// Saving thumbnail
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs'], true)?>' . $filename)) {
-							<?php echo $this->setFlash('The thumbnail cannot be saved.', 'error');?>
-							$this->redirect(<?php echo $this->url('add')?>);
+							<?php echo $this->setFlash('The thumbnail cannot be saved.', 'error', $a, array('redirect'=>false));?>
 						}
 
 						// Following lines are an example of croping for square thumbs
@@ -126,8 +124,7 @@ if (!isset($options['fileField'])) {
 						// If final thumb isn't good for you, you can downsize image before croping it
 						$thumb->centerCrop(<?php echo $fileField['thumbWidth']?>, <?php echo $fileField['thumbWidth']?>);
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs']."::${fileField['thumbWidth']}x${fileField['thumbWidth']}", true)?>' . $filename)) {
-							<?php echo $this->setFlash('The square thumb cannot be saved', 'error');?>
-							$this->redirect(<?php echo $this->url('add')?>);
+							<?php echo $this->setFlash('The square thumb cannot be saved', 'error', $a, array('redirect'=>false));?>
 						}*/
 						<?php endif; ?>
 						// Resize file if needed
@@ -138,8 +135,7 @@ if (!isset($options['fileField'])) {
 
 						// Saving file
 						if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'], true)?>' . $filename)) {
-							<?php echo $this->setFlash('The file cannot be saved.', 'error');?>
-							$this->redirect(<?php echo $this->url('add')?>);
+							<?php echo $this->setFlash('The file cannot be saved.', 'error', $a, array('redirect'=>false));?>
 						}
 						<?php
 						break;
@@ -154,26 +150,17 @@ if (!isset($options['fileField'])) {
 					$this->request->data['<?php echo $currentModelName;?>']['<?php echo $fileField['name']?>'] = $filename;
 				} else {
 					// An error has occured
-					<?php echo $this->setFlash('Wrong file extension. Allowed extensions are $fileString', 'warning');?>
-					$this->redirect(array('admin' => 'admin_', 'plugin' => 'gallery', 'controller' => 'gallery_items', 'action' => 'index'));
+					<?php echo $this->setFlash('Wrong file extension. Allowed extensions are $fileString', 'warning', $a, array('redirect'=>false));?>
 				}
 			}else {
-				<?php echo $this->setFlash('No file has been uploaded', 'error');?>
-				$this->redirect(array('admin' => 'admin_', 'plugin' => 'resellers', 'controller' => 'sellers', 'action' => 'index'));
+				<?php echo $this->setFlash('No file has been uploaded', 'error', $a, array('redirect'=>false));?>
 			}
 
 		 <?php endif;?>
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
-			<?php if ($wannaUseSession): ?>
-				<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' has been saved', 'success');?>
-				$this->redirect(<?php echo $this->url('index', $controllerName) ?>);
-			<?php else: ?>
-				$this->flash(<?php echo $this->iString(ucfirst(strtolower($currentModelName)) . ' saved.') ?>, <?php echo $this->url('index', $controllerName) ?>);
-			<?php endif; ?>
+				<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' has been saved', 'success', $a);?>
 			} else {
-			<?php if ($wannaUseSession): ?>
-				<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' could not be saved. Please try again.', 'error');?>
-			<?php endif; ?>
+				<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' could not be saved. Please try again.', 'error', $a);?>
 			}
 		}
 		$this->set('title_for_layout', 'New <?php echo strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) ?>');

@@ -52,16 +52,9 @@ $compact = array();
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
-<?php if ($wannaUseSession): ?>
-				<?php echo $this->setFlash(ucfirst(strtolower($singularHumanName)) . ' has been saved', 'success'); ?>
-				$this->redirect(<?php echo $this->url('index', $controllerName) ?>);
-<?php else: ?>
-				$this->flash(<?php echo $this->iString('The ' . strtolower($singularHumanName) . ' has been saved.') ?>, <?php echo $this->url('index', $controllerName) ?>);
-<?php endif; ?>
+				<?php echo $this->setFlash(ucfirst(strtolower($singularHumanName)) . ' has been saved', 'success', 'index'); ?>
 			} else {
-<?php if ($wannaUseSession): ?>
-				<?php echo $this->setFlash(ucfirst(strtolower($singularHumanName)) . ' could not be saved', 'success'); ?>
-<?php endif; ?>
+				<?php echo $this->setFlash(ucfirst(strtolower($singularHumanName)) . ' could not be saved', 'success', 'index'); ?>
 			}
 		} else {
 			$options = array('conditions' => array('<?php echo $currentModelName; ?>.' . $this-><?php echo $currentModelName; ?>->primaryKey => $id));

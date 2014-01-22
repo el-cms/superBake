@@ -48,23 +48,16 @@ public function <?php echo $admin.$a ?>() {
 		$this->request->data['<?php echo $currentModelName ?>']['group_id'] = 2;
 		$this->request->data['<?php echo $currentModelName ?>']['status'] = 1;
 		if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
-<?php if ($wannaUseSession): ?>
-			<?php echo $this->setFlash('Your account has been successfully created. Please log in', 'success');?>
-			$this->redirect(<?php echo $this->url('login',$controllerName)?>);
-<?php else: ?>
-			$this->flash(<?php echo $this->iString('Your account has been sucessfully created. Please log in.')?>, <?php echo $this->url('login', $controllerName)?>);
-<?php endif; ?>
+			<?php echo $this->setFlash('Your account has been successfully created. Please log in', 'success', 'login');?>
 		} else {
-<?php if ($wannaUseSession): ?>
-			<?php echo $this->setFlash('Your account could not be created. Please try again', 'error');?>
-<?php endif; ?>
+			<?php echo $this->setFlash('Your account could not be created. Please try again', 'error', $a);?>
 		}
 		$this->set('title_for_layout', <?php echo $this->iString($a)?>);
 	}
 <?php
 /**
  * Fetching associations to make them available for the view
- * 
+ *
  * @todo add an option in config to hide some associations (ex: groups)
  */
 foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):

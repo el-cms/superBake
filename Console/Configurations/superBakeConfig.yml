@@ -90,7 +90,7 @@ general:
   ## Else, they will be copied in their repsective plugins.
   ## THIS IS NOT YET IMPLEMENTED AND WILL CERTAINLY MOVE
   #copyRequiredToAppBase: false
-  
+
   ##
   ## Other options for superBake
   ##
@@ -99,6 +99,9 @@ general:
   ## internationalization methods for strings (`__()`, `__d()`). Set it to false,
   ## and strings will be plain text.
   useInternationalizedStrings: true
+
+  ## If set to false, session-related methods will not be included in generated files.
+  useSessions: true
 #--------------------------------------------------------------------------
 #
 # Global options for the theme

@@ -52,23 +52,21 @@ include $themePath . 'actions/snippets/layout_support.ctp';
 // 'theme.enableAcl' should be true to enable this action.
 if($this->Sbc->getConfig('theme.enableAcl') === true): ?>
 	if($this->Auth->loggedIn()){
-		<?php echo $this->setFlash('You are already logged in', 'info');?>
-		$this->redirect('/');
+		<?php echo $this->setFlash('You are already logged in', 'info',  "'/'", array('specialUrl' => true)); ?>
 	}
 	if ($this->request->is('post')) {
 		if ($this->Auth->login()) {
-			<?php echo $this->setFlash('You are now connected', 'success');?>
-			$this->redirect($this->Auth->redirect());
+			<?php echo $this->setFlash('You are now connected', 'success', '$this->Auth->redirect()', array('specialUrl' => true)); ?>
 		} else {
-			<?php echo $this->setFlash('Your username or password was incorrect', 'error');?>
-		}
+			<?php echo $this->setFlash('Your username or password was incorrect', 'error', $a, array('controllerName' => $controllerName)); ?>
+			}
 	}
 <?php
 else:
 	// Acls not enabled, so a flash message is displayed upon the form.
 	echo $this->setFlash('Acls are not enabled, you can\\\'t use this action.'
 			. ' To enable Acls, set the <code>theme.enableAcl</code> to true in your config file,'
-			. ' and run superBake again.', 'error');
+			. ' and run superBake again.', 'error', "'/'", array('specialUrl' => true));
 endif;
 ?>
 	$this->set('title_for_layout', <?php echo $this->iString(ucfirst(Inflector::humanize(Inflector::underscore($a))))?>);

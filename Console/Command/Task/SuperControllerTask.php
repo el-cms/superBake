@@ -158,7 +158,7 @@ class SuperControllerTask extends BakeTask {
 			App::uses($modelImport, $plugin . 'Model');
 			// Checks if Model has been loaded correctly
 			if (!class_exists($modelImport)) {
-				$this->err(__d('cake_console', 'You must have a model for this class to build basic methods. Please try again.'));
+				$this->speak(__d('cake_console', 'You must have a model for this class to build basic methods. Please try again.', 'error', 0));
 				$this->_stop();
 			}
 			$modelObj = ClassRegistry::init($currentModelName);

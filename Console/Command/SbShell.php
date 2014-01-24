@@ -159,15 +159,15 @@ class SbShell extends AppShell {
 		if ($this->Sbc->getConfig('general.useInternationalizedStrings') === true) {// Arguments
 			if ($plugin != '') {
 				// Trim '.' ending plugin name (passed to bake on command line)
-				$out = "__d('" . trim($plugin, '.') . "', " . __d('superBake', $string) . "$args)";
+				$out = "__d('" . trim($plugin, '.') . "', " . __d('superBakeTemplate', $string) . "$args)";
 			} else {
-				$out = "__(" . __d('superBake', $string) . " $args)";
+				$out = "__(" . __d('superBakeTemplate', $string) . " $args)";
 			}
 		} else {
 			if (!is_null($args)) {
-				$out = "vsprintf(" . __d('superBake', $string) . " $args)";
+				$out = "vsprintf(" . __d('superBakeTemplate', $string) . " $args)";
 			} else {
-				$out = __d('superBake', $string);
+				$out = __d('superBakeTemplate', $string);
 			}
 		}
 
@@ -182,13 +182,15 @@ class SbShell extends AppShell {
 	 *
 	 * @param mixed $text String to output, or array of strings.
 	 * @param string $class Class (info|warning|error|success|comment|bold)
-	 * @param integer $force 1 for Normal, 2 for Verbose only and 0 for Quiet shells. Use 4 for debugs (you must set $this->debug=1 somewhere)
+	 * @param integer $force 1 for Normal, 2 for Verbose only and 0 for Quiet shells.
 	 * @param integer $decorations If >0, text will be surrounded by hr and $decorations new lines.
 	 * @param integer $newLines Number of empty lines to insert before and after text.
 	 *
 	 * @return void
 	 */
 	public function speak($text, $class = null, $force = 1, $decorations = 0, $newLines = 0) {
+
+		// Defaults for each text class
 		switch ($class) {
 			case 'info':
 				//HR, beggining
@@ -225,6 +227,9 @@ class SbShell extends AppShell {
 				break;
 		}
 		if ($decorations >= 1) {
+			// New line before decorations
+			$this->out('', 1, $force);
+			// Decoration
 			$this->out($hrB, 1, $force);
 		}
 		$finalText = '';

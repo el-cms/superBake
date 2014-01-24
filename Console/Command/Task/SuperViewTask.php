@@ -201,7 +201,7 @@ class SuperViewTask extends BakeTask {
 	 */
 	protected function _loadController() {
 		if (!$this->controllerName) {
-			$this->err(__d('cake_console', 'Controller not found'));
+			$this->speak(__d('cake_console', 'Controller not found', 'error', 0, 1, 2));
 		}
 
 		$plugin = null;
@@ -213,7 +213,7 @@ class SuperViewTask extends BakeTask {
 		App::uses($controllerClassName, $plugin . 'Controller');
 		if (!class_exists($controllerClassName)) {
 			$file = $controllerClassName . '.php';
-			$this->err(__d('cake_console', "The file '%s' could not be found.\nIn order to bake a view, you'll need to first create the controller.", $file));
+			$this->speak(__d('cake_console', "The file '%s' could not be found.\nIn order to bake a view, you'll need to first create the controller.", $file), 'error', 0, 1, 2);
 			return $this->_stop();
 		}
 		$controllerObj = new $controllerClassName();
@@ -389,7 +389,7 @@ class SuperViewTask extends BakeTask {
 	 * Unmodified method from Cake.
 	 *
 	 * @param Model $model
-	 * 
+	 *
 	 * @return array $associations
 	 */
 	protected function _associations(Model $model) {

@@ -660,7 +660,7 @@ class SuperModelTask extends BakeTask {
 			$tables = $db->listSources();
 		}
 		if (empty($tables)) {
-			$this->err(__d('cake_console', 'Your database does not have any tables.'));
+			$this->speak(__d('cake_console', 'Your database does not have any tables.', 'error', 0, 1, 2));
 			return $this->_stop();
 		}
 		sort($tables);

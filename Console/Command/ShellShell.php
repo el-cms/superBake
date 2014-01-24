@@ -259,7 +259,7 @@ class ShellShell extends SbShell {
 		$this->Models();
 		$this->Controllers();
 		$this->Views();
-		$this->speak(__d('superBake', 'MVC generation complete.'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'MVC generation complete.'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -278,7 +278,7 @@ class ShellShell extends SbShell {
 		$this->Menus();
 		$this->Files();
 		$this->Required();
-		$this->speak(__d('superBake', 'Generation complete.'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'Generation complete.'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -289,17 +289,21 @@ class ShellShell extends SbShell {
 	 *  $ cake Sb.Shell pluginMVC PluginName
 	 */
 	public function pluginMVC() {
+		// Task title output
+		$this->speak(__d('superBake', 'Building ALL models, controllers and views for an unique plugin'), 'info', 0, 2, 2);
 
-		$this->speak(__d('superBake', 'Building ALL models, controllers and views for a plugin'), 'info', 0, 2, 2);
-
+		// Checking arguments
 		$args = $this->_checkArgs(1, array('plugin'));
 
 		//Manually set the args value
 		$this->args[0] = $args['plugin'];
 
+		// Baking the MVC
 		$this->pluginModels();
 		$this->pluginControllers();
 		$this->pluginViews();
+
+		$this->speak(__d('superBake', 'MVC generated for plugin %s', $args['plugin']), 'success', 0, 2, 1);
 		unset($this->args[0]);
 	}
 
@@ -310,11 +314,10 @@ class ShellShell extends SbShell {
 	 *  $ cake Sb.Shell plugins
 	 */
 	public function Plugins() {
-		$this->speak(__d('superBake', 'Building all plugins structure'), 'info', 0, 2, 2);
+		// Task title
+		$this->speak(__d('superBake', 'Building all plugins structures'), 'info', 0, 2, 2);
 		$this->out();
 		$updateBootstrap = strtoupper($this->in(__d('superBake', 'Do we have to update the app\'s bootstrap file ?'), array('y', 'n'), ($this->Sbc->getConfig('general.updateBootstrap') ? 'y' : 'n')));
-		$this->out();
-		$this->hr();
 		$this->out();
 
 		// updateBootstrap state passed to the task
@@ -327,7 +330,7 @@ class ShellShell extends SbShell {
 		foreach ($plugins as $plugin) {
 			// Executes generation
 			if ($plugin != $this->Sbc->getAppBase()) {
-				$this->speak(__d('superBake', "Building $plugin"), 'info', 0, 2, 1);
+				$this->speak(__d('superBake', "Building $plugin"), 'info', 0, 2);
 				//Giving the name of the current plugin to the task
 				$this->SuperPlugin->currentPlugin = $plugin;
 				// Giving the plugin configuration to the task
@@ -339,18 +342,20 @@ class ShellShell extends SbShell {
 
 		// Plugin have been created
 		if ($i > 1) {
-			$this->speak(__d('superBake', "Plugin generation is over."), 'success', 0, 2, 2);
+			$out = array(__d('superBake', "Plugin generation is over."));
 			// Bootstrap file updated ?
 			if (strtoupper($updateBootstrap) === 'Y') {
-				$this->speak(__d('superBake', "The bootstrap file has been updated. Please re-launch SuperBake\n" .
-								"to reload the new configuration (if you want to use it more)"), 'info', 0, 0, 0);
-				$this->hr();
+				$out[] = __d('superBake', "The bootstrap file has been updated. Please re-launch SuperBake\n" .
+								"to reload the new configuration (if you want to use it more)");
+			}
+			$this->speak($out, 'success', 0, 2, 1);
+
+			// Stops the shell if bootstrap file was updated to force reload
+			if (strtoupper($updateBootstrap) === 'Y') {
 				$this->_stop();
 			}
 		} else { // No plugin to generate
 			$this->speak(__d('superBake', "There was no plugins to generate."), 'warning', 0, 2, 1);
-			$this->out(__d('superBake', "<info></info>"));
-			$this->hr();
 		}
 	}
 
@@ -360,17 +365,21 @@ class ShellShell extends SbShell {
 	 * @return string Plugin name
 	 */
 	protected function _getPluginName() {
-		$plugins = $this->Sbc->getPluginsToBake();
 
+		// List of plugins to bake (with generate: true)
+		$plugins = $this->Sbc->getPluginsToBake();
 		$count = count($plugins);
 
 		$this->out(__d('cake_console', 'Possible Plugins based on your current config file:'));
 		$len = strlen($count + 1);
+
+		// outputting the list
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $plugins[$i]));
+			$this->out(sprintf("%${len}d. %s", $i + 1, $plugins[$i]), 1,  Shell::QUIET);
 		}
 		$enteredPlugin = '';
 
+		// Waiting for a valid choice
 		while (!$enteredPlugin) {
 			$enteredPlugin = $this->in(__d('cake_console', "Enter a number from the list above, or 'q' to exit"), null, 'q');
 
@@ -380,11 +389,13 @@ class ShellShell extends SbShell {
 			}
 			$intEnteredPlugin = intval($enteredPlugin);
 			if (empty($intEnteredPlugin) || $intEnteredPlugin > $count) {
-				$this->err(__d('cake_console', "The plugin name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+				$this->speak(__d('cake_console', "The plugin name you supplied was empty,\n" .
+												"or the number you selected was not an option. Please try again.", 'error', 1));
 				$enteredPlugin = '';
 			}
 		}
+
+		// Return plugin name
 		return $plugins[$enteredPlugin - 1];
 	}
 
@@ -397,10 +408,11 @@ class ShellShell extends SbShell {
 	 */
 	public function Model() {
 		$this->speak(__d('superBake', 'Building unique model'), 'info', 0, 2, 2);
+		// Checking arguments
 		$args = $this->_checkArgs(2, array('plugin', 'model'));
 		$part = $this->Sbc->getModelPart($args['model']);
 		$this->_model($args['plugin'], $part);
-		$this->speak(__d('superBake', '"%s" model has been generated in plugin "%s"', array($args['model'], $args['plugin'])), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', '"%s" model has been generated in plugin "%s"', array($args['model'], $args['plugin'])), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -416,7 +428,7 @@ class ShellShell extends SbShell {
 			$this->speak(__d('superBake', 'Generating model %s...', $modelConfig['plugin'] . '.' . $model), 'info', 0, 1, 1);
 			$this->_model($modelConfig['plugin'], $modelConfig['part']);
 		}
-		$this->speak(__d('superBake', 'Models generation complete'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'Models generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -434,6 +446,7 @@ class ShellShell extends SbShell {
 			$part = $this->Sbc->getModelPart($model);
 			$this->_model($args['plugin'], $part);
 		}
+		$this->speak(__d('superBake', 'Models generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -468,17 +481,20 @@ class ShellShell extends SbShell {
 	 * @return string Choosen model name
 	 */
 	protected function _getModelName($plugin) {
+		// Getting model list for models in $plugin
 		$models = $this->Sbc->getModelsList($plugin);
-
 		$count = count($models);
 
 		$this->out(__d('cake_console', 'Possible Models for the "%s" plugin, based on your current config file:', $plugin));
 		$len = strlen($count + 1);
+
+		// List output
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $models[$i]));
+			$this->out(sprintf("%${len}d. %s", $i + 1, $models[$i]), 1,  Shell::QUIET);
 		}
 		$enteredModel = '';
 
+		// Waiting for a valid choice
 		while (!$enteredModel) {
 			$enteredModel = $this->in(__d('cake_console', "Enter a number from the list above, or 'q' to exit"), null, 'q');
 
@@ -488,8 +504,8 @@ class ShellShell extends SbShell {
 			}
 			$intEnteredModel = intval($enteredModel);
 			if (empty($intEnteredModel) || $intEnteredModel > $count) {
-				$this->err(__d('cake_console', "The Model name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+				$this->speak(__d('cake_console', "The Model name you supplied was empty,\n" .
+												"or the number you selected was not an option. Please try again.", 'error', 0));
 				$enteredModel = '';
 			}
 		}
@@ -508,8 +524,7 @@ class ShellShell extends SbShell {
 		$this->speak(__d('superBake', 'Building unique controller'), 'info', 0, 2, 2);
 		$args = $this->_checkArgs(2, array('plugin', 'controller'));
 		$this->_controller($args['plugin'], $args['controller']);
-		$this->out('', 1, 0);
-		$this->speak(__d('superBake', '"%s" controller has been generated in plugin "%s"', array($args['controller'], $args['plugin'])), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', '"%s" controller has been generated in plugin "%s"', array($args['controller'], $args['plugin'])), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -525,7 +540,7 @@ class ShellShell extends SbShell {
 			$this->speak(__d('superBake', 'Generating controller %s...', $controllerConfig['plugin'] . '.' . $controller), 'info', 0, 1, 1);
 			$this->_controller($controllerConfig['plugin'], $controllerConfig['part']);
 		}
-		$this->speak(__d('superBake', 'Controller generation complete'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'Controller generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -542,6 +557,7 @@ class ShellShell extends SbShell {
 		foreach ($controllers as $controller) {
 			$this->_controller($args['plugin'], $controller);
 		}
+		$this->speak(__d('superBake', 'Controller generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -551,17 +567,19 @@ class ShellShell extends SbShell {
 	 * @return string Choosen controller name
 	 */
 	protected function _getControllerName($plugin) {
+		// Getting the controller list for the plugin
 		$controllers = $this->Sbc->getControllersList($plugin);
-
 		$count = count($controllers);
 
 		$this->out(__d('cake_console', 'Possible Controllers for the "%s" plugin, based on your current config file:', $plugin));
 		$len = strlen($count + 1);
+		// List display
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $controllers[$i]));
+			$this->out(sprintf("%${len}d. %s", $i + 1, $controllers[$i]), 1,  Shell::QUIET);
 		}
 		$enteredController = '';
 
+		// Waiting for a valid choice
 		while (!$enteredController) {
 			$enteredController = $this->in(__d('cake_console', "Enter a number from the list above, or 'q' to exit"), null, 'q');
 
@@ -571,8 +589,8 @@ class ShellShell extends SbShell {
 			}
 			$intEnteredController = intval($enteredController);
 			if (empty($intEnteredController) || $intEnteredController > $count) {
-				$this->err(__d('cake_console', "The Controller name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+				$this->speak(__d('cake_console', "The Controller name you supplied was empty,\n" .
+												"or the number you selected was not an option. Please try again.", 'error', 0));
 				$enteredController = '';
 			}
 		}
@@ -641,8 +659,7 @@ class ShellShell extends SbShell {
 		$this->speak(__d('superBake', 'Building unique view'), 'info', 0, 2, 2);
 		$args = $this->_checkArgs(3, array('plugin', 'controller', 'view'));
 		$this->_view($args['plugin'], $args['controller'], $args['view']);
-		$this->out('', 1, 0);
-		$this->speak(__d('superBake', '"%s" view has been generated for controller "%s" in plugin "%s"', array($args['view'], $args['controller'], $args['plugin'])), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', '"%s" view has been generated for controller "%s" in plugin "%s"', array($args['view'], $args['controller'], $args['plugin'])), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -666,7 +683,7 @@ class ShellShell extends SbShell {
 				}
 			}
 		}
-		$this->speak(__d('superBake', 'View generation complete'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'View generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -677,7 +694,7 @@ class ShellShell extends SbShell {
 	 *  $ cake Sb.Shell pluginViews PluginName
 	 */
 	public function pluginViews() {
-		$this->speak(__d('superBake', 'Building ALL views for a plugin'), 'info', 0, 2);
+		$this->speak(__d('superBake', 'Building ALL views for a plugin'), 'info', 0, 2, 2);
 
 		$args = $this->_checkArgs(1, array('plugin'));
 
@@ -691,6 +708,7 @@ class ShellShell extends SbShell {
 				}
 			}
 		}
+		$this->speak(__d('superBake', 'View generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -708,14 +726,14 @@ class ShellShell extends SbShell {
 		$controller = $args['controller'];
 		$part = $this->Sbc->getControllerPart($controller);
 
-		$this->speak(__d('superBake', 'Building views for controller "%s.%s"', array($plugin, $controller)), 'info', 0, 2);
+		$this->speak(__d('superBake', 'Building views for controller "%s.%s"', array($plugin, $controller)), 'info', 0, 2, 2);
 		$views = $this->Sbc->getViewsToBake();
 
 		foreach ($views[$plugin][$part] as $prefix => $actions) {
 			foreach ($actions as $action)
 				$this->_view($plugin, $part, $this->Sbc->actionAddPrefix($action, $prefix));
 		}
-		$this->speak(__d('superBake', 'Views for "%s.%s" have been generated', array($plugin, $controller)), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'Views for "%s.%s" have been generated', array($plugin, $controller)), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -787,7 +805,7 @@ class ShellShell extends SbShell {
 		$this->out(__d('cake_console', 'Possible Actions for the "%s" plugin, based on your current config file:', $plugin));
 		$len = strlen($count + 1);
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $actions[$i]));
+			$this->out(sprintf("%${len}d. %s", $i + 1, $actions[$i]), 1,  Shell::QUIET);
 		}
 		$enteredAction = '';
 
@@ -800,8 +818,8 @@ class ShellShell extends SbShell {
 			}
 
 			if (!$enteredAction || intval($enteredAction) > $count) {
-				$this->err(__d('cake_console', "The Action name you supplied was empty,\n" .
-								"or the number you selected was not an option. Please try again."));
+				$this->speak(__d('cake_console', "The Action name you supplied was empty,\n" .
+												"or the number you selected was not an option. Please try again.", 'error', 0));
 				$enteredAction = '';
 			}
 		}
@@ -820,7 +838,7 @@ class ShellShell extends SbShell {
 				$this->_menu($plugin, $menu);
 			}
 		}
-		$this->speak(__d('superBake', 'Menu generation complete'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'Menu generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -861,7 +879,7 @@ class ShellShell extends SbShell {
 				$this->_file($plugin, $file);
 			}
 		}
-		$this->speak(__d('superBake', 'Files generation complete'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'Files generation complete'), 'success', 0, 2, 1);
 	}
 
 	/**
@@ -899,7 +917,7 @@ class ShellShell extends SbShell {
 				$this->_required($plugin, $requiredFile);
 			}
 		}
-		$this->speak(__d('superBake', 'Files and folders copied.'), 'success', 0, 2, 2);
+		$this->speak(__d('superBake', 'Files and folders copied.'), 'success', 0, 2, 1);
 	}
 
 	protected function _required($plugin, $required) {
@@ -929,51 +947,51 @@ class ShellShell extends SbShell {
 		$name = ($this->plugin ? $this->plugin . '.' : '') . $this->name;
 		$parser = new ConsoleOptionParser($name);
 		return $parser->description(__d('superBake', 'The Super Bake shell generates plugins, models, views, files and menus ' .
-								'for your application.' .
-								' If run with no command line arguments, superBake will guide you through the creation process.' .
-								' You can use arguments to a quicker generation.' . "\n\n This help system is quite broken, use the docs instead."
-								// Batch generation
-				))->addSubcommand('plugins', array(
-					'help' => __d('superBake', 'Creates all the plugins directories skeletons.'),
-				))->addSubcommand('mvc', array(
-					'help' => __d('superBake', 'Bakes all Models/Controllers/Views, in their specific plugin dirs.'),
-				))->addSubcommand('all', array(
-					'help' => __d('superBake', 'Bakes all Models/Controllers/Views/menus/files, in their specific plugin dirs, and copies required files. Use with care.'),
-				))->addSubcommand('models', array(
-					'help' => __d('superBake', 'Bakes all the models, in their specfic plugin dir.'),
-				))->addSubcommand('controllers', array(
-					'help' => __d('superBake', 'Bakes all controllers in their specific plugin dir.'),
-				))->addSubcommand('views', array(
-					'help' => __d('superBake', 'Bakes all views, for controllers methods, in their specific plugin dir'),
-						// Plugins
-				))->addSubcommand('pluginMVC', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all MVC for a specific plugin.'),
-						// Models
-				))->addSubcommand('pluginModels', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all models in a plugin.'),
-				))->addSubcommand('model', array(
-					'help' => __d('superBake', '<pluginName>.<modelName> - Bakes a specific model.'),
-						// Controllers
-				))->addSubcommand('pluginControllers', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all controllers in a plugin.'),
-				))->addSubcommand('controller', array(
-					'help' => __d('superBake', '<pluginName>.<controllerName> - Bakes a specific controller.'),
-						// Views
-				))->addSubcommand('pluginViews', array(
-					'help' => __d('superBake', '<pluginName> - Bakes all views in a plugin.'),
-				))->addSubcommand('controllerViews', array(
-					'help' => __d('superBake', '<pluginName>.<ControllerName> - Bakes all views in a plugin.'),
-				))->addSubcommand('view', array(
-					'help' => __d('superBake', '<pluginName>.<controllerName>.<actionName> - Bakes a specific view.'),
-						// Menus
-				))->addSubcommand('menus', array(
-					'help' => __d('superBake', 'Creates the menu file(s).'),
-						// Files
-				))->addSubcommand('files', array(
-					'help' => __d('superBake', 'Generates standalone files.'),
-						// Required
-				))->addSubcommand('required', array(
-					'help' => __d('superBake', 'Copies files and folders.'),
+														'for your application.' .
+														' If run with no command line arguments, superBake will guide you through the creation process.' .
+														' You can use arguments to a quicker generation.' . "\n\n This help system is quite broken, use the docs instead."
+														// Batch generation
+						))->addSubcommand('plugins', array(
+								'help' => __d('superBake', 'Creates all the plugins directories skeletons.'),
+						))->addSubcommand('mvc', array(
+								'help' => __d('superBake', 'Bakes all Models/Controllers/Views, in their specific plugin dirs.'),
+						))->addSubcommand('all', array(
+								'help' => __d('superBake', 'Bakes all Models/Controllers/Views/menus/files, in their specific plugin dirs, and copies required files. Use with care.'),
+						))->addSubcommand('models', array(
+								'help' => __d('superBake', 'Bakes all the models, in their specfic plugin dir.'),
+						))->addSubcommand('controllers', array(
+								'help' => __d('superBake', 'Bakes all controllers in their specific plugin dir.'),
+						))->addSubcommand('views', array(
+								'help' => __d('superBake', 'Bakes all views, for controllers methods, in their specific plugin dir'),
+										// Plugins
+						))->addSubcommand('pluginMVC', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all MVC for a specific plugin.'),
+										// Models
+						))->addSubcommand('pluginModels', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all models in a plugin.'),
+						))->addSubcommand('model', array(
+								'help' => __d('superBake', '<pluginName>.<modelName> - Bakes a specific model.'),
+										// Controllers
+						))->addSubcommand('pluginControllers', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all controllers in a plugin.'),
+						))->addSubcommand('controller', array(
+								'help' => __d('superBake', '<pluginName>.<controllerName> - Bakes a specific controller.'),
+										// Views
+						))->addSubcommand('pluginViews', array(
+								'help' => __d('superBake', '<pluginName> - Bakes all views in a plugin.'),
+						))->addSubcommand('controllerViews', array(
+								'help' => __d('superBake', '<pluginName>.<ControllerName> - Bakes all views in a plugin.'),
+						))->addSubcommand('view', array(
+								'help' => __d('superBake', '<pluginName>.<controllerName>.<actionName> - Bakes a specific view.'),
+										// Menus
+						))->addSubcommand('menus', array(
+								'help' => __d('superBake', 'Creates the menu file(s).'),
+										// Files
+						))->addSubcommand('files', array(
+								'help' => __d('superBake', 'Generates standalone files.'),
+										// Required
+						))->addSubcommand('required', array(
+								'help' => __d('superBake', 'Copies files and folders.'),
 		));
 	}
 
@@ -1116,7 +1134,7 @@ class ShellShell extends SbShell {
 	 */
 	protected function _loadConfig() {
 		if ($this->_initialized === 1) {
-			$this->out('AppShell already initialized');
+			$this->speak('AppShell already initialized', 'warning', 0);
 			return true;
 		}
 

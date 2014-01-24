@@ -116,7 +116,7 @@ class SuperPluginTask extends SbShell {
 		foreach ($pathOptions as $possiblePath) {
 			if (preg_match($ereg, $possiblePath)) {
 				$this->path = $possiblePath;
-				$this->out(__d('superBake', 'The "%s" plugin will be created in the "%s" dir.', $plugin, $this->path), 1, Shell::VERBOSE);
+				$this->speak(__d('superBake', 'The "%s" plugin will be created in the "%s" dir.', $plugin, $this->path), 'info', 0);
 			}
 		}
 		// Checks if the plugin folder exists, and creates the directory structure
@@ -197,10 +197,9 @@ class SuperPluginTask extends SbShell {
 				$this->_modifyBootstrap($plugin);
 			}
 
-			$this->hr();
-			$this->out(__d('cake_console', '<success>Created:</success> %s in %s', $plugin, $this->path . $plugin), 2);
+			$this->speak(__d('cake_console', 'Plugin created'), 'success', 0);
 		} else {
-			$this->out(__d('superBake', '<warning>The "%s" plugin was not created, as its folder already exists.</warning>', $plugin));
+			$this->speak(__d('superBake', 'The "%s" plugin was not created, as its folder already exists.', $plugin), 'warning', 0);
 		}
 
 		return true;
@@ -218,8 +217,7 @@ class SuperPluginTask extends SbShell {
 		$contents = $bootstrap->read();
 		if (!preg_match("@\n\s*CakePlugin::loadAll@", $contents)) {
 			$bootstrap->append("\nCakePlugin::load('$plugin', array('bootstrap' => false, 'routes' => false));\n");
-			$this->out('');
-			$this->out(__d('superBake', '%s modified', $this->bootstrap));
+			$this->speak(__d('superBake', '%s modified', $this->bootstrap), 'info', 1);
 		}
 	}
 

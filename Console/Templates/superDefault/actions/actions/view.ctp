@@ -109,7 +109,7 @@ if ($this->Sbc->getConfig('theme.language.useLanguages') === true):
 			// Fields
 			App::uses($fModel, $fPlugin . 'Model');
 			if (!class_exists($fModel)):
-				$this->err(__d('superBake', 'You should already have baked the controller dependencies (linked models) to build this method with the current options set. Please try again.'));
+				$this->speak(__d('superBake', 'You should already have baked the controller dependencies (linked models) to build this method with the current options set. Please try again.'), 'error', 0, 1, 2);
 				$this->_stop();
 			endif;
 			$lModel = ClassRegistry::init($fModel);

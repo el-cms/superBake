@@ -13,7 +13,7 @@ if(!isset($enableCache)){
 }
 
 // Enable Acls: default is false
-	$enableAcl=$this->Sbc->getConfig('theme.enableAcl');
+$enableAcl=$this->Sbc->getConfig('theme.enableAcl');
 
 // enableDebugKit: default is false
 if(!isset($enableDebugKit)){

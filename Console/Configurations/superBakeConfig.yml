@@ -102,12 +102,15 @@ general:
 
   ## If set to false, session-related methods will not be included in generated files.
   useSessions: true
+
+
 #--------------------------------------------------------------------------
 #
 # Global options for the theme
 # Here you can set things related to your template.
 #
 #--------------------------------------------------------------------------
+
 theme:
   ## Default template have custom flash message elements. If you set this value to true,
   ## flash messages will need them.

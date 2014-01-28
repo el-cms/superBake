@@ -13,24 +13,40 @@
  * This file is based on the lib/Cake/Console/Command/Task/ControllerTask.php file
  * from CakePHP.
  *
- * ----
+ * Added methods/vars:
+ * ==============
+ *	getControllerPath()
+ *	getPrefix()
+ * -----
+ *	$Sbc
+ *	$currentPart
  *
- *  This file is part of EL-CMS.
+ * Deleted methods/vars:
+ * ================
+ *	_askAboutMethods()
+ *  _doPropertiesChoice()
+ *	_interactive()
+ *	all()
+ *	confirmController()
+ *	doComponents()
+ *	doHelpers()
+ *	getName()
+ *	getOptionParser()
+ *	listAll()
  *
- *  EL-CMS is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
  *
- *  EL-CMS is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * Modified methods:
+ * =================
+ *	bake()
+ *	bakeActions()
+ *	execute()
  *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
+ * Original methods:
+ * =================
+ *	bakeTest()
+ *	initialize()
  */
+
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 

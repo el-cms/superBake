@@ -89,7 +89,7 @@ if (!isset($options['fileField'])) {
 					$filename = substr($file['name'], 0, -(strlen($ext) + 1)) . '-' . time() . '.' . $ext;
 			<?php
 			// Checking file type
-			switch ($fileField['type']) {
+			switch ($fileField['type']):
 					case 'file':
 						// Just move to dest folder
 						?>
@@ -143,7 +143,7 @@ if (!isset($options['fileField'])) {
 						echo "//\n// UNKNOWN FILE TYPE SPECIFIED\n//\n";
 						$this->speak(__d('superBake', 'Unknown file type specified in action.', 'error'));
 						break;
-				}
+				endswitch;
 			?>
 
 					//File name for DB entry

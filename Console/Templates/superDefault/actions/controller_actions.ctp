@@ -59,8 +59,9 @@ $actionsToBake = $this->Sbc->getActionsToBake($this->cleanPlugin($plugin), $curr
 //
 foreach ($actionsToBake as $a => $actionConfig) {
 	$this->speak("$prefix - $a");
-	// list of options to be unset after generation
+	// List of options to be unset after generation
 	$actionOptions = array();
+
 	// Making options available for action template
 	foreach ($actionConfig as $k => $v) {
 		${$k} = $v;

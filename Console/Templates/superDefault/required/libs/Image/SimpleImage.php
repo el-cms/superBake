@@ -64,7 +64,7 @@ class SimpleImage {
 			}
 		}
 		$this->currentImage = $this->image;
-		// Logging this
+
 		return true;
 	}
 
@@ -101,6 +101,7 @@ class SimpleImage {
 		if ($permissions != null) {
 			chmod($filename, $permissions);
 		}
+
 		return true;
 	}
 
@@ -246,6 +247,15 @@ class SimpleImage {
 	}
 
 	/**
+	 * Adds a message to the modification log
+	 * 
+	 * @param string $message Message to add
+	 */
+	function log($message) {
+		$this->log[] = $message;
+	}
+
+	/**
 	 * Resets the current image to original image.
 	 *
 	 * @return boolean
@@ -256,6 +266,14 @@ class SimpleImage {
 		return true;
 	}
 
+	/**
+	 * Returns the log array.
+	 * 
+	 * @return array
+	 */
+	function getLog() {
+		return $this->log;
+	}
 
 	/**
 	 * Resize the image, based on th smallest side.

@@ -21,6 +21,6 @@ if(!isset($layout)){
 
 // If no layout is specified in config file for current action, no specific layout declaration will be made.
 if (!is_null($layout)) :
-	echo "\$this->layout = $layout;\n";
+	echo "\$this->layout = '$layout';\n";
 endif;
 ?>

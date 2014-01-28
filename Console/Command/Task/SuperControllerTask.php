@@ -34,17 +34,19 @@
  *	getOptionParser()
  *	listAll()
  *
- *
  * Modified methods:
  * =================
  *	bake()
  *	bakeActions()
  *	execute()
  *
- * Original methods:
+ * Original methods/vars:
  * =================
  *	bakeTest()
  *	initialize()
+ * -----
+ *	$path
+ *	$tasks
  */
 
 // SbShell from superBake

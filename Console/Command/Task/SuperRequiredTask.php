@@ -2,19 +2,46 @@
 
 /**
  * The Required task handles needed files from the theme.
+ * 
+ * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+ * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+ * @link          http://experimentslabs.com Experiments Labs
+ * @package       ELCMS.superBake.Task
+ * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+ * @version       0.3
+ * 
+ * This task is based on the original CakePHP's PluginTask.
+ * 
+ * Added methods/vars:
+ * ==============
+ *	copyDir()
+ *	copyFile()
+ * -----
+ *	$plugin
+ *	$required
+ *	$tasks
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Deleted methods/vars:
+ * ================
+ *	_interactive()
+ *	_modifyBootstrap()
+ *	findPath()
+ *	getOptionParser()
+ * -----
+ *	$bootstrap
+ * 
+ * Modified methods:
+ * =================
+ *	bake()
+ *	execute()
  *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @since         CakePHP(tm) v 1.2
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * Original methods/vars:
+ * =================
+ *	initialize()
+ * -----
+ *	$path
  */
+
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 // Template from superBake

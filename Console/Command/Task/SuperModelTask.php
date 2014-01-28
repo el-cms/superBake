@@ -12,26 +12,61 @@
  *
  * This file is based on the lib/Cake/Console/Command/Task/ModelTask.php file
  * from CakePHP.
+ * 
+ * Added methods/vars:
+ * ==============
+ *	getPath()
+ * -----
+ *	$Sbc
+ *	$currentPart
+ *	$params
  *
- *
- * ----
- *
- *  This file is part of EL-CMS.
- *
- *  EL-CMS is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  EL-CMS is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
+ * Deleted methods/vars:
+ * ================
+ *	_generatePossibleKeys()
+ *	_interactive()
+ *	_printAssociations()
+ *	all()
+ *	doActAs()
+ *	doMoreAssociations()
+ *	findPrimaryKey()
+ *	getName()
+ *	inOptions()
+ * -----
+ *	$skipTables
+ * 
+ * Modified methods:
+ * =================
+ *	bake()
+ *	bakeFixture()
+ *	bakeTest()
+ *	doAssociations()
+ *	execute()
+ *	fieldValidation()
+ *	findDisplayField()
+ *	getOptionParser()
+ *	getTable()
+ *	listAll();
+ *	
+ * Original methods/vars:
+ * =================
+ *	_getModelObject()
+ *	confirmAssociations()
+ *	doValidation()
+ *	findBelongsTo()
+ *	findHasAndBelongsToMany()
+ *	findHasOneAndMany()
+ *	getAllTables()
+ *	initialize()
+ *	initValidation()
+ *	----
+ *	$_modelNames
+ *	$_tables
+ *	$_validations
+ *	$path
+ *	$tasks
  */
+
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 // Bake from superBake

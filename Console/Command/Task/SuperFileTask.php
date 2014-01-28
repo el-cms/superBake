@@ -12,25 +12,47 @@
  *
  * This file is based on the lib/Cake/Console/Command/Task/ViewTask.php file
  * from CakePHP.
+ * 
+ * Added methods/vars:
+ * ==============
+ *	getFilePath()
+ * -----
+ *	$Sbc
+ *	$currentFileConfig
+ *	$fileType
+ *	$plugin
  *
- * ----
+ * Deleted methods/vars:
+ * ================
+ *	_associations()
+ *	_interactive()
+ *	_loadController()
+ *	_methodsToBake()
+ *	all()
+ *	bakeActions()
+ *	customAction()
+ *	getOptionParser()
+ *	getTemplate()
+ * -----
+ *	$controllerName
+ *	$noTemplateAction
+ *	$scaffoldActions
+ * 
+ * Modified methods:
+ * =================
+ *	bake()
+ *	execute()
+ *	getContent()
  *
- *  This file is part of EL-CMS.
- *
- *  EL-CMS is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  EL-CMS is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
+ * Original methods/vars:
+ * =================
+ *	initialize()
+ *	----
+ *	$path
+ *	$tasks
+ *	$template
  */
+
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 

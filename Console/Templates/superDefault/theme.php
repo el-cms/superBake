@@ -53,7 +53,7 @@ class sTheme {
 	 *
 	 * @return string String to add in the HTML
 	 */
-	function v_newBtGroup($content) {
+	public static function v_newBtGroup($content) {
 		$toolbar = "\t<ul>\n";
 		foreach ($content as $item) {
 			$toolbar.= "\t\t<li>" . $item . "</li>\n";

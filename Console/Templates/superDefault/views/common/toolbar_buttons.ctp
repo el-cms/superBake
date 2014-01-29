@@ -49,7 +49,7 @@ if (!isset($noToolbar)) {
 	$noToolbar = false;
 }
 
-if ($noToolbar === false):
+if ($noToolbar == false):
 	// ---
 	// Creating the toolbar
 	// ---
@@ -65,7 +65,7 @@ if ($noToolbar === false):
 	$current_toolbar = array();
 
 	// Index
-	if ($this->canDo('index')) {
+	if ($this->canDo('index') === true) {
 		$current_toolbar[] = "<?php echo \$this->Html->Link(" . $this->iString("List " . strtolower($pluralHumanName)) . "," . $this->url('index', $pluralVar) . ");?>";
 	}
 
@@ -81,7 +81,7 @@ if ($noToolbar === false):
 
 	// (Only on view)
 	if ($this->canDo('delete') && $viewIsAnItem) {
-		$current_toolbar[] = "<?php echo \$this->Form->postLink(" . $this->iString("Delete") . ", " . $this->url('delete', null, null, "\${$singularVar}['{$modelClass}']['{$primaryKey}']") . ", array('confirm' => __('Are you sure you want to delete \"%s\"?', \${$singularVar}['{$modelClass}']['{$displayField}']), 'title'=>__('Delete this entry')); ?>";
+		$current_toolbar[] = "<?php echo \$this->Form->postLink(" . $this->iString("Delete") . ", " . $this->url('delete', null, null, "\${$singularVar}['{$modelClass}']['{$primaryKey}']") . ", array('confirm' => __('Are you sure you want to delete \"%s\"?', \${$singularVar}['{$modelClass}']['{$displayField}']), 'title'=>__('Delete this entry'))); ?>";
 	}
 	// Toolbar : Current controller
 	if (count($current_toolbar) > 0) {

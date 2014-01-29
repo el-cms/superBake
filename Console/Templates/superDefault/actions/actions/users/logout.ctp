@@ -39,7 +39,8 @@
 	 */
 	public function <?php echo $admin.$a ?>() {
 <?php if($this->Sbc->getConfig('theme.enableAcl')):?>
-		<?php echo $this->setFlash('You are now disconnected', 'info', "'/'", array('specialUrl' => true));?>
+		<?php echo $this->setFlash('You are now disconnected', 'info', "'/'", array('specialUrl' => true, 'redirect'=>false));?>
+		$this->redirect($this->Auth->logout('/'));
 <?php else:
 		// 'theme.enableAcl' set to false, so the methods will display a flash
 		// message and do nothing.

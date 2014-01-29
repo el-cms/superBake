@@ -120,6 +120,7 @@ endif;
 		foreach ($fields as $field):
 			if (!in_array($field, $hiddenFields)):
 
+				// Field belongs to another model (foreign key)
 				$isKey = false;
 				if (!empty($associations['belongsTo'])):
 					foreach ($associations['belongsTo'] as $alias => $details):
@@ -131,12 +132,16 @@ endif;
 						endif;
 					endforeach;
 				endif;
+				// Field is just a field
 				if ($isKey !== true):
+					// Field is a language field
 					if (count($languageFields) > 0 && in_array($field, $languageFields)):
 						$content = "((!empty(\${$singularVar}['{$modelClass}']['{$field}']))?\${$singularVar}['{$modelClass}']['{$field}']:'<i " . sTheme::v_tooltip("'." . $this->iString('This item has not been translated yet. This is the original version.') . ".'", 'fa fa-warning text-warning') . " ></i> '.\${$singularVar}['{$modelClass}']['{$field}_default'])";
 					else:
+						// Field is just a field
 						$content = "\${$singularVar}['{$modelClass}']['{$field}']";
 					endif;
+					// Display the field
 					echo "\t\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
 					echo "\t\t\t<dd><?php echo $content; ?></dd>\n";
 				endif;
@@ -144,94 +149,94 @@ endif;
 		endforeach;
 		?>
 	</dl>
-</div>
-<?php
-// Toolbar : Hidden controllers are handled in the toolbar template file
-if ($noToolbar === false):
-	include dirname(__FILE__) . DS . 'common' . DS . 'toolbar_buttons.ctp';
-endif;
-/* ----------------------------------------------------------------------------
- * HasOne associations
- */
-if (!empty($associations['hasOne'])):
-	foreach ($associations['hasOne'] as $alias => $details):
-		?>
-		<div class="related">
-			<h3><?php echo "<?php echo " . $this->iString("Related " . Inflector::humanize($details['controller'])) . "; ?>"; ?></h3>
-			<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
-			<dl>
-				<?php
-				foreach ($details['fields'] as $field):
-					echo "\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
-					echo "\t\t<dd>\n\t<?php echo \${$singularVar}['{$alias}']['{$field}']; ?>\n&nbsp;</dd>\n";
-				endforeach;
-				?>
-			</dl>
-			<?php echo "<?php endif; ?>\n"; ?>
-			<div class="actions">
-				<ul>
-					<li><?php echo "<?php echo \$this->Html->link(" . $this->iString("Edit " . Inflector::humanize(Inflector::underscore($alias))) . ", " . $this->url('edit', $details['controller'], null, "\${$singularVar}['{$alias}']['{$details['primaryKey']}']") . "); ?></li>\n"; ?>
-				</ul>
+
+	<?php
+	/* ----------------------------------------------------------------------------
+	 * HasOne associations
+	 */
+	if (!empty($associations['hasOne'])):
+		foreach ($associations['hasOne'] as $alias => $details):
+			?>
+			<div class="related">
+				<h3><?php echo "<?php echo " . $this->iString("Related " . Inflector::humanize($details['controller'])) . "; ?>"; ?></h3>
+				<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
+				<dl>
+					<?php
+					foreach ($details['fields'] as $field):
+						echo "\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
+						echo "\t\t<dd>\n\t<?php echo \${$singularVar}['{$alias}']['{$field}']; ?>\n&nbsp;</dd>\n";
+					endforeach;
+					?>
+				</dl>
+				<?php echo "<?php endif; ?>\n"; ?>
+				<div class="actions">
+					<ul>
+						<li><?php echo "<?php echo \$this->Html->link(" . $this->iString("Edit " . Inflector::humanize(Inflector::underscore($alias))) . ", " . $this->url('edit', $details['controller'], null, "\${$singularVar}['{$alias}']['{$details['primaryKey']}']") . "); ?></li>\n"; ?>
+					</ul>
+				</div>
 			</div>
-		</div>
-		<?php
-	endforeach;
-endif;
+			<?php
+		endforeach;
+	endif;
 
-/* ----------------------------------------------------------------------------
- * HasMany associations
- */
-if (empty($associations['hasMany'])):
-	$associations['hasMany'] = array();
-endif;
-if (empty($associations['hasAndBelongsToMany'])):
-	$associations['hasAndBelongsToMany'] = array();
-endif;
-$relations = array_merge($associations['hasMany'], $associations['hasAndBelongsToMany']);
-$i = 0;
+	/* ----------------------------------------------------------------------------
+	 * HasMany associations
+	 */
+	if (empty($associations['hasMany'])):
+		$associations['hasMany'] = array();
+	endif;
+	if (empty($associations['hasAndBelongsToMany'])):
+		$associations['hasAndBelongsToMany'] = array();
+	endif;
+	$relations = array_merge($associations['hasMany'], $associations['hasAndBelongsToMany']);
+	$i = 0;
 
-$has_assoc = 0;
-$active = 'class="active"';
-$inline_active = ' active';
-$lis = '';
-$divs = '';
-foreach ($relations as $alias => $details):
-	// CamelCasing controller name
-	$ccController = Inflector::camelize($details['controller']);
-	if (!in_array($ccController, $hasMany_hiddenModels)):
-		$has_assoc+=1;
+	$has_assoc = 0;
+	$active = 'class="active"';
+	$inline_active = ' active';
+	$lis = '';
+	$divs = '';
+	foreach ($relations as $alias => $details):
+		// CamelCasing controller name
+		$ccController = Inflector::camelize($details['controller']);
+		if (!in_array($ccController, $hasMany_hiddenModels)):
+			$has_assoc+=1;
 
-		$otherSingularVar = Inflector::variable($alias);
-		$otherPluralHumanName = Inflector::humanize($details['controller']);
-		?>
-		<h3><?php echo "<?php echo __('Related " . $otherPluralHumanName . "'); ?>"; ?></h3>
-		<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
-		<table cellpadding = "0" cellspacing = "0">
-			<tr>
+			$otherSingularVar = Inflector::variable($alias);
+			$otherPluralHumanName = Inflector::humanize($details['controller']);
+			?>
+			<h3><?php echo "<?php echo __('Related " . $otherPluralHumanName . "'); ?>"; ?></h3>
+			<?php echo "<?php if (!empty(\${$singularVar}['{$alias}'])): ?>\n"; ?>
+			<table cellpadding = "0" cellspacing = "0">
+				<tr>
+					<?php
+					// Fields names
+					foreach ($details['fields'] as $field):
+						if ((isset($hasMany_hiddenModelFields[Inflector::camelize($details['controller'])]) && !in_array($field, $hasMany_hiddenModelFields[Inflector::camelize($details['controller'])])) || !isset($hasMany_hiddenModelFields[Inflector::camelize($details['controller'])])):
+							echo "\t<th><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></th>\n";
+						endif;
+					endforeach;
+
+					// Action col
+					if ($relatedDataHideActionsList === false && $hasMany_hideActions === false):
+						echo "\t<th class=\"actions\"><?php echo __('Actions'); ?></th>\n";
+					endif;
+					?>
+				</tr>
 				<?php
+				echo "\t<?php foreach (\${$singularVar}['{$alias}'] as \${$otherSingularVar}): ?>\n";
+				echo "\t\t<tr>\n";
+				// Fields values
 				foreach ($details['fields'] as $field):
-					if (empty($hasMany_hiddenModelFields) || (!empty($hasMany_hiddenModelFields[$details['controller']]) && !in_array($field, $hasMany_hiddenModelFields[$details['controller']]))):
-						echo "\t<th><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></th>\n";
+					if ((isset($hasMany_hiddenModelFields[Inflector::camelize($details['controller'])]) && !in_array($field, $hasMany_hiddenModelFields[Inflector::camelize($details['controller'])])) || !isset($hasMany_hiddenModelFields[Inflector::camelize($details['controller'])])):
+						echo "\t\t\t<td><?php echo \${$otherSingularVar}['{$field}']; ?></td>\n";
 					endif;
 				endforeach;
 
+				// Testing actions
 				if ($relatedDataHideActionsList === false && $hasMany_hideActions === false):
-					echo "\t<th class=\"actions\"><?php echo __('Actions'); ?></th>\n";
-				endif;
-				?>
-			</tr>
-			<?php
-			echo "\t<?php foreach (\${$singularVar}['{$alias}'] as \${$otherSingularVar}): ?>\n";
-			echo "\t\t<tr>\n";
-			foreach ($details['fields'] as $field):
-				echo "\t\t\t<td><?php echo \${$otherSingularVar}['{$field}']; ?></td>\n";
-			endforeach;
-
-			echo "\t\t\t<td class=\"actions\">\n";
-
-			// Testing actions
-			if ($relatedDataHideActionsList === false):
-				if ($hasMany_hideActions === false):
+					// Action buttons
+					echo "\t\t\t<td class=\"actions\">\n";
 					$hasActions = 0;
 					$disabled = '';
 					// "View" action
@@ -249,36 +254,27 @@ foreach ($relations as $alias => $details):
 						$hasActions = 1;
 						echo "\t\t\t\t<?php echo \$this->Form->postLink(__('Delete'), " . $this->url('delete', $details['controller'], null, "\${$otherSingularVar}['{$details['primaryKey']}']") . ", array('confirm'=>__('Are you sure you want to delete %s?', \${$otherSingularVar}['{$details['primaryKey']}']), 'title'=>__('Delete'), 'escape'=>false)); ?>\n";
 					endif;
+					if ($hasActions === 0):
+						echo "\t\t\t\t<?php echo " . $this->iString('No action.') . "; ?>";
+					endif;
+					echo "\t\t\t</td>\n";
 				endif;
-			endif;
 
-			echo "\t\t\t</td>\n";
-			echo "\t\t</tr>\n";
+				echo "\t\t</tr>\n";
 
-			echo "\t<?php endforeach; ?>\n";
-			?>
-		</table>
-		<?php
-		echo "<?php else:?>\n";
-		echo "<div><?php echo " . $this->iString('There is no ' . strtolower(Inflector::humanize(Inflector::underscore($alias))) . " related to this " . strtolower($singularHumanName)) . ";?></div>\n";
-		echo "<?php endif;?>\n";
-	endif;
-endforeach;
-
+				echo "\t<?php endforeach; ?>\n";
+				?>
+			</table>
+			<?php
+			echo "<?php else:?>\n";
+			echo "<div><?php echo " . $this->iString('There is no ' . strtolower(Inflector::humanize(Inflector::underscore($alias))) . " related to this " . strtolower($singularHumanName)) . ";?></div>\n";
+			echo "<?php endif;?>\n";
+		endif;
+	endforeach;
+	?>
+</div>
+<?php
 /* -----------------------------------------------------------------------------
  * Additionnal scripts and CSS
  */
-$out = '';
-foreach ($additionnalCSS as $k => $v):
-	if ($v === true):
-		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "');\n";
-	endif;
-endforeach;
-foreach ($additionnalJS as $k => $v):
-	if ($v === true):
-		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "');\n";
-	endif;
-endforeach;
-if (!empty($out)):
-	echo "<?php\n $out ?>";
-endif;
+include $themePath . 'views/common/additionnal_js_css.ctp';

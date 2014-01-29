@@ -8,25 +8,6 @@
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @package       ELCMS.superBake.Templates.Default.Views
  * @version       0.3
- *
- * @todo update datePicker: it should open inside the view.
- *
- * ----
- *  This file is part of EL-CMS.
- *
- *  EL-CMS is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  EL-CMS is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *
- *  You should have received a copy of the GNU General Public License
- *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Page headers and licensing
 include $themePath . 'views/common/headers.ctp';
@@ -103,22 +84,10 @@ endif;
 	echo "<?php echo \$this->Form->end(__('Submit')); ?>\n";
 	?>
 </div>
+
 <?php
 
 /* -----------------------------------------------------------------------------
  * Additionnal scripts and CSS
  */
-$out = '';
-foreach ($additionnalCSS as $k => $v) {
-	if ($v === true):
-		$out.= "\techo \$this->Html->css('" . $this->cleanPath($k) . "', array('inline'=>false));\n";
-	endif;
-}
-foreach ($additionnalJS as $k => $v) {
-	if ($v === true):
-		$out.="\techo \$this->Html->script('" . $this->cleanPath($k) . "', array('inline'=>false));\n";
-	endif;
-}
-if(!empty($out)):
-	echo "<?php\n $out ?>";
-endif;
+include $themePath.'views/common/additionnal_js_css.ctp';

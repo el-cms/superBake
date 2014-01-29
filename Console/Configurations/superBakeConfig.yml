@@ -121,6 +121,35 @@ theme:
   ## If you want to use ACLs with this option, you should use the
   ## '<template>/files/appController.ctp' template.
   enableAcl: false
+  ## Acls-related configuration
+  acls:
+    ## Roles model (usually Group or Role)
+    roleModel: Group
+    ## Role primary key
+    roleModelPK: id
+    ## Users model (usually User)
+    ## Note that the register action must be in the controller corresponding to
+    ## the model.
+    userModel: User
+    ## Users primary key
+    userModelPK: id
+    ## Defines if the user can choose his role during registration or on account edit.
+    userCanChooseRole: false
+    ## Default role Id (usually the id corresponding to an "user" role)
+    defaultRoleId: 2
+    ## Valid user status: condition for an user to log in. Keep empty if no condition
+    ## is required for login
+    validUserStatus: 1
+    ## User status field
+    userStatusField: status
+    ## Auto approve new users
+    defaultUserStatus: 1
+    ## Field used for authentication
+    userNameField: email
+    ## Password field (usually "password")
+    userPassField: password
+
+
   ## languages available in app:
   ## superBake default template have a support for different languages fields in DB.
   ## i.e: title_eng and title_fra. If you enable language support below, you will
@@ -225,29 +254,17 @@ defaults:
     ## Admin pages have all the basic CRUD actions
     admin:
       ## Index action
-      index:
-#        view:
-#          options:
-#            noToolbar: false
+      index: []
       ## View action
-      view:
-#        view:
-#          options:
-#            noToolbar: false
+      view: []
       ## Add action
-      add:
-#        view:
-#          options:
-#            noToolbar: false
+      add: []
       ## Delete action
       delete:
         ## Delete has no view
         haveView: false
       ## Edit action
-      edit:
-#        view:
-#          options:
-#            noToolbar: false
+      edit: []
 
   ##
   ## Default configuration for a controller
@@ -453,7 +470,6 @@ plugins:
         model:
           displayField: username
           snippets:
-            ## Snippet name : useless, just here to help you navigate in the config file.
             acls:
               path: acls::users
         controller:
@@ -500,7 +516,6 @@ plugins:
       admin_menu:
         template: menu
         targetPath: elements::menus::admin.ctp
-#        targetFileName: admin
         options:
           prefixes:
             admin
@@ -519,7 +534,6 @@ plugins:
       public_menu:
         generate: true
         template: menu
-#        targetFileName: public
         targetPath: elements::menus::public.ctp
         options:
           prefixes:
@@ -552,16 +566,12 @@ plugins:
       ## Custom bootstrap file
       bootstrap:
         targetPath: Config::bootstrap.php
-#        targetFileName: bootstrap
-#        ext: php
         template: bootstrap
 
       ##
       ## Custom AppController
       AppController:
         targetPath: Controller::AppController.php
-#        targetFileName: AppController
-#        ext: php
         template: appController
         options:
           ## Enable the Auth component
@@ -571,45 +581,38 @@ plugins:
       ## Layouts
       public_layout:
         targetPath: View::Layouts::default.ctp
-#        targetFileName: default
-#        ext: ctp
         template: layouts::default
       admin_layout:
         targetPath: View::Layouts::admin.ctp
-#        targetFileName: admin
-#        ext: ctp
         template: layouts::admin
 
       ##
       ## Flash messages elements
+
+      ## Errors
       flash_error:
         targetPath: View::Elements::flash_error.ctp
-#        targetFileName: flash_error
-#        ext: ctp
         template: elements::flash_message
         options:
-          alertClass: danger
+          alertClass: flash-danger
+      ## Warning
       flash_warning:
         targetPath: View::Elements::flash_warning.ctp
-#        targetFileName: flash_warning
-#        ext: ctp
         template: elements::flash_message
         options:
-          alertClass: warning
+          alertClass: flash-notice
+      ## Info
       flash_info:
         targetPath: View::Elements::flash_info.ctp
-#        targetFileName: flash_info
-#        ext: ctp
         template: elements::flash_message
         options:
-          alertClass: info
+          alertClass: flash-info
+      ## Success
       flash_succcess:
         targetPath: View::Elements::flash_success.ctp
-#        targetFileName: flash_success
-#        ext: ctp
         template: elements::flash_message
         options:
-          alertClass: success
+          alertClass: flash-success
 
     required:
       ##

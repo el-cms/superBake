@@ -135,27 +135,57 @@ CONTENT
 Flash messages
 
 ***************************************************************************** */
-
-.danger {
+.flash-danger, .flash-warning, .flash-info, .flash-success{
 	clear: both;
-	color: #fff;
-	background: #c43c35;
+	color: rgb(255, 255, 255);
 	border: 1px solid rgba(0, 0, 0, 0.5);
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+	margin-bottom: 18px;
+	padding: 7px 14px;
+	border-radius: 4px;
+	box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.25) inset;
+	font-size: 140%;
+	font-weight: bold;
+	margin: 0px 0px 1em;
 	background-repeat: repeat-x;
+}
+
+.flash-danger{
+	background: #c43c35;
 	background-image: -moz-linear-gradient(top, #ee5f5b, #c43c35);
 	background-image: -ms-linear-gradient(top, #ee5f5b, #c43c35);
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#ee5f5b), to(#c43c35));
 	background-image: -webkit-linear-gradient(top, #ee5f5b, #c43c35);
 	background-image: -o-linear-gradient(top, #ee5f5b, #c43c35);
 	background-image: linear-gradient(top, #ee5f5b, #c43c35);
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-	margin-bottom: 18px;
-	padding: 7px 14px;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.flash-warning{
+	background: #ffcc00;
+	background-image: -moz-linear-gradient(top, #ffcc00, #E6B800);
+	background-image: -ms-linear-gradient(top, #ffcc00, #E6B800);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffcc00), to(#E6B800));
+	background-image: -webkit-linear-gradient(top, #ffcc00, #E6B800);
+	background-image: -o-linear-gradient(top, #ffcc00, #E6B800);
+	background-image: linear-gradient(top, #ffcc00, #E6B800);
+}
+
+.flash-info{
+	background: #00ccff;
+	background-image: -moz-linear-gradient(top, #00ccff, #006680);
+	background-image: -ms-linear-gradient(top, #00ccff, #006680);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#00ccff), to(#006680));
+	background-image: -webkit-linear-gradient(top, #00ccff, #006680);
+	background-image: -o-linear-gradient(top, #00ccff, #006680);
+	background-image: linear-gradient(top, #00ccff, #006680);
+}
+
+.flash-success{
+	background: #3B8230;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#76BF6B), to(#3B8230));
+	background-image: -webkit-linear-gradient(top, #76BF6B, #3B8230);
+	background-image: -moz-linear-gradient(top, #76BF6B, #3B8230);
+	background-image: -ms-linear-gradient(top, #76BF6B, #3B8230);
+	background-image: -o-linear-gradient(top, #76BF6B, #3B8230);
+	background-image: linear-gradient(top, #76BF6B, #3B8230);
 }

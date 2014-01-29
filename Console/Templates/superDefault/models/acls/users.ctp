@@ -31,9 +31,22 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 
-//
-// Verifying options and setting default values.
-//
+/* ----------------------------------------------------------------------------
+ * Options from theme
+ */
+
+// User status field
+$userStatusField = $this->Sbc->getConfig('theme.acls.userStatusField');
+// User model
+$userModel = $this->Sbc->getConfig('theme.acls.userModel');
+$userModelPK = $this->Sbc->getConfig('theme.acls.userModelPK');
+// Password field
+$passField = $this->Sbc->getConfig('theme.acls.userPassField');
+// Role Model
+$roleModel = $this->Sbc->getConfig('theme.acls.roleModel');
+// Role PK
+$roleModelPK = $this->Sbc->getConfig('theme.acls.roleModelPK');
+
 ?>
 	/**
 	 * <?php echo $name?> acts as requester for ACLs
@@ -56,8 +69,6 @@
 		} else {
 			$this->data['<?php echo $name ?>']['<?php echo $passField ?>'] = Security::hash($this->data['<?php echo $name ?>']['<?php echo $passField ?>'], null, true);
 		}
-		#@todo : See things about <?php echo $name ?>.key...
-		//$this->data['<?php echo $name ?>']['key'] = String::uuid();
 
 		return true;
 	}
@@ -68,7 +79,7 @@
 	 * @return true
 	 */
 	public function beforeValidate($options = array()) {
-		if (isset($this->data['<?php echo $name ?>']['id'])) {
+		if (isset($this->data['<?php echo $name ?>']['<?php echo $userModelPK; ?>'])) {
 			$this->validate['<?php echo $passField ?>']['allowEmpty'] = true;
 		}
 
@@ -91,14 +102,14 @@
 		// User id set, we should be on an 'update' action
 		// User id set, AND
 		// empty password OR empty password2 (as browsers can autofill password field)
-		if (isset($this->data['<?php echo $name ?>']['id']) && (empty($check['<?php echo $passField ?>']) || empty($check['<?php echo $passCheckField ?>']))) {
+		if (isset($this->data['<?php echo $name ?>']['id']) && (empty($check['<?php echo $passField ?>']) || empty($check['<?php echo $passField ?>_verify']))) {
 			return true;
 		}
 
-		$r = ($check['<?php echo $passField ?>'] === $this->data['<?php echo $name ?>']['<?php echo $passCheckField ?>'] && strlen($check['<?php echo $passField ?>']) >= 6);
+		$r = ($check['<?php echo $passField ?>'] === $this->data['<?php echo $name ?>']['<?php echo $passField ?>_verify'] && strlen($check['<?php echo $passField ?>']) >= 6);
 
 		//if (!$r) {
-		//	$this->invalidate('<?php echo $passCheckField ?>', __d('user', 'Passwords missmatch.'));
+		//	$this->invalidate('<?php echo $passField ?>_verify', __d('user', 'Passwords missmatch.'));
 		//}
 
 		return $r;
@@ -106,20 +117,20 @@
 
 
 	/**
-	 * Binds <?php echo $name ?> to roles model for ACL
+	 * Binds <?php echo $name ?> to <?php echo $roleModel?> model for ACL
 	 */
 	public function parentNode() {
         if (!$this->id && empty($this->data)) {
             return null;
         }
-        if (isset($this->data['<?php echo $name ?>']['group_id'])) {
-            $groupId = $this->data['<?php echo $name ?>']['group_id'];
+        if (isset($this->data['<?php echo $name ?>']['<?php echo Inflector::underscore($roleModel)."_$roleModelPK"?>'])) {
+            $groupId = $this->data['<?php echo $name ?>']['<?php echo Inflector::underscore($roleModel)."_$roleModelPK"?>'];
         } else {
-            $groupId = $this->field('group_id');
+            $groupId = $this->field('<?php echo Inflector::underscore($roleModel)."_$roleModelPK"?>');
         }
         if (!$groupId) {
             return null;
         } else {
-            return array('Group' => array('id' => $groupId));
+            return array('<?php echo $roleModel; ?>' => array('<?php echo $roleModelPK; ?>' => $groupId));
         }
     }

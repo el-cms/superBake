@@ -130,6 +130,11 @@ CONTENT
 	box-shadow:inset 0px 2px 3px #555;
 }
 
+/* Hack to display empty dds properly */
+dd:before{
+	content: '';
+	margin-left: 1px;
+}
 /* *****************************************************************************
 
 Flash messages

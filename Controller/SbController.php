@@ -18,7 +18,7 @@ class SbController extends SbAppController {
 	 * @return void
 	 */
 	public function index() {
-		
+
 	}
 
 	/**
@@ -112,10 +112,13 @@ class SbController extends SbAppController {
 		$this->set('keepRest', $keep);
 	}
 
-	public function execute() {
-		$this->set('title_for_layout', 'Execute a command');
-	}
-
+	/**
+	 * Executes `Sb.Shell $command` and echoes the result.
+	 *
+	 * @param string $command
+	 *
+	 * @return void
+	 */
 	public function execute_cmd($command=null) {
 		$this->helpers[]='Sb.Sb';
 //		die('test');
@@ -125,16 +128,14 @@ class SbController extends SbAppController {
 		if(is_null($command)){
 			die('Hello, dear ! You gave me no argument, so I can\'t process to the delightful execution.');
 		}
-//		$cmd = 'php ' . APP . 'Console\cake.php Sb.Shell --help'; 
-		$cmd = 'php ' . APP . "Console\cake.php Sb.Shell $command";
-//		echo $cmd;
-//		die($command);
-		
-		echo shell_exec($cmd);
+		$cmd = 'php ' . APP . "Console".DS."cake.php Sb.Shell $command";
 
-//		$out = array();
-//		exec($cmd, $out);
-//		var_dump($out);
+		$output=  shell_exec($cmd);
+		if(DS==='\\'){ // Windows, direct output
+		echo $output;
+		}else{ // Linux, mac,... Strips ANSI codes
+			echo preg_replace('@\[(\d{1,2})m@', '', $output);
+		}
 		die();
 	}
 

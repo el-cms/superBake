@@ -20,29 +20,29 @@ More contact options to come in the future.
 
 * **Configuration file:**
 
- * [The configuration file](help_config) - Configuration principles
- * [General section](help_config_general) - The `general` section
- * [Defaults](help_config_default) - The `defaults` section
- * [Plugins](help_config_plugins) - The 'plugins` section
+ * [The configuration file](../help_config) - Configuration principles
+ * [General section](../help_config_general) - The `general` section
+ * [Defaults](../help_config_default) - The `defaults` section
+ * [Plugins](../help_config_plugins) - The 'plugins` section
  
-   * [Models](help_config_plugins_models) - Creating models
-   * [Controllers](help_config_plugins_controllers) - Creating controllers
-   * [Views](help_config_plugins_views) - Creating views
-   * [Menus](help_config_plugins_menus) - Creating menus
-   * [Files](help_config_plugins_files) - Creating standalone files
+   * [Models](../help_config_plugins_models) - Creating models
+   * [Controllers](../help_config_plugins_controllers) - Creating controllers
+   * [Views](../help_config_plugins_views) - Creating views
+   * [Menus](../help_config_plugins_menus) - Creating menus
+   * [Files](../help_config_plugins_files) - Creating standalone files
    
 * **Templates**
 
- * [How it works](help_templates)
- * [Models](help_templates_models)
- * [Actions](help_templates_actions)
- * [Views](help_templates_view)
- * [Menus](help_templates_menus)
- * [Files](help_templates_files)
+ * [How it works](../help_templates)
+ * [Models](../help_templates_models)
+ * [Actions](../help_templates_actions)
+ * [Views](../help_templates_view)
+ * [Menus](../help_templates_menus)
+ * [Files](../help_templates_files)
  * ~~Required files~~
  
 * **The shell:**
 
- * [How it works](help_shell_base)
- * [Commands and command line](help_shell_commands)
- * [Extend the shell](help_shell_extend)
+ * [How it works](../help_shell_base)
+ * [Commands and command line](../help_shell_commands)
+ * [Extend the shell](../help_shell_extend)

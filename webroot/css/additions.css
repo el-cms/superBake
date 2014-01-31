@@ -93,6 +93,34 @@ pre .tooltip{
 }
 
 /**
+Execute modal
+*/
+#results_modal .modal-dialog{
+	width:75%; 
+}
+#results_modal #log{
+	padding-left:15px;
+	font-size:0.8em;
+	height:auto;
+	overflow: scroll;
+}
+
+/**
+Toolbars
+*/
+.toolbar{
+	box-shadow:0 3px 8px -5px rgba(0,0,0, 0.5), 0 -3px 8px -5px rgba(0,0,0, 0.5);
+	padding:5px;
+	padding-left:15px;
+	border-top:1px solid rgba(0,0,0, 0.2);
+	border-bottom:1px solid rgba(0,0,0, 0.2);
+	margin:0px -15px 0px -15px;
+}
+.toolbar-line{
+	margin-top:5px;
+}
+
+/**
  Columns colors
 */
 .block{

@@ -35,7 +35,7 @@ Path: <em>pathToCake/</em>app/
 |  <span class="text-warning" data-toggle="tooltip" title="Seriously, do it!"><i class="icon-info-sign"></i> Read the doc before things turns bad</span>                       |
 |                                                               |
 +---------------------------------------------------------------+
-| <span class="text-info" data-toggle="tooltip" title="Current configuration file. No way to change this for now."><i class="icon-info-sign"></i> Config file: "superBakeConfig.yml".</span>
+| <span class="text-info" data-toggle="tooltip" title="Current configuration file. Change this in the bootstrap file."><i class="icon-info-sign"></i> Config file: "superBakeConfig.yml".</span>
 | <span class="text-warning" data-toggle="tooltip" title="This info will appear if you have errors in your configuration file."><i class="icon-info-sign"></i> --> This file contains errors. Check it.</span>
 +--[ <span class="text-danger"><a href="#plugin_generation_section">Plugin creation</a></span> ]
 |      <i class="icon-info-sign" data-toggle="tooltip" title="Sb.Shell plugins"></i> [<strong>P</strong>]lugins (Creates all plugins structures)

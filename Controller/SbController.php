@@ -18,7 +18,7 @@ class SbController extends SbAppController {
 	 * @return void
 	 */
 	public function index() {
-
+		
 	}
 
 	/**
@@ -74,6 +74,7 @@ class SbController extends SbAppController {
 	 * @return void
 	 */
 	public function tree() {
+		$this->helpers[]='Sb.Sb'; // For execution buttons
 		$Sbc = $this->_selectConfigFile();
 		// Prefixes and actions list:
 		$defaults_prefixes_list = '';
@@ -109,6 +110,32 @@ class SbController extends SbAppController {
 		$this->set('default', $default);
 		$this->set('defined', $defined);
 		$this->set('keepRest', $keep);
+	}
+
+	public function execute() {
+		$this->set('title_for_layout', 'Execute a command');
+	}
+
+	public function execute_cmd($command=null) {
+		$this->helpers[]='Sb.Sb';
+//		die('test');
+		if(Configure::read('Sb.executeTroughGUI')===false){
+			die("Execution through GUI is disabled. To enable it, please change the value of `Sb.executeTroughGUI` to `true`.\n");
+		}
+		if(is_null($command)){
+			die('Hello, dear ! You gave me no argument, so I can\'t process to the delightful execution.');
+		}
+//		$cmd = 'php ' . APP . 'Console\cake.php Sb.Shell --help'; 
+		$cmd = 'php ' . APP . "Console\cake.php Sb.Shell $command";
+//		echo $cmd;
+//		die($command);
+		
+		echo shell_exec($cmd);
+
+//		$out = array();
+//		exec($cmd, $out);
+//		var_dump($out);
+		die();
 	}
 
 }

@@ -96,7 +96,7 @@ pre .tooltip{
 Execute modal
 */
 #results_modal .modal-dialog{
-	width:75%; 
+	width:75%;
 }
 #results_modal #log{
 	padding-left:15px;
@@ -108,7 +108,7 @@ Execute modal
 /**
 Toolbars
 */
-.toolbar{
+.toolbar-sb{
 	box-shadow:0 3px 8px -5px rgba(0,0,0, 0.5), 0 -3px 8px -5px rgba(0,0,0, 0.5);
 	padding:5px;
 	padding-left:15px;
@@ -116,9 +116,20 @@ Toolbars
 	border-bottom:1px solid rgba(0,0,0, 0.2);
 	margin:0px -15px 0px -15px;
 }
-.toolbar-line{
+.toolbar-sb-line{
 	margin-top:5px;
 }
+/**
+Submenus hack:
+CSS and HTML found here: http://bootply.com/71520
+my fork for hover colors is here: http://bootply.com/110202
+*/
+.dropdown-submenu{position:relative;}
+.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+.dropdown-submenu:hover>.dropdown-menu{display:block;}
+.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#FFF;margin-top:5px;margin-right:-10px;}
+.dropdown-submenu:hover>a:after{border-left-color:rgb(245, 245, 245);}
+.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
 
 /**
  Columns colors

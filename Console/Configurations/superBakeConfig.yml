@@ -101,6 +101,8 @@ general:
   useInternationalizedStrings: true
 
   ## If set to false, session-related methods will not be included in generated files.
+  ## This option is not in the `theme` section, as methods like `setFlash()` use
+  ## its value.
   useSessions: true
 
 
@@ -393,10 +395,6 @@ defaults:
     template:
     ## Target folder (relative to detination plugin's "View/" folder)
     targetPath: Elements::menus
-    ## Final file name
-#    targetFileName:
-    ## Target extension
-#    ext: ctp
     ## Options
     options:
       ## List of routing prefixes to be displayed in the menu.

@@ -17,13 +17,13 @@ echo $this->element('config_file_changer');
 ?>
 <h2>General and defaults</h2>
 <?php if (Configure::read('Sb.executeTroughGUI') === true): ?>
-	<div class="toolbar">
+	<div class="toolbar-sb">
 		<strong>General: </strong>
 		<div class="btn-group">
 			<?php echo $this->Sb->execBtn('--help', 'Show <strong>help</strong>'); ?>
 			<?php echo $this->Sb->execBtn('all', 'superBake <strong>all</strong>', 'danger'); ?>
 		</div>
-		<div class='toolbar-line'>
+		<div class='toolbar-sb-line'>
 			<strong>MVC:</strong>
 			<div class="btn-group">
 				<?php echo $this->Sb->execBtn('models', 'superBake <strong>all Models</strong>'); ?>
@@ -31,7 +31,7 @@ echo $this->element('config_file_changer');
 				<?php echo $this->Sb->execBtn('views', 'superBake <strong>all Views</strong>'); ?>
 			</div>
 		</div>
-		<div class='toolbar-line'>
+		<div class='toolbar-sb-line'>
 			<strong>Files: </strong>
 			<div class="btn-group">
 				<?php echo $this->Sb->execBtn('files', 'superBake <strong>standalone files</strong>'); ?>
@@ -93,7 +93,7 @@ function dGIcon($text = null, $size = null) {
 			</div>
 			<div id="collapse_P_<?php echo $plugin ?>" class="panel-collapse collapse <?php echo (($i === 0) ? 'in' : '') ?>">
 				<div class="panel-body">
-					<div class="toolbar">
+					<div class="toolbar-sb">
 						<strong>For this plugin:</strong>
 						<div class="btn-group">
 							<?php echo $this->Sb->execBtn("pluginMVC $plugin", 'Bake <strong>MVC</strong>', (($pluginConfig['generate']) ? 'default' : 'default disabled')); ?>

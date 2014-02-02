@@ -513,7 +513,7 @@ plugins:
       ## ---
       admin_menu:
         template: menu
-        targetPath: elements::menus::admin.ctp
+        targetPath: Elements::menus::admin.ctp
         options:
           prefixes:
             admin
@@ -532,7 +532,7 @@ plugins:
       public_menu:
         generate: true
         template: menu
-        targetPath: elements::menus::public.ctp
+        targetPath: Elements::menus::public.ctp
         options:
           prefixes:
             public

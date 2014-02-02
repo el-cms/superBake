@@ -29,6 +29,7 @@ superBake is not a CMS, a blog manager or anything. It will help you to create y
  * Set up your db and db connection in `app/Config/database.php`
  * Run/upload the sample db model located in `Sb/docs`. There's a SQL file and a Mysql Workbench file for the same db. Choose as you prefer.
  * Open a browser and go to your cake Homepage. In parallel, open a terminal and cd to `PathToCakeInstall/app`
+ * You may need to make the `app/Console/cake` file executable, under linux (`chmod +x Console/cake`)
  * You're ready to superBake:
   1. Plugins: `./Console/cake Sb.Shell plugins`. Choose to update the bootstrap file.
   2. Models/Controllers and views: `./Console/cake Sb.Shell mvc`

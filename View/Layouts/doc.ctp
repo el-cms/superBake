@@ -14,6 +14,7 @@
 		echo $this->Html->script('/sb/js/jquery-syntax/jquery.syntax.min');
 		echo $this->Html->script('/sb/js/jquery.tableofcontents.min');
 		echo $this->Html->script('/sb/js/bootstrap.min');
+		
 		echo $this->Html->css('/sb/css/bootstrap.min');
 		echo $this->Html->css('/sb/css/font-awesome.min');
 		echo $this->Html->css('/sb/css/additions');

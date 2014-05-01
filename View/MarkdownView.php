@@ -60,12 +60,19 @@ class MarkdownView extends View {
 		if ($this->hasRendered) {
 			return true;
 		}
-//		if (!$this->_helpersLoaded) {
-//			$this->loadHelpers();
-//		}
 		$this->Blocks->set('content', '');
 
-		if ($view !== false && $viewFileName = $this->_getViewFileName($view)) {
+
+		// Small hack to allow different pathes:
+		$base=explode('::', $view);
+		if(count($base)>1){
+			// We have an additionnal path :)
+			$viewFileName=  str_replace('::', DS, $view);
+		}else{
+			$viewFileName = $this->_getViewFileName($view);
+		}
+
+		if ($view !== false && $viewFileName) {
 			$this->_currentType = self::TYPE_VIEW;
 			$this->getEventManager()->dispatch(new CakeEvent('View.beforeRender', $this, array($viewFileName)));
 			$content = $this->_render($viewFileName);

@@ -24,7 +24,7 @@
  *	$currentSimpleAction
  *	$plugin
  *	$templateOptions
- * 
+ *
  * Deleted methods/vars:
  * ================
  *	_interactive()
@@ -35,7 +35,7 @@
  * -----
  *	$noTemplateActions
  *	$scaffoldActions
- * 
+ *
  * Modified methods:
  * =================
  *	_associations()
@@ -167,13 +167,7 @@ class SuperViewTask extends BakeTask {
 	 * @return mixed
 	 */
 	public function execute() {
-		// Dirty inclusion of the theme class that may contain logic to create HTML elements
-		$themeClass = $this->Template->getThemePath() . DS . 'theme.php';
-		if (!file_exists($themeClass)) {
-			$this->speak(__d('superBake', 'The current theme has no theme class. It is not necessary, but can help...'), 'warning', 1);
-		} else {
-			include_once($this->Template->getThemePath() . DS . 'theme.php');
-		}
+
 		// Variables to be made available to a view template
 		$vars = $this->_loadController();
 
@@ -307,7 +301,6 @@ class SuperViewTask extends BakeTask {
 		$this->Template->set('admin', $this->currentPrefix);
 		$this->Template->set('action', $action);
 		$this->Template->set('plugin', $this->plugin);
-		$this->Template->set('Sbc', $this->Sbc);
 		$this->Template->set('currentPart', $this->currentPart);
 		$this->Template->Sbc = $this->Sbc;
 

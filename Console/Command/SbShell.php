@@ -73,7 +73,7 @@ class SbShell extends AppShell {
 	public function getActionPrefix($action) {
 		$array = explode('_', $action);
 		if (count($array) > 1) {
-			if (in_array($array[0], $this->Sbc->prefixesList())) {
+			if (in_array($array[0], $this->Sbc->getPrefixesList())) {
 				return $array[0];
 			}
 		}
@@ -121,7 +121,7 @@ class SbShell extends AppShell {
 		$prefix = is_null($prefix) ? $this->templateVars['admin'] : $prefix;
 		$controller = is_null($controller) ? ucfirst(Inflector::camelize($this->templateVars['pluralVar'])) : ucfirst(Inflector::camelize($controller));
 
-		return $this->Sbc->isActionnable($prefix,$controller, $action);
+		return $this->Sbc->isActionnable($prefix, $controller, $action);
 	}
 
 	/**
@@ -286,9 +286,11 @@ class SbShell extends AppShell {
 
 		// Routing prefix
 		if (is_null($prefix)) {
-			$prefix = $this->templateVars['admin'];
+			$prefix = rtrim($this->templateVars['admin'], '_');
 		}
-		$prefix = ($prefix === 'public') ? null : $prefix;
+
+		$prefix = ($prefix === 'public' || empty($prefix)) ? null : $prefix;
+
 		$url .= (!is_null($prefix)) ? " '$prefix' => true," : " 'admin' => false,";
 
 		// Finding controller
@@ -366,7 +368,7 @@ class SbShell extends AppShell {
 		} else {
 			// Flash redirect
 			if ($redirect === true) {
-				$out = "\$this->flash(".$this->iString($content).", " . $this->url($action, $controllerName, null, null, $specialUrl) . ");\n";
+				$out = "\$this->flash(" . $this->iString($content) . ", " . $this->url($action, $controllerName, null, null, $specialUrl) . ");\n";
 			} else {
 				// @todo Find something else to handle the situation where a message must be displayed
 				// but with no redirection.
@@ -386,6 +388,20 @@ class SbShell extends AppShell {
 	 */
 	public function cleanPlugin($plugin) {
 		return (preg_match('/(.*)\.$/', $plugin)) ? rtrim($plugin, '.') : $plugin;
+	}
+
+	/**
+	 * Return true if a given component is enabled in the <code>theme.components</code> section.
+	 * @param type $component
+	 * @return boolean
+	 */
+	public function isComponentEnabled($component) {
+		$comp = $this->Sbc->getConfig("theme.components");
+		if (is_array($comp[$component]) && (!isset($comp[$component]['useComponent']) || $comp[$component]['useComponent'] === true)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

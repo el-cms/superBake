@@ -12,7 +12,7 @@
  *
  * This file is based on the lib/Cake/Console/Command/Task/ModelTask.php file
  * from CakePHP.
- * 
+ *
  * Added methods/vars:
  * ==============
  *	getPath()
@@ -34,7 +34,7 @@
  *	inOptions()
  * -----
  *	$skipTables
- * 
+ *
  * Modified methods:
  * =================
  *	bake()
@@ -47,7 +47,7 @@
  *	getOptionParser()
  *	getTable()
  *	listAll();
- *	
+ *
  * Original methods/vars:
  * =================
  *	_getModelObject()
@@ -574,7 +574,6 @@ class SuperModelTask extends BakeTask {
 				'plugin' => $this->plugin,
 				'pluginPath' => $pluginPath,
 				// Theme to use
-				'theme' => $this->params['theme'],
 				// Part name
 				'part' => $this->currentPart,
 				// Entire model config for a quicker access in templates

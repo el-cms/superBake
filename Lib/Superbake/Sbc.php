@@ -649,7 +649,7 @@ class Sbc {
 	 *
 	 * @return array
 	 */
-	public function prefixesList() {
+	public function getPrefixesList() {
 		if (!is_array($this->_prefixesList)) {
 			foreach ($this->getConfig('defaults.actions') as $prefix => $actions) {
 				$list[] = $prefix;
@@ -680,7 +680,7 @@ class Sbc {
 	 */
 	public function actionRemovePrefix($action) {
 		$actionArray = explode('_', $action);
-		$prefixes = $this->prefixesList();
+		$prefixes = $this->getPrefixesList();
 		// There's a prefix
 		if (count($actionArray) > 1 && in_array($actionArray[0], $prefixes)) {
 			unset($actionArray[0]);
@@ -699,6 +699,9 @@ class Sbc {
 	 */
 	public function loadFile($file) {
 		$file = $this->getConfigPath() . $file;
+		if(!file_exists($file)){
+			die("\n\nThe configuration file was not found in $file\n\n\n");
+		}
 		$this->log("Loading configuration file:"
 						. "<br/><small>\"$file\"...</small>", 'info', 1);
 		$this->_Spyc = new Spyc();
@@ -722,7 +725,7 @@ class Sbc {
 	 * @return string Path to the configuration file
 	 */
 	public function getConfigPath() {
-		$path = dirname(dirname(dirname(__FILE__))) . DS . 'Console' . DS . 'Configurations' . DS;
+		$path = dirname(dirname(dirname(__FILE__))) . DS . 'Console' . DS . 'Template' . DS;
 		return $path;
 	}
 
@@ -763,9 +766,9 @@ class Sbc {
 		//
 		// Plugins
 		//
-		$this->log('Populating plugins.', 'info', 1);
+		$this->log('Populating plugins.', 'part', 1);
 		foreach ($this->_config['plugins'] as $plugin => $pluginConfig) {
-			$this->log("Populating \"<strong>$plugin</strong>\".", 'info', 2);
+			$this->log("Populating plugin \"<strong>$plugin</strong>\".", 'part', 2);
 
 			//
 			// Plugin configuration
@@ -783,9 +786,9 @@ class Sbc {
 				//
 				// Parts
 				//
-				$this->log("Populating parts...", 'info', 3);
+				$this->log("Populating parts...", 'part', 3);
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
-					$this->log("Populating part \"<strong>$part</strong>\"", 'info', 4);
+					$this->log("Populating \"<strong>$part</strong>\"", 'part', 4);
 					// Merge part with defaults
 					$partConfig = $this->updateArray($this->_config['defaults']['part'], $partConfig, true);
 
@@ -794,7 +797,7 @@ class Sbc {
 					//
 					// Must have a model ?
 					if ($partConfig['haveModel'] === true) {
-						$this->log("Model configuration", 'info', 5);
+						$this->log("Model configuration", 'part', 5);
 						// String definition
 						if (!is_array($partConfig['model'])) {
 							if (empty($partConfig['model'])) {
@@ -828,7 +831,7 @@ class Sbc {
 							//Merging snippet options with part options
 							$partConfig['model']['snippets'][$snippet]['options'] = $this->updateArray($partConfig['options'], $partConfig['model']['snippets'][$snippet]['options']);
 						}
-						$this->log("Model \"<strong>" . $partConfig['model']['name'] . "</strong>\" populated.", 'success', 6);
+						$this->log("Model \"<strong>" . $partConfig['model']['name'] . "</strong>\" populated.", 'success', 5);
 					} else {
 						$this->log("This part should not have model", 'info', 5);
 						unset($partConfig['model']);
@@ -839,7 +842,7 @@ class Sbc {
 					//
 					// Must have a controller ?
 					if ($partConfig['haveController'] === true) {
-						$this->log("Controller configuration", 'info', 5);
+						$this->log("Controller configuration", 'part', 5);
 						// String definition
 						if (!is_array($partConfig['controller'])) {
 							if (empty($partConfig['controller'])) {
@@ -932,7 +935,7 @@ class Sbc {
 				//
 				// Menus
 				//
-				$this->log("Populating menus...", 'info', 3);
+				$this->log("Populating menus...", 'part', 3);
 				foreach ($pluginConfig['menus'] as $menu => $menuConfig) {
 					$pluginConfig['menus'][$menu] = $this->updateArray($this->_config['defaults']['menu'], $menuConfig, true);
 					if (empty($pluginConfig['menus'][$menu]['template'])) {
@@ -951,7 +954,7 @@ class Sbc {
 				//
 				// Files
 				//
-				$this->log("Populating files...", 'info', 3);
+				$this->log("Populating files...", 'part', 3);
 				foreach ($pluginConfig['files'] as $file => $fileConfig) {
 					$pluginConfig['files'][$file] = $this->updateArray($this->_config['defaults']['file'], $fileConfig, true);
 					if (empty($pluginConfig['files'][$file]['template'])) {
@@ -969,7 +972,7 @@ class Sbc {
 				//
 				// Required files
 				//
-				$this->log("Populating required files...", 'info', 3);
+				$this->log("Populating required files...", 'part', 3);
 				foreach ($pluginConfig['required'] as $required => $requiredConfig) {
 					$pluginConfig['required'][$required] = $this->updateArray($this->_config['defaults']['required'], $requiredConfig, true);
 					if (empty($pluginConfig['required'][$required]['type'])) {
@@ -1060,7 +1063,7 @@ class Sbc {
 	 * Logs a message in an array of messages.
 	 *
 	 * @param string $message The message
-	 * @param string $type Message type: info|warning|success|error
+	 * @param string $type Message type: info|warning|success|error|part
 	 * @param integer $level Level of the message. The lower the message is, the less it is important.
 	 *
 	 * @return void

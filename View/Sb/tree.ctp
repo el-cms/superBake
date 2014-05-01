@@ -43,11 +43,10 @@ echo $this->element('config_file_changer');
 <h3>Errors and warnings:</h3>
 <ul>
 	<li class="text-danger"><?php echo "You have $logErrors errors in your configuration file. " . (($logErrors > 0) ? "Please check the " . $this->Html->link('logs', array('action' => 'check')) : 'That\'s perfect !'); ?></li>
-	<li class="text-warning"><?php echo "You have $logWarnings warnings from your configuration file. " . (($logErrors > 0) ? "This is not fatal, but you should " . $this->Html->link('check if all is allright', array('action' => 'check')) : 'That\'s perfect !'); ?></li>
+	<li class="text-warning"><?php echo "You have $logWarnings warnings from your configuration file. " . (($logWarnings > 0) ? "This is not fatal, but you should " . $this->Html->link('check if all is allright', array('action' => 'check')) : 'That\'s perfect !'); ?></li>
 </ul>
 <h3>General:</h3>
 <ul>
-	<li>You use the <strong><?php echo $completeConfig['general']['template'] ?></strong> template.</li>
 	<li>You use the <strong><?php echo $completeConfig['general']['editorLicenseTemplate'] ?></strong> license to protect your generated files.</li>
 	<li><strong>Prefixes:</strong> <?php echo ($completeConfig['general']['usePrefixes']) ? 'you use ' . count($completeConfig['defaults']['actions']) . ' prefixes: <strong>' . $defaults_prefixes_list . '</strong>' : 'you don\'t want to use prefixes'; ?></li>
 	<li>The package name used for your app is <strong><?php echo $completeConfig['general']['basePackage'] ?></strong>.</li>

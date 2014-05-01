@@ -14,6 +14,30 @@ class SbAppController extends AppController {
 		if (in_array('Acl', $this->components)) {
 			$this->Auth->allow();
 		}
+
+		// Search for documentation in Template dir:
+		$dir=CakePlugin::path('Sb') . 'Console' . DS . 'Template' . DS . 'docs' . DS;
+		$docDir = opendir($dir);
+		$files = array();
+		$menuLinks = array();
+		while ($file = readdir($docDir)) {
+			if (!is_dir($dir.$file)) {
+				$files[] = $file;
+			}
+		}
+
+		sort($files);
+
+		foreach ($files as $file) {
+			$tmp = explode('.', $file);
+			//Removing extension
+			unset($tmp[count($tmp) - 1]);
+			$menuLinks[ucfirst(str_replace('_', ' ', $tmp[0]))][] = array(
+					'title' => ucfirst(str_replace('_', ' ', $tmp[1])),
+					'file' => $file
+			);
+		}
+		$this->set('templateLinks', $menuLinks);
 	}
 
 }

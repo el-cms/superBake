@@ -456,9 +456,6 @@ class ShellShell extends SbShell {
 	 * @param string $part Part name
 	 */
 	protected function _model($plugin, $part) {
-		// Template to use
-		$this->SuperModel->params['theme'] = $this->Sbc->getConfig('general.template');
-
 		// SuperBake
 		$this->SuperModel->Sbc = $this->Sbc;
 
@@ -632,9 +629,6 @@ class ShellShell extends SbShell {
 		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($plugin) . ".parts.$part.haveModel") === false) {
 			$this->speak(__d('superBake', 'ShellShell:662: Controller does not have a model. It should be generated using another method.'), 'warning', 0);
 		} else {
-			// Passing theme
-			$this->SuperController->params['theme'] = $this->Sbc->getConfig('general.template');
-
 			// SuperBake
 			$this->SuperController->Sbc = $this->Sbc;
 
@@ -746,8 +740,6 @@ class ShellShell extends SbShell {
 	 * @return void
 	 */
 	protected function _view($plugin, $part, $action) {
-		$this->SuperView->params['theme'] = $this->Sbc->getConfig('general.template');
-
 		// SuperBake
 		$this->SuperView->Sbc = $this->Sbc;
 
@@ -848,9 +840,6 @@ class ShellShell extends SbShell {
 	 * @param string $menu	Menu name
 	 */
 	protected function _menu($plugin, $menu) {
-		// Template to use
-		$this->SuperFile->params['theme'] = $this->Sbc->getConfig('general.template');
-
 		// SuperBake
 		$this->SuperFile->Sbc = $this->Sbc;
 
@@ -888,9 +877,6 @@ class ShellShell extends SbShell {
 	 * @param string $file File name in configuration
 	 */
 	protected function _file($plugin, $file) {
-		// Template to use
-		$this->SuperFile->params['theme'] = $this->Sbc->getConfig('general.template');
-
 		// SuperBake
 		$this->SuperFile->Sbc = $this->Sbc;
 
@@ -921,9 +907,6 @@ class ShellShell extends SbShell {
 	}
 
 	protected function _required($plugin, $required) {
-		// Template to use
-		$this->SuperRequired->params['theme'] = $this->Sbc->getConfig('general.template');
-
 		// SuperBake
 		$this->SuperRequired->Sbc = $this->Sbc;
 
@@ -1138,6 +1121,7 @@ class ShellShell extends SbShell {
 			return true;
 		}
 
+		// Getting Template directory
 		$configFile = Configure::read('Sb.defaultConfig');
 
 		// Loading Sbc

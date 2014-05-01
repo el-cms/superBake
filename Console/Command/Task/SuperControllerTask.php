@@ -15,40 +15,39 @@
  *
  * Added methods/vars:
  * ==============
- *	getControllerPath()
- *	getPrefix()
+ * 	getControllerPath()
+ * 	getPrefix()
  * -----
- *	$Sbc
- *	$currentPart
+ * 	$Sbc
+ * 	$currentPart
  *
  * Deleted methods/vars:
  * ================
- *	_askAboutMethods()
+ * 	_askAboutMethods()
  *  _doPropertiesChoice()
- *	_interactive()
- *	all()
- *	confirmController()
- *	doComponents()
- *	doHelpers()
- *	getName()
- *	getOptionParser()
- *	listAll()
+ * 	_interactive()
+ * 	all()
+ * 	confirmController()
+ * 	doComponents()
+ * 	doHelpers()
+ * 	getName()
+ * 	getOptionParser()
+ * 	listAll()
  *
  * Modified methods:
  * =================
- *	bake()
- *	bakeActions()
- *	execute()
+ * 	bake()
+ * 	bakeActions()
+ * 	execute()
  *
  * Original methods/vars:
  * =================
- *	bakeTest()
- *	initialize()
+ * 	bakeTest()
+ * 	initialize()
  * -----
- *	$path
- *	$tasks
+ * 	$path
+ * 	$tasks
  */
-
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 
@@ -108,14 +107,6 @@ class SuperControllerTask extends BakeTask {
 	 * @return void
 	 */
 	public function execute() {
-		// Dirty inclusion of the theme class that may contain logic to create HTML elements
-		// This file is located in the <template>theme.php file.
-		$themeClass = $this->Template->getThemePath() . DS . 'theme.php';
-		if (!file_exists($themeClass)) {
-			$this->speak(__d('superBake', 'The current theme has no theme class. It is not necessary, but can help...'), 'warning', 1);
-		} else {
-			include_once($this->Template->getThemePath() . DS . 'theme.php');
-		}
 
 		// Getting controller name from config file
 		$controller = $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.name');
@@ -217,7 +208,7 @@ class SuperControllerTask extends BakeTask {
 
 		// Passing all the above variables to template task to make them available in actions templates.
 		$this->Template->set(compact(
-						'pluralVar', 'currentPart', 'currentController', 'plugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
+										'pluralVar', 'currentPart', 'currentController', 'plugin', 'admin', 'controllerPath', 'pluralName', 'singularName', 'singularHumanName', 'pluralHumanName', 'modelObj', 'wannaUseSession', 'currentModelName', 'displayField', 'primaryKey'
 		));
 
 		// -------------------------------------------------------------------------
@@ -248,17 +239,17 @@ class SuperControllerTask extends BakeTask {
 		// Passing vars to template task
 		// -------------------------------------------------------------------------
 		$this->Template->set(array(
-			// Plugin name
-			'plugin' => $this->plugin,
-			// Plugin path
-			'pluginPath' => empty($this->plugin) ? '' : $this->plugin . '.',
-			// Sbc object
-			'Sbc' => $this->Sbc,
-			// Config from config file for the current controller
-			'currentControllerConfig' => $this->Sbc->getConfig("plugins."
-					. $this->Sbc->getControllerPlugin($controllerName)
-					. ".parts." . $this->Sbc->getControllerPart($controllerName)
-					. ".controller"),
+				// Plugin name
+				'plugin' => $this->plugin,
+				// Plugin path
+				'pluginPath' => empty($this->plugin) ? '' : $this->plugin . '.',
+				// Sbc object
+				'Sbc' => $this->Sbc,
+				// Config from config file for the current controller
+				'currentControllerConfig' => $this->Sbc->getConfig("plugins."
+								. $this->Sbc->getControllerPlugin($controllerName)
+								. ".parts." . $this->Sbc->getControllerPart($controllerName)
+								. ".controller"),
 		));
 		// Making the vars available
 		$this->Template->set(compact('controllerName', 'actions', 'helpers', 'components', 'isScaffold'));

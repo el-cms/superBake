@@ -8,7 +8,7 @@ App::uses('AppModel', 'Model');
  * Add your application-wide methods in the class below, your models
  * will inherit them.
  *
- * @package       Sb.Model
+ * @package       superBake
  */
 class SbAppModel extends AppModel {
 

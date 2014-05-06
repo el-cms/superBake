@@ -16,7 +16,7 @@ class SbAppController extends AppController {
 		}
 
 		// Search for documentation in Template dir:
-		$dir=CakePlugin::path('Sb') . 'Console' . DS . 'Template' . DS . 'docs' . DS;
+		$dir = CakePlugin::path('Sb') . 'Console' . DS . 'Template' . DS . 'docs' . DS;
 		$docDir = opendir($dir);
 		$files = array();
 		$menuLinks = array();
@@ -30,12 +30,14 @@ class SbAppController extends AppController {
 
 		foreach ($files as $file) {
 			$tmp = explode('.', $file);
-			//Removing extension
-			unset($tmp[count($tmp) - 1]);
-			$menuLinks[ucfirst(str_replace('_', ' ', $tmp[0]))][] = array(
-					'title' => ucfirst(str_replace('_', ' ', $tmp[1])),
-					'file' => $file
-			);
+			// Removing extension and adding entry to the menu
+			if (isset($tmp[count($tmp) - 1]) && count($tmp)<1) {
+				unset($tmp[count($tmp) - 1]);
+				$menuLinks[ucfirst(str_replace('_', ' ', $tmp[0]))][] = array(
+						'title' => ucfirst(str_replace('_', ' ', $tmp[1])),
+						'file' => $file
+				);
+			}
 		}
 		$this->set('templateLinks', $menuLinks);
 	}

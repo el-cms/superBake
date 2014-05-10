@@ -699,7 +699,7 @@ class Sbc {
 	 */
 	public function loadFile($file) {
 		$file = $this->getConfigPath() . $file;
-		if(!file_exists($file)){
+		if (!file_exists($file)) {
 			die("\n\nThe configuration file was not found in $file\n\n\n");
 		}
 		$this->log("Loading configuration file:"
@@ -823,7 +823,7 @@ class Sbc {
 						// Model population
 						$partConfig['model'] = $this->updateArray($this->_config['defaults']['model'], $partConfig['model']);
 						// Merging part config with model options
-						$partConfig['model']['options'] = $this->updateArray($partConfig['options'], $partConfig['model']['options'], 1);
+						$partConfig['model']['options'] = $this->updateArray($partConfig['options'], $partConfig['model']['options'], true);
 						// Snippets
 						foreach ($partConfig['model']['snippets'] as $snippet => $snippetConfig) {
 							// Merging snippets with defaults
@@ -1014,42 +1014,44 @@ class Sbc {
 	 *
 	 * @param array $default An array of default values
 	 * @param array $defined An array of defined values
-	 * @param boolean $keep If set to true, keep values defined in defined array and not in default array
-	 *                   will be kept and returned.
+	 * @param boolean $keep If set to true, keeps the values defined in $defined array and absent from $default array.
+	 *
 	 * @return array Default array updated with defined array
 	 */
-	public function updateArray($default, $defined, $keep = false) {
+	public function updateArray($default = array(), $defined = array(), $keep = false) {
 		// Walking throug the default array
 		$finalArray = array();
-		if (!empty($default)) {
-			if (!empty($defined)) {
-				foreach ($default as $k => $v) {
-					// Check in defined
-					if (key_exists($k, $defined)) {
-						if (is_array($v)) {
-							$finalArray[$k] = $this->updateArray($v, $defined[$k], $keep);
-						} else {
-							$finalArray[$k] = $defined[$k];
-						}
-						if ($keep === true) {
-							unset($defined[$k]);
-						}
+		if (!empty($default) && !empty($defined)) {
+			foreach ($default as $k => $v) {
+				// Check in defined
+				if (key_exists($k, $defined)) {
+					if (is_array($v)) {
+						$finalArray[$k] = $this->updateArray($v, $defined[$k], $keep);
 					} else {
+						$finalArray[$k] = $defined[$k];
+					}
+					if ($keep === true) {
+						unset($defined[$k]);
+					}
+				} else {
+					$finalArray[$k] = $v;
+				}
+				// Alone defined values. What must we do with it ?
+				if ($keep === true) {
+					foreach ($defined as $k => $v) {
 						$finalArray[$k] = $v;
 					}
-					// Alone defined values. What must we do with it ?
-					if ($keep === true) {
-						foreach ($defined as $k => $v) {
-							$finalArray[$k] = $v;
-						}
-					}
 				}
-				return $finalArray;
-			} else {
-				return $default;
 			}
+			return $finalArray;
 		} else {
-			return $defined;
+			if (empty($default) && !empty($defined)) {
+				return $defined;
+			} elseif (!empty($default) && empty($defined)) {
+				return $default;
+			} else {
+				return array();
+			}
 		}
 	}
 

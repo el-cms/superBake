@@ -41,11 +41,6 @@ $roleModelPK = $this->Sbc->getConfig('theme.components.Auth.roleModelPK');
  *
  * --------------------------------------------------------------------------*/
 ?>
-	/**
-	 * <?php echo $name?> acts as requester for ACLs
-	 * @var array
-	 */
-	public $actsAs = array('Acl' => array('type' => 'requester'));
 
 	/**
 	 * Hash passwords before save

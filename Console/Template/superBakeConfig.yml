@@ -120,6 +120,7 @@ theme:
       # Default is true.
       useComponent: false
     Auth:
+      useComponent: false
       ## Roles model (usually Group or Role)
       roleModel: Group
       ## Role primary key
@@ -477,6 +478,11 @@ plugins:
           snippets:
             acls:
               path: acls::users
+          options:
+            actsAs:
+              Acl:
+                type: requester
+
         controller:
           actions:
             ## Public actions
@@ -508,7 +514,10 @@ plugins:
           snippets:
             acls:
               path: acls::roles
-              options: []
+          options:
+            actsAs:
+              Acl:
+                type: requester
     ##
     ## Menus for AppBase
     ##

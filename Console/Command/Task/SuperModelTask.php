@@ -15,56 +15,56 @@
  *
  * Added methods/vars:
  * ==============
- *	getPath()
+ * 	getPath()
  * -----
- *	$Sbc
- *	$currentPart
- *	$params
+ * 	$Sbc
+ * 	$currentPart
+ * 	$params
  *
  * Deleted methods/vars:
  * ================
- *	_generatePossibleKeys()
- *	_interactive()
- *	_printAssociations()
- *	all()
- *	doActAs()
- *	doMoreAssociations()
- *	findPrimaryKey()
- *	getName()
- *	inOptions()
+ * 	_generatePossibleKeys()
+ * 	_interactive()
+ * 	_printAssociations()
+ * 	all()
+ * 	doActAs()
+ * 	doMoreAssociations()
+ * 	findPrimaryKey()
+ * 	getName()
+ * 	inOptions()
  * -----
- *	$skipTables
+ * 	$skipTables
  *
  * Modified methods:
  * =================
- *	bake()
- *	bakeFixture()
- *	bakeTest()
- *	doAssociations()
- *	execute()
- *	fieldValidation()
- *	findDisplayField()
- *	getOptionParser()
- *	getTable()
- *	listAll();
+ * 	bake()
+ * 	bakeFixture()
+ * 	bakeTest()
+ * 	doAssociations()
+ * 	execute()
+ * 	fieldValidation()
+ * 	findDisplayField()
+ * 	getOptionParser()
+ * 	getTable()
+ * 	listAll();
  *
  * Original methods/vars:
  * =================
- *	_getModelObject()
- *	confirmAssociations()
- *	doValidation()
- *	findBelongsTo()
- *	findHasAndBelongsToMany()
- *	findHasOneAndMany()
- *	getAllTables()
- *	initialize()
- *	initValidation()
- *	----
- *	$_modelNames
- *	$_tables
- *	$_validations
- *	$path
- *	$tasks
+ * 	_getModelObject()
+ * 	confirmAssociations()
+ * 	doValidation()
+ * 	findBelongsTo()
+ * 	findHasAndBelongsToMany()
+ * 	findHasOneAndMany()
+ * 	getAllTables()
+ * 	initialize()
+ * 	initValidation()
+ * 	----
+ * 	$_modelNames
+ * 	$_tables
+ * 	$_validations
+ * 	$path
+ * 	$tasks
  */
 
 // SbShell from superBake
@@ -149,6 +149,14 @@ class SuperModelTask extends BakeTask {
 	public function initialize() {
 		$this->path = current(App::path('Model'));
 	}
+
+	/**
+	 * List of options from model section of the config file. Helps to clean vars
+	 * during generation.
+	 *
+	 * @var array
+	 */
+	protected $optionsList = array();
 
 	/**
 	 * Execution method always used for tasks
@@ -558,6 +566,7 @@ class SuperModelTask extends BakeTask {
 		// Options
 		foreach ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.model.options') as $option => $value) {
 			$this->Template->set($option, $value);
+			$this->optionsList[] = $option;
 		}
 
 		/* -------------------------------------------------------------------------
@@ -589,7 +598,14 @@ class SuperModelTask extends BakeTask {
 		$path = $this->getPath();
 		$filename = $path . $name . '.php';
 		$this->speak(__d('cake_console', 'Baking model class for %s...', $name), 'info', 0, 0);
+
 		$this->createFile($filename, $out);
+		// Cleaning options for next model:
+		$i = 0;
+		foreach ($this->optionsList as $option) {
+			unset($this->Template->templateVars[$option]);
+		}
+		$this->optionsList = array();
 		ClassRegistry::flush();
 		return $out;
 	}

@@ -21,7 +21,7 @@ class SbAppController extends AppController {
 		$files = array();
 		$menuLinks = array();
 		while ($file = readdir($docDir)) {
-			if (!is_dir($dir.$file)) {
+			if (!is_dir($dir . $file)) {
 				$files[] = $file;
 			}
 		}
@@ -30,8 +30,9 @@ class SbAppController extends AppController {
 
 		foreach ($files as $file) {
 			$tmp = explode('.', $file);
-			// Removing extension and adding entry to the menu
-			if (isset($tmp[count($tmp) - 1]) && count($tmp)<1) {
+			//Only use files named something.something.ext and adding entry to the menu
+			if (isset($tmp[count($tmp) - 1]) && count($tmp)>2) {
+				// Removing extension
 				unset($tmp[count($tmp) - 1]);
 				$menuLinks[ucfirst(str_replace('_', ' ', $tmp[0]))][] = array(
 						'title' => ucfirst(str_replace('_', ' ', $tmp[1])),

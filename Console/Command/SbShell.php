@@ -419,4 +419,29 @@ class SbShell extends AppShell {
 		return Inflector::underscore($plugin);
 	}
 
+	/**
+	 * Replacement of var_export, output is on one line, strings are protected and
+	 * vars kepts as vars.
+	 *
+	 * This method is recursive.
+	 *
+	 * @param array $array The array to display
+	 * @return string
+	 */
+	public function displayArray($array) {
+		$out = null;
+		$i = 0;
+		foreach ($array as $k => $v) {
+			if (is_array($v)) {
+				$out = $this->displayArray($v);
+			} else {
+				if ($i > 0) {
+					$out.=", ";
+				}
+				$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'");
+			}
+			$i++;
+		}
+		return "array($out)";
+	}
 }

@@ -94,6 +94,6 @@ foreach ($actionsToBake as $a => $actionConfig) {
 	// Cleaning options
 	//
 	foreach ($actionOptions as $k) {
-		unset($k);
+		unset(${$k});
 	}
 }

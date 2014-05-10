@@ -18,12 +18,6 @@
  */
 ?>
 	/**
-	* <?php echo $name?> acts as requester for ACLs
-	* @var array
-	*/
-	public $actsAs = array('Acl' => array('type' => 'requester'));
-
-	/**
 	 * Binds <?php echo $name ?> to nothing
 	 * @return null
 	 */

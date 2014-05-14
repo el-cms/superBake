@@ -626,9 +626,9 @@ class ShellShell extends SbShell {
 	protected function _controller($plugin, $part) {
 		// First of all, checking if the controller have a model associated.
 		// If not, file creation mmethods will be used instead.
-		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($plugin) . ".parts.$part.haveModel") === false) {
-			$this->speak(__d('superBake', 'ShellShell:662: Controller does not have a model. It should be generated using another method.'), 'warning', 0);
-		} else {
+//		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($plugin) . ".parts.$part.haveModel") === false) {
+//			$this->speak(__d('superBake', 'ShellShell:630: Controller does not have a model. It should be generated using another method.'), 'warning', 0);
+//		} else {
 			// SuperBake
 			$this->SuperController->Sbc = $this->Sbc;
 
@@ -639,7 +639,7 @@ class ShellShell extends SbShell {
 			$this->SuperController->currentPart = $part;
 			// Task execution
 			$this->SuperController->execute();
-		}
+//		}
 	}
 
 	/**
@@ -1117,7 +1117,7 @@ class ShellShell extends SbShell {
 	 */
 	protected function _loadConfig() {
 		if ($this->_initialized === 1) {
-			$this->speak('AppShell already initialized', 'warning', 0);
+			$this->speak(__d('superbake', 'AppShell already initialized'), 'warning', 0);
 			return true;
 		}
 

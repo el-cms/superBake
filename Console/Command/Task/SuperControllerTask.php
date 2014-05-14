@@ -135,8 +135,12 @@ class SuperControllerTask extends BakeTask {
 
 		// Unit tests
 		if ($this->bake($controller, $actions)) {
+			if($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.haveModel') === false){
+				$this->speak(__d('superbake', 'The controller is not related to a model, so tests will not be created.'), 'warning');
+			}else{
 			if ($this->_checkUnitTest()) {
 				$this->bakeTest($controller);
+			}
 			}
 		}
 	}
@@ -316,7 +320,7 @@ class SuperControllerTask extends BakeTask {
 		// Reads prefixes from core.php
 		$prefixes = Configure::read('Routing.prefixes');
 		if (count($prefixes) === 0) {
-			$this->speak('You have no routing prefixes enabled. Only public actions will be generated.', 'warning', 1);
+			$this->speak(__d('superBake','You have no routing prefixes enabled. Only public actions will be generated.'), 'warning', 1);
 			return array();
 		}
 		foreach ($prefixes as $k => $v) {

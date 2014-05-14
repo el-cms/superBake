@@ -279,6 +279,7 @@ class Sbc {
 			$models = array();
 			// Plugins
 			foreach ($this->_config['plugins'] as $currentPlugin => $pluginConfig) {
+				$models[$currentPlugin]=array();
 				// Parts
 				foreach ($pluginConfig['parts'] as $part => $partConfig) {
 					if ($partConfig['haveModel'] === true && $partConfig['model']['generate'] === true && $partConfig['generate'] === true) {
@@ -334,6 +335,18 @@ class Sbc {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns the whole configuration array of a given model.
+	 *
+	 * @param string $model Model name
+	 *
+	 * @return array Configuration for given model.
+	 */
+	public function getModelConfig($model){
+		$modelConfig=$this->getConfig('plugins.'.$this->getModelPlugin($model).'.parts.'.$this->getModelPart($model).'.model');
+		return (is_null($modelConfig)?array():$modelConfig);
 	}
 
 	// --------------------------------------------------------------------------
@@ -494,6 +507,7 @@ class Sbc {
 		if (!is_array($this->_viewsToBake)) {
 			$views = array();
 			foreach ($this->_config['plugins'] as $tPlugin => $pluginConfig) {
+				$views[$tPlugin]=array();
 				if ($pluginConfig['generate'] === true) {
 					foreach ($pluginConfig['parts'] as $part => $partConfig) {
 						if ($partConfig['generate'] === true && $partConfig['haveController'] === true) {
@@ -781,7 +795,7 @@ class Sbc {
 									. "   =>I'll use \"<strong>${pluginConfig['displayName']}</strong>\" instead.", 'warning', 3);
 				}
 				// Merging with default plugin
-				$pluginConfig = $this->updateArray($this->_config['defaults']['plugin'], $pluginConfig);
+				$pluginConfig = $this->updateArray($this->_config['defaults']['plugin'], $pluginConfig, true);
 
 				//
 				// Parts

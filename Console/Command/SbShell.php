@@ -426,22 +426,38 @@ class SbShell extends AppShell {
 	 * This method is recursive.
 	 *
 	 * @param array $array The array to display
+	 * @param bool $ignoreKeys Set it to true if you want only the values. Does not work on mutidimensionnal arrays.
 	 * @return string
 	 */
-	public function displayArray($array) {
+	public function displayArray($array, $ignoreKeys = false) {
 		$out = null;
 		$i = 0;
-		foreach ($array as $k => $v) {
-			if (is_array($v)) {
-				$out = $this->displayArray($v);
-			} else {
-				if ($i > 0) {
-					$out.=", ";
+		if ($ignoreKeys) {
+			foreach ($array as $v) {
+				if (!is_array($v)) {
+					if ($i > 0) {
+						$out.=", ";
+					}
+					$out.=(($v[0] === '$') ? $v : "'$v'");
+				} else {
+					$this->speak(__d('superbake', 'DisplayArray can\'t process multi-dimensionnal arrays with option "ignoreKey".'), 'error', 0);
+					return null;
 				}
-				$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'");
 			}
-			$i++;
+		} else {
+			foreach ($array as $k => $v) {
+				if (is_array($v)) {
+					$out = $this->displayArray($v);
+				} else {
+					if ($i > 0) {
+						$out.=", ";
+					}
+					$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'");
+				}
+				$i++;
+			}
 		}
 		return "array($out)";
 	}
+
 }

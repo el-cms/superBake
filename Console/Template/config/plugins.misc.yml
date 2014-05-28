@@ -1,0 +1,21 @@
+## YAML Template.
+---
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Misc plugin
+  ## ----------------------------
+  ##  Everything else
+  ## --------------------------------------------------------------------------
+  ##
+  Misc:
+    parts:
+      ## Things reported by users
+      Reports:
+      ## Possible reasons:
+      ReportReasons:
+      ## I don't remember this one
+      Pages:
+      ## Licenses used
+      Licenses:
+        model:
+          displayField: name

@@ -1,0 +1,13 @@
+## YAML Template.
+---
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Likes plugin
+  ## ----------------------------
+  ##  Stuff I liked on the internet. A kind of "a la Facebook" sharing wall
+  ## --------------------------------------------------------------------------
+  ##
+  Likes:
+    parts:
+      ## The list
+      Likes:

@@ -1,0 +1,40 @@
+## YAML Template.
+---
+plugins:
+  # --------------------------------------------------------------------------
+  #  Sb plugin, for test
+  # ----------------------------
+  #  Here for menu items
+  # --------------------------------------------------------------------------
+  #
+  Sb:
+    path: plugins
+    displayName: superBake
+    generate: false
+    parts:
+      main:
+        haveModel: false
+        haveController: true
+        controller:
+          name: Sb
+          displayName: superbake
+          actions:
+            public:
+              check: []
+              tree: []
+              arraymerge: []
+              index:
+                blackListed: true
+              view:
+                blackListed: true
+            admin:
+              index:
+                blackListed: true
+              view:
+                blackListed: true
+              add:
+                blackListed: true
+              edit:
+                blackListed: true
+              delete:
+                blackListed: true

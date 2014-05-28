@@ -1122,11 +1122,11 @@ class ShellShell extends SbShell {
 		}
 
 		// Getting Template directory
-		$configFile = Configure::read('Sb.defaultConfig');
+//		$configFile = Configure::read('Sb.defaultConfig');
 
 		// Loading Sbc
 		$this->Sbc = new Sbc;
-		$this->Sbc->loadFile($configFile);
+		$this->Sbc->loadConfig();
 
 		$this->_initialized = 1;
 		return true;

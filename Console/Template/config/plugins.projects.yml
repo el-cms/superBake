@@ -1,0 +1,17 @@
+## YAML Template.
+---
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Projects plugin
+  ## ----------------------------
+  ##  Manage some projects
+  ## --------------------------------------------------------------------------
+  ##
+  Projects:
+    parts:
+      ## List of projects
+      Projects:
+      ## Notes, news about a project
+      ProjectNotes:
+      ## Project state (dev/stable/...)
+      ProjectStates:

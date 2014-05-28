@@ -196,16 +196,14 @@ public function getErrors() {}
 	 public function getWarnings() {}
 ?&gt;
 </pre>
-### loadFile()
+### loadConfig()
 
 <pre class="syntax brush-html">
 &lt;?php
 /**
- * Loads the configuration file and populates the array
- *
- * @param string $file Configuration file name
+ * Loads the configuration files and populates the array
  */
-public function loadFile($file) {}
+public function loadConfig() {}
 ?&gt;
 </pre>
 

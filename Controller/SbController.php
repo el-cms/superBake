@@ -34,20 +34,20 @@ class SbController extends SbAppController {
 	private function _selectConfigFile() {
 		$Sbc = new Sbc();
 
-		if ($this->request->is('post')) {
-			$fileToLoad = $this->request->data['configFile'];
-		} else {
-			$fileToLoad = Configure::read('Sb.defaultConfig');
-		}
-		// Find the different configuration files
-		$configFolder = new Folder($Sbc->getConfigPath());
+//		if ($this->request->is('post')) {
+//			$fileToLoad = $this->request->data['configFile'];
+//		} else {
+//			$fileToLoad = Configure::read('Sb.defaultConfig');
+//		}
+//		// Find the different configuration files
+//		$configFolder = new Folder($Sbc->getConfigPath());
 
 		// Loads the file
-		$Sbc->loadFile($fileToLoad);
+		$Sbc->loadConfig();
 
 		// Giving the array to view
-		$this->set('configFiles', $configFolder->find('(.*)\.yml', true));
-		$this->set('configFile', $fileToLoad);
+//		$this->set('configFiles', $configFolder->find('(.*)\.yml', true));
+//		$this->set('configFile', $fileToLoad);
 		$this->set('configFileDescription', $Sbc->getConfig('description'));
 		$this->set('log', $Sbc->displayLog());
 		$this->set('logErrors', $Sbc->getErrors());

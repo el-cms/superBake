@@ -1,0 +1,52 @@
+##
+## File to use with superBake 0.3
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Configuration
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+##
+## Configuration file for ExperimentsLabs
+## -------------------------
+##      Theme configuration
+##
+##
+##-----------------------------------------------------------------------
+---
+theme:
+  ## Helpers that must be enabled
+  helpers:
+    Form
+    Html
+
+  ## Default template have custom flash message elements. If you set this value to true,
+  ## flash messages will need them.
+  ## Look at the '<defaultTemplate>/files/elements/flash_message.ctp' file.
+  ## Define the different elements in a plugin's 'files' section (i.e.: 'appBase.files')
+  flashMessageElement: true
+
+  ## languages available in app:
+  ## superBake default template have a support for different languages fields in DB.
+  ## i.e: title_eng and title_fra. If you enable language support below, you will
+  ## have to define the different languages used in your tables and in the controllers
+  ## corresponding to these fields, you should define the differents language fields in options.
+  language:
+    ## Content can be in different languages
+    useLanguages: false
+    ## Default language for empty content
+    fallback: fra
+    ## Languages available
+    available:
+      fra
+      eng
+    descriptions:
+      fra: Version française
+      eng: English version
+    ## Date formats for the different languages
+    dateFormats:
+      fra: d-m-Y \à H:i
+      eng: Y-m-d \a\t h:ia

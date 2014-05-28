@@ -4,140 +4,19 @@
 ## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
 ## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
 ## @link          http://experimentslabs.com Experiments Labs
-## @package       ELCMS.superBake.Configuration
+## @package       ELCMS.superBake.Templates.Default
 ## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
 ## @version       0.3
 ##
 ##-----------------------------------------------------------------------
-## Empty configuration file for superBake
+##
+## Configuration file for ExperimentsLabs
 ## -------------------------
-##      Empty configuration file
-##
-##			All pathes given for templates are relative to
-##				/Sb/Console/Template/<template>
-##
-##			Access to the GUI (http://yourinstall/sb/docs/) for help on options.
-##
-##			Use '::' as directory separator in your pathes
-##
-##			In comments, settings from this files are referenced with a '.' as
-##        separator: i.e.: 'general.template', 'defaults.view'
+##      Default values.
+##      Here are defined defaults settings. They are overriden in plugins definitions.
 ##
 ##-----------------------------------------------------------------------
-
 ---
-#--------------------------------------------------------------------------
-#
-# File description, can be null
-#
-#--------------------------------------------------------------------------
-description: Empty configuration file with defaults
-#--------------------------------------------------------------------------
-#
-# General information
-#
-#--------------------------------------------------------------------------
-general:
-  ## Name of the "plugin that isn't one"
-  appBase: appBase
-  ## SuperBake template to use
-  template: superDefault
-  ## Use routing prefixes
-  usePrefixes: true
-  ## By default, update the bootstrap file on plugin generation ?
-  updateBootstrap: true
-  ## Default DB connection to use
-  dbConnection: default
-
-  ##
-  ## Personnal informations, mostly here to use in generated headers.
-  ##
-
-  ## Your name (for file headers)
-  editorName:
-  ## Your email adress (for file headers)
-  editorEmail:
-  ## Your website
-  editorWebsite:
-  ## Your website name
-  editorWebsiteName:
-  ## Your license template (templates are in '<template>/commons/licenses/')
-  editorLicenseTemplate: gpl3
-  ## Package name
-  ## This is used in files headers, you can leave this blank if you have no use of it
-  basePackage:
-
-  ##
-  ## Current site infos
-  ##
-
-  ## Current site name
-  siteName:
-  ## Current site editor (usually your name)
-  siteEditor:
-  ## site editor Email
-  siteEditorEmail:
-
-
-  ##
-  ## Options related to dependencies and required files
-  ##
-
-  ## Set this to true to copy all the required files relatively to /app
-  ## Else, they will be copied in their repsective plugins.
-  ## THIS IS NOT YET IMPLEMENTED AND WILL CERTAINLY MOVE
-  #copyRequiredToAppBase: false
-
-  ##
-  ## Other options for superBake
-  ##
-
-  ## Language support: if set to true, app and plugin string will use the
-  ## internationalization methods for strings (`__()`, `__d()`). Set it to false,
-  ## and strings will be plain text.
-  useInternationalizedStrings: true
-#--------------------------------------------------------------------------
-#
-# Global options for the theme
-# Here you can set things related to your template.
-#
-#--------------------------------------------------------------------------
-theme:
-  ## Default template have custom flash message elements. If you set this value to true,
-  ## flash messages will need them.
-  ## Look at the '<defaultTemplate>/files/elements/flash_message.ctp' file.
-  ## Define the different elements in a plugin's 'files' section (i.e.: 'appBase.files')
-  flashMessageElement: false
-  ## Enable ACLs or not (used, i.e. in the 'users/login' action template.
-  ## If you want to use ACLs with this option, you should use the
-  ## '<template>/files/appController.ctp' template.
-  enableAcl: false
-  ## languages available in app:
-  ## superBake default template have a support for different languages fields in DB.
-  ## i.e: title_eng and title_fra. If you enable language support below, you will
-  ## have to define the different languages used in your tables and in the controllers
-  ## corresponding to these fields, you should define the differents language fields in options.
-  language:
-    ## Content can be in different languages
-    useLanguages: false
-    ## Default language for empty content (i.e. if a record should have a
-    ## translated field but this field is empty, the <field>_fallback will be
-    ## displayed.
-    fallback: eng
-    ## List of languages available. Use the cakePHP convention: 'eng' for English,
-    ## 'fra' for French, etc...
-    available: []
-    ## Languages descriptions :
-    descriptions:
-#      fra: Version française
-#      eng: English version
-
-#--------------------------------------------------------------------------
-#
-# Default values.
-# Here are defined defaults settings. They are overriden in plugins definitions.
-#
-#--------------------------------------------------------------------------
 defaults:
 
   ##
@@ -150,9 +29,15 @@ defaults:
     template:
     ## View must be generated by default
     generate: true
-    ## Array of option for current view
-    options: []
-
+    ## ... And have options
+    options:
+        ## Hidden fields in views
+      hiddenFields:
+      ## Fields that don't have sorting links
+      unSortableFields:
+        id
+      ## Hidden fields from related tables
+      assoc_hiddenModelFields: []
   ##
   ## This is a default action
   ##
@@ -162,7 +47,7 @@ defaults:
     ## be relative to this folder.)
     template:
     ## An array of options for current action
-    options: []
+    options:[]
     ## Defines if the action have a view
     haveView: true
     ## The 'view' section contains the view configuration and will be fill by the
@@ -189,9 +74,17 @@ defaults:
     ## Public controllers have only index and view actions.
     public:
       ## Index action
-      index: []
+      index:
+        view:
+          options:
+            ## Public pages have no toolbar.
+            noToolbar: true
       ## View action
-      view: []
+      view:
+        view:
+          options:
+            noToolbar: true
+
     ## This is the admin prefix
     ## Admin pages have all the basic CRUD actions
     admin:
@@ -316,10 +209,6 @@ defaults:
     template:
     ## Folder where the file must be copied (relative to final plugin directory)
     targetPath:
-    ## Final file name
-#    targetFileName:
-    ## Target extension
-#    ext: ctp
     ## Options for the file templates
     options: []
     ## Generate the file ?
@@ -335,10 +224,6 @@ defaults:
     template:
     ## Target folder (relative to detination plugin's "View/" folder)
     targetPath: Elements::menus
-    ## Final file name
-#    targetFileName:
-    ## Target extension
-#    ext: ctp
     ## Options
     options:
       ## List of routing prefixes to be displayed in the menu.
@@ -348,7 +233,10 @@ defaults:
       ## List of plugins that must be hidden by default.
       hiddenPlugins: []
       ## List of hidden actions in the menu
-      hiddenActions: []
+      hiddenActions:
+        view
+        delete
+        edit
     ## Generate the menu ?
     generate: true
 
@@ -369,38 +257,3 @@ defaults:
     ## For folders: Copy only the source content ?
     ## If set to false, the source dir will be created too.
     contentOnly: true
-
-#--------------------------------------------------------------------------
-#
-# Plugins
-#
-#--------------------------------------------------------------------------
-plugins:
-  ## --------------------------------------------------------------------------
-  ##  "appBase" is not a plugin!
-  ##    Everything defined here will be baked in "app/".
-  ##	This section must be defined, even if you keep it empty.
-  ## ----------------------------
-  ##  Contains: <put the list of controllers or models here>
-  ## --------------------------------------------------------------------------
-  ## This is a special "plugin": it uses the <cake>/app/ folder as a plugin. All
-  ## the models, controllers,... will be created relatively to app/
-  ## If, for a reason you need to create a real plugin named 'appBase', change the
-  ## 'general.appBase' value of this file for something else, and put its name here too.
-  ##
-  ## This is the "plugin" in wich you should define your app wide
-  ## menus/files/required things
-  ##
-  appBase:
-    ## Plugin parts
-    ## Be carefull when naming empty parts: as the part name is used for empty
-    ## models definition or empty controllers definition, you should use the Cake
-    ## naming convention : Users for table users, WaitingOrders for table
-    ## waiting_orders,...
-    ##
-    ## But you can name it as you want when the models/controllers definitions
-    ## have the name set.
-    ## You can have a look to the superBakeConfig.yml file for a sample
-    ## config file (it's the testing config file).
-    parts:
-      ## Empty. Your move !

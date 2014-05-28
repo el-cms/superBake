@@ -1,0 +1,136 @@
+## YAML Template.
+---
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Acl manager
+  ## ----------------------------
+  ##  Here for menu items (for now)
+  ## --------------------------------------------------------------------------
+  ##
+#  Acl:
+#    path: plugins
+#    generate: false
+#    parts:
+#      Acos:
+#        haveModel: false
+#        controller:
+#          name: Acos
+#          actions:
+#            public:
+#              index:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#            user:
+#              index:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#            admin:
+#              index:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#              build_acl: []
+#              empty_acos: []
+#              prune_acos: []
+#              synchronize: []
+#      Aros:
+#        haveModel: false
+#        controller:
+#          name: Acos
+#          actions:
+#            public:
+#              index:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#            user:
+#              index:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#            admin:
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#              check: []
+#              empty_permissions: []
+#              role_permissions: []
+#              update_user_role: []
+#              users: []
+#      Acl:
+#        haveModel: false
+#        controller:
+#          name: Acl
+#          actions:
+#            public:
+#              index:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#            user:
+#              index:
+#                blackListed: true
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#            admin:
+#              add:
+#                blackListed: true
+#              edit:
+#                blackListed: true
+#              delete:
+#                blackListed: true
+#              view:
+#                blackListed: true
+#  DebugKit:
+#    generate: false
+#    haveBootstrap: false
+#    haveRoutes: false

@@ -1,20 +1,7 @@
 <h1>Configuration summary</h1>
-<?php if (Configure::read('Sb.executeTroughGUI') === true): ?>
-	<div class="alert alert-danger text-center">
-		<strong>WARNING:</strong> Before using the generation buttons, read the documentation to know what they do.
-		<br/>
-		<strong>Additionnally</strong> if you select a configuration file that's
-		different of the file defined in <code>&lt;Sb&gt;/Config/bootstrap.php</code>,
-		don't even try to generate things from the GUI, because the Shell will aways use
-		the default file.
-		<br/>
-		<small>If you want to disable the "generation from GUI" feature, set <code>Sb.executeTroughGUI</code> to <code>false</code>
-		in the plugin's bootstrap file.</small>
-	</div>
-	<?php
-endif;
-echo $this->element('config_file_changer');
-?>
+//<?php
+//echo $this->element('config_file_changer');
+//?>
 <h2>General and defaults</h2>
 <?php if (Configure::read('Sb.executeTroughGUI') === true): ?>
 	<div class="toolbar-sb">

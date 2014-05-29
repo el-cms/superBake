@@ -209,7 +209,7 @@ class SimpleImage {
 	 *
 	 * @return void
 	 */
-	function crop($width, $height, $startX = 0, $startY = 0, $scale = 1) {
+	function crop($width, $height, $startX = 0, $startY = 0) {
 		// Getting image width/height
 		$imageX = $this->getHeight();
 		$imageY = $this->getWidth();
@@ -217,14 +217,8 @@ class SimpleImage {
 		// Finding the longest side
 		$biggestSide = ($imageX > $imageY) ? $imageX : $imageY;
 		// Determinating the crop sizes
-		//$cropX = $width;
-		//$cropY = $height;
-//		$cropX=$biggestSide;
-//		$cropY=$biggestSide;
-		$cropX=$biggestSide*$scale;
-		$cropY=$biggestSide*$scale;
-//		$cropX=$imageX*$scale;
-//		$cropY=$imageY*$scale;
+		$cropX = $width;
+		$cropY = $height;
 		//Creating image
 		$new_image = imagecreatetruecolor($width, $height);
 		imagecopyresampled($new_image, $this->currentImage, 0, 0, $startX, $startY, $width, $height, $cropX, $cropY);

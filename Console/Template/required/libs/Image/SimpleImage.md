@@ -40,7 +40,7 @@ if ($this->request->is('post')) {
         
       // loading uploaded image
       if (!$img->load($file['tmp_name'])) {
-	$this->Session->setFlash(__('Image cannot be opened. Please try again'), 'flash_error');
+        $this->Session->setFlash(__('Image cannot be opened. Please try again'), 'flash_error');
         $this->redirect(array('admin_' => true, 'plugin' => 'gallery', 'controller' => 'gallery_items', 'action' => 'add'));
       }
         

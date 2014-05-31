@@ -2,14 +2,10 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-DROP SCHEMA IF EXISTS `sbtest` ;
-CREATE SCHEMA IF NOT EXISTS `sbtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `sbtest` ;
-
 -- -----------------------------------------------------
--- Table `sbtest`.`acos`
+-- Table `acos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`acos` (
+CREATE TABLE IF NOT EXISTS `acos` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parent_id` INT(10) NULL DEFAULT NULL,
   `model` VARCHAR(255) NULL DEFAULT '',
@@ -22,9 +18,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`aros_acos`
+-- Table `aros_acos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`aros_acos` (
+CREATE TABLE IF NOT EXISTS `aros_acos` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `aro_id` INT(10) UNSIGNED NOT NULL,
   `aco_id` INT(10) UNSIGNED NOT NULL,
@@ -37,9 +33,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`aros`
+-- Table `aros`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`aros` (
+CREATE TABLE IF NOT EXISTS `aros` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parent_id` INT(10) NULL DEFAULT NULL,
   `model` VARCHAR(255) NULL DEFAULT '',
@@ -52,9 +48,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`groups`
+-- Table `groups`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`groups` (
+CREATE TABLE IF NOT EXISTS `groups` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
@@ -63,9 +59,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`users`
+-- Table `users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(32) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
@@ -82,16 +78,16 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`users` (
   INDEX `fk_users_groups_idx` (`group_id` ASC),
   CONSTRAINT `fk_users_groups`
     FOREIGN KEY (`group_id`)
-    REFERENCES `sbtest`.`groups` (`id`)
+    REFERENCES `groups` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`post_categories`
+-- Table `post_categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`post_categories` (
+CREATE TABLE IF NOT EXISTS `post_categories` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
@@ -100,9 +96,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`licenses`
+-- Table `licenses`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`licenses` (
+CREATE TABLE IF NOT EXISTS `licenses` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `short_description` VARCHAR(255) NULL DEFAULT NULL,
@@ -113,9 +109,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`posts`
+-- Table `posts`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`posts` (
+CREATE TABLE IF NOT EXISTS `posts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NOT NULL,
   `excerpt_fra` VARCHAR(255) NOT NULL,
@@ -135,26 +131,26 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`posts` (
   INDEX `fk_posts_licenses1_idx` (`license_id` ASC),
   CONSTRAINT `fk_posts_post_categories`
     FOREIGN KEY (`post_category_id`)
-    REFERENCES `sbtest`.`post_categories` (`id`)
+    REFERENCES `post_categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_posts_users`
     FOREIGN KEY (`user_id`)
-    REFERENCES `sbtest`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_posts_licenses`
     FOREIGN KEY (`license_id`)
-    REFERENCES `sbtest`.`licenses` (`id`)
+    REFERENCES `licenses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`project_states`
+-- Table `project_states`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`project_states` (
+CREATE TABLE IF NOT EXISTS `project_states` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name_fra` VARCHAR(45) NOT NULL,
   `name_eng` VARCHAR(45) NOT NULL,
@@ -166,9 +162,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`projects`
+-- Table `projects`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`projects` (
+CREATE TABLE IF NOT EXISTS `projects` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `short_description_fra` VARCHAR(255) NULL DEFAULT NULL,
@@ -187,26 +183,26 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`projects` (
   INDEX `fk_projects_users1_idx` (`user_id` ASC),
   CONSTRAINT `projects_project_states`
     FOREIGN KEY (`project_state_id`)
-    REFERENCES `sbtest`.`project_states` (`id`)
+    REFERENCES `project_states` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `projects_licenses`
     FOREIGN KEY (`license_id`)
-    REFERENCES `sbtest`.`licenses` (`id`)
+    REFERENCES `licenses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `projects_users`
     FOREIGN KEY (`user_id`)
-    REFERENCES `sbtest`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`project_notes`
+-- Table `project_notes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`project_notes` (
+CREATE TABLE IF NOT EXISTS `project_notes` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title_fra` VARCHAR(45) NOT NULL,
   `title_eng` VARCHAR(45) NOT NULL,
@@ -217,16 +213,16 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`project_notes` (
   INDEX `fk_project_notes_projects1_idx` (`project_id` ASC),
   CONSTRAINT `fk_project_notes_project`
     FOREIGN KEY (`project_id`)
-    REFERENCES `sbtest`.`projects` (`id`)
+    REFERENCES `projects` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`likes`
+-- Table `likes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`likes` (
+CREATE TABLE IF NOT EXISTS `likes` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NOT NULL,
   `link` VARCHAR(255) NOT NULL,
@@ -237,16 +233,16 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`likes` (
   INDEX `fk_likes_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_likes_users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `sbtest`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`link_categories`
+-- Table `link_categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`link_categories` (
+CREATE TABLE IF NOT EXISTS `link_categories` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NOT NULL,
@@ -255,9 +251,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`links`
+-- Table `links`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`links` (
+CREATE TABLE IF NOT EXISTS `links` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NOT NULL,
   `link` VARCHAR(255) NOT NULL,
@@ -271,21 +267,21 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`links` (
   INDEX `fk_links_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_links_link_categories`
     FOREIGN KEY (`link_category_id`)
-    REFERENCES `sbtest`.`link_categories` (`id`)
+    REFERENCES `link_categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_links_users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `sbtest`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`galleries`
+-- Table `galleries`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`galleries` (
+CREATE TABLE IF NOT EXISTS `galleries` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
@@ -295,16 +291,16 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`galleries` (
   INDEX `fk_galleries_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_galleries_users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `sbtest`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`gallery_items`
+-- Table `gallery_items`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`gallery_items` (
+CREATE TABLE IF NOT EXISTS `gallery_items` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `file` VARCHAR(45) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
@@ -318,26 +314,26 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`gallery_items` (
   INDEX `fk_files_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_gallery_items_galleries`
     FOREIGN KEY (`gallery_id`)
-    REFERENCES `sbtest`.`galleries` (`id`)
+    REFERENCES `galleries` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_gallery_items_licenses`
     FOREIGN KEY (`license_id`)
-    REFERENCES `sbtest`.`licenses` (`id`)
+    REFERENCES `licenses` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_gallery_items_users`
     FOREIGN KEY (`user_id`)
-    REFERENCES `sbtest`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`pages`
+-- Table `pages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`pages` (
+CREATE TABLE IF NOT EXISTS `pages` (
   `id` VARCHAR(16) NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `content` TEXT NOT NULL,
@@ -346,16 +342,16 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`pages` (
   INDEX `fk_pages_users1_idx` (`user_id` ASC),
   CONSTRAINT `fk_pages_users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `sbtest`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`report_reasons`
+-- Table `report_reasons`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`report_reasons` (
+CREATE TABLE IF NOT EXISTS `report_reasons` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -363,9 +359,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sbtest`.`reports`
+-- Table `reports`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sbtest`.`reports` (
+CREATE TABLE IF NOT EXISTS `reports` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url` VARCHAR(255) NOT NULL,
   `reason` VARCHAR(255) NULL,
@@ -374,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `sbtest`.`reports` (
   INDEX `fk_reports_report_reasons1_idx` (`report_reason_id` ASC),
   CONSTRAINT `fk_reports_report_reasons1`
     FOREIGN KEY (`report_reason_id`)
-    REFERENCES `sbtest`.`report_reasons` (`id`)
+    REFERENCES `report_reasons` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -385,44 +381,27 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `sbtest`.`groups`
+-- Data for table `groups`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `sbtest`;
-INSERT INTO `sbtest`.`groups` (`id`, `name`, `description`) VALUES (1, 'Admin', 'Administrators');
-INSERT INTO `sbtest`.`groups` (`id`, `name`, `description`) VALUES (2, 'Users', 'Registered users');
-
-COMMIT;
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (1, 'Admin', 'Administrators');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (2, 'Users', 'Registered users');
 
 
 -- -----------------------------------------------------
--- Data for table `sbtest`.`users`
+-- Data for table `users`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `sbtest`;
-INSERT INTO `sbtest`.`users` (`id`, `username`, `password`, `email`, `realname`, `created`, `modified`, `group_id`, `nbposts`, `bio`, `website`, `status`) VALUES (NULL, 'Test', '6dc115021f08a0e2ae62d4fc446649f0028b0af6', 'test@example.com', 'Test guy', '2014-05-01 10:43:05', '2014-05-01 10:43:05', 1, 0, NULL, NULL, 1);
-
-COMMIT;
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `realname`, `created`, `modified`, `group_id`, `nbposts`, `bio`, `website`, `status`) VALUES (NULL, 'Test', '6dc115021f08a0e2ae62d4fc446649f0028b0af6', 'test@example.com', 'Test guy', '2014-05-01 10:43:05', '2014-05-01 10:43:05', 1, 0, NULL, NULL, 1);
 
 
 -- -----------------------------------------------------
--- Data for table `sbtest`.`licenses`
+-- Data for table `licenses`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `sbtest`;
-INSERT INTO `sbtest`.`licenses` (`id`, `name`, `short_description`, `link`, `private_name`) VALUES (1, 'Test License', 'Test licence to protect your work', 'http://example.com', 'test');
-
-COMMIT;
-
+INSERT INTO `licenses` (`id`, `name`, `short_description`, `link`, `private_name`) VALUES (1, 'Test License', 'Test licence to protect your work', 'http://example.com', 'test');
 
 -- -----------------------------------------------------
--- Data for table `sbtest`.`project_states`
+-- Data for table `project_states`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `sbtest`;
-INSERT INTO `sbtest`.`project_states` (`id`, `name_fra`, `name_eng`, `description_fra`, `description_eng`, `value`) VALUES (NULL, 'Idée', 'Idea', 'Une idée de projet !', 'Just an idea', 0);
-INSERT INTO `sbtest`.`project_states` (`id`, `name_fra`, `name_eng`, `description_fra`, `description_eng`, `value`) VALUES (NULL, 'En cours', 'In dev', 'Projet en développement', 'Development started', 1);
-INSERT INTO `sbtest`.`project_states` (`id`, `name_fra`, `name_eng`, `description_fra`, `description_eng`, `value`) VALUES (NULL, 'Prêt', 'Ready', 'Une version stable existe', 'A stable version is available', 2);
-
-COMMIT;
+INSERT INTO `project_states` (`id`, `name_fra`, `name_eng`, `description_fra`, `description_eng`, `value`) VALUES (NULL, 'Idée', 'Idea', 'Une idée de projet !', 'Just an idea', 0);
+INSERT INTO `project_states` (`id`, `name_fra`, `name_eng`, `description_fra`, `description_eng`, `value`) VALUES (NULL, 'En cours', 'In dev', 'Projet en développement', 'Development started', 1);
+INSERT INTO `project_states` (`id`, `name_fra`, `name_eng`, `description_fra`, `description_eng`, `value`) VALUES (NULL, 'Prêt', 'Ready', 'Une version stable existe', 'A stable version is available', 2);
 

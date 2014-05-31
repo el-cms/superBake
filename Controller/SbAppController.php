@@ -31,7 +31,7 @@ class SbAppController extends AppController {
 		foreach ($files as $file) {
 			$tmp = explode('.', $file);
 			//Only use files named something.something.ext and adding entry to the menu
-			if (isset($tmp[count($tmp) - 1]) && count($tmp)>2) {
+			if (isset($tmp[count($tmp) - 1]) && count($tmp) > 2) {
 				// Removing extension
 				unset($tmp[count($tmp) - 1]);
 				$menuLinks[ucfirst(str_replace('_', ' ', $tmp[0]))][] = array(
@@ -41,6 +41,7 @@ class SbAppController extends AppController {
 			}
 		}
 		$this->set('templateLinks', $menuLinks);
+
 	}
 
 }

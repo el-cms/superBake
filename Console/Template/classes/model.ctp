@@ -38,6 +38,13 @@ if (!empty($plugin)) {
 	$com_plugin = "$pluginPath/$plugin/";
 }
 
+//
+// Preparing the 'actAs' array
+if(!isset($actsAs) || empty($actsAs)){
+	$actsAs=array();
+}
+
+
 echo "<?php\n";
 ?>
 
@@ -78,6 +85,14 @@ endforeach;
 ?>
 */
 class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
+
+<?php if(!empty($actsAs)):
+echo "public \$actsAs=array(\n";
+	foreach($actsAs as $behaviour=>$behaviourOptions):
+echo "'$behaviour' => ".$this->displayArray($behaviourOptions).",\n";
+	endforeach;
+	echo ");";
+endif;?>
 
 <?php if ($useDbConfig !== 'default'): ?>
 	/**

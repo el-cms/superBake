@@ -1,7 +1,4 @@
 <h1>Population log</h1>
-<?php
-echo $this->element('config_file_changer');
-?>
 <div class="alert alert-info">
 	This page outputs the logs from <code>Sbc->loadFile</code>: the configuration file is loaded and populated, and errors and warning are thrown during this process. On the right panel, this is the <em>complete</em> config file, after population.
 </div>

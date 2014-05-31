@@ -70,17 +70,12 @@ public function <?php echo $admin . $a ?>($id = null) {
 		endforeach;
 	endif;
 
-	// "Contain" section:
-	if(count($contain)>0){
-		$containString="'contain' => ".var_export($contain, true).',';
-	}
 ?>
 	$options = array(
 		'conditions' => array(
 			'<?php echo $currentModelName; ?>.' . $this-><?php echo $currentModelName; ?>->primaryKey => $id,
 			<?php echo $findConditions ?>
 			),
-		<?php echo $containString; ?>
 		<?php echo $findFields; ?>);
 	$<?php echo lcfirst($currentModelName); ?>Data = $this-><?php echo $currentModelName; ?>->find('first', $options);
 	if (empty($<?php echo lcfirst($currentModelName); ?>Data)) {

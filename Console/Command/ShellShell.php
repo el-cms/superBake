@@ -125,7 +125,12 @@ class ShellShell extends SbShell {
 		$this->out('|  <warning>Read the doc before things turns bad</warning>                         |', 1, 0);
 		$this->out('|                                                               |', 1, 0);
 		$this->out('+---------------------------------------------------------------+', 1, 0);
-		$this->out('| <info>Config file: "' . Configure::read('Sb.defaultConfig') . '".</info>', 1, 0);
+		if(count($this->Sbc->getPrefixesList())!= (count(Configure::read('Routing.prefixes'))+1)){
+			$this->out('|', 1, 0);
+			$this->out('| <warning>--> The amount of routing prefixes defined in your core.php.</warning>', 1, 0);
+			$this->out('| <warning>--> differs from the ones defined in your configuration files...</warning>', 1, 0);
+			$this->out('|', 1, 0);
+		}
 		if ($this->Sbc->getErrors() > 0) {
 			$this->out('| <warning>--> This file contains errors. Check it.</warning>', 1, 0);
 		}

@@ -12,6 +12,12 @@ App::uses('Folder', 'Utility');
 class SbController extends SbAppController {
 
 	/**
+	 *
+	 * @var Sbc object
+	 */
+	public $Sbc;
+
+	/**
 	 * Index method
 	 * Only returns the view.
 	 *
@@ -31,29 +37,22 @@ class SbController extends SbAppController {
 	 * @access private
 	 * @return void
 	 */
-	private function _selectConfigFile() {
-		$Sbc = new Sbc();
-
-//		if ($this->request->is('post')) {
-//			$fileToLoad = $this->request->data['configFile'];
-//		} else {
-//			$fileToLoad = Configure::read('Sb.defaultConfig');
-//		}
-//		// Find the different configuration files
-//		$configFolder = new Folder($Sbc->getConfigPath());
+	private function _loadConfigFile() {
+		$this->Sbc = new Sbc();
 
 		// Loads the file
-		$Sbc->loadConfig();
+		$this->Sbc->loadConfig();
+
+		// Checking routing prefix
+		$this->set('routingPrefixError', ((count($this->Sbc->getPrefixesList()) != (count(Configure::read('Routing.prefixes')) + 1)) ? 1 : 0));
 
 		// Giving the array to view
-//		$this->set('configFiles', $configFolder->find('(.*)\.yml', true));
-//		$this->set('configFile', $fileToLoad);
-		$this->set('configFileDescription', $Sbc->getConfig('description'));
-		$this->set('log', $Sbc->displayLog());
-		$this->set('logErrors', $Sbc->getErrors());
-		$this->set('logWarnings', $Sbc->getWarnings());
+		$this->set('configFileDescription', $this->Sbc->getConfig('description'));
+		$this->set('log', $this->Sbc->displayLog());
+		$this->set('logErrors', $this->Sbc->getErrors());
+		$this->set('logWarnings', $this->Sbc->getWarnings());
 
-		return $Sbc;
+		return $this->Sbc;
 	}
 
 	/**
@@ -63,8 +62,8 @@ class SbController extends SbAppController {
 	 * @return void
 	 */
 	public function check() {
-		$Sbc = $this->_selectConfigFile();
-		$this->set('completeConfig', Spyc::YAMLDump($Sbc->getConfig()));
+		$this->_loadConfigFile();
+		$this->set('completeConfig', Spyc::YAMLDump($this->Sbc->getConfig()));
 	}
 
 	/**
@@ -75,14 +74,14 @@ class SbController extends SbAppController {
 	 */
 	public function tree() {
 		$this->helpers[]='Sb.Sb'; // For execution buttons
-		$Sbc = $this->_selectConfigFile();
+		$this->_loadConfigFile();
 		// Prefixes and actions list:
 		$defaults_prefixes_list = '';
-		foreach ($Sbc->getConfig('defaults.actions') as $prefix => $action) {
+		foreach ($this->Sbc->getConfig('defaults.actions') as $prefix => $action) {
 			$defaults_prefixes_list.=$prefix . ', ';
 		}
 		$this->set('defaults_prefixes_list', rtrim($defaults_prefixes_list, ', '));
-		$this->set('completeConfig', $Sbc->getConfig());
+		$this->set('completeConfig', $this->Sbc->getConfig());
 	}
 
 	/**

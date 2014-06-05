@@ -4,6 +4,23 @@
  *
  * This file is used during models generation and adds custom snippets to models
  *
+ * Options available for model baking:
+ *  - actsAs        (array)
+ *  - useDbConfig   (string)
+ *  - useTable      (string)
+ *  - virtualFields (array)
+ *  - displayField  (string)
+ *  - tablePrefix   (string)
+ *  - recursive     (int)
+ *  - order         (mixed)
+ *  - name          (string)
+ *  - cacheQueries  (bool)
+ *
+ * Options to implement: $data, must check this option.
+ *
+ * More on model attributes can be found in the CakePHP doc:
+ * http://book.cakephp.org/2.0/en/models/model-attributes.html
+ *
  * ---
  * This file is an updated file from cakePHP.
  *
@@ -40,26 +57,37 @@ if (!empty($plugin)) {
 
 //
 // Preparing the 'actAs' array
-if(!isset($actsAs) || empty($actsAs)){
-	$actsAs=array();
+if (empty($actsAs)) {
+	$actsAs = array();
+}
+
+//
+// Preparing the 'virtualFields' array
+if (empty($virtualFields)) {
+	$virtualFields = array();
 }
 
 
 echo "<?php\n";
-?>
 
-/**
-* app/<?php echo $com_plugin . 'Model/' . $name ?>.php
-* File generated on <?php echo date('Y-m-d H:i:s'); ?> by superBake.
-*
-* This file contains the <?php echo $name ?> model.
-*
-* @copyright     Copyright 2012-<?php echo date('Y') ?>, <?php echo $this->Sbc->getConfig('general.editorName') ?> (<?php echo $this->Sbc->getConfig('general.editorWebsite') ?>)
-* @author        <?php echo $this->Sbc->getConfig('general.editorName') ?> <<?php echo $this->Sbc->getConfig('general.editorEmail') ?>>
-* @link          <?php echo $this->Sbc->getConfig('general.editorWebsite') ?> <?php echo $this->Sbc->getConfig('general.editorWebsiteName') . "\n" ?>
-* @package       <?php echo $this->Sbc->getConfig('general.basePackage') ?>/<?php echo $plugin . "\n" ?>
-*
-<?php
+//
+// File headers
+//
+echo "/**\n"
+ . " * {$com_plugin}/Model/$name.php\n"
+ . " * File generated on " . date('Y-m-d H:i:s') . " by superBake.\n"
+ . " *\n"
+ . " * This file contains the $name model.\n"
+ . " *\n"
+ . " * @copyright     Copyright 2012-" . date('Y') . ", " . $this->Sbc->getConfig('general.editorName') . " (" . $this->Sbc->getConfig('general.editorWebsite') . ")\n"
+ . " * @author        " . $this->Sbc->getConfig('general.editorName') . "<" . $this->Sbc->getConfig('general.editorEmail') . ">\n"
+ . " * @link          " . $this->Sbc->getConfig('general.editorWebsite') . " " . $this->Sbc->getConfig('general.editorWebsiteName') . "\n"
+ . " * @package       " . $this->Sbc->getConfig('general.basePackage') . "/$plugin\n"
+ . " *\n\n";
+
+//
+// Adding license
+//
 $licenseTemplate = dirname(dirname(__FILE__)) . DS . 'common' . DS . 'licenses' . DS . $this->Sbc->getConfig('general.editorLicenseTemplate') . '.ctp';
 if (file_exists($licenseTemplate)):
 	include $licenseTemplate;
@@ -70,11 +98,13 @@ endif;
 ?>
 */
 
-<?php echo "App::uses('{$plugin}AppModel', '{$pluginPath}Model');\n"; ?>
-/**
-* <?php echo $name ?> Model
-*
 <?php
+echo "App::uses('{$plugin}AppModel', '{$pluginPath}Model');\n";
+
+//
+// Class description
+//
+echo "/**\n * $name Model\n *\n";
 foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $assocType):
 	if (!empty($associations[$assocType])):
 		foreach ($associations[$assocType] as $relation):
@@ -82,59 +112,116 @@ foreach (array('hasOne', 'belongsTo', 'hasMany', 'hasAndBelongsToMany') as $asso
 		endforeach;
 	endif;
 endforeach;
-?>
-*/
-class <?php echo $name ?> extends <?php echo $plugin; ?>AppModel {
+echo " */\n";
 
-<?php if(!empty($actsAs)):
-echo "public \$actsAs=array(\n";
-	foreach($actsAs as $behaviour=>$behaviourOptions):
-echo "'$behaviour' => ".$this->displayArray($behaviourOptions).",\n";
+//
+// Class definition
+//
+echo "class $name extends {$plugin}AppModel {\n";
+
+//
+// ActsAs configuration
+//
+if (!empty($actsAs)):
+	echo "\t/**\n\t * Behaviour modifiers\n\t *\n\t * @var array\n\t */\n";
+	echo "\tpublic \$actsAs=array(\n";
+	foreach ($actsAs as $behaviour => $behaviourOptions):
+		echo "\t\t'$behaviour' => " . $this->displayArray($behaviourOptions) . ",\n";
 	endforeach;
-	echo ");";
-endif;?>
-
-<?php if ($useDbConfig !== 'default'): ?>
-	/**
-	* Use database config
-	*
-	* @var string
-	*/
-	public $useDbConfig = '<?php echo $useDbConfig; ?>';
-
-	<?php
+	echo ");\n\n";
 endif;
 
+
+//
+// useDBConfig
+//
+if ($useDbConfig !== 'default'):
+	echo "\t/**\n\t * Use database config\n\t	*\n\t	* @var string\n\t	*/\n";
+	echo "\tpublic \$useDbConfig = '$useDbConfig';\n\n";
+endif;
+
+//
+// useTable
+//
 if ($useTable && $useTable !== Inflector::tableize($name)):
 	$table = "'$useTable'";
 	echo "/**\n * Use table\n *\n * @var mixed False or table name\n */\n";
 	echo "\tpublic \$useTable = $table;\n\n";
 endif;
 
+//
+// Primary key
+//
 if ($primaryKey !== 'id'):
-	?>
-	/**
-	* Primary key field
-	*
-	* @var string
-	*/
-	public $primaryKey = '<?php echo $primaryKey; ?>';
-
-	<?php
+	echo "\t/**\n\t	* Primary key field\n\t	*\n\t	* @var string\n\t	*/\n";
+	echo "\tpublic \$primaryKey = '$primaryKey';\n\n";
 endif;
 
-if ($displayField):
-	?>
-	/**
-	* Display field
-	*
-	* @var string
-	*/
-	public $displayField = '<?php echo $displayField; ?>';
-
-	<?php
+//
+// virtualFields
+//
+if (!empty($virtualFields)):
+	echo "\t/**\n\t * Virtual fields\n\t *\n\t * @var array\n\t */\n";
+	echo "\tpublic \$virtualFields=array(\n";
+	echo $this->displayArray($virtualFields);
+	echo ");\n\n";
 endif;
 
+//
+// Display field
+//
+if (!empty($displayField)):
+	echo "/**\n\t	* Display field\n\t	*\n\t	* @var string\n\t	*/\n";
+	echo "\tpublic \$displayField = '$displayField';\n\n";
+endif;
+
+//
+// Table prefix
+//
+if (!empty($tablePrefix)):
+	echo "/**\n\t	* Table prefix, override the value from 'app/Config/bootstrap.php' for this model only.\n\t	*\n\t	* @var string\n\t	*/\n";
+	echo "\tpublic \$tablePrefix = '$tablePrefix';\n\n";
+endif;
+
+//
+// Recursive
+//
+if (!empty($recursive)):
+	echo "/**\n\t	* Fetch association level.\n\t	*\n\t	* @var int\n\t	*/\n";
+	echo "\tpublic \$recursive = $recursive;\n\n";
+endif;
+
+//
+// Model name
+//
+if (!empty($name)):
+	echo "/**\n\t	* Model name.\n\t	*\n\t	* @var string\n\t	*/\n";
+	echo "\tpublic \$name = '$name';\n\n";
+endif;
+
+//
+// Queries cache
+//
+if (!empty($cacheQueries)):
+	echo "/**\n\t	* Cache the queries if set to true.\n\t	*\n\t	* @var string\n\t	*/\n";
+	echo "\tpublic \$cacheQueries = '$cacheQueries';\n\n";
+endif;
+
+//
+// Order
+//
+if (!empty($order)):
+	echo "/**\n\t	* Default ordering.\n\t	*\n\t	* @var mixed (string|array)\n\t	*/\n";
+	if (is_array($order)) {
+		echo "\tpublic \$order = " . $this->displayArray($order) . ";\n\n";
+	} else {
+		echo "\tpublic \$order = '$order';\n\n";
+	}
+endif;
+
+//
+// Validate array
+//
 if (!empty($validate)):
 	echo "/**\n * Validation rules\n *\n * @var array\n */\n";
 	echo "\tpublic \$validate = array(\n";
@@ -182,9 +269,8 @@ if (!empty($validate)):
 	endforeach;
 	echo "\t);\n";
 endif;
-
-
 ?>
+
 //
 // The Associations below have been created with all possible keys, those that are not needed can be removed
 //

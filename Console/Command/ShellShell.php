@@ -125,7 +125,7 @@ class ShellShell extends SbShell {
 		$this->out('|  <warning>Read the doc before things turns bad</warning>                         |', 1, 0);
 		$this->out('|                                                               |', 1, 0);
 		$this->out('+---------------------------------------------------------------+', 1, 0);
-		if(count($this->Sbc->getPrefixesList())!= (count(Configure::read('Routing.prefixes'))+1)){
+		if (count($this->Sbc->getPrefixesList()) != (count(Configure::read('Routing.prefixes')) + 1)) {
 			$this->out('|', 1, 0);
 			$this->out('| <warning>--> The amount of routing prefixes defined in your core.php.</warning>', 1, 0);
 			$this->out('| <warning>--> differs from the ones defined in your configuration files...</warning>', 1, 0);
@@ -380,7 +380,7 @@ class ShellShell extends SbShell {
 
 		// outputting the list
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $plugins[$i]), 1,  Shell::QUIET);
+			$this->out(sprintf("%${len}d. %s", $i + 1, $plugins[$i]), 1, Shell::QUIET);
 		}
 		$enteredPlugin = '';
 
@@ -492,7 +492,7 @@ class ShellShell extends SbShell {
 
 		// List output
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $models[$i]), 1,  Shell::QUIET);
+			$this->out(sprintf("%${len}d. %s", $i + 1, $models[$i]), 1, Shell::QUIET);
 		}
 		$enteredModel = '';
 
@@ -577,7 +577,7 @@ class ShellShell extends SbShell {
 		$len = strlen($count + 1);
 		// List display
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $controllers[$i]), 1,  Shell::QUIET);
+			$this->out(sprintf("%${len}d. %s", $i + 1, $controllers[$i]), 1, Shell::QUIET);
 		}
 		$enteredController = '';
 
@@ -634,16 +634,16 @@ class ShellShell extends SbShell {
 //		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($plugin) . ".parts.$part.haveModel") === false) {
 //			$this->speak(__d('superBake', 'ShellShell:630: Controller does not have a model. It should be generated using another method.'), 'warning', 0);
 //		} else {
-			// SuperBake
-			$this->SuperController->Sbc = $this->Sbc;
+		// SuperBake
+		$this->SuperController->Sbc = $this->Sbc;
 
-			// Current plugin
-			$this->SuperController->plugin = ($plugin === $this->Sbc->getAppBase()) ? null : $plugin;
+		// Current plugin
+		$this->SuperController->plugin = ($plugin === $this->Sbc->getAppBase()) ? null : $plugin;
 
-			// Part  name
-			$this->SuperController->currentPart = $part;
-			// Task execution
-			$this->SuperController->execute();
+		// Part  name
+		$this->SuperController->currentPart = $part;
+		// Task execution
+		$this->SuperController->execute();
 //		}
 	}
 
@@ -673,7 +673,9 @@ class ShellShell extends SbShell {
 
 		$views = $this->Sbc->getViewsToBake();
 		foreach ($views as $plugin => $parts) {
+			$this->speak(__d('superBake', 'Plugin %s...', $plugin), 'info', 0);
 			foreach ($parts as $part => $prefixes) {
+				$this->speak(__d('superBake', 'Part %s...', $part), 'info', 0);
 				foreach ($prefixes as $prefix => $actions) {
 					foreach ($actions as $action) {
 						$this->speak(__d('superBake', 'Generating view %s...', (($prefix === 'public') ? '' : $prefix . '_') . $action), 'info', 0, 1, 1);
@@ -802,7 +804,7 @@ class ShellShell extends SbShell {
 		$this->out(__d('cake_console', 'Possible Actions for the "%s" plugin, based on your current config file:', $plugin));
 		$len = strlen($count + 1);
 		for ($i = 0; $i < $count; $i++) {
-			$this->out(sprintf("%${len}d. %s", $i + 1, $actions[$i]), 1,  Shell::QUIET);
+			$this->out(sprintf("%${len}d. %s", $i + 1, $actions[$i]), 1, Shell::QUIET);
 		}
 		$enteredAction = '';
 
@@ -1125,9 +1127,6 @@ class ShellShell extends SbShell {
 			$this->speak(__d('superbake', 'AppShell already initialized'), 'warning', 0);
 			return true;
 		}
-
-		// Getting Template directory
-//		$configFile = Configure::read('Sb.defaultConfig');
 
 		// Loading Sbc
 		$this->Sbc = new Sbc;

@@ -54,13 +54,13 @@
 				<?php echo $this->Session->flash(); ?>
 			</div>
 			<?php
-			if($routingPrefixError===1):
+			if (isset($routingPrefixError) && $routingPrefixError === 1):
 				?>
-			<div class="alert alert-danger">
-				<i class="icon-warning-sign icon-2x pull-left"></i>
-				<?php echo __d('sb', 'The amount of routing prefixes defined in your <code>core.php</code> is damn too high ! (or too low) Please check your routing prefixes.') ?>
-			</div>
-			<?php
+				<div class="alert alert-danger">
+					<i class="icon-warning-sign icon-2x pull-left"></i>
+					<?php echo __d('sb', 'The amount of routing prefixes defined in your <code>core.php</code> is damn too high ! (or too low) Please check your routing prefixes.') ?>
+				</div>
+				<?php
 			endif;
 			?>
 		</div>

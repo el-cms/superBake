@@ -140,7 +140,7 @@ if ($this->Sbc->getConfig('theme.language.useLanguages') === true):
 	Configure::write('Config.languages', array(
 	<?php
 	foreach ($this->Sbc->getConfig('theme.language.available') as $lang):
-		echo "'$lang' => '" . $this->Sbc->getConfig(["theme.language.descriptions.$lang"]) . "', \n";
+		echo "'$lang' => '" . $this->Sbc->getConfig("theme.language.descriptions.$lang") . "', \n";
 	endforeach;
 	?>
 	));

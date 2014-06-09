@@ -45,6 +45,11 @@ plugins:
                   template: index
             admin:
               bug:
-
+        options:
+          fieldNames:
+            user_id: Author
       ## Post categories
       PostCategories:
+        options:
+          fieldNames:
+            user_id: Author

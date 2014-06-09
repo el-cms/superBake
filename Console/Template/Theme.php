@@ -45,6 +45,8 @@ class Theme extends SbShell {
 	 * @var string
 	 */
 	public $templatePath = null;
+	// Other models
+	public $otherModels = array();
 
 	/* ---------------------------------------------------------------------------
 	 *
@@ -66,6 +68,21 @@ class Theme extends SbShell {
 	 * Methods to work on schemas
 	 *
 	 * ------------------------------------------------------------------------- */
+
+	public function s_loadModel($model, $plugin = null) {
+		if (!in_array($model, $this->otherModels)) {
+			if (!is_null($plugin)) {
+				$plugin = $this->Sbc->getPluginName($this->Sbc->getModelPlugin($model));
+			}
+			App::uses($model, $plugin . '.Model');
+			// Checks if Model has been loaded correctly
+			if (!class_exists($model)) {
+				$this->speak(__d('superBake', "Generate {$plugin}$model model first", 'error', 0));
+				$this->_stop();
+			}
+			$this->otherModels[$model] = ClassRegistry::init($model);
+		}
+	}
 
 	/**
 	 * Updates the fields list considering the fields to be hidden and the different
@@ -119,6 +136,9 @@ class Theme extends SbShell {
 			} else {
 				$hiddenFields = array();
 			}
+			if ($this->Sbc->getConfig('theme.removeSelfIdInAssociations') && $field == $relation['foreignKey']) {
+				$hiddenFields[] = $relation['foreignKey'];
+			}
 			if (in_array($field, $hiddenFields)) {
 				unset($relation['fields'][$i]);
 			} else {
@@ -135,6 +155,100 @@ class Theme extends SbShell {
 			$i++;
 		}
 		return $relation;
+	}
+
+	public function s_getBelongsToAndLoadModels($model) {
+		$this->s_loadModel($model, $this->Sbc->getModelPlugin($model));
+		$assocs = $this->otherModels[$model]->belongsTo;
+		$out = array();
+		foreach ($assocs as $k => $v) {
+			$this->s_loadModel($k, $this->Sbc->getModelPlugin($k));
+			$out[$k] = $v;
+		}
+		return $out;
+	}
+
+	/**
+	 * Determines if the current schema have a SFW field
+	 *
+	 * @param string $schema Schema name. Will use current schema name if null
+	 *
+	 * @return boolean
+	 */
+	public function s_haveSFW($schema = null) {
+		if ($this->Sbc->getConfig('theme.sfw.useSFW')) {
+
+			//Schema given: field list
+			if (!is_null($schema)) {
+				return in_array($this->Sbc->getConfig('theme.sfw.field'), $schema);
+			} else {
+				return array_key_exists($this->Sbc->getConfig('theme.sfw.field'), $this->templateVars['schema']);
+			}
+		}
+	}
+
+	/**
+	 * Determines if the current schema uses Anon field.
+	 *
+	 * @param string $schema Schema name. Will use current schema name if null
+	 *
+	 * @return boolean
+	 */
+	public function s_haveAnon($schema = null) {
+		if ($this->Sbc->getConfig('theme.anon.useAnon')) {
+			// Schema given : field list
+			if (!is_null($schema)) {
+				return in_array($this->Sbc->getConfig('theme.anon.field'), $schema);
+			} else {
+				return array_key_exists($this->Sbc->getConfig('theme.anon.field'), $this->templateVars['schema']);
+			}
+		}
+	}
+
+	/**
+	 * Determines is a field is a language field or not
+	 *
+	 * @param string $field Field name
+	 *
+	 * @return boolean
+	 */
+	public function s_isLanguageField($field) {
+		if ($this->Sbc->getConfig('theme.language.useLanguages') == true) {
+			// Splitting field name
+			$exploded = explode('_', $field);
+			$nbExploded = count($exploded);
+			if ($nbExploded > 1) {
+				if (in_array($exploded[($nbExploded - 1)], $this->Sbc->getConfig('theme.language.available'))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the language and name of a language field (field_lng)
+	 *
+	 * @param string $field Field name
+	 *
+	 * @return array Array(fieldName, lang)
+	 */
+	public function s_getLanguageFieldProperties($field) {
+		$exploded = explode('_', $field);
+		$nbExploded = count($exploded);
+		if ($nbExploded > 1) {
+			if (in_array($exploded[($nbExploded - 1)], $this->Sbc->getConfig('theme.language.available'))) {
+
+				// Language:
+				$lang = $exploded[$nbExploded - 1];
+
+				// Final field name:
+				unset($exploded[$nbExploded - 1]);
+				$fieldName = implode('_', $exploded);
+
+				return array('lang' => $lang, 'fieldName' => $fieldName);
+			}
+		}
 	}
 
 	/* ---------------------------------------------------------------------------
@@ -213,11 +327,15 @@ class Theme extends SbShell {
 	 */
 	public function v_prepareRelatedField($field, $config, $originalFieldsList, $hasOne = false) {
 
-		// Class for table rows (or whatever you want) containing this element
+		//Current Model:
+		$model = Inflector::classify($config['controller']);
+
+		$assocs = $this->s_getBelongsToAndLoadModels($model);
+		// Class for table cells
 		$tdClass = null;
 		// Field name in views
 		if ($hasOne) {
-			$fieldString = "\${$this->templateVars['singularVar']}['" . Inflector::classify($config['controller']) . "']['$field']";
+			$fieldString = "\${$this->templateVars['singularVar']}['$model']['$field']";
 			$relationType = 'hasOne';
 		} else {
 			$fieldString = "\$" . Inflector::variable(Inflector::singularize($config['controller'])) . "['$field']";
@@ -229,6 +347,14 @@ class Theme extends SbShell {
 
 		// String to display form element
 		$displayForm = $this->v_formInput($field, array('class' => 'text-muted'));
+
+		// Foreign key field ?
+		foreach ($assocs as $assoc => $assocConfig) {
+			if ($field == $assocConfig['foreignKey']) {
+				$displayString = "echo \$" . Inflector::variable($model) . "['$assoc']['" . ((is_null($this->otherModels[$assoc]->displayField)) ? $this->otherModels[$assoc]->primaryKey : $this->otherModels[$assoc]->displayField) . "'];";
+				$this->speak("$field is a FK for '$assoc' !");
+			}
+		}
 
 		// Configuration data is poor, so we can't check data type.  But you can still
 		// check with some of your config, because you should know your DB :)
@@ -476,7 +602,11 @@ class Theme extends SbShell {
 	 * @return string
 	 */
 	public function v_fieldName($field) {
-		return Inflector::humanize(Inflector::camelize($field));
+		if (array_key_exists($field, $this->templateVars['fieldNames'])) {
+			return $this->templateVars['fieldNames'][$field];
+		} else {
+			return ucfirst(strtolower(Inflector::humanize($field)));
+		}
 	}
 
 	/*	 * ************************************************************************

@@ -1,5 +1,5 @@
 ##
-## File to use with superBake 0.3
+## File to use with superBake 0.x
 ##
 ## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
 ## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -12,10 +12,11 @@
 ##
 ## Configuration file for ExperimentsLabs
 ## -------------------------
-##      General section
+##      General section.
 ##
 ##
 ##-----------------------------------------------------------------------
+
 ---
 #--------------------------------------------------------------------------
 #
@@ -56,7 +57,8 @@ general:
   editorWebsite: http://j-d.example.com
   ## Your website name
   editorWebsiteName: Forgotten thoughts
-  ## Your license template (templates are in '<template>/commons/licenses/')
+  ## Your license template (find out all licenses in template/commons/licenses/)
+  ## This license will be added in generated files
   editorLicenseTemplate: gpl3
   ## Package name
   ## This is used in files headers, you can leave this blank if you have no use of it

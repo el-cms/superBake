@@ -167,7 +167,12 @@ defaults:
     ## Options that must be available in both model, controllers and views.
     ## Note that options defined here can be overriden in model/controllers and
     ## views.
-    options: []
+    options:
+      ## Field names to be displayed
+      ## I put generic field names here, put specific field names in their respective parts.
+      fieldNames:
+        user_id: User
+        license_id: License
 
   ##
   ## Default plugin configuration

@@ -131,7 +131,6 @@ if (!empty($actsAs)):
 	echo ");\n\n";
 endif;
 
-
 //
 // useDBConfig
 //

@@ -117,14 +117,14 @@ foreach ($fields as $field) {
 		// Preparing string to display
 		$fieldContent = $this->v_prepareField($field, $schema[$field]);
 		$regularFields[$field] = array(
-				'field' => "echo " . $this->iString(Inflector::humanize($field)) . ";",
+				'field' => "echo " . $this->iString($this->v_fieldName($field)) . ";",
 				'content' => $fieldContent['displayString']
 		);
 	} else {
 		// Foreign key:
 		$fieldContent = $this->v_prepareFieldForeignKey($field, $key, $schema[$field]);
 		$regularFields[$field] = array(
-				'field' => "echo " . $this->iString(Inflector::humanize($field)) . ";",
+				'field' => "echo " . $this->iString($this->v_fieldName($field)) . ";",
 				'content' => $fieldContent['displayString']
 		);
 	}
@@ -190,7 +190,7 @@ endif;
 			foreach ($details['fields'] as $field):
 
 				$fieldContent = $this->v_prepareRelatedField($field, $details, $originalFieldsList, true);
-				$hasOne.= "\t\t<dt><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></dt>\n";
+				$hasOne.= "\t\t<dt><?php echo " . $this->iString($this->v_fieldName($field)) . "; ?></dt>\n";
 				$hasOne.= "\t\t<dd>\n\t{$fieldContent['displayString']}\n</dd>\n";
 
 			endforeach;
@@ -264,7 +264,7 @@ foreach ($relations as $alias => $details):
 
   // Headers
 		foreach ($details['fields'] as $field):
-			echo "\t\t\t\t\t\t<th><?php echo " . $this->iString(Inflector::humanize($field)) . "; ?></th>\n";
+			echo "\t\t\t\t\t\t<th><?php echo " . $this->iString($this->v_fieldName($field)) . "; ?></th>\n";
 		endforeach;
 
 		echo "\t\t\t\t\t</tr>\n";

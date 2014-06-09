@@ -17,6 +17,13 @@
 ##
 ##-----------------------------------------------------------------------
 ---
+#--------------------------------------------------------------------------
+#
+# Global options for the theme
+# Here you can set things related to your template.
+#
+#--------------------------------------------------------------------------
+
 theme:
   ## Helpers that must be enabled
   helpers:
@@ -50,3 +57,7 @@ theme:
     dateFormats:
       fra: d-m-Y \à H:i
       eng: Y-m-d \a\t h:ia
+
+  ## If set to true, the foreign key referencing the current item will be removed
+  ## from association displays.
+  removeSelfIdInAssociations: true

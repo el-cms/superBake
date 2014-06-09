@@ -429,7 +429,7 @@ class SbShell extends AppShell {
 	 * @param bool $ignoreKeys Set it to true if you want only the values. Does not work on mutidimensionnal arrays.
 	 * @return string
 	 */
-	public function displayArray($array, $ignoreKeys = false) {
+	public function displayArray($array, $ignoreKeys = false, $keepNumericKeys = false) {
 		$out = null;
 		$i = 0;
 		if ($ignoreKeys) {
@@ -446,15 +446,19 @@ class SbShell extends AppShell {
 			}
 		} else {
 			foreach ($array as $k => $v) {
-				if (is_array($v)) {
-					$out = $this->displayArray($v);
-				} else {
-					if ($i > 0) {
-						$out.=", ";
-					}
-					$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'");
-				}
 				$i++;
+//				if ($i > 0) {
+//					$out.=", ";
+//				}
+				if (is_array($v)) {
+					$out .="'$k'=>" . $this->displayArray($v) . ((count($array) != $i) ? ",\n" : "\n");
+				} else {
+					if ($keepNumericKeys === false && is_numeric($k)) {
+						$out.=(($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
+					} else {
+						$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
+					}
+				}
 			}
 		}
 		return "array($out)";

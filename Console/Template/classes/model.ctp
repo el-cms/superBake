@@ -15,6 +15,8 @@
  *  - order         (mixed)
  *  - name          (string)
  *  - cacheQueries  (bool)
+ * 
+ * Models will act as Container if they have associati
  *
  * Options to implement: $data, must check this option.
  *
@@ -28,7 +30,7 @@
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
- * @package       ELCMS.superBake.Templates.Default.Classes
+ * @package       ELCMS.superBake.Templates.Elabs.Classes
  * @version       0.3
  *
  * ----
@@ -65,6 +67,11 @@ if (empty($actsAs)) {
 // Preparing the 'virtualFields' array
 if (empty($virtualFields)) {
 	$virtualFields = array();
+}
+
+// Containable behaviour
+if (!empty($associations['hasMany'])) {
+	$actsAs['Containable'] = array();
 }
 
 

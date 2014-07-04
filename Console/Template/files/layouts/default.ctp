@@ -8,10 +8,10 @@
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @package       ELCMS.superBake.Templates.Default.Files
  * @version       0.3
- * 
+ *
  */
 //Page headers and licensing
-include $themePath . 'views/common/headers-files.ctp';
+include $themePath . 'common/headers-files.ctp';
 
 echo "<?php
 \$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');

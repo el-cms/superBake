@@ -123,14 +123,14 @@ endif;
 			foreach ($fields as $field):
 
 				// Preparing strings to display
-				$fieldContent = $this->v_prepareField($field, $schema[$field]);
-				$key = $this->v_isFieldKey($field, $associations);
+				$fieldContent = $this->v_prepareDisplayField($field, $schema[$field]);
+				$key = $this->v_isFieldForeignKey($field, $associations);
 				?>
 				<td<?php echo $fieldContent['tdClass'] ?>>
 					<?php
 					// Foreign key
 					if (is_array($key)):
-						$fieldContent = $this->v_prepareFieldForeignKey($field, $key, $schema[$field]);
+						$fieldContent = $this->v_prepareDisplayFieldForeignKey($field, $key, $schema[$field]);
 					endif;
 					echo $fieldContent['displayString'] . "\n";
 					?>

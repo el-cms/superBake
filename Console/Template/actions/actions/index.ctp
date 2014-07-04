@@ -90,7 +90,7 @@ endif;
 if (count($conditions) > 0):
 	$paginateOptions.="\t\t\t'conditions' => array(\n";
 	foreach ($conditions as $k => $v):
-		$paginateOptions.="'$k' => " . $this->c_indexConditions($v) . ",\n";
+		$paginateOptions.="'$k' => " . $this->c_setFindConditions($v) . ",\n";
 	endforeach;
 	$paginateOptions.="\t\t\t),\n";
 endif;

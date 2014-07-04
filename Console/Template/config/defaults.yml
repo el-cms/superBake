@@ -1,5 +1,5 @@
 ##
-## File to use with superBake 0.3
+## File to use with superBake 0.x
 ##
 ## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
 ## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -16,6 +16,7 @@
 ##      Here are defined defaults settings. They are overriden in plugins definitions.
 ##
 ##-----------------------------------------------------------------------
+
 ---
 defaults:
 
@@ -31,8 +32,8 @@ defaults:
     generate: true
     ## ... And have options
     options:
-        ## Hidden fields in views
-      hiddenFields:
+      ## Hidden fields
+      hiddenFields: []
       ## Fields that don't have sorting links
       unSortableFields:
         id
@@ -137,6 +138,7 @@ defaults:
     ## Options passed to template for generation
     options: []
 
+
   ##
   ## Default snippet configuration
   ##
@@ -171,7 +173,7 @@ defaults:
       ## Field names to be displayed
       ## I put generic field names here, put specific field names in their respective parts.
       fieldNames:
-        user_id: User
+        user_id: Author
         license_id: License
 
   ##

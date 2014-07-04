@@ -50,4 +50,4 @@ $content = "<?php
 	}
 	?>";
 
-echo $this->v_alert($content, $alertClass, true);
+echo $this->v_eAlert($content, $alertClass, true);

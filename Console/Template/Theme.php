@@ -59,8 +59,20 @@ class Theme extends SbShell {
 	 *
 	 * @return string Some theme info. Use it where you want.
 	 */
-	public function themeInfos() {
+	public function t_getThemeInfos() {
 		return('Experiments Labs theme.');
+	}
+
+	/**
+	 * Magic method for non-existing methods. Will return the first argument as-is ?
+	 *
+	 * @param string $name
+	 * @param array $arguments
+	 * @return mixed
+	 */
+	public function __call($name, $arguments) {
+		$this->speak(__d('sb', "The Theme::$name method does not exists. First argument will be returned as-is"), 'warning', 0);
+		return $arguments[0];
 	}
 
 	/* ---------------------------------------------------------------------------
@@ -69,19 +81,41 @@ class Theme extends SbShell {
 	 *
 	 * ------------------------------------------------------------------------- */
 
+	/**
+	 * Loads a model to access its properties during generation
+	 *
+	 * @param string $model Model name
+	 * @param string $plugin Plugin name. If null, plugin will be determinated by the model.
+	 */
 	public function s_loadModel($model, $plugin = null) {
 		if (!in_array($model, $this->otherModels)) {
-			if (!is_null($plugin)) {
+			if (is_null($plugin)) {
 				$plugin = $this->Sbc->getPluginName($this->Sbc->getModelPlugin($model));
 			}
 			App::uses($model, $plugin . '.Model');
 			// Checks if Model has been loaded correctly
 			if (!class_exists($model)) {
-				$this->speak(__d('superBake', "Generate {$plugin}$model model first", 'error', 0));
+				$this->speak(__d('superBake', "Generate {$plugin}$model model first"), 'error', 0);
 				$this->_stop();
 			}
 			$this->otherModels[$model] = ClassRegistry::init($model);
 		}
+	}
+
+	/**
+	 * Remove a given field from template vars fields list if it shoud be hidden.
+	 *
+	 * @param string $field Field name
+	 * @param int $i Field key
+	 */
+	public function s_unsetHiddenField($field, $i) {
+		if (is_array($this->templateVars['hiddenFields']) && in_array($field, $this->templateVars['hiddenFields'])) {
+			// Removing from fields list
+			$this->speak("Removing $field from field list.");
+			unset($this->templateVars['fields'][$i]);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -100,15 +134,78 @@ class Theme extends SbShell {
 	public function s_prepareSchemaFields() {
 
 		$i = 0;
+		// Language fields (for summary)
+		$languageFields = array();
+		// File fields (for summary)
+		$fileFields = array();
 		foreach ($this->templateVars['schema'] as $field => $config) {
+
 			//
-			// Hidden fields : removing field if it should not be seen.
-			//
-			if (is_array($this->templateVars['hiddenFields']) && in_array($field, $this->templateVars['hiddenFields'])) {
-				// Removing from fields list
-				unset($this->templateVars['fields'][$i]);
+			// Removing field or continue
+			if (!$this->s_unsetHiddenField($field, $i)) {
+
+				//
+				// Checking for language field: field_[lng]
+				if ($this->s_isLanguageField($field)) {
+
+					// Preparing field
+					$languageOptions = $this->s_getLanguageFieldProperties($field);
+
+					$fieldName = $languageOptions['fieldName'];
+					$lang = $languageOptions['lang'];
+
+					// Replacing field in list
+					if (!in_array($fieldName, $this->templateVars['fields'])) {
+						$this->templateVars['fields'][$i] = $fieldName;
+						// Copying field description:
+						$this->templateVars['schema'][$fieldName] = $this->templateVars['schema'][$field];
+					} else {
+						unset($this->templateVars['fields'][$i]);
+					}
+
+					// Field subtype:
+					$this->templateVars['schema'][$fieldName]['subType'] = 'language';
+					// Fields options: languages
+					$this->templateVars['schema'][$fieldName]['language']['langs'][] = $lang;
+
+					// Removing original field from Schema:
+					unset($this->templateVars['schema'][$field]);
+
+					// Language fields configuration (for summary):
+					$languageFields[$fieldName][] = $lang;
+				}
+
+				//
+				// File field
+				elseif ($this->s_isFileField($field)) {
+					// Field subtype:
+					$this->templateVars['schema'][$field]['subType'] = 'file';
+					// Field name, for summary
+					$fileFields[] = $field;
+				}
+				//
+				// Other fields
+				else {
+
+				}
 			}
 			$i++;
+		}
+
+		//
+		// Small summary:
+		//
+		if (!empty($languageFields)) {
+			$this->speak("This model have " . count($languageFields) . " localised fields:", 'comment');
+			foreach ($languageFields as $k => $v) {
+				$this->speak(" - \"$k\" with languages " . implode(', ', $v), 'comment');
+			}
+		}
+		if (!empty($fileFields)) {
+			$this->speak("This model have " . count($fileFields) . " file fields:", 'comment');
+			foreach ($fileFields as $k) {
+				$this->speak(" - \"$k\"", 'comment');
+			}
 		}
 
 		return true;
@@ -124,6 +221,9 @@ class Theme extends SbShell {
 	 * @return array List of shema related dependencies.
 	 */
 	public function s_prepareSchemaRelatedFields($model, $relation, $hasOne = false) {
+		$i = 0;
+		// Language fields (for summary)
+		$languageFields = array();
 
 		$i = 0;
 		foreach ($relation['fields'] as $field) {
@@ -151,12 +251,35 @@ class Theme extends SbShell {
 
 				// String to display on views
 				$displayString = "echo $fieldName;";
+
+				// Language fields ?
+				if ($this->s_isLanguageField($field)) {
+					$languageOptions = $this->s_getLanguageFieldProperties($field);
+
+					$fieldName = $languageOptions['fieldName'];
+					$lang = $languageOptions['lang'];
+
+					// Replacing in field list:
+					if (!in_array($fieldName, $relation['fields'])) {
+						$relation['fields'][$i] = $fieldName;
+						$relation['fieldsOptions'][$fieldName]['subType'] = 'language';
+					} else {
+						unset($relation['fields'][$i]);
+					}
+					$relation['fieldsOptions'][$fieldName]['langs'][] = $lang;
+				}
 			}
 			$i++;
 		}
 		return $relation;
 	}
 
+	/**
+	 * Gets the relations for a given model and loads its related models.
+	 *
+	 * @param string $model Model name
+	 * @return array List of belongsTo relations.
+	 */
 	public function s_getBelongsToAndLoadModels($model) {
 		$this->s_loadModel($model, $this->Sbc->getModelPlugin($model));
 		$assocs = $this->otherModels[$model]->belongsTo;
@@ -255,51 +378,204 @@ class Theme extends SbShell {
 	 *
 	 * Methods for views
 	 *
+	 * Methods begining with an "e" are for HTML elements
+	 *
 	 */
+
+	/**
+	 * Returns true or false if the current schema contain a file field.
+	 *
+	 * @param array $schema Schema array, that should have been updated by s_prepareSchemaFields()
+	 * @return boolean
+	 */
+	public function s_haveFileField($schema) {
+		foreach ($schema as $field => $options) {
+			if ($this->s_isFileField($field)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if the given field should be a file field.
+	 *
+	 * @param string $field
+	 * @return boolean
+	 */
+	public function s_isFileField($field) {
+		$uploadFields = $this->Sbc->getConfig('theme.upload.fields');
+		if (is_null($uploadFields)) {
+			return false;
+		}
+		if (in_array($field, $uploadFields)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Prepares an input field.
+	 *
+	 * @param string $field Field name
+	 * @param array $config Configuration from v_prepareInputFields
+	 * @param array $options An array of other options
+	 *
+	 * @return string HTML string for the input field.
+	 */
+	public function v_prepareInputField($field, $config, $options = array()) {
+
+		// Field name
+		$fieldString = "\${$this->templateVars['singularVar']}['{$this->templateVars['modelClass']}']['{$field}']";
+		$displayString = $this->v_eFormInput($field) . "\n";
+
+		// Set it to true when you have successfully found the type of field to prevent
+		// accidental modifications
+		$done = false;
+
+		//
+		// Field type
+		//
+		switch ($config['type']) {
+
+			//
+			// Numbers
+			case 'integer':
+				$displayString = $this->v_eFormInput($field, array('type' => 'number')) . "\n";
+				break;
+
+			//
+			// Bools
+			case 'boolean':
+				$displayString = $this->v_eFormInput($field) . "\n";
+				break;
+
+			//
+			// Strings and texts
+			case in_array($config['type'], array('string', 'text')):
+				//
+				// Language field ?
+				if (!empty($config['subType']) && $config['subType'] == 'language') {
+					// Reset string
+					$displayString = "";
+					$options = ($config['type'] == 'text') ? array('class' => 'ckeditor form-control') : array();
+					$strings = $this->v_displayInput_Language($field, $config, $options);
+					foreach ($strings as $string) {
+						$displayString.= $string;
+					}
+					$done = true;
+				}
+
+				//
+				// File field ?
+				if (!empty($config['subType']) && $config['subType'] == 'file') {
+					$displayString = $this->v_eFormInput($field, array('type' => 'file'), array('fileField' => true)) . "\n";
+				}
+				//
+				// TEXT
+				elseif ($config['type'] == 'text' && !$done) {
+					$displayString = $this->v_eFormInput($field, array('class' => 'ckeditor form-control')) . "\n";
+				}
+
+				break;
+
+			// Datetimes
+			case 'datetime':
+				$displayString = $this->v_eFormInput_DateTimePicker($field) . "\n";
+				break;
+			// Default
+			default:
+				$displayString = $this->v_eFormInput($field) . "\n";
+				break;
+		}
+
+		// Adding new config to original one
+		$config['displayString'] = $displayString;
+
+		return $config;
+	}
+
+
+	/**
+	 * Returns a input HTML element for language fields
+	 *
+	 * @param string $field Field name
+	 * @param array $config Config from s_prepareSchemaFields() for this field
+	 * @param array $options An array of options to pass to v_eFormInput()
+	 * @return string
+	 */
+	public function v_displayInput_Language($field, $config, $options = array()) {
+		foreach ($config['language']['langs'] as $lang) {
+			$out[] = $this->v_eFormInput("{$field}_$lang", $options, array('addBefore' => "<?php echo \$this->Html->image('flags/$lang.gif');?>"));
+		}
+		return $out;
+	}
 
 	/**
 	 * Prepares strings to display for a given field
 	 *
 	 * @param string $field Field name
 	 * @param array $config Field configuration
+	 * @param array $options An array of options
 	 * @return array Configuration for the field
 	 */
-	public function v_prepareField($field, $config) {
-		// Class for table rows (or whatever you want) containing this element
-		$tdClass = null;
+	public function v_prepareDisplayField($field, $config, $options = array()) {
+
+		// Field options for views
+		$tdClass = null; // Class for table rows containing this element
 		// Field name
 		$fieldString = "\${$this->templateVars['singularVar']}['{$this->templateVars['modelClass']}']['{$field}']";
 		// Field to display on views
 		$displayString = "echo $fieldString;";
 
-		// Input HTML element for forms
-		$displayForm = $this->v_formInput($field, array('class' => 'text-muted'));
-
 		//
 		// Field type
 		//
 		switch ($config['type']) {
+
+			//
 			// Numbers
 			case 'integer':
 				$displayString = "<?php $displayString ?>";
 				break;
 
-			//Bools
+			//
+			// Bools
 			case 'boolean':
 				$tdClass = 'text-center';
 				// An icon should be displayed instead of the value
 				$displayString = "<?php $displayString ?>";
 				break;
 
+			//
 			// Strings and texts
 			case in_array($config['type'], array('string', 'text')):
-				$displayString = "<?php $displayString ?>";
+				//
+				// Language field ?
+				if (!empty($config['subType']) && $config['subType'] == 'language') {
+					$displayString = $this->v_displayString_Language($field, $config);
+				}
+
+				//
+				// Link ?
+				if (isset($options['url']) && !is_null($options['url'])) {
+					$displayString = "<?php echo \$this->Html->link($fieldString, {$options['url']})?>";
+				} else {
+					$displayString = "<?php\n$displayString\n?>";
+				}
 				break;
 
 			// Datetimes
 			case 'datetime':
 				$tdClass = 'date-field';
-				$displayString = "<?php $displayString; ?>";
+				if ($this->Sbc->getConfig('theme.languages.uselanguages')) {
+					$displayString = "<?php "
+									. "echo date(\$langDateFormats[\$lang], strtotime($fieldString));"
+									. " ?>";
+				} else {
+					$displayString = "<?php echo $fieldString; ?>";
+				}
 				break;
 
 			// Default
@@ -311,7 +587,6 @@ class Theme extends SbShell {
 		// Adding new config to original one
 		$config['tdClass'] = (!is_null($tdClass)) ? " class=\"$tdClass\"" : '';
 		$config['displayString'] = $displayString;
-		$config['displayForm'] = $displayForm;
 
 		return $config;
 	}
@@ -325,7 +600,7 @@ class Theme extends SbShell {
 	 *
 	 * @return array Configuration for the field.
 	 */
-	public function v_prepareRelatedField($field, $config, $originalFieldsList, $hasOne = false) {
+	public function v_prepareDisplayRelatedField($field, $config, $originalFieldsList, $hasOne = false) {
 
 		//Current Model:
 		$model = Inflector::classify($config['controller']);
@@ -345,9 +620,6 @@ class Theme extends SbShell {
 		// String to display data
 		$displayString = "echo $fieldString;";
 
-		// String to display form element
-		$displayForm = $this->v_formInput($field, array('class' => 'text-muted'));
-
 		// Foreign key field ?
 		foreach ($assocs as $assoc => $assocConfig) {
 			if ($field == $assocConfig['foreignKey']) {
@@ -355,12 +627,15 @@ class Theme extends SbShell {
 				$this->speak("$field is a FK for '$assoc' !");
 			}
 		}
+		// Configuration data is poor, so we can't check data type.
+		// Language field ?
+		if (!empty($config['fieldsOptions'][$field]) && $config['fieldsOptions'][$field]['subType'] == 'language') {
+			$displayString = $this->v_displayString_Language($field, $config, $relationType, $model);
+		}
 
-		// Configuration data is poor, so we can't check data type.  But you can still
-		// check with some of your config, because you should know your DB :)
+
 		$config['displayString'] = "<?php $displayString ?>";
 		$config['tdClass'] = (!is_null($tdClass)) ? " class=\"$tdClass\"" : '';
-		$config['displayForm'] = $displayForm;
 
 		return $config;
 	}
@@ -374,7 +649,7 @@ class Theme extends SbShell {
 	 * @param array $config Field configuration array
 	 * @return string String to use in views
 	 */
-	public function v_prepareFieldForeignKey($field, $key, $config) {
+	public function v_prepareDisplayFieldForeignKey($field, $key, $config) {
 
 		// Class for table rows (or whatever you want) containing this element
 		$tdClass = null;
@@ -382,9 +657,6 @@ class Theme extends SbShell {
 		$fieldString = "\${$this->templateVars['singularVar']}['{$key['alias']}']['{$key['field']}']";
 		// Field to display on views
 		$displayString = "echo $fieldString;";
-
-		// Input HTML element for forms
-		$displayForm = $this->v_formInput($field, array('class' => 'text-muted'));
 
 		// Link
 		if ($this->canDo('view', null, $key['details']['controller'])) {
@@ -397,7 +669,6 @@ class Theme extends SbShell {
 
 		$config['tdClass'] = $tdClass;
 		$config['displayString'] = $displayString;
-		$config['displayForm'] = $displayForm;
 		return $config;
 	}
 
@@ -410,15 +681,95 @@ class Theme extends SbShell {
 	 *
 	 * @param string $field Field name
 	 * @param array $options list of options to be passed to Html::input();
+	 * @param array $config Configuration options for the style
+	 *  Options for config:
+	 *   - addBefore: adds an addon before input
+	 *   - addAfter: adds an addon after input.
+	 *   - fileField: bool, default false.
+	 *
+	 * Input style for "files" found here:
+	 * http://www.surrealcms.com/blog/whipping-file-inputs-into-shape-with-bootstrap-3
+	 *
 	 * @return string input string.
 	 */
-	public function v_formInput($field, $options = array()) {
+	public function v_eFormInput($field, $options = array(), $config = array()) {
 
-		if (!empty($options)) {
-			$options = $this->displayArray($options);
+		$niceName = $this->iString($this->v_getNiceFieldName($field));
+
+		$optionsString = "";
+
+		// default options:
+		if (!isset($options['div'])) {
+			$optionsString.="'div' => " . ((!isset($options['div'])) ? "false" : (($options['div']) ? 'true' : 'false')) . ",";
+			unset($options['div']);
+		}
+		if (!isset($options['label'])) {
+			$optionsString.="'label' => " . ((!isset($options['label'])) ? "false" : (($options['label']) ? 'true' : 'false')) . ",";
+			unset($options['label']);
+		}
+		if (!isset($options['class'])) {
+			$optionsString.="'class' => " . ((!isset($options['class'])) ? "'form-control'" : "${options['class']}") . ",";
+			unset($options['class']);
+		}
+		if (!isset($options['placeholder'])) {
+			$optionsString.="'placeholder' => " . ((!isset($options['placeholder'])) ? $niceName : "${options['placeholder']}");
+			unset($options['placeholder']);
 		}
 
-		return "<?php echo \$this->Form->input('$field'" . ((!is_null($options) ? ", $options" : "" ) ) . ");?>";
+		//Other options:
+		foreach ($options as $k => $v) {
+			$optionsString.=", '$k' => '$v'";
+		}
+
+		// Config for style
+		$hasAddon = (!empty($config['addBefore']) || !empty($config['addAfter'])) ? true : false;
+		$fileField = (isset($config['fileField'])) ? $config['fileField'] : false;
+		$out = "<div class=\"form-group\">\n";
+		$out.="\t<?php echo \$this->Form->label('$field', $niceName, array('class' => 'col-lg-2 control-label')) ?>\n";
+		$out.="\t<div class=\"col-lg-10" . ((!is_null($field)) ? '' : ' col-lg-offset-2') . "\">\n";
+		if ($hasAddon) {
+			$out.="\t\t<div class=\"input-group\">\n";
+			if (!empty($config['addBefore'])) {
+				$out.="\t\t\t<span class=\"input-group-addon\">${config['addBefore']}</span>\n\t";
+			}
+		}
+		if ($fileField) {
+			$out.= "\t\t\t<span class=\"btn btn-primary btn-file\">\n\t\t\t<?php echo " . $this->iString('Browse') . "?>\n\t\t";
+		}
+		$out.="\t\t<?php echo \$this->Form->input('$field', array($optionsString));?>\n";
+		if ($fileField) {
+			$out.="\t\t</span><span id=\"${field}_selected\"></span>";
+		}
+		if ($hasAddon) {
+			if (!empty($config['addAfter'])) {
+				$out.="\t\t\t<span class=\"input-group-addon\">${config['addAfter']}</span>\n\t";
+			}
+			$out.="\t\t</div>\n";
+		}
+		$out.="\t</div>\n</div>\n";
+
+		if ($fileField) {
+			$out.="<script language=\"javascript\">
+			    $(document).on('change', '.btn-file :file', function() {
+						var input = $(this),
+								numFiles = input.get(0).files ? input.get(0).files.length : 1,
+								label = input.val().replace(/\\\/g, '/').replace(/.*\//, '');
+						input.trigger('fileselect', [numFiles, label]);
+					});
+
+					$(document).ready( function() {
+						$('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+							$('#${field}_selected').text(label)
+						});
+					});
+</script>";
+		}
+
+		return $out;
+	}
+
+	public function v_eFormInput_DateTimePicker($field, $options=array()){
+		return "<?php echo \$this->Form->input('$field', array('type'=>'datetime'));?>";
 	}
 
 	/**
@@ -432,7 +783,7 @@ class Theme extends SbShell {
 	 * @param array $options List of options
 	 * @return string HTML div with content
 	 */
-	public function v_alert($content, $class, $options = array()) {
+	public function v_eAlert($content, $class, $options = array()) {
 		return "<div class=\"$class\">\n$content\n</div>";
 	}
 
@@ -536,7 +887,7 @@ class Theme extends SbShell {
 	 * @param type $associactions Associations array.
 	 * @return mixed Array or false
 	 */
-	public function v_isFieldKey($field, $associations) {
+	public function v_isFieldForeignKey($field, $associations) {
 		if (!empty($associations['belongsTo'])) {
 			foreach ($associations['belongsTo'] as $alias => $details) {
 				if ($field === $details['foreignKey']) {
@@ -566,13 +917,13 @@ class Theme extends SbShell {
 		//
 		// Foreign keys
 		//
-		$key = $this->v_isFieldKey($field, $this->templateVars['associations']);
+		$key = $this->v_isFieldForeignKey($field, $this->templateVars['associations']);
 		if (is_array($key)) {
 			// Display name for foreign keys:
 			$dField = $key['alias'];
 		} else {
 			// Display name for "normal" fields:
-			$dField = $this->v_fieldName($field);
+			$dField = $this->v_getNiceFieldName($field);
 		}
 
 		//
@@ -601,7 +952,7 @@ class Theme extends SbShell {
 	 * @param string $field Field name
 	 * @return string
 	 */
-	public function v_fieldName($field) {
+	public function v_getNiceFieldName($field) {
 		if (array_key_exists($field, $this->templateVars['fieldNames'])) {
 			return $this->templateVars['fieldNames'][$field];
 		} else {
@@ -616,13 +967,101 @@ class Theme extends SbShell {
 	 * *********************************************************************** */
 
 	/**
+	 * Returns the 'contain' conditions for find() method.
+	 *
+	 * @param string $model Current model name.
+	 * @param array $options Find condition for related data
+	 * @return array
+	 */
+	public function c_findContains($model, $options = array()) {
+		//Treating options:
+		if (!isset($options['hiddenAssociations'])) {
+			$options['hiddenAssociations'] = array();
+		}
+		if (!isset($options['conditions'])) {
+			$options['conditions'] = array();
+		}
+
+		$relations = array();
+		// Getting model relations
+		foreach ($model->hasOne as $assoc => $config) {
+			if (!in_array($assoc, $options['hiddenAssociations'])) {
+				$relations[$assoc] = array();
+			}
+		}
+		foreach ($model->hasMany as $assoc => $config) {
+			if (!in_array($assoc, $options['hiddenAssociations'])) {
+				$relations[$assoc] = array();
+				$this->speak("$assoc:");
+				// Loads the associated model
+				$this->s_loadModel($assoc);
+				foreach ($this->otherModels[$assoc]->belongsTo as $fAssoc => $fAssocData) {
+					$fModelConfig = $this->Sbc->getModelConfig($fAssoc);
+					// PK
+					$relations[$assoc][$fAssoc][] = $this->otherModels[$assoc]->primaryKey;
+					// Display field
+					if (!empty($fModelConfig['displayField'])) {
+						$relations[$assoc][$fAssoc][] = $fModelConfig['displayField'];
+					}
+				}
+			}
+		}
+		foreach ($model->belongsTo as $assoc => $config) {
+			if (!in_array($assoc, $options['hiddenAssociations'])) {
+				$relations[$assoc] = array();
+			}
+		}
+		foreach ($model->hasAndBelongsToMany as $assoc => $config) {
+			if (!in_array($assoc, $options['hiddenAssociations'])) {
+				$relations[$assoc] = array();
+			}
+		}
+
+		foreach ($relations as $rel => $config) {
+			$currentConditions = array();
+			if (isset($options['conditions'][$rel])) {
+				$currentConditions = $this->c_getContainConditions($options['conditions'][$rel]);
+			}
+			if (count($currentConditions) > 0) {
+				$relations[$rel]['conditions'] = $currentConditions;
+			}
+		}
+
+		return $relations;
+	}
+
+	/**
+	 * Adds conditions for the containable behavior.
+	 *
+	 * @param type $conditions
+	 * @return string
+	 */
+	public function c_getContainConditions($conditions = array()) {
+		$return = array();
+		foreach ($conditions as $condition => $value) {
+			switch ($condition) {
+				// Hide the "anon" field
+				case '%noAnon%':
+					if ($this->Sbc->getConfig('theme.anon.useAnon')) {
+						$return[$this->Sbc->getConfig('theme.anon.field')] = 0;
+					}
+					break;
+				default:
+					$return[$condition] = $value;
+					break;
+			}
+		}
+		return $return;
+	}
+
+	/**
 	 * Outputs a condition for a find/paginate call by replacing vars by actual code.
 	 *
 	 * @param string $condition The condition string
 	 *
 	 * @return string replacement string or $condition if nothing is found.
 	 */
-	public function c_indexConditions($condition) {
+	public function c_setFindConditions($condition) {
 		switch ($condition) {
 			case '%now%':
 				return 'date("Y-m-d H:i:s")';

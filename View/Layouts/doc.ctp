@@ -14,7 +14,7 @@
 		echo $this->Html->script('/sb/js/jquery-syntax/jquery.syntax.min');
 		echo $this->Html->script('/sb/js/jquery.tableofcontents.min');
 		echo $this->Html->script('/sb/js/bootstrap.min');
-		
+
 		echo $this->Html->css('/sb/css/bootstrap.min');
 		echo $this->Html->css('/sb/css/font-awesome.min');
 		echo $this->Html->css('/sb/css/additions');
@@ -103,8 +103,6 @@
 				}
 			})
 		</script>
-		<div class="container" id="footer">
-			<a href="http://cakephp.org">I LOVE CAKE AND PHP</a>
-		</div>
+		<?php echo $this->element('Sb.footer');?>
 	</body>
 </html>

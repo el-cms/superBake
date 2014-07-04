@@ -50,13 +50,6 @@ plugins:
             libraries:
               Image: SimpleImage
 
-        controller:
-          actions:
-            user:
-              index:
-                options:
-                  conditions:
-                    user_id: %self%
     ## ---
     ## Required files for the gallery plugin
     ## ---

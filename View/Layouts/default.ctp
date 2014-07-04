@@ -108,8 +108,6 @@
 				}
 			})
 		</script>
-		<div class="container" id="footer">
-			<a href="http://cakephp.org">I LOVE CAKE AND PHP</a>
-		</div>
+		<?php echo $this->element('Sb.footer');?>
 	</body>
 </html>

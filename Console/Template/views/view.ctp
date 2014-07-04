@@ -110,21 +110,21 @@ foreach ($fields as $field) {
 
 	$isTextField = false;
 
-	$key = $this->v_isFieldKey($field, $associations);
+	$key = $this->v_isFieldForeignKey($field, $associations);
 
 	// Field is "just" a field
 	if (!is_array($key)) {
 		// Preparing string to display
-		$fieldContent = $this->v_prepareField($field, $schema[$field]);
+		$fieldContent = $this->v_prepareDisplayField($field, $schema[$field]);
 		$regularFields[$field] = array(
-				'field' => "echo " . $this->iString($this->v_fieldName($field)) . ";",
+				'field' => "echo " . $this->iString($this->v_getNiceFieldName($field)) . ";",
 				'content' => $fieldContent['displayString']
 		);
 	} else {
 		// Foreign key:
-		$fieldContent = $this->v_prepareFieldForeignKey($field, $key, $schema[$field]);
+		$fieldContent = $this->v_prepareDisplayFieldForeignKey($field, $key, $schema[$field]);
 		$regularFields[$field] = array(
-				'field' => "echo " . $this->iString($this->v_fieldName($field)) . ";",
+				'field' => "echo " . $this->iString($this->v_getNiceFieldName($field)) . ";",
 				'content' => $fieldContent['displayString']
 		);
 	}
@@ -189,8 +189,8 @@ endif;
 			// Fields
 			foreach ($details['fields'] as $field):
 
-				$fieldContent = $this->v_prepareRelatedField($field, $details, $originalFieldsList, true);
-				$hasOne.= "\t\t<dt><?php echo " . $this->iString($this->v_fieldName($field)) . "; ?></dt>\n";
+				$fieldContent = $this->v_prepareDisplayRelatedField($field, $details, $originalFieldsList, true);
+				$hasOne.= "\t\t<dt><?php echo " . $this->iString($this->v_getNiceFieldName($field)) . "; ?></dt>\n";
 				$hasOne.= "\t\t<dd>\n\t{$fieldContent['displayString']}\n</dd>\n";
 
 			endforeach;
@@ -264,7 +264,7 @@ foreach ($relations as $alias => $details):
 
   // Headers
 		foreach ($details['fields'] as $field):
-			echo "\t\t\t\t\t\t<th><?php echo " . $this->iString($this->v_fieldName($field)) . "; ?></th>\n";
+			echo "\t\t\t\t\t\t<th><?php echo " . $this->iString($this->v_getNiceFieldName($field)) . "; ?></th>\n";
 		endforeach;
 
 		echo "\t\t\t\t\t</tr>\n";
@@ -306,7 +306,7 @@ foreach ($relations as $alias => $details):
 			endif;
 		endif;
 		foreach ($details['fields'] as $field):
-			$fieldContent = $this->v_prepareRelatedField($field, $details, $originalFieldList);
+			$fieldContent = $this->v_prepareDisplayRelatedField($field, $details, $originalFieldList);
 			echo "\t\t\t\t\t\t<td>\n{$fieldContent['displayString']}\n</td>\n";
 		endforeach;
 		echo "\t\t\t\t\t</tr>\n";

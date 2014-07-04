@@ -1,5 +1,5 @@
 ##
-## File to use with superBake 0.3
+## File to use with superBake 0.x
 ##
 ## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
 ## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -132,7 +132,54 @@ plugins:
       ##
       ## Flash messages elements
 
-      ## Errors
+      ##
+      ## AppController
+      AppController:
+        targetPath: Controller::AppController.php
+        template: appController
+
+      ## Route-related configuration. If you want to use custom routes, edit the files/routes.ctp
+      ## template and add a new "file:" section in "appBase" plugin.
+      routes:
+        targetPath: Config::routes.php
+        template: routes
+        options:
+					## If false, lib/Cake/Config/routes.php will not be included at the end of generated file.
+          ## Use this setting to create your own routing system.
+          useCakeSystem: true
+          routes:
+            ## Home route
+            /:
+              ## Main plugin. If none, leave empty  or "AppBase"
+              plugin: AppBase
+              ## Main controller
+              controller: pages
+              ## Main action
+              action: display
+              ## List of params
+              params:
+                home
+              ## List of named params
+              named: []
+
+            ## Default pages system from cake:
+            /pages/*:
+              plugin:
+              controller: pages
+              action: display
+              params: []
+              named: []
+
+
+      ##
+      ## AppHelper
+      AppHelper:
+        targetPath: View::Helper::AppHelper.php
+        template: helpers::appHelper
+
+      ##
+      ## Flash messages
+      ##
       flash_error:
         targetPath: View::Elements::flash_error.ctp
         template: elements::flash_message

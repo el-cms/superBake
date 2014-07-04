@@ -12,6 +12,15 @@
 //Page headers and licensing
 include $themePath . 'views/common/headers.ctp';
 
+// Preparing schema srtucture and fields to replace the ones from Cake
+$this->s_prepareSchemaFields();
+// Updating schema array
+$schema = $this->templateVars['schema'];
+// Updating fields array
+$fields = $this->templateVars['fields'];
+
+$haveFileField = $this->s_haveFileField($schema);
+
 /* ----------------------------------------------------------------------------
  * Current template options
  */
@@ -25,16 +34,7 @@ if (!isset($additionnalJS) || !is_array($additionnalJS)) {
 	$additionnalJS = array();
 }
 
-// Hidden fields
-if (!isset($hiddenFields) || !is_array($hiddenFields)) {
-	$hiddenFields = array();
-}
-
-// File field
-if (!isset($fileField)) {
-	$fileField = null;
-}
-
+//
 // No toolbar option
 if (!isset($noToolbar)) {
 	$noToolbar = false;
@@ -57,28 +57,33 @@ endif;
 
 <div class="<?php echo $pluralVar; ?> form">
 	<?php
-	$hasFileField = (!is_null($fileField)) ? ", 'enctype'=>'multipart/form-data'" : '';
+	$hasFileField = (!empty($fileField)) ? ", 'enctype'=>'multipart/form-data'" : '';
 	echo "<?php echo \$this->Form->create('$modelClass', array($hasFileField)); ?>\n";
 	?>
 	<fieldset>
 		<legend><?php printf("<?php echo __('%s %s'); ?>", Inflector::humanize($action), $singularHumanName); ?></legend>
 		<?php
-		echo "\t<?php\n";
 		foreach ($fields as $field):
-			//Skipping primary key
-			if ((strpos($action, 'add') !== false && $field === $primaryKey) || in_array($field, $hiddenFields)):
+
+			// Remove PK if on an 'add' action
+			if ((strpos($action, 'add') !== false && $field == $primaryKey) || in_array($field, $hiddenFields)):
 				continue;
-			elseif (!in_array($field, array('created', 'modified', 'updated'))):
-				echo "\t\techo \$this->Form->input('{$field}');\n";
+			else:
+				$fieldContent = $this->v_prepareInputField($field, $schema[$field]);
+				if($this->v_isFieldForeignKey($field, $associations)){
+					$fieldContent['displayString']=$this->v_eFormInput($field);
+				}
+				echo "${fieldContent['displayString']}\n\n";
 			endif;
+
 		endforeach;
+		// @todo Convert this with new methods
 		if (!empty($associations['hasAndBelongsToMany'])):
 			echo '<h2>Associated data:</h2>';
 			foreach ($associations['hasAndBelongsToMany'] as $assocName => $assocData):
 				echo "\t\techo \$this->Form->input('{$assocName}');\n";
 			endforeach;
 		endif;
-		echo "?>\n";
 		?>
 	</fieldset>
 	<?php
@@ -91,4 +96,4 @@ endif;
 /* -----------------------------------------------------------------------------
  * Additionnal scripts and CSS
  */
-include $themePath.'views/common/additionnal_js_css.ctp';
+include $themePath . 'views/common/additionnal_js_css.ctp';

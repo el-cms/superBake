@@ -220,9 +220,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `likes`
+-- Table `notes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `likes` (
+CREATE TABLE IF NOT EXISTS `notes` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NOT NULL,
   `link` VARCHAR(255) NOT NULL,

@@ -73,5 +73,9 @@
 				<li><?php echo $this->Html->link('<i class="icon-file"></i>&nbsp;' . __d('sb', 'Extend the shell'), array('controller' => 'docs', 'action' => 'display', 'help_shell_extend.md'), array('escape' => false)); ?></li>
 			</ul>
 		</li>
+
+		<!-- Links -->
+		<li role="presentation" class="divider"></li>
+		<li><?php echo $this->Html->link('<i class="icon-github"></i>&nbsp;' . __d('sb', 'Submit an issue'), 'https://github.com/el-cms/superBake/issues?state=open', array('target'=>'_blank', 'escape' => false)); ?></li>
 	</ul>
 </li>

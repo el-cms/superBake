@@ -10,7 +10,7 @@
  *
  * Other:
  * ======
- *  Nothing
+ *  Have support for containers
  *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
@@ -41,6 +41,12 @@ if(!isset($hiddenAssociations) || !is_array($hiddenAssociations)){
 // Conditions (for paginate)
 $conditions = (!isset($options['conditions'])) ? array() : $options['conditions'];
 
+// Containable conditions:
+$containsConditions = (!isset($options['containConditions'])) ? array() : $options['containConditions'];
+$contain = $this->c_findContains($modelObj, array(
+		'conditions' => $containsConditions,
+		'hiddenAssociations'=>$hiddenAssociations,
+		));
 /* ----------------------------------------------------------------------------
  *
  * Action
@@ -66,16 +72,21 @@ public function <?php echo $admin . $a ?>($id = null) {
 	$findConditions = '';
 	if (count($conditions) > 0):
 		foreach ($conditions as $k => $v):
-			$findConditions.="'$k' => " . $this->c_indexConditions($v) . ",\n";
+			$findConditions.="'$k' => " . $this->c_setFindConditions($v) . ",\n";
 		endforeach;
 	endif;
 
+	// "Contain" section:
+	if(count($contain)>0){
+		$containString="'contain' => ".$this->displayArray($contain).',';
+	}
 ?>
 	$options = array(
 		'conditions' => array(
 			'<?php echo $currentModelName; ?>.' . $this-><?php echo $currentModelName; ?>->primaryKey => $id,
 			<?php echo $findConditions ?>
 			),
+		<?php echo $containString; ?>
 		<?php echo $findFields; ?>);
 	$<?php echo lcfirst($currentModelName); ?>Data = $this-><?php echo $currentModelName; ?>->find('first', $options);
 	if (empty($<?php echo lcfirst($currentModelName); ?>Data)) {

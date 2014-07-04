@@ -264,17 +264,18 @@ class SbShell extends AppShell {
 	 * Behavior:
 	 *  - if $prefix is empty, current routing prefix will be used
 	 *
-	 * @param string $action	The target action
-	 * @param string $controller	Target controller (MUST be given to find good plugin)
+	 * @param string $action The target action
+	 * @param string $controller Target controller (MUST be given to find good plugin)
 	 * @param string $prefix Optionnal target prefix. If null, current prefix will be used.
-	 * @param string $options	An array of options as string
+	 * @param string $options An array of options as string
 	 * @param boolean $special If set to true, $action will be returned "as-is",
 	 * 		to allow the use of special links in methods that use url().
+	 * @param string $plugin Plugin name. If empty, plugin will be searched in config file.
 	 *
 	 * @return string Like "array('admin'=>'string|false', 'plugin'=>'string', 'controller'=>'controller', 'action'=>'action', 'options')"
 	 * 		or $action if $special is on.
 	 */
-	function url($action, $controller = null, $prefix = null, $options = null, $special = false) {
+	function url($action, $controller = null, $prefix = null, $options = null, $special = false, $plugin = null) {
 
 		// In certain cases, you need to redirect to '/' or to methods outputs or variables.
 		if ($special === true) {
@@ -286,7 +287,11 @@ class SbShell extends AppShell {
 
 		// Routing prefix
 		if (is_null($prefix)) {
-			$prefix = rtrim($this->templateVars['admin'], '_');
+			if (!empty($this->templateVars['admin'])) {
+				$prefix = rtrim($this->templateVars['admin'], '_');
+			} else {
+				$prefix = null;
+			}
 		}
 
 		$prefix = ($prefix === 'public' || empty($prefix)) ? null : $prefix;
@@ -297,7 +302,11 @@ class SbShell extends AppShell {
 		$controller = (!is_null($controller)) ? $controller : $this->templateVars['pluralVar'];
 
 		// Plugin
-		$plugin = $this->Sbc->getControllerPlugin(ucfirst(Inflector::camelize($controller)));
+		if (empty($plugin)) {
+			$plugin = $this->Sbc->getControllerPlugin(ucfirst(Inflector::camelize($controller)));
+		} else {
+			$plugin = $this->Sbc->getPluginName($plugin);
+		}
 		$url.=(empty($plugin) || $plugin === $this->Sbc->getAppBase()) ? " 'plugin' => null," : " 'plugin' => '" . Inflector::underscore($plugin) . "',";
 
 		// Controller

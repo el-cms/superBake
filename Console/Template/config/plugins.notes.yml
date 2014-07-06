@@ -1,0 +1,41 @@
+##
+## File to use with superBake 0.x
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Template.Elabs
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+##
+## Configuration file for ExperimentsLabs
+## -------------------------
+##      Notes plugin.
+##
+##
+##-----------------------------------------------------------------------
+---
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Notes plugin
+  ## ----------------------------
+  ##  Stuff I liked on the internet. A kind of "a la Facebook" sharing wall
+  ## --------------------------------------------------------------------------
+  ##
+  Notes:
+    options:
+      icon: pencil
+    parts:
+      ## The list
+      Notes:
+        controller:
+          actions:
+            user:
+              index:
+                options:
+                  conditions:
+                    user_id: %self%
+        options:
+          icon: pencil

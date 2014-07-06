@@ -1,0 +1,100 @@
+##
+## File to use with superBake 0.x
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Template.Default
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+##
+## Configuration file for ExperimentsLabs
+## -------------------------
+##      General section.
+##
+##
+##-----------------------------------------------------------------------
+
+---
+#--------------------------------------------------------------------------
+#
+# Template short description
+#
+#--------------------------------------------------------------------------
+description: Full configuration file for ExperimentsLabs
+
+#--------------------------------------------------------------------------
+#
+# General information
+#
+#--------------------------------------------------------------------------
+general:
+  ## Name of the "plugin that isn't one". This is a very special plugin:
+  ## Everything in it will be created in the app/ dir, not in a plugin.
+  ## Change this value if you want to name one of your plugin "appBase"
+  appBase: AppBase
+  ## Use routing prefixes
+  usePrefixes: true
+  ## Prefix that have all rights:
+  ## leave empty if you don't use one.
+  adminPrefix: admin
+  ## By default, update the bootstrap file on plugin generation ?
+  updateBootstrap: true
+  ## Default DB connection to use (see your `app/Config/database.php` file)
+  dbConnection: default
+
+  ##
+  ## Personnal informations, mostly here to use in generated headers.
+  ##
+
+  ## Your name (for file headers)
+  editorName: John Doe
+  ## Your email adress (for file headers)
+  editorEmail: j.d@example.com
+  ## Your website
+  editorWebsite: http://j-d.example.com
+  ## Your website name
+  editorWebsiteName: Forgotten thoughts
+  ## Your license template (find out all licenses in template/commons/licenses/)
+  ## This license will be added in generated files
+  editorLicenseTemplate: gpl3
+  ## Package name
+  ## This is used in files headers, you can leave this blank if you have no use of it
+  basePackage: EXAMPLE
+
+  ##
+  ## Current site infos
+  ##
+
+  ## Current site name
+  siteName: Brain recovery
+  ## Current site editor (usually your name)
+  siteEditor: John Doe
+  ## site editor Email
+  siteEditorEmail: j.d@example.com
+
+
+  ##
+  ## Options related to dependencies and required files
+  ##
+
+  ## Set this to true to copy all the required files relatively to /app
+  ## Else, they will be copied in their repsective plugins.
+  ## THIS IS NOT YET IMPLEMENTED AND WILL CERTAINLY MOVE
+  #copyRequiredToAppBase: false
+
+  ##
+  ## Other options for superBake
+  ##
+
+  ## Language support: if set to true, app and plugin string will use the
+  ## internationalization methods for strings (`__()`, `__d()`). Set it to false,
+  ## and strings will be plain text.
+  useInternationalizedStrings: true
+
+  ## If set to false, session-related methods will not be included in generated files.
+  ## This option is not in the `theme` section, as methods like `setFlash()` use
+  ## its value.
+  useSessions: true

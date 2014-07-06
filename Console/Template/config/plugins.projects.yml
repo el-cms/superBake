@@ -1,0 +1,34 @@
+##
+## File to use with superBake 0.x
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Template.Default
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+##
+## Configuration file for ExperimentsLabs
+## -------------------------
+##      Projects plugin.
+##
+##
+##-----------------------------------------------------------------------
+---
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Projects plugin
+  ## ----------------------------
+  ##  Manage some projects
+  ## --------------------------------------------------------------------------
+  ##
+  Projects:
+    parts:
+      ## List of projects
+      Projects:
+      ## Notes, news about a project
+      ProjectNotes:
+      ## Project state (dev/stable/...)
+      ProjectStates:

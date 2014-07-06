@@ -1,0 +1,57 @@
+##
+## File to use with superBake 0.x
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Template.Default
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+##
+## Configuration file for ExperimentsLabs
+## -------------------------
+##      SuperBake plugin configuration.
+##
+##
+##-----------------------------------------------------------------------
+---
+plugins:
+  # --------------------------------------------------------------------------
+  #  Sb plugin, for test
+  # ----------------------------
+  #  Here for menu items
+  # --------------------------------------------------------------------------
+  #
+  Sb:
+    path: plugins
+    displayName: superBake
+    generate: false
+    parts:
+      main:
+        haveModel: false
+        haveController: true
+        controller:
+          name: Sb
+          displayName: superbake
+          actions:
+            public:
+              check: []
+              tree: []
+              arraymerge: []
+              index:
+                blackListed: true
+              view:
+                blackListed: true
+            admin:
+              index:
+                blackListed: true
+              view:
+                blackListed: true
+              add:
+                blackListed: true
+              edit:
+                blackListed: true
+              delete:
+                blackListed: true

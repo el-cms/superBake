@@ -1,104 +1,54 @@
-Menu: [Demo](#demo) | [Is this for me ?](#is-this-for-me-) | [Directory structure](#directory-structure) | [Installation guide](#installation-guide) | [Usage](#usage) | [Sample files](#sample-files) | [Contact/help/support](#contacthelpsupport) | [todo](#todo)
-SuperBake Shell for CakePHP 2.3.x
-=================================
-Thank you for using the Superbake Shell v0.2
+superBake is still in development and is _not really ready_ to use. But you can still test it now with the sample db (in `examples`), the default Template (`Console/Template`) and the example config file (see below the quick steps to setup an app)
 
-This console shell is designed for CakePHP 2.3.x
+This readme is in development too.
 
-Demo
-----
-As a demo, I finally [took screenshots](https://plus.google.com/b/110073171539347252283/photos/110073171539347252283/albums/5859403751260073329) during tests.
+Feel free to contact me on [g+ EL-CMS](https://plus.google.com/u/0/b/110073171539347252283/) or by [mail](mailto:m.tancoigne@gmail.com) (with "superBake" in the beginning of your subject), i'll try to answer quickly.
 
-Is this for me ?
-----------------
-If you're in an early stage of development, this script will help you for
-generation of parts of your app.
-As superBake is very young, you'll have to edit the superBaked files as you would
-have done with bake, but less...
+For now, the configuration file provided with the plugin is the one I work on, so it's not an empty config file. You can test it with the models structure available in `docs/`.
 
-If you're creating a small app (no plugins, some models/controllers,...), this
-script can help you creating all that as a batch.
+# superBake version 0.x
+## What is superBake
+superBake is a console Shell for [__cakePHP__](http://cakephp.org/) 2.x. It will help you to generate your application's plugins, models, controllers, views and menus with a configuration file and custom templates.
 
-Note, superBake does not use scaffolding, 
-Note again, superBake is here for batch generation. If you need to rebuild one
-of your models/controllers/view, use Bake.
+Basically, it's __bake__ with modified tasks, modified template system and a configuration file.
 
-For the moment, integration of superBake templates with bake isn't good at all.
+You can find a demo video on [youtube](https://www.youtube.com/watch?v=sP9WOk7qmwA) (a bit outdated now).
 
-Note that SuperBake don't bake controllers without models (for now)
+## What superBake isn't
 
-Please, backup your app before testing this shell. Thank you !
+superBake is not a CMS, a blog manager or anything. It will help you to create your apps. That's all.
 
-Directory structure
--------------------
-<pre>
-<CakeBase>
-  /app
-		/Console
-			/Command
-				AppShell.php					Modified AppShell
-				SuperBakeShell.php				Shell script
-				/Task
-					SuperControllerTask.php		Controller generation
-					SuperModelTask.php			Model generation
-					SuperPluginTask.php			Plugin creation
-					SuperViewTask.php			View generation
-			/Template
-				/superBake 						SuperBake templates (nearly the same as classical bake templates)
-					/actions
-						controller_actions.php 	File called to create controllers
-						/snippets 				Folder with actions samples
-							<dirs and files>	
-					/classes					Layouts for controllers, fixtures, models and tests.
-					/common						Snippets that can be used by both models, controllers and views.
-						/licenses				Licenses snippets (used in generated headers)
-							gpl3.ctp			GPL v3 licence snippet for headers.
-					/models						Snippets for models
-						<dirs and files>
-					/views 						View samples for view generation
-						<dirs and files>
+## Last big changes:
 
-</pre>
-Installation guide
-------------------
- - To include superBake Shell in your app, just add the archive files in the
-app/Console directory.
+ * added "generation from GUI", accessible at `http://<cakeInstall>/sb/sb/tree`
 
+## Test it in a few simple steps:
 
-Usage
------
- - Then, you have to edit one file. I know that's rude, but I can't guess your app
-structure. So, manually edit the app/Console/superBakeConfig.yml. Spend a few minutes
-to understand its structure and edit it to fit your needs.
+ * Download CakePHP [2.4.7](https://github.com/cakephp/cakephp/zipball/2.4.7) (for example) and superBake.
+ * Prepare Cake and unzip superBake in a folder named `Sb` in `app/Plugin` or in `plugins`.
+ * Load the plugin in `app/bootstrap.php` with this line: `CakePlugin::load('Sb', array('bootstrap' => true));`
+ * Create the database with the given samples (in `samples`). There's a SQL file and a Mysql Workbench file for the same db. Choose as you prefer.
+ * Set up your db and db connection in `app/Config/database.php`
+ * As the default user is 'test@example.com' and default password is 'test' (in the sql inserts), use those salts in `Config/core.php`:
+   * `Configure::write('Security.salt', '3d77f505a9ce49d4d06775dc25e1599dcece8b82');`
+   * `Configure::write('Security.cipherSeed', '094311676475945108371586552062');`
+ * Enable the 'admin' routing prefix in `app/Config/core.php`
+ * Open a browser and go to your cake Homepage. In parallel, open a terminal and cd to `PathToCakeInstall/app`
+ * You may need to make the `app/Console/cake` file executable, under linux (`chmod +x Console/cake`)
+ * You're ready to superBake:
+  1. Plugins: `./Console/cake Sb.Shell plugins`. Choose to update the bootstrap file.
+  2. Models/Controllers and views: `./Console/cake Sb.Shell mvc`
+  3. Menus: `./Console/cake Sb.Shell menus`
+  4. Additionnal files (custom layout and AppController): `./Console/cake Sb.Shell files`
+  5. Required files (a css file): `./Console/cake Sb.Shell required`
+  6. Refresh your browser.
+ * Login (You will experience errors with ACOs/AROs as they are not in sync with the actions...)
+ * Access admin site with prefixing your pathes with /admin/ (ie: `http://YourCakeInstall/admin/users/`
+ * Access superBake GUI here: `http://YourCakeInstall/sb/sb`
+ * You should experience some strange things related to the default theme, but open an issue on Github !
 
-You're almost done !
+**Remember** that it's for testing superBake only, not to create a working app out of the box.
 
-- Open a console/terminal/whatever you name it
-- CD to your <BaseCake>/app dir
-- Launch this command: cake superBake
-- Follow instructions :D
-- Open a browser
-- Pray the CakeNoob god not to have let me down during development
-- Take a quick look at the generated pages
-- If something is wrong, close your eyes quickly, walk backward in any other room
-and cry a lot. Sorry.
+## What if it doesn't work as expected ?
 
-Sample files
-------------
-No more sample files. Ask in [github issues](https://github.com/mtancoigne/superBake/issues) and i'll take time to create some.
-
-How it works
-------------
-SuperBake Shell is almost just modified CakePHP's Bake files, with configuration file to have a easier
-baking process.
-
-Contact/help/support
---------------------
-
-For any help, as there is no website for EL-CMS (nor SuperBake, of course) now, feel free to use my [g+ page](https://plus.google.com/b/110073171539347252283/110073171539347252283/posts), the GitHub issue system or the [trello board](https://trello.com/board/superbake/514d6b4f3915675c66002032).
-
-And if you want to help me to buy coffee: [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=kure&url=https://github.com/mtancoigne/superBake&title=superBake&language=&tags=github&category=software) 
-
-Todo
-----
-A (in)complete list of things to do is described on the [roadmap/todo wiki page](https://github.com/mtancoigne/superBake/wiki/Roadmap-todo)
+Open an issue, explain the problem, I'll be happy to help.

@@ -1,0 +1,230 @@
+##
+## File to use with superBake 0.x
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Templates.Default
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+##
+## Configuration file for ExperimentsLabs
+## -------------------------
+##      "appBase" is not a plugin!
+##      Everything defined here will be baked in "app/".
+##      This section must be defined, even if you keep it empty.
+##      Here are defined defaults settings. They are overriden in plugins definitions.
+## ----------------------------
+##  Contains: Users, Groups
+## --------------------------------------------------------------------------
+## This is a special "plugin": it uses the <cake>/app/ folder as a plugin. All
+## the models, controllers,... will be created relatively to app/
+## If, for a reason you need to create a real plugin named 'appBase', change the
+## 'general.appBase' value of this file for something else, and put its name here too.
+##
+## This is the "plugin" in wich you should define your app wide
+## menus/files/required things
+##
+##-----------------------------------------------------------------------
+---
+plugins:
+  AppBase:
+    ## Plugin parts
+    ## Be carefull when naming empty parts: as the part name is used for empty
+    ## models definition or empty controllers definition, you should use the Cake
+    ## naming convention : Users for table users, WaitingOrders for table
+    ## waiting_orders,...
+    ##
+    ## But you can name it as you want when the models/controllers definitions
+    ## have the name set.
+    parts:
+
+      ##
+      ## Users management. Put here as I use the Alaxos' Acl plugin, which
+      ## doesn't work if users and groups are inside a plugin
+      Users:
+        model:
+          displayField: username
+          snippets:
+            acls:
+              path: acls::users
+          options:
+            actsAs:
+              Acl:
+                type: requester
+
+        controller:
+          actions:
+            ## Public actions
+            public:
+              ## "Login" action
+              login:
+                template: users::login
+                view:
+                  template: users::login
+              ## "Register" action
+              register:
+                template: users::register
+                view:
+                  template: users::register
+              ## "Logout" action
+              logout:
+                template: users::logout
+            admin:
+              profile:
+                template: view
+                view:
+                  template: view
+
+
+      ##
+      ## Groups management
+      Groups:
+        model:
+          snippets:
+            acls:
+              path: acls::roles
+          options:
+            actsAs:
+              Acl:
+                type: requester
+    ##
+    ## Menus for AppBase
+    ##
+    menus:
+      ## ---
+      ## Admin menu
+      ## ---
+      admin_menu:
+        template: menu
+        targetPath: Elements::menus::admin.ctp
+        options:
+          prefixes:
+            admin
+          haveUserMenu: true
+      ## ---
+      ## Public menu
+      ## ---
+      public_menu:
+        generate: true
+        template: menu
+        targetPath: Elements::menus::public.ctp
+        options:
+          haveUserMenu: true
+          isPublicMenu: true
+          prefixes:
+            public
+    ##
+    ## Standalone Files
+    ##
+    files:
+
+      ##
+      ## Layouts
+      public_layout:
+        targetPath: View::Layouts::default.ctp
+        template: layouts::default
+      admin_layout:
+        targetPath: View::Layouts::admin.ctp
+        template: layouts::admin
+      ##
+      ## Flash messages elements
+
+      ##
+      ## AppController
+      AppController:
+        targetPath: Controller::AppController.php
+        template: appController
+
+      ## Route-related configuration. If you want to use custom routes, edit the files/routes.ctp
+      ## template and add a new "file:" section in "appBase" plugin.
+      routes:
+        targetPath: Config::routes.php
+        template: routes
+        options:
+					## If false, lib/Cake/Config/routes.php will not be included at the end of generated file.
+          ## Use this setting to create your own routing system.
+          useCakeSystem: true
+          routes:
+            ## Home route
+            /:
+              ## Main plugin. If none, leave empty  or "AppBase"
+              plugin: AppBase
+              ## Main controller
+              controller: pages
+              ## Main action
+              action: display
+              ## List of params
+              params:
+                home
+              ## List of named params
+              named: []
+
+            ## Default pages system from cake:
+            /pages/*:
+              plugin:
+              controller: pages
+              action: display
+              params: []
+              named: []
+
+
+      ##
+      ## AppHelper
+      AppHelper:
+        targetPath: View::Helper::AppHelper.php
+        template: helpers::appHelper
+
+      ##
+      ## Flash messages
+      ##
+      flash_error:
+        targetPath: View::Elements::flash_error.ctp
+        template: elements::flash_message
+        options:
+          alertClass: flash-danger
+      ## Warning
+      flash_warning:
+        targetPath: View::Elements::flash_warning.ctp
+        template: elements::flash_message
+        options:
+          alertClass: flash-notice
+      ## Info
+      flash_info:
+        targetPath: View::Elements::flash_info.ctp
+        template: elements::flash_message
+        options:
+          alertClass: flash-info
+      ## Success
+      flash_succcess:
+        targetPath: View::Elements::flash_success.ctp
+        template: elements::flash_message
+        options:
+          alertClass: flash-success
+
+      ##
+      ## AppController
+      AppController:
+        targetPath: Controller::AppController.php
+        template: appController
+    ##
+    ## Required files and folders
+    ##
+    required:
+      ##
+      ## CSS
+      css:
+        type: file
+        ## Source
+        source: style.css
+        ## Target folder
+        target: webroot::css::superBake.css
+      ##
+      ## Image lib
+      lib-Image:
+        type: folder
+        source: libs::Image
+        target: Lib::Image
+        contentOnly: true

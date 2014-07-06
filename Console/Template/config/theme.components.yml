@@ -1,0 +1,48 @@
+theme:
+  ## Components to enable.
+  ## If you want to disable a component but still keep its config, add a "useComponent: false"
+  ## option.
+  components:
+    debugKit:
+      # Default is true.
+      useComponent: false
+    Auth:
+      useComponent: false
+      ## Roles model (usually Group or Role)
+      roleModel: Group
+      ## Role primary key
+      roleModelPK: id
+
+      ## Users model (usually User)
+      ## Note that the register action must be in the controller corresponding to
+      ## the model.
+      userModel: User
+      ## Users primary key
+      userModelPK: id
+
+      ## Defines if the user can choose his role during registration or on account edit.
+      userCanChooseRole: false
+      ## Default role Id (usually the id corresponding to an "user" role)
+      defaultRoleId: 2
+
+      ## Valid user status: condition for an user to log in. Keep empty if no condition
+      ## is required for login
+      validUserStatus: true
+      ## User status field
+      userStatusField: status
+      ## Auto approve new users
+      defaultUserStatus: 1
+
+      ## Field used for authentication
+      userNameField: email
+      ## Password field (usually "password")
+      userPassField: password
+
+      ## Action where the user will be redirected to after login. The action should
+      ## be in controller related to the userModel.
+      ## prefix::action or action only.
+      loginRedirect: user::dashboard
+      ## Action handling login
+      loginAction: login
+    Session:
+    Acl:

@@ -1,0 +1,56 @@
+##
+## File to use with superBake 0.3
+##
+## @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
+## @author        Manuel Tancoigne <m.tancoigne@gmail.com>
+## @link          http://experimentslabs.com Experiments Labs
+## @package       ELCMS.superBake.Templates.Default
+## @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
+## @version       0.3
+##
+##-----------------------------------------------------------------------
+##
+## Configuration file for ExperimentsLabs
+## -------------------------
+##      Configuration for a "gallery" plugin
+##      More a file explorer than an actual gallery
+##
+## ----------------------------
+##  Contains: Galleries, GalleryItems
+## --------------------------------------------------------------------------
+## <Other notes goes here>
+##
+##-----------------------------------------------------------------------
+---
+plugins:
+  ## --------------------------------------------------------------------------
+  ##  Gallery plugin
+  ## ----------------------------
+  ##  More a file explorer than an actual gallery
+  ## --------------------------------------------------------------------------
+  ##
+  Gallery:
+    parts:
+      ## The galleries list
+      Galleries:
+      ## An item in the gallery
+      GalleryItems:
+        options:
+          fileField:
+            type: image
+            name: file
+            allowedExts:
+              jpg
+              png
+              gif
+            path: img::uploads
+            imageMaxWidth: 900
+        options:
+          controller:
+            libraries:
+              Image: SimpleImage
+
+    ## ---
+    ## Required files for the gallery plugin
+    ## ---
+    required: []

@@ -6,10 +6,11 @@
  * ========
  *  - layout: string, null
  *  - From theme.components.Auth:
- *    - userStatusField: string
- *    - defaultStatus: string|int
+ *    - userStatusField:   string
+ *    - defaultStatus:     string|int
  *    - userCanChooseRole: bool
- *    - defaultRoleId: string|int
+ *    - defaultRoleId:     string|int
+ *  - title                string, null*       Title for layout
  *
  * Other:
  * =======
@@ -42,6 +43,9 @@ $defaultStatus = $this->Sbc->getConfig('theme.components.Auth.defaultUserStatus'
 $userCanChooseRole = $this->Sbc->getConfig('theme.components.Auth.userCanChooseRole');
 // Default role id for new users
 $defaultRoleId=$this->Sbc->getConfig('theme.components.Auth.defaultRoleId');
+
+// Title for layout
+$titleForLayout = (!isset($options['title'])) ? ucfirst(Inflector::humanize(Inflector::underscore($a))) : $options['title'];
 
 /* ----------------------------------------------------------------------------
  *
@@ -106,5 +110,5 @@ if (!empty($compact)):
 	echo "\t\t\$this->set(compact(".join(', ', $compact)."));\n";
 endif;
 ?>
-	$this->set('title_for_layout', <?php echo $this->iString($a)?>);
+	$this->set('title_for_layout', <?php echo $this->iString($titleForLayout)?>);
 }

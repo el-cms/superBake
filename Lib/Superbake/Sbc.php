@@ -1030,6 +1030,9 @@ class Sbc {
 	 * Default values are overwriten if in the defined array.
 	 * Keys from the defined array that are absent from the default array are added.
 	 *
+	 * If a key named "useDefaults" is set to false, default values will be skipped.
+	 * Use with extreme care, subsections will not use defaults either.
+	 *
 	 * @param array $default An array of default values
 	 * @param array $defined An array of defined values
 	 * @param boolean $keep If set to true, keeps the values defined in $defined array and absent from $default array.
@@ -1043,6 +1046,12 @@ class Sbc {
 		} elseif (empty($defined)) {
 			return $default;
 		} else {
+			// Don't use defaults
+			if (isset($defined['useDefaults']) && $defined['useDefaults'] === false) {
+				$this->log(('A section of your config file should not use defaults'), 'warning');
+				unset($defined['useDefaults']);
+				return $defined;
+			}
 			foreach ($default as $k => $v) {
 				// Simple array
 				if (is_numeric($k)) {

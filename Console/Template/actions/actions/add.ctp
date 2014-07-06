@@ -8,6 +8,7 @@
  *  - fileField                array|null*    Optionnal file field configuration (see examples below)
  *  - layout                   string|null*   Alternative layout
  *  - conditions               array|null     List of conditions for new/updated items
+ *  - title               string, null*       Title for layout
  *
  * Other:
  * ======
@@ -118,6 +119,9 @@ if (!isset($options['fileField'])) {
 	}
 	$fileExtsString = "'$fileExtsString'";
 }
+
+// Title for layout
+$titleForLayout = (!isset($options['title'])) ? 'New ' . strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName)))) : $options['title'];
 
 /* ----------------------------------------------------------------------------
  *
@@ -258,7 +262,7 @@ public function <?php echo $admin . $a ?>() {
 		<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' could not be saved. Please try again.', 'error', $a); ?>
 	}
 }
-$this->set('title_for_layout', <?php echo $this->iString('New ' . strtolower(Inflector::singularize(Inflector::humanize(Inflector::underscore($currentModelName))))) ?>);
+$this->set('title_for_layout', <?php echo $this->iString($titleForLayout) ?>);
 <?php
 foreach (array('belongsTo', 'hasAndBelongsToMany') as $assoc):
 	foreach ($modelObj->{$assoc} as $associationName => $relation):

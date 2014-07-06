@@ -5,6 +5,7 @@
  * Options:
  * ========
  *  - layout: string, null - Custom layout to be used for this action.
+ *  - title               string, null*       Title for layout
  *
  * Other:
  * ======
@@ -32,6 +33,8 @@ include dirname(__FILE__).'/../common/common_options.ctp';
 // Checks if Auth is enabled:
 $enableAuth = $this->isComponentEnabled('Auth');
 
+// Title for layout
+$titleForLayout = (!isset($options['title'])) ? ucfirst(Inflector::humanize(Inflector::underscore($a))) : $options['title'];
 /* ----------------------------------------------------------------------------
  *
  * Action
@@ -67,5 +70,5 @@ else:
 			. ' and run superBake again.', 'error', "'/'", array('specialUrl' => true));
 endif;
 ?>
-	$this->set('title_for_layout', <?php echo $this->iString(ucfirst(Inflector::humanize(Inflector::underscore($a))))?>);
+	$this->set('title_for_layout', <?php echo $this->iString($titleForLayout)?>);
 }

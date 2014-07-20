@@ -161,7 +161,8 @@ plugins:
                 home
               ## List of named params
               named: []
-
+              regexps: []
+            ##
             ## Default pages system from cake:
             /pages/*:
               plugin:
@@ -169,7 +170,14 @@ plugins:
               action: display
               params: []
               named: []
+              regexps: []
 
+            ## /plugin/controller/action
+            /:prefix/:plugin/:controller/:action/*:
+            /:plugin/:controller/:action/*:
+            ## /controller/action
+            /:prefix/:controller/:action/*:
+            /:controller/:action/*:
 
       ##
       ## AppHelper

@@ -44,12 +44,14 @@ plugins:
                 view:
                   template: index
             admin:
-            
+
         options:
           fieldNames:
             user_id: Author
       ## Post categories
       PostCategories:
+        model:
+          displayField: name
         options:
           fieldNames:
             user_id: Author

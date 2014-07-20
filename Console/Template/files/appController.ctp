@@ -105,7 +105,7 @@ foreach ($appComponents as $component => $compConfig):
 			$comp.= "\t\t// Redirection after logout:\n";
 			$comp.= "\t\t'logoutRedirect' => array('admin' => null, 'plugin' => $llPlugin, 'controller' => '$userController', 'action' => '$loginAction'),\n";
 			$comp.= "\t\t// Redirection after login:\n";
-			$comp.= "\t\t'loginRedirect' => array('admin' => $loginRedirectPrefix, 'plugin' => $llPlugin, 'controller' => '$userController', 'action' => '$loginRedirect'),\n";
+			$comp.= "\t\t'loginRedirect' => array(".((is_null($loginRedirectPrefix)?("'admin' => null"):("$loginRedirectPrefix => true"))).", 'plugin' => $llPlugin, 'controller' => '$userController', 'action' => '$loginRedirect'),\n";
 			$comp.= "\t),\n"; // closes Auth array
 			break;
 

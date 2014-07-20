@@ -1048,7 +1048,7 @@ class Sbc {
 		} else {
 			// Don't use defaults
 			if (isset($defined['useDefaults']) && $defined['useDefaults'] === false) {
-				$this->log(('A section of your config file should not use defaults'), 'warning');
+				$this->log(('A section of your config file will not use defaults'), 'warning');
 				unset($defined['useDefaults']);
 				return $defined;
 			}

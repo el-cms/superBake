@@ -448,7 +448,7 @@ class Theme extends SbShell {
 			//
 			// Bools
 			case 'boolean':
-				$displayString = $this->v_eFormInput($field) . "\n";
+				$displayString = $this->v_eFormInput_CheckBox($field) . "\n";
 				break;
 
 			//
@@ -490,12 +490,16 @@ class Theme extends SbShell {
 				break;
 		}
 
+		// Primary key ?
+		if ($field === $this->templateVars['primaryKey']) {
+			$displayString = $this->v_eFormInput($field, array('type' => 'hidden'));
+		}
+
 		// Adding new config to original one
 		$config['displayString'] = $displayString;
 
 		return $config;
 	}
-
 
 	/**
 	 * Returns a input HTML element for language fields
@@ -528,6 +532,8 @@ class Theme extends SbShell {
 		$fieldString = "\${$this->templateVars['singularVar']}['{$this->templateVars['modelClass']}']['{$field}']";
 		// Field to display on views
 		$displayString = "echo $fieldString;";
+		// Field to display, with no checks on it:
+		$displayStringNoCheck = "echo $fieldString;";
 
 		//
 		// Field type
@@ -555,6 +561,7 @@ class Theme extends SbShell {
 				// Language field ?
 				if (!empty($config['subType']) && $config['subType'] == 'language') {
 					$displayString = $this->v_displayString_Language($field, $config);
+					$displayStringNoCheck = $displayString;
 				}
 
 				//
@@ -563,6 +570,7 @@ class Theme extends SbShell {
 					$displayString = "<?php echo \$this->Html->link($fieldString, {$options['url']})?>";
 				} else {
 					$displayString = "<?php\n$displayString\n?>";
+					$displayStringNoCheck = "<?php\n$displayStringNoCheck\n?>";
 				}
 				break;
 
@@ -587,6 +595,7 @@ class Theme extends SbShell {
 		// Adding new config to original one
 		$config['tdClass'] = (!is_null($tdClass)) ? " class=\"$tdClass\"" : '';
 		$config['displayString'] = $displayString;
+		$config['displayString-noCheck'] = $displayStringNoCheck;
 
 		return $config;
 	}
@@ -623,8 +632,16 @@ class Theme extends SbShell {
 		// Foreign key field ?
 		foreach ($assocs as $assoc => $assocConfig) {
 			if ($field == $assocConfig['foreignKey']) {
-				$displayString = "echo \$" . Inflector::variable($model) . "['$assoc']['" . ((is_null($this->otherModels[$assoc]->displayField)) ? $this->otherModels[$assoc]->primaryKey : $this->otherModels[$assoc]->displayField) . "'];";
-				$this->speak("$field is a FK for '$assoc' !");
+				// Creating the link
+				$fieldContent = "\$" . Inflector::variable($model) . "['$assoc']['" . ((is_null($this->otherModels[$assoc]->displayField)) ? $this->otherModels[$assoc]->primaryKey : $this->otherModels[$assoc]->displayField) . "']";
+				$fieldId = "\$" . Inflector::variable($model) . "['$assoc']['" . $this->otherModels[$assoc]->primaryKey . "']";
+				$controller = inflector::tableize($assoc);
+				if ($this->canDo('view', null, $controller)) {
+					$displayString = "echo \$this->Html->link($fieldContent, " . $this->url('view', $controller, null, "$fieldId") . ");";
+				} else {
+					$displayString = "echo $fieldContent";
+				}
+				$this->speak(__d('Sb', "$field is a FK for '$assoc'"), 'comment');
 			}
 		}
 		// Configuration data is poor, so we can't check data type.
@@ -677,6 +694,19 @@ class Theme extends SbShell {
 	 */
 
 	/**
+	 * Displays a checkbox
+	 *
+	 * @param string $field Field name
+	 * @return string The checkbox control
+	 */
+	public function v_eFormInput_CheckBox($field) {
+		// Boolean entry
+
+		$niceName = $this->v_getNiceFieldName($field);
+		return "<?php echo \$this->Form->label('$field', \$this->Form->input('$field', array('div' => false, 'label' => false)) . ' ' . " . $this->iString($niceName) . ", array('class' => 'checkbox-inline')); ?>";
+	}
+
+	/**
 	 * Creates a string for form input in views.
 	 *
 	 * @param string $field Field name
@@ -697,6 +727,7 @@ class Theme extends SbShell {
 		$niceName = $this->iString($this->v_getNiceFieldName($field));
 
 		$optionsString = "";
+		$hiddenInput = false;
 
 		// default options:
 		if (!isset($options['div'])) {
@@ -715,6 +746,11 @@ class Theme extends SbShell {
 			$optionsString.="'placeholder' => " . ((!isset($options['placeholder'])) ? $niceName : "${options['placeholder']}");
 			unset($options['placeholder']);
 		}
+		if (isset($options['type']) && $options['type'] === 'hidden') {
+//			$hiddenInput = true;
+//			unset($options['type']);
+			return "<?php echo \$this->Form->hidden('$field');?>\n";
+		}
 
 		//Other options:
 		foreach ($options as $k => $v) {
@@ -727,6 +763,7 @@ class Theme extends SbShell {
 		$out = "<div class=\"form-group\">\n";
 		$out.="\t<?php echo \$this->Form->label('$field', $niceName, array('class' => 'col-lg-2 control-label')) ?>\n";
 		$out.="\t<div class=\"col-lg-10" . ((!is_null($field)) ? '' : ' col-lg-offset-2') . "\">\n";
+//		if (!$hiddenInput) {
 		if ($hasAddon) {
 			$out.="\t\t<div class=\"input-group\">\n";
 			if (!empty($config['addBefore'])) {
@@ -795,18 +832,18 @@ class Theme extends SbShell {
 	 *
 	 * @return string String to add in the HTML
 	 */
-	public function v_newDropdownButton($title, $content, $btnSize, $style = 'default') {
-		$toolbar = '';
-		$toolbar .="\t<div class=\"btn-group\">\n";
-		$toolbar .="\t\t<a class=\"btn $btnSize dropdown-toggle btn-" . $style . "\" data-toggle=\"dropdown\" href=\"#\"><?php echo " . $title . "; ?> <span class=\"caret\"></span></a>\n";
-		$toolbar .="\t\t<ul class=\"dropdown-menu\">\n";
-		foreach ($content as $item) {
-			$toolbar.= "\t\t\t<li>\n\t\t\t\t" . $item . "\t\t\t</li>\n";
-		}
-		$toolbar .= "\t\t</ul>\n";
-		$toolbar .= "\t</div>\n";
-		return $toolbar;
-	}
+//	public function v_newDropdownButton($title, $content, $btnSize, $style = 'default') {
+//		$dropdown = '';
+//		$dropdown .="\t<div class=\"btn-group\">\n";
+//		$dropdown .="\t\t<a class=\"btn $btnSize dropdown-toggle btn-" . $style . "\" data-toggle=\"dropdown\" href=\"#\"><?php echo " . $title . "; ? > <span class=\"caret\"></span></a>\n";
+//		$dropdown .="\t\t<ul class=\"dropdown-menu\">\n";
+//		foreach ($content as $item) {
+//			$dropdown.= "\t\t\t<li>\n\t\t\t\t" . $item . "\t\t\t</li>\n";
+//		}
+//		$dropdown .= "\t\t</ul>\n";
+//		$dropdown .= "\t</div>\n";
+//		return $dropdown;
+//	}
 
 	/**
 	 * Creates a new buttons group
@@ -817,12 +854,12 @@ class Theme extends SbShell {
 	 * @return string String to add in the HTML
 	 */
 	public function v_newButtonGroup($content) {
-		$toolbar = "\t<ul>\n";
+		$btnGroup = "\t<ul>\n";
 		foreach ($content as $item) {
-			$toolbar.= "\t\t<li>" . $item . "</li>\n";
+			$btnGroup.= "\t\t<li>" . $item . "</li>\n";
 		}
-		$toolbar .= "\t</ul>\n";
-		return $toolbar;
+		$btnGroup .= "\t</ul>\n";
+		return $btnGroup;
 	}
 
 	/**
@@ -844,10 +881,10 @@ class Theme extends SbShell {
 		return $return;
 	}
 
-	public function v_dateField($name, $data_format = 'dd MM yyyy - hh:ii') {
-		$out = "\t<?php echo \$this->Form->input('$name'); ?>\n";
-		return $out;
-	}
+//	public function v_dateField($name, $data_format = 'dd MM yyyy - hh:ii') {
+//		$out = "\t<?php echo \$this->Form->input('$name'); ? >\n";
+//		return $out;
+//	}
 
 	/**
 	 * Opens a form group: contains a label in a col-lg-2 and opens a col-lg-10 for input.
@@ -920,7 +957,7 @@ class Theme extends SbShell {
 		$key = $this->v_isFieldForeignKey($field, $this->templateVars['associations']);
 		if (is_array($key)) {
 			// Display name for foreign keys:
-			$dField = $key['alias'];
+			$dField = $this->v_getNiceFieldName($key['alias']);
 		} else {
 			// Display name for "normal" fields:
 			$dField = $this->v_getNiceFieldName($field);

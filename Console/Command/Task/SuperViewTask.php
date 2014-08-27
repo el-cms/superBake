@@ -239,19 +239,23 @@ class SuperViewTask extends BakeTask {
 		$controllerObj->plugin = $this->plugin;
 		$controllerObj->constructClasses();
 		$modelClass = $controllerObj->modelClass;
-		$modelObj = $controllerObj->{$controllerObj->modelClass};
+		if (!empty($modelClass)) {
+			$modelObj = $controllerObj->{$controllerObj->modelClass}
 
-		if ($modelObj) {
-			$primaryKey = $modelObj->primaryKey;
-			$displayField = $modelObj->displayField;
-			$singularVar = Inflector::variable($modelClass);
-			$singularHumanName = $this->_singularHumanName($this->controllerName);
-			$schema = $modelObj->schema(true);
-			$fields = array_keys($schema);
-			$associations = $this->_associations($modelObj);
+			if ($modelObj) {
+				$primaryKey = $modelObj->primaryKey;
+				$displayField = $modelObj->displayField;
+				$singularVar = Inflector::variable($modelClass);
+				$singularHumanName = $this->_singularHumanName($this->controllerName);
+				$schema = $modelObj->schema(true);
+				$fields = array_keys($schema);
+				$associations = $this->_associations($modelObj);
+			} else {
+				$this->speak(__d('cake_console', "The file '%s' could not be found.\n.", $modelClass), 'error', 0, 1, 2);
+				return $this->_stop();
+			}
 		} else {
-			//@todo do this with style.
-			die('Model does not exists');
+			$this->speak(__d('superBake', 'This controller uses no model.'), 'warning');
 			$primaryKey = $displayField = null;
 			$singularVar = Inflector::variable(Inflector::singularize($this->controllerName));
 			$singularHumanName = $this->_singularHumanName($this->controllerName);

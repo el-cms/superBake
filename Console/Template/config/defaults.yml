@@ -205,6 +205,8 @@ defaults:
     required: []
     ## An array of options
     options: []
+    ## Virtual models
+    virtualModels: []
 
   ##
   ## Default configuration for a file

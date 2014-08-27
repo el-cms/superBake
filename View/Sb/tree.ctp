@@ -137,7 +137,8 @@ function dGIcon($text = null, $size = null) {
 														</div>
 														<?php
 														foreach ($partConfig['controller']['actions'] as $prefix => $actions) {
-															echo $prefix;
+															echo "<strong>$prefix</strong><br/>";
+															$i=0;
 															foreach ($actions as $action => $actionConfig) {
 																?>
 																<div class="row rowLine">
@@ -155,9 +156,18 @@ function dGIcon($text = null, $size = null) {
 																	</div>
 																</div>
 																<?php
+																$i++;
 															}
 															?>
 															<?php
+															if($i===0){
+																?>
+													<div class="row rowLine">
+														<div class="col-lg-6 text-muted text-center">none</div>
+														<div class="col-lg-6 text-muted text-center">/</div>
+													</div>
+													<?php
+															}
 														}
 														?>
 													<?php } ?>

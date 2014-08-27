@@ -714,7 +714,7 @@ class Sbc {
 	public function loadConfig() {
 		$configDir = $this->getConfigPath();
 		$dir = new Folder($this->getConfigPath());
-		$configFiles = $dir->find('.*\.yml');
+		$configFiles = $dir->find('(?!_).*\.yml');
 
 		$this->_Spyc = new Spyc();
 		foreach ($configFiles as $file) {
@@ -1026,6 +1026,22 @@ class Sbc {
 	}
 
 	/**
+	 * Search for a virtual model and returns the real model name
+	 *
+	 * @param string $model
+	 *
+	 * @return string|false Model name or false.
+	 */
+	public function getRealModelModel($model) {
+		foreach ($this->_config['plugins'] as $p => $pConfig) {
+			if (array_key_exists($model, $pConfig['virtualModels'])) {
+				return $pConfig['virtualModels'][$model];
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Complete one array of default values with an array of defined values.
 	 * Default values are overwriten if in the defined array.
 	 * Keys from the defined array that are absent from the default array are added.
@@ -1046,6 +1062,9 @@ class Sbc {
 		} elseif (empty($defined)) {
 			return $default;
 		} else {
+			if (!is_array($defined)) {
+				$defined = array();
+			}
 			// Don't use defaults
 			if (isset($defined['useDefaults']) && $defined['useDefaults'] === false) {
 				$this->log(('A section of your config file will not use defaults'), 'warning');

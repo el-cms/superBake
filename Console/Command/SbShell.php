@@ -341,6 +341,7 @@ class SbShell extends AppShell {
 	 * 		//- useSession (Bool, default false) Forces the use of setFlash or not
 	 * 		- specialUrl (Bool, default false) If set to true, target action will be used as the
 	 * 			target url, so it will not be passed to $this->url()
+	 *      - iStringArgs string List of args for iString()
 	 *
 	 * @return string setFlash()+redirect, setFlash() only or flash() if session is disabled.
 	 */
@@ -349,7 +350,8 @@ class SbShell extends AppShell {
 		$optionsDefaults = array('controllerName' => null,
 				'redirect' => true,
 //			'useSession' => false,
-				'specialUrl' => false);
+				'specialUrl' => false,
+				'iStringArgs'=>null);
 
 		// Creating the array of options with passed and default ones.
 		$options = $this->Sbc->updateArray($optionsDefaults, $options);
@@ -357,7 +359,10 @@ class SbShell extends AppShell {
 		foreach ($options as $k => $v) {
 			${$k} = $v;
 		}
+		// Arguments for iString
+		if(is_null($iStringArgs)){
 
+		}
 		// Preparing output
 		$out = null;
 
@@ -368,7 +373,7 @@ class SbShell extends AppShell {
 		// Checks for the global use of sessions
 		if ($this->Sbc->getConfig('general.useSessions') === true) {// || $useSession === true) {
 			// Flash message and redirect
-			$out = "\$this->Session->setFlash(" . $this->iString($content) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", 'flash_$class'" : '') . ");\n";
+			$out = "\$this->Session->setFlash(" . $this->iString($content, $iStringArgs) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", 'flash_$class'" : '') . ");\n";
 			// Checks if the user must be redirected straight after the message (sometimes,
 			//  in case of errors)
 			if ($redirect === true) {
@@ -377,7 +382,7 @@ class SbShell extends AppShell {
 		} else {
 			// Flash redirect
 			if ($redirect === true) {
-				$out = "\$this->flash(" . $this->iString($content) . ", " . $this->url($action, $controllerName, null, null, $specialUrl) . ");\n";
+				$out = "\$this->flash(" . $this->iString($content, $iStringArgs) . ", " . $this->url($action, $controllerName, null, null, $specialUrl) . ");\n";
 			} else {
 				// @todo Find something else to handle the situation where a message must be displayed
 				// but with no redirection.
@@ -405,12 +410,13 @@ class SbShell extends AppShell {
 	 * @return boolean
 	 */
 	public function isComponentEnabled($component) {
-		$comp = $this->Sbc->getConfig("theme.components");
-		if (is_array($comp[$component]) && (!isset($comp[$component]['useComponent']) || $comp[$component]['useComponent'] === true)) {
-			return true;
-		} else {
-			return false;
-		}
+		return ($this->Sbc->getConfig("theme.components.{$component}.useComponent"));
+//		$comp = $this->Sbc->getConfig("theme.components");
+//		if (is_array($comp[$component]) && (!isset($comp[$component]['useComponent']) || $comp[$component]['useComponent'] === true)) {
+//			return true;
+//		} else {
+//			return false;
+//		}
 	}
 
 	/**

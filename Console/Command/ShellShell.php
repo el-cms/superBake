@@ -673,9 +673,9 @@ class ShellShell extends SbShell {
 
 		$views = $this->Sbc->getViewsToBake();
 		foreach ($views as $plugin => $parts) {
-			$this->speak(__d('superBake', 'Plugin %s...', $plugin), 'info', 0);
+			$this->speak(__d('superBake', 'Plugin %s...', $plugin), 'info', 0, 1, 2);
 			foreach ($parts as $part => $prefixes) {
-				$this->speak(__d('superBake', 'Part %s...', $part), 'info', 0);
+				$this->speak(__d('superBake', 'Part %s...', $part), 'info', 0, 1, 1);
 				foreach ($prefixes as $prefix => $actions) {
 					foreach ($actions as $action) {
 						$this->speak(__d('superBake', 'Generating view %s...', (($prefix === 'public') ? '' : $prefix . '_') . $action), 'info', 0, 1, 1);

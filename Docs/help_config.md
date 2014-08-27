@@ -1,6 +1,11 @@
 # The configuration file.
 
-The configuration file can be found in `Sb/Console/Template/`. If you store multiple configuration files, superBake will **only use** the one defined in `Sb/Config/bootstrap.php`.
+The configuration files can be found in `Sb/Console/Template/config`. You can use one config file or split it in multiple files for an easier organisation.
+
+<div class="alert alert-info">
+<i class="icon-info icon-3x pull-left"></i> <strong>Hiding files</strong><br />
+If you want to remove a file from the final array, name it with an underscore (<code>_</code>) and it won't be loaded.
+</div>
 
 The configuration file is segmented in four main sections.
 The two first sections are generic values:
@@ -189,6 +194,9 @@ plugins:[...]
     ## Required files section of a plugin
     required:
 </pre>
-
+<div class="alert alert-info">
+<i class="icon-info icon-3x pull-left"></i> <strong>Overriding defaults</strong><br />
+Add a <code>useDefaults: false</code> option in any part if you don't want to use the defaults settings. <span class="text-danger">Be careful as sub-configuration will not use defaults either.</span>
+</div>
 ## Debugging
 If you don't understand the way your config file is populated, you can take a look on the <?php echo $this->Html->link('Population log', array('controller'=>'sb', 'action'=>'check'));?>

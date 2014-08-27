@@ -79,6 +79,7 @@ include $themePath . 'actions/snippets/layout_support.ctp';
 	endif;
 
 	// "Contain" section:
+	$containString=null;
 	if(count($contain) > 0){
 		$containString = "'contain' => ".$this->displayArray($contain).',';
 	}

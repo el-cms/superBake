@@ -15,7 +15,7 @@
  *  - order         (mixed)
  *  - name          (string)
  *  - cacheQueries  (bool)
- * 
+ *
  * Models will act as Container if they have associati
  *
  * Options to implement: $data, must check this option.
@@ -288,7 +288,7 @@ foreach (array('hasOne', 'belongsTo') as $assocType):
 		echo "\n\tpublic \$$assocType = array(";
 		foreach ($associations[$assocType] as $i => $relation):
 			$relationPlugin = $this->Sbc->getModelPlugin($relation['className']);
-			if ($relationPlugin != $this->Sbc->getAppBase()):
+			if ($relationPlugin != $this->Sbc->getAppBase() && !empty($relationPlugin)):
 				$relationFullName = $relationPlugin . '.' . $relation['className'];
 			else:
 				$relationFullName = $relation['className'];

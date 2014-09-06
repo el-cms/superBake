@@ -15,45 +15,45 @@
  *
  * Added methods/vars:
  * ==============
- *	getViewPath()
+ * 	getViewPath()
  * -----
- *	$Sbc
- *	$currentAction
- *	$currentPart
- *	$currentPrefix
- *	$currentSimpleAction
- *	$plugin
- *	$templateOptions
+ * 	$Sbc
+ * 	$currentAction
+ * 	$currentPart
+ * 	$currentPrefix
+ * 	$currentSimpleAction
+ * 	$plugin
+ * 	$templateOptions
  *
  * Deleted methods/vars:
  * ================
- *	_interactive()
- *	_methodsToBake()
- *	all()
- *	bakeActions()
- *	customAction()
+ * 	_interactive()
+ * 	_methodsToBake()
+ * 	all()
+ * 	bakeActions()
+ * 	customAction()
  * -----
- *	$noTemplateActions
- *	$scaffoldActions
+ * 	$noTemplateActions
+ * 	$scaffoldActions
  *
  * Modified methods:
  * =================
- *	_associations()
- *	_loadController()
- *	bake()
- *	execute()
- *	getContent()
- *	getOptionParser()
- *	getTemplate()
- *	initialize()
+ * 	_associations()
+ * 	_loadController()
+ * 	bake()
+ * 	execute()
+ * 	getContent()
+ * 	getOptionParser()
+ * 	getTemplate()
+ * 	initialize()
  *
  * Original methods/vars:
  * =================
- *	----
- *	$controllerName
- *	$path
- *	$tasks
- *	$template
+ * 	----
+ * 	$controllerName
+ * 	$path
+ * 	$tasks
+ * 	$template
  */
 
 // SbShell
@@ -240,7 +240,7 @@ class SuperViewTask extends BakeTask {
 		$controllerObj->constructClasses();
 		$modelClass = $controllerObj->modelClass;
 		if (!empty($modelClass)) {
-			$modelObj = $controllerObj->{$controllerObj->modelClass}
+			$modelObj = $controllerObj->{$controllerObj->modelClass};
 
 			if ($modelObj) {
 				$primaryKey = $modelObj->primaryKey;

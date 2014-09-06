@@ -139,7 +139,7 @@ class SbShell extends AppShell {
 		// Plugin argument
 		if (is_null($plugin)) {
 			$plugin = strtolower($this->templateVars['plugin']);
-		} elseif ($plugin === $this->projectConfig['general']['appBase']) {
+		} elseif ($plugin === $this->Sbc->getAppBase()) {
 			$plugin = null;
 		} else {
 			$plugin = strtolower($plugin);
@@ -341,7 +341,7 @@ class SbShell extends AppShell {
 	 * 		//- useSession (Bool, default false) Forces the use of setFlash or not
 	 * 		- specialUrl (Bool, default false) If set to true, target action will be used as the
 	 * 			target url, so it will not be passed to $this->url()
-	 *      - iStringArgs string List of args for iString()
+	 *    - iStringArgs string List of args for iString()
 	 *
 	 * @return string setFlash()+redirect, setFlash() only or flash() if session is disabled.
 	 */

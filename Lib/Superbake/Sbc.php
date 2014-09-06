@@ -1030,7 +1030,7 @@ class Sbc {
 	 *
 	 * @param string $model
 	 *
-	 * @return string|false Model name or false.
+	 * @return string Model name (either virtual or real)
 	 */
 	public function getRealModelModel($model) {
 		foreach ($this->_config['plugins'] as $p => $pConfig) {
@@ -1038,7 +1038,7 @@ class Sbc {
 				return $pConfig['virtualModels'][$model];
 			}
 		}
-		return false;
+		return $model;
 	}
 
 	/**

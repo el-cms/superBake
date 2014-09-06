@@ -57,18 +57,17 @@ class MarkdownView extends View {
 	 * @throws CakeException if there is an error in the view.
 	 */
 	public function render($view = null, $layout = null) {
+
 		if ($this->hasRendered) {
 			return true;
 		}
 		$this->Blocks->set('content', '');
-
-
 		// Small hack to allow different pathes:
-		$base=explode('::', $view);
-		if(count($base)>1){
+		$base = explode('::', $view);
+		if (count($base) > 1) {
 			// We have an additionnal path :)
-			$viewFileName=  str_replace('::', DS, $view);
-		}else{
+			$viewFileName = str_replace('::', DS, $view);
+		} else {
 			$viewFileName = $this->_getViewFileName($view);
 		}
 
@@ -81,11 +80,14 @@ class MarkdownView extends View {
 			$this->Blocks->set('content', $this->Markdown->transform($content));
 			$this->getEventManager()->dispatch(new CakeEvent('View.afterRender', $this, array($viewFileName)));
 		}
-
+		// Use the correct view/layout
+		// Check current layout
 		if ($layout === null) {
 			$layout = $this->layout;
 		}
 		if ($layout && $this->autoLayout) {
+			//Render in view first
+			$this->Blocks->set('content', $this->renderLayout('', 'doc'));
 			$this->Blocks->set('content', $this->renderLayout('', $layout));
 		}
 		$this->hasRendered = true;

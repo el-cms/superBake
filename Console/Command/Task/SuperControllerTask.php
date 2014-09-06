@@ -242,6 +242,11 @@ class SuperControllerTask extends BakeTask {
 		// -------------------------------------------------------------------------
 		// Passing vars to template task
 		// -------------------------------------------------------------------------
+
+		$controllerConfigPath="plugins."
+								. $this->Sbc->getControllerPlugin($controllerName)
+								. ".parts." . $this->Sbc->getControllerPart($controllerName)
+								. ".controller";
 		$this->Template->set(array(
 				// Plugin name
 				'plugin' => $this->plugin,
@@ -250,13 +255,12 @@ class SuperControllerTask extends BakeTask {
 				// Sbc object
 				'Sbc' => $this->Sbc,
 				// Config from config file for the current controller
-				'currentControllerConfig' => $this->Sbc->getConfig("plugins."
-								. $this->Sbc->getControllerPlugin($controllerName)
-								. ".parts." . $this->Sbc->getControllerPart($controllerName)
-								. ".controller"),
+				'currentControllerConfig' => $this->Sbc->getConfig($controllerConfigPath),
+				'helpers'=>$this->Sbc->getConfig($controllerConfigPath.'.helpers'),
+				'components'=>$this->Sbc->getConfig($controllerConfigPath.'.components'),
 		));
 		// Making the vars available
-		$this->Template->set(compact('controllerName', 'actions', 'helpers', 'components', 'isScaffold'));
+		$this->Template->set(compact('controllerName', 'actions', 'isScaffold'));
 
 		// -------------------------------------------------------------------------
 		// File generation

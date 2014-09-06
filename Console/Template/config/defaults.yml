@@ -207,6 +207,8 @@ defaults:
     options: []
     ## Virtual models
     virtualModels: []
+    ## Additionnal files that should be processed during plugin creation.
+    exec: []
 
   ##
   ## Default configuration for a file

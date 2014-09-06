@@ -338,6 +338,8 @@ class ShellShell extends SbShell {
 				$this->speak(__d('superBake', "Building $plugin"), 'info', 0, 2);
 				//Giving the name of the current plugin to the task
 				$this->SuperPlugin->currentPlugin = $plugin;
+				// Passing Sbc
+				$this->SuperPlugin->Sbc = $this->Sbc;
 				// Giving the plugin configuration to the task
 				$this->SuperPlugin->pluginConfig = $this->Sbc->getConfig("plugins.$plugin");
 				$this->SuperPlugin->execute();
@@ -673,13 +675,15 @@ class ShellShell extends SbShell {
 
 		$views = $this->Sbc->getViewsToBake();
 		foreach ($views as $plugin => $parts) {
-			$this->speak(__d('superBake', 'Plugin %s...', $plugin), 'info', 0, 1, 2);
-			foreach ($parts as $part => $prefixes) {
-				$this->speak(__d('superBake', 'Part %s...', $part), 'info', 0, 1, 1);
-				foreach ($prefixes as $prefix => $actions) {
-					foreach ($actions as $action) {
-						$this->speak(__d('superBake', 'Generating view %s...', (($prefix === 'public') ? '' : $prefix . '_') . $action), 'info', 0, 1, 1);
-						$this->_view($plugin, $part, ($prefix === 'public') ? $action : $prefix . '_' . $action);
+			if ($this->Sbc->getConfig("plugins.$plugin.generate") === true) {
+				$this->speak(__d('superBake', 'Plugin %s...', $plugin), 'info', 0, 1, 2);
+				foreach ($parts as $part => $prefixes) {
+					$this->speak(__d('superBake', 'Part %s...', $part), 'info', 0, 1, 1);
+					foreach ($prefixes as $prefix => $actions) {
+						foreach ($actions as $action) {
+							$this->speak(__d('superBake', 'Generating view %s...', (($prefix === 'public') ? '' : $prefix . '_') . $action), 'info', 0, 1, 1);
+							$this->_view($plugin, $part, ($prefix === 'public') ? $action : $prefix . '_' . $action);
+						}
 					}
 				}
 			}
@@ -879,7 +883,7 @@ class ShellShell extends SbShell {
 	}
 
 	/**
-	 * Creates a menu for a plugin.
+	 * Creates a file for a plugin.
 	 * @param string $plugin Plugin name
 	 * @param string $file File name in configuration
 	 */

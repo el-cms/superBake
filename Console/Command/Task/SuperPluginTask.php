@@ -26,7 +26,7 @@
  *	findPath()
  *	getOptionParser()
  * -----
- * 
+ *
  * Modified methods:
  * =================
  *	_modifyBootstrap()
@@ -86,6 +86,12 @@ class SuperPluginTask extends SbShell {
 	 * @var bool
 	 */
 	public $updateBootstrap = null;
+
+	/**
+	 * Sbc object
+	 * @var Sbc
+	 */
+	public $Sbc;
 
 	/**
 	 * Override initialize
@@ -202,6 +208,13 @@ class SuperPluginTask extends SbShell {
 				$this->createFile($this->path . $plugin . DS . 'Config' . DS . 'routes.php', $out);
 			}
 
+			//
+			// Files from plugin.pluginAdditions:
+			foreach($this->pluginConfig['exec'] as $p){
+				$this->speak(__d('superBake', 'Additionnal file %s is being generated', $p), 'info');
+				include CakePlugin::path('Sb').'Console'.DS.'Template'.DS.'exec'.DS.$p;
+
+			}
 			// Main bootstrap file update
 			if ($this->updateBootstrap === 'Y') {
 				$this->_modifyBootstrap($plugin);

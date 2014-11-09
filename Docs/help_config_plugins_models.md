@@ -43,7 +43,7 @@ In a model definition, snippets are defined as follow:
 Snippets options consists of the options you defined yor the snippet _plus_ the part's options.
 Part options are overriden by snippets options:
 <div class="row">
-	<div class="col-lg-4 col-md-4">
+	<div class="span4 col-md-4">
 		<strong>This:</strong>
 		<pre class="syntax yaml">
 parts:
@@ -59,7 +59,7 @@ parts:
             Option3: Value3
 </pre>
 	</div>
-	<div class="col-lg-4 col-md-4">
+	<div class="span4 col-md-4">
 		<strong>Is the same as this:</strong>
 		<pre class="syntax yaml">
 parts:
@@ -76,7 +76,7 @@ parts:
             Option3: Value3
 </pre>
 	</div>
-	<div class="col-lg-4 col-md-4">
+	<div class="span4 col-md-4">
 		<strong>Or this:</strong>
 		<pre class="syntax yaml">
 parts:

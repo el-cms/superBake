@@ -351,7 +351,7 @@ class SbShell extends AppShell {
 				'redirect' => true,
 //			'useSession' => false,
 				'specialUrl' => false,
-				'iStringArgs'=>null);
+				'iStringArgs' => null);
 
 		// Creating the array of options with passed and default ones.
 		$options = $this->Sbc->updateArray($optionsDefaults, $options);
@@ -360,7 +360,7 @@ class SbShell extends AppShell {
 			${$k} = $v;
 		}
 		// Arguments for iString
-		if(is_null($iStringArgs)){
+		if (is_null($iStringArgs)) {
 
 		}
 		// Preparing output
@@ -373,7 +373,7 @@ class SbShell extends AppShell {
 		// Checks for the global use of sessions
 		if ($this->Sbc->getConfig('general.useSessions') === true) {// || $useSession === true) {
 			// Flash message and redirect
-			$out = "\$this->Session->setFlash(" . $this->iString($content, $iStringArgs) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", 'flash_$class'" : '') . ");\n";
+			$out = "\$this->Session->setFlash(" . $this->iString($content, $iStringArgs) . (($this->Sbc->getConfig('theme.flashMessageElement') === true) ? ", '$class'" : '') . ");\n";
 			// Checks if the user must be redirected straight after the message (sometimes,
 			//  in case of errors)
 			if ($redirect === true) {
@@ -444,39 +444,53 @@ class SbShell extends AppShell {
 	 * @param bool $ignoreKeys Set it to true if you want only the values. Does not work on mutidimensionnal arrays.
 	 * @return string
 	 */
-	public function displayArray($array, $ignoreKeys = false, $keepNumericKeys = false) {
-		$out = null;
-		$i = 0;
-		if ($ignoreKeys) {
-			foreach ($array as $v) {
-				if (!is_array($v)) {
-					if ($i > 0) {
-						$out.=", ";
-					}
-					$out.=(($v[0] === '$') ? $v : "'$v'");
-				} else {
-					$this->speak(__d('superbake', 'DisplayArray can\'t process multi-dimensionnal arrays with option "ignoreKey".'), 'error', 0);
-					return null;
-				}
-			}
-		} else {
-			foreach ($array as $k => $v) {
-				$i++;
-//				if ($i > 0) {
-//					$out.=", ";
-//				}
-				if (is_array($v)) {
-					$out .="'$k'=>" . $this->displayArray($v) . ((count($array) != $i) ? ",\n" : "\n");
-				} else {
-					if ($keepNumericKeys === false && is_numeric($k)) {
-						$out.=(($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
-					} else {
-						$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
-					}
-				}
-			}
+//	public function displayArray($array, $ignoreKeys = false, $keepNumericKeys = false) {
+	public function displayArray($array, $multiline = false, $ignoreKeys = false) {
+		$out = var_export($array, true);
+
+		if (!$multiline) {
+			// Cleanup
+			$out = str_replace(["\t", "\n", "\r"], '', $out);
+			$out = preg_replace("@\s+@", ' ', $out);
+			$out = preg_replace("@\( @", '(', $out);
+			$out = preg_replace("@,\)@", ')', $out);
 		}
-		return "array($out)";
+
+		return $out;
+
+
+//		$out = null;
+//		$i = 0;
+//		if ($ignoreKeys) {
+//			foreach ($array as $v) {
+//				if (!is_array($v)) {
+//					if ($i > 0) {
+//						$out.=", ";
+//					}
+//					$out.=(($v[0] === '$') ? $v : "'$v'");
+//				} else {
+//					$this->speak(__d('superbake', 'DisplayArray can\'t process multi-dimensionnal arrays with option "ignoreKey".'), 'error', 0);
+//					return null;
+//				}
+//			}
+//		} else {
+//			foreach ($array as $k => $v) {
+//				$i++;
+////				if ($i > 0) {
+////					$out.=", ";
+////				}
+//				if (is_array($v)) {
+//					$out .="'$k'=>" . $this->displayArray($v) . ((count($array) != $i) ? ",\n" : "\n");
+//				} else {
+//					if ($keepNumericKeys === false && is_numeric($k)) {
+//						$out.=(($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
+//					} else {
+//						$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
+//					}
+//				}
+//			}
+//		}
+//		return "array($out)";
 	}
 
 }

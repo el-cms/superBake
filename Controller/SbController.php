@@ -17,14 +17,30 @@ class SbController extends SbAppController {
 	 */
 	public $Sbc;
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		// Layout
+		if (Configure::read('Sb.Croogo')) {
+			$this->layout = 'default_croogo';
+		}
+	}
+
 	/**
 	 * Index method
 	 * Only returns the view.
 	 *
 	 * @return void
 	 */
-	public function index() {
+	public function admin_index() {
 
+	}
+
+	/**
+	 * Redirection to admin_index()
+	 */
+	public function index() {
+		$this->redirect(array('admin' => true, 'plugin' => 'sb', 'controller' => 'Sb', 'action' => 'index'));
 	}
 
 	/**
@@ -61,7 +77,7 @@ class SbController extends SbAppController {
 	 *
 	 * @return void
 	 */
-	public function check() {
+	public function admin_check() {
 		$this->_loadConfigFile();
 		$this->set('completeConfig', Spyc::YAMLDump($this->Sbc->getConfig()));
 	}
@@ -72,8 +88,8 @@ class SbController extends SbAppController {
 	 *
 	 * @return void
 	 */
-	public function tree() {
-		$this->helpers[]='Sb.Sb'; // For execution buttons
+	public function admin_tree() {
+		$this->helpers[] = 'Sb.Sb'; // For execution buttons
 		$this->_loadConfigFile();
 		// Prefixes and actions list:
 		$defaults_prefixes_list = '';
@@ -85,54 +101,27 @@ class SbController extends SbAppController {
 	}
 
 	/**
-	 * Method to test the Sbc::arrayMerge() method.
-	 * Here for testing only.
-	 *
-	 * @return void
-	 */
-	public function arraymerge() {
-		$result = '';
-		if ($this->request->is('post')) {
-			$Sbc = new Sbc();
-			$spyc = new Spyc();
-			$default = $this->request->data['default'];
-			$defined = $this->request->data['defined'];
-			$keep = (isset($this->request->data['keepRest']) && $this->request->data['keepRest'] === 'keep') ? true : false;
-			$result = $spyc->YAMLDump($Sbc->updateArray($spyc->YAMLLoadString($default), $spyc->YAMLLoadString($defined), $keep));
-		} else {
-			$default = null;
-			$defined = null;
-			$keep = null;
-			$result = null;
-		}
-		$this->set('result', $result);
-		$this->set('default', $default);
-		$this->set('defined', $defined);
-		$this->set('keepRest', $keep);
-	}
-
-	/**
 	 * Executes `Sb.Shell $command` and echoes the result.
 	 *
 	 * @param string $command
 	 *
 	 * @return void
 	 */
-	public function execute_cmd($command=null) {
-		$this->helpers[]='Sb.Sb';
+	public function admin_execute_cmd($command = null) {
+		$this->helpers[] = 'Sb.Sb';
 //		die('test');
-		if(Configure::read('Sb.executeTroughGUI')===false){
+		if (Configure::read('Sb.executeTroughGUI') === false) {
 			die("Execution through GUI is disabled. To enable it, please change the value of `Sb.executeTroughGUI` to `true`.\n");
 		}
-		if(is_null($command)){
+		if (is_null($command)) {
 			die('Hello, dear ! You gave me no argument, so I can\'t process to the delightful execution.');
 		}
-		$cmd = 'php ' . APP . "Console".DS."cake.php Sb.Shell $command";
+		$cmd = 'php ' . APP . "Console" . DS . "cake.php Sb.Shell $command";
 
-		$output=  shell_exec($cmd);
-		if(DS==='\\'){ // Windows, direct output
-		echo $output;
-		}else{ // Linux, mac,... Strips ANSI codes
+		$output = shell_exec($cmd);
+		if (DS === '\\') { // Windows, direct output
+			echo $output;
+		} else { // Linux, mac,... Strips ANSI codes
 			echo preg_replace('@\[(\d{1,2})m@', '', $output);
 		}
 		die();

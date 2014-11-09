@@ -87,7 +87,9 @@ class MarkdownView extends View {
 		}
 		if ($layout && $this->autoLayout) {
 			//Render in view first
-			$this->Blocks->set('content', $this->renderLayout('', 'doc'));
+			if (!Configure::read('Sb.Croogo')) {
+				$this->Blocks->set('content', $this->renderLayout('', 'doc'));
+			} 
 			$this->Blocks->set('content', $this->renderLayout('', $layout));
 		}
 		$this->hasRendered = true;

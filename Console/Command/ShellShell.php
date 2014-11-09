@@ -321,13 +321,9 @@ class ShellShell extends SbShell {
 	public function Plugins() {
 		// Task title
 		$this->speak(__d('superBake', 'Building all plugins structures'), 'info', 0, 2, 2);
-		$this->out();
-		$updateBootstrap = strtoupper($this->in(__d('superBake', 'Do we have to update the app\'s bootstrap file ?'), array('y', 'n'), ($this->Sbc->getConfig('general.updateBootstrap') ? 'y' : 'n')));
-		$this->out();
 
 		// updateBootstrap state passed to the task
-		$this->SuperPlugin->updateBootstrap = $updateBootstrap;
-
+//		$this->SuperPlugin->updateBootstrap = $updateBootstrap;
 		// Plugin list
 		$plugins = $this->Sbc->getPluginsToBake();
 		$i = 0; // Used to count generated plugins
@@ -348,22 +344,13 @@ class ShellShell extends SbShell {
 		}
 
 		// Plugin have been created
-		if ($i > 1) {
-			$out = array(__d('superBake', "Plugin generation is over."));
-			// Bootstrap file updated ?
-			if (strtoupper($updateBootstrap) === 'Y') {
-				$out[] = __d('superBake', "The bootstrap file has been updated. Please re-launch SuperBake\n" .
-								"to reload the new configuration (if you want to use it more)");
-			}
-			$this->speak($out, 'success', 0, 2, 1);
-
-			// Stops the shell if bootstrap file was updated to force reload
-			if (strtoupper($updateBootstrap) === 'Y') {
-				$this->_stop();
-			}
+		if ($i >= 1) {
+			$out = array();
+			$this->speak(__d('superBake', "Plugin generation is over."), 'success', 0, 2, 1);
 		} else { // No plugin to generate
 			$this->speak(__d('superBake', "There was no plugins to generate."), 'warning', 0, 2, 1);
 		}
+		$this->_stop();
 	}
 
 	/**

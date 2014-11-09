@@ -10,6 +10,11 @@ class SbAppController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
+		// Check for debug state
+		if (Configure::read('debug') === 0) {
+			$this->flash(__d('sb', 'superBake isn\'t meant to be used in a production environment. Please disable/remove it if you are done.'), '/admin', 5);
+		}
+
 		// Allow all actions.
 		if (in_array('Acl', $this->components)) {
 			$this->Auth->allow();
@@ -41,7 +46,6 @@ class SbAppController extends AppController {
 			}
 		}
 		$this->set('templateLinks', $menuLinks);
-
 	}
 
 }

@@ -139,6 +139,7 @@ public function <?php echo $admin . $a ?>() {
 	// Support for a different layout. Look at the snippet for more info.
 	include $themePath . 'actions/snippets/layout_support.ctp';
 	?>
+	$error = false;
 	if ($this->request->is('post')) {
 		<?php
 
@@ -204,7 +205,8 @@ public function <?php echo $admin . $a ?>() {
 
 				// Saving thumbnail
 				if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs'], true) ?>' . $filename)) {
-				<?php echo $this->setFlash('The thumbnail cannot be saved.', 'error', $a, array('redirect' => false)); ?>
+					<?php echo $this->setFlash('The thumbnail cannot be saved.', 'error', $a, array('redirect' => false)); ?>
+					$error = true;
 				}
 
 				// Following lines are an example of croping for square thumbs
@@ -217,18 +219,20 @@ public function <?php echo $admin . $a ?>() {
 				// If final thumb isn't good for you, you can downsize image before croping it
 				$thumb->centerCrop(<?php echo $fileField['thumbWidth'] ?>, <?php echo $fileField['thumbWidth'] ?>);
 				if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['thumbs'] . "::${fileField['thumbWidth']}x${fileField['thumbWidth']}", true) ?>' . $filename)) {
-				<?php echo $this->setFlash('The square thumb cannot be saved', 'error', $a, array('redirect' => false)); ?>
+					<?php echo $this->setFlash('The square thumb cannot be saved', 'error', $a, array('redirect' => false)); ?>
+					$error = true;
 				}*/
 			<?php endif; ?>
 			// Resize file if needed
 			$thumb->reset();
 			if($thumb->getWidth()>'<?php echo $fileField['imageMaxWidth'] ?>'){
-			$thumb->resizeToWidth(<?php echo $fileField['imageMaxWidth'] ?>);
+				$thumb->resizeToWidth(<?php echo $fileField['imageMaxWidth'] ?>);
 			}
 
 			// Saving file
 			if (!$thumb->save(WWW_ROOT . '<?php echo $this->cleanPath($fileField['path'], true) ?>' . $filename)) {
-			<?php echo $this->setFlash('The file cannot be saved.', 'error', $a, array('redirect' => false)); ?>
+				<?php echo $this->setFlash('The file cannot be saved.', 'error', $a, array('redirect' => false)); ?>
+				$error = true;
 			}
 			<?php
 			break;
@@ -250,16 +254,19 @@ public function <?php echo $admin . $a ?>() {
 		} else {
 			// An error has occured
 			<?php echo $this->setFlash('Wrong file extension. Allowed extensions are $fileString', 'warning', $a, array('redirect' => false)); ?>
+			$error = true;
 		}
 	}else {
 		<?php echo $this->setFlash('No file has been uploaded', 'error', $a, array('redirect' => false)); ?>
 	}
 
 	<?php endif; ?>
-	if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
-		<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' has been saved', 'success', $a); ?>
-	} else {
-		<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' could not be saved. Please try again.', 'error', $a); ?>
+	if(!$error){
+		if ($this-><?php echo $currentModelName; ?>->save($this->request->data)) {
+			<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' has been saved', 'success', $a); ?>
+		} else {
+			<?php echo $this->setFlash('The ' . strtolower($singularHumanName) . ' could not be saved. Please try again.', 'error', $a); ?>
+		}
 	}
 }
 $this->set('title_for_layout', <?php echo $this->iString($titleForLayout) ?>);

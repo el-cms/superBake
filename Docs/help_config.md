@@ -33,8 +33,8 @@ I recommend you to take a look at the [defaults](config_defaults.md) section, to
 
 ### Example of a small configuration file
 <div class="alert alert-info">Ìn this example, parts defined as <code>[...]</code> are shortened for a better readabilility.</div>
-<div class="row">
-<div class="col-lg-6 col-md-6">
+<div class="row-fluid">
+<div class="span6">
 <h4>Configuration file:</h4>
 <pre class="syntax yaml">
 description: Sample configuration file.
@@ -60,7 +60,7 @@ plugins:
 </pre>
 
 </div>
-<div class="col-lg-6 col-md-6">
+<div class="span6">
 <h4>Populated result:</h4>
 <pre class="syntax yaml">
 description: >

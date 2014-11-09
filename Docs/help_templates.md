@@ -178,7 +178,7 @@ public function iString($string, $args = null, $plugin = null) {}
 
 **Examples:**
 <div class="row">
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 
 		<pre class="syntax brush-html">
 // in a view, in appBase
@@ -192,7 +192,7 @@ public function iString($string, $args = null, $plugin = null) {}
 &lt;/div&gt;
 </pre>
 	</div>
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 
 		<pre class="syntax brush-html">
 // In a plugin named "Projects"
@@ -213,7 +213,7 @@ public function iString($string, $args = null, $plugin = null) {}
 ---
 
 <div class="row">
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<em>In a User Controller template:</em>
 <pre class="syntax brush-html">
 &lt;?php
@@ -221,7 +221,7 @@ echo $this->setFlash($this->iString('Your account could not be created. Please, 
 ?&gt;
 </pre>
 	</div>
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<em>will write this in the generated controller:</em>
 <pre class="syntax brush-php">
 &lt;?php

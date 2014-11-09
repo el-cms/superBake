@@ -68,7 +68,7 @@ For a given plugin/part/controller, if you don't want to have one of the default
 You can define options for the specific actions here, using the `action` 'pattern' (if you want to use a custom view or custom template for all the index actions)
 
 <div class="row">
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<h3>Default actions</h3>
 		<pre class="syntax yaml">
 ##
@@ -100,7 +100,7 @@ actions:
     edit: []
 		</pre>
 	</div>
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<h3>Example</h3>
 		<pre class="syntax yaml">
 actions:
@@ -205,7 +205,7 @@ This sections defines defaults values for a model.
 
 Snippets for models are located in the `Sb/Console/Template/models/` dir.
 <div class="row">
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<h3>Default model</h3>
 			<pre class="syntax yaml">
 ##
@@ -228,7 +228,7 @@ model:
   options: []
 </pre>
 	</div>
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<h3>Example of model definition</h3>
 		<pre class="syntax yaml">
 model:
@@ -281,7 +281,7 @@ Note that `haveModel` and `haveController` options are _really_ differents from 
 This is a default plugin configuration.
 
 <div class="row">
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<h3>Default plugin</h3>
 		<pre class="syntax yaml">
 ##
@@ -313,7 +313,7 @@ plugin:
   required: []
 </pre>
 	</div>
-	<div class="col-lg-6 col-md-6">
+	<div class="span6 col-md-6">
 		<h3>Minimal example</h3>
 		<pre class="syntax yaml">
 ## Blog plugin with categories,

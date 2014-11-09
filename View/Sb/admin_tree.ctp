@@ -4,7 +4,7 @@
 		<strong>WARNING:</strong> Before using the generation buttons, read the documentation to know what they do.
 		<br/>
 		<small>If you want to disable the "generation from GUI" feature, set <code>Sb.executeTroughGUI</code> to <code>false</code>
-		in the plugin's bootstrap file.</small>
+			in the plugin's bootstrap file.</small>
 	</div>
 	<?php
 endif;
@@ -35,16 +35,20 @@ endif;
 	</div>
 <?php endif; ?>
 <h3>Errors and warnings:</h3>
-<ul>
-	<li class="text-danger"><?php echo "You have $logErrors errors in your configuration file. " . (($logErrors > 0) ? "Please check the " . $this->Html->link('logs', array('action' => 'check')) : 'That\'s perfect !'); ?></li>
-	<li class="text-warning"><?php echo "You have $logWarnings warnings from your configuration file. " . (($logWarnings > 0) ? "This is not fatal, but you should " . $this->Html->link('check if all is allright', array('action' => 'check')) : 'That\'s perfect !'); ?></li>
-</ul>
+<div class="well">
+	<ul>
+		<li class="text-danger"><?php echo "You have $logErrors errors in your configuration file. " . (($logErrors > 0) ? "Please check the " . $this->Html->link('logs', array('action' => 'check')) : 'That\'s perfect !'); ?></li>
+		<li class="text-warning"><?php echo "You have $logWarnings warnings from your configuration file. " . (($logWarnings > 0) ? "This is not fatal, but you should " . $this->Html->link('check if all is allright', array('action' => 'check')) : 'That\'s perfect !'); ?></li>
+	</ul>
+</div>
 <h3>General:</h3>
-<ul>
-	<li>You use the <strong><?php echo $completeConfig['general']['editorLicenseTemplate'] ?></strong> license to protect your generated files.</li>
-	<li><strong>Prefixes:</strong> <?php echo ($completeConfig['general']['usePrefixes']) ? 'you use ' . count($completeConfig['defaults']['actions']) . ' prefixes: <strong>' . $defaults_prefixes_list . '</strong>' : 'you don\'t want to use prefixes'; ?></li>
-	<li>The package name used for your app is <strong><?php echo $completeConfig['general']['basePackage'] ?></strong>.</li>
-</ul>
+<div class="well">
+	<ul>
+		<li>You use the <strong><?php echo $completeConfig['general']['editorLicenseTemplate'] ?></strong> license to protect your generated files.</li>
+		<li><strong>Prefixes:</strong> <?php echo ($completeConfig['general']['usePrefixes']) ? 'you use ' . count($completeConfig['defaults']['actions']) . ' prefixes: <strong>' . $defaults_prefixes_list . '</strong>' : 'you don\'t want to use prefixes'; ?></li>
+		<li>The package name used for your app is <strong><?php echo $completeConfig['general']['basePackage'] ?></strong>.</li>
+	</ul>
+</div>
 <h2>Plugins</h2>
 <strong>Legend:</strong>
 <?php
@@ -138,7 +142,7 @@ function dGIcon($text = null, $size = null) {
 														<?php
 														foreach ($partConfig['controller']['actions'] as $prefix => $actions) {
 															echo "<strong>$prefix</strong><br/>";
-															$i=0;
+															$i = 0;
 															foreach ($actions as $action => $actionConfig) {
 																?>
 																<div class="row rowLine">
@@ -160,13 +164,13 @@ function dGIcon($text = null, $size = null) {
 															}
 															?>
 															<?php
-															if($i===0){
+															if ($i === 0) {
 																?>
-													<div class="row rowLine">
-														<div class="col-lg-6 text-muted text-center">none</div>
-														<div class="col-lg-6 text-muted text-center">/</div>
-													</div>
-													<?php
+																<div class="row rowLine">
+																	<div class="col-lg-6 text-muted text-center">none</div>
+																	<div class="col-lg-6 text-muted text-center">/</div>
+																</div>
+																<?php
 															}
 														}
 														?>
@@ -251,7 +255,7 @@ function dGIcon($text = null, $size = null) {
 	// Original code from here:
 	// http://www.codeproject.com/Articles/34072/Displaying-a-Progress-Bar-Loading-Box-During-any-T
 	//
-	$.showprogress = function()
+	$.showprogress = function ()
 	{
 		$.hideprogress();
 		$("BODY").append(
@@ -280,7 +284,7 @@ function dGIcon($text = null, $size = null) {
 		});
 	}
 
-	$.hideprogress = function()
+	$.hideprogress = function ()
 	{
 		$("#processing_container").remove();
 	}
@@ -289,7 +293,7 @@ function dGIcon($text = null, $size = null) {
 		$.showprogress();
 		$.ajax({
 			url: '<?php echo $this->Html->url(array('action' => "execute_cmd")) ?>/' + cmd
-		}).done(function(data) {
+		}).done(function (data) {
 			$.hideprogress();
 			$('#log').text(cmd + "\n" + data);
 //			console.log(data);

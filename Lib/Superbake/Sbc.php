@@ -187,14 +187,14 @@ class Sbc {
 	}
 
 	/**
-	 * Returns null if appBase
+	 * Returns null if appBase or empty
 	 *
 	 * @param string $plugin plugin name
 	 *
 	 * @return string
 	 */
 	public function getPluginName($plugin) {
-		return ($plugin === $this->getAppBase()) ? null : $plugin;
+		return ($plugin === $this->getAppBase() || empty($plugin)) ? null : $plugin;
 	}
 
 	/**
@@ -791,7 +791,7 @@ class Sbc {
 			//
 			// Plugin configuration
 			//
-			if (is_array($pluginConfig) && isset($pluginConfig['parts']) && !is_null($pluginConfig['parts']) && is_array($pluginConfig['parts'])) {
+			if (is_array($pluginConfig)) {
 				// Plugin has no displayName
 				if (!isset($pluginConfig['displayName'])) {
 					$pluginConfig['displayName'] = Inflector::humanize(Inflector::underscore($plugin));
@@ -974,6 +974,7 @@ class Sbc {
 				//
 				$this->log("Populating files...", 'part', 3);
 				foreach ($pluginConfig['files'] as $file => $fileConfig) {
+					$this->log("File \"$file\"", 'part', 4);
 					$pluginConfig['files'][$file] = $this->updateArray($this->_config['defaults']['file'], $fileConfig, true);
 					if (empty($pluginConfig['files'][$file]['template'])) {
 						$this->log("No fileName set, using \"" . $file . "\" as template name", 'warning', 5);
@@ -1018,7 +1019,7 @@ class Sbc {
 				$this->log("Plugin \"$plugin\" populated.", 'success', 2);
 				//
 			} else {
-				$this->log("Plugin <strong>\"$plugin\"</strong> is empty or have no parts.<br>"
+				$this->log("Plugin <strong>\"$plugin\"</strong> is empty<br>"
 								. "   => It will now be removed from configuration.", 'error', 3);
 				unset($this->_config['plugins'][$plugin]);
 			}

@@ -16,29 +16,29 @@
  * Added methods/vars:
  * ==============
  * -----
- *	$currentPlugin
- *	$pluginConfig
- *	$updateBootstrap
+ * 	$currentPlugin
+ * 	$pluginConfig
+ * 	$updateBootstrap
  *
  * Deleted methods/vars:
  * ================
- *	_interactive()
- *	findPath()
- *	getOptionParser()
+ * 	_interactive()
+ * 	findPath()
+ * 	getOptionParser()
  * -----
  *
  * Modified methods:
  * =================
- *	_modifyBootstrap()
- *	bake()
- *	execute()
- *	initialize()
+ * 	_modifyBootstrap()
+ * 	bake()
+ * 	execute()
+ * 	initialize()
  *
  * Original methods/vars:
  * =================
  * -----
- *	$bootstrap
- *	$path
+ * 	$bootstrap
+ * 	$path
  */
 
 // SbShell from superBake
@@ -188,7 +188,7 @@ class SuperPluginTask extends SbShell {
 			$out .= "}\n";
 			$this->createFile($this->path . $plugin . DS . 'Model' . DS . $modelFileName, $out);
 
-			/**	**********************************************************************
+			/** *********************************************************************
 			 *
 			 * Additionnal files are handled here
 			 *
@@ -210,15 +210,35 @@ class SuperPluginTask extends SbShell {
 
 			//
 			// Files from plugin.pluginAdditions:
-			foreach($this->pluginConfig['exec'] as $p){
+			foreach ($this->pluginConfig['exec'] as $p) {
 				$this->speak(__d('superBake', 'Additionnal file %s is being generated', $p), 'info');
-				include CakePlugin::path('Sb').'Console'.DS.'Template'.DS.'exec'.DS.$p;
-
+				include CakePlugin::path('Sb') . 'Console' . DS . 'Template' . DS . 'exec' . DS . $p;
 			}
 			// Main bootstrap file update
-			if ($this->updateBootstrap === 'Y') {
-				$this->_modifyBootstrap($plugin);
+			$updateBootstrap = false;
+			switch ($this->Sbc->getConfig('general.updateBootstrap')) {
+				case false:
+					break;
+				case true:
+					$updateBootstrap = true;
+					$this->_modifyBootstrap($plugin);
+					break;
+				default:
+					$this->out();
+					$updateBootstrap = strtoupper($this->in(__d('superBake', 'Do we have to update the app\'s bootstrap file ?'), array('y', 'n'), ($this->Sbc->getConfig('general.updateBootstrap') ? 'y' : 'n')));
+					$this->out();
+					if ($updateBootstrap === 'Y') {
+						$this->_modifyBootstrap($plugin);
+						$updateBootstrap = true;
+					}
+					break;
 			}
+			if ($updateBootstrap) {
+				$this->speak(__d('superBake', "The app's bootstrap file has been updated"), 'success');
+			}
+//			if ($this->updateBootstrap === true) {
+//				$this->_modifyBootstrap($plugin);
+//			}
 
 			$this->speak(__d('cake_console', 'Plugin created'), 'success', 0);
 		} else {

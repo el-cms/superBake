@@ -1,4 +1,4 @@
-<div class="alert alert-danger" data-alert="alert">
+<div class="alert alert-error" data-alert="alert">
 	<button type="button" class="close" data-dismiss="alert">&times;</button>
 	<strong><?php echo __('Error:'); ?></strong>
 	<?php

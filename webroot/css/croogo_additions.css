@@ -1,0 +1,20 @@
+
+/**
+Quick additions for Croogo
+*/
+body{
+	padding-top:0px;
+}
+
+.toolbar-sb{
+	background-color: #DDD;
+	min-height:45px;
+}
+
+.dropdown-submenu > .dropdown-menu{
+	background-color: #FFF;
+}
+
+.bottom_space{
+	padding-bottom: 50px;
+}

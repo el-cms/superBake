@@ -7,7 +7,7 @@ theme:
       # Default is true.
       useComponent: false
     Auth:
-      useComponent: false
+      useComponent: true
       ## Roles model (usually Group or Role)
       roleModel: Group
       ## Role primary key

@@ -101,6 +101,33 @@ class SbController extends SbAppController {
 	}
 
 	/**
+	 * Method to test the Sbc::arrayMerge() method.
+	 * Here for testing only.
+	 *
+	 * @return void
+	 */
+	public function admin_arraymerge() {
+		$result = '';
+		if ($this->request->is('post')) {
+			$Sbc = new Sbc();
+			$spyc = new Spyc();
+			$default = $this->request->data['default'];
+			$defined = $this->request->data['defined'];
+			$keep = (isset($this->request->data['keepRest']) && $this->request->data['keepRest'] === 'keep') ? true : false;
+			$result = $spyc->YAMLDump($Sbc->updateArray($spyc->YAMLLoadString($default), $spyc->YAMLLoadString($defined), $keep));
+		} else {
+			$default = null;
+			$defined = null;
+			$keep = null;
+			$result = null;
+		}
+		$this->set('result', $result);
+		$this->set('default', $default);
+		$this->set('defined', $defined);
+		$this->set('keepRest', $keep);
+	}
+
+	/**
 	 * Executes `Sb.Shell $command` and echoes the result.
 	 *
 	 * @param string $command

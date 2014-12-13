@@ -1,0 +1,15 @@
+{
+	"name": "sb",
+	"description": "Bake powered generation",
+
+	"author": "Manuel Tancoigne",
+	"authorEmail": "cms@experimentslabs.com",
+	"authorUrl": "http://experimentslabs.com",
+
+	"dependencies": {
+		"plugins": [
+			"acl",
+			"extensions"
+		]
+	}
+}

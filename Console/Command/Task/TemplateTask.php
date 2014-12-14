@@ -21,8 +21,7 @@
  */
 // Utilities to work with files and folders
 App::uses('Folder', 'Utility');
-// Methods, template-specific
-App::uses('Theme', 'Sb.Console/Template');
+
 
 /**
  * Template Task can generate templated output Used in other Tasks.
@@ -88,10 +87,12 @@ class TemplateTask extends Theme {
 	 * @return string contents of generated code template
 	 */
 	public function generate($directory, $filename, $vars = null) {
+//		App::uses('Theme', 'Sb.Console/Templates/'.);
 		if ($vars !== null) {
 			$this->set($vars);
 		}
-		$themePath = $this->_pluginPath('Sb') . 'Console' . DS . 'Template'.DS;
+		$themePath = $this->_pluginPath('Sb') . 'Console' . DS . 'Templates'.DS.$this->Sbc->getConfig('general.theme').DS;
+		die ($themePath);
 		$templateFile = $this->_findTemplate($themePath, $directory, $filename);
 		if ($templateFile) {
 			extract($this->templateVars);

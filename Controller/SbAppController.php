@@ -1,14 +1,26 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('Superbake', 'Sbc');
 
 class SbAppController extends AppController {
+
+	/**
+	 * Sbc object
+	 * @var object
+	 */
+	public $Sbc;
 
 	/**
 	 * Statements to execute before doing the action.
 	 */
 	public function beforeFilter() {
 		parent::beforeFilter();
+
+		// Load superBake
+		$this->Sbc=new Sbc();
+		// Load Sbc config
+		$this->Sbc->loadConfig();
 
 		// Check for debug state
 		if (Configure::read('debug') === 0) {
@@ -21,7 +33,7 @@ class SbAppController extends AppController {
 		}
 
 		// Search for documentation in Template dir:
-		$dir = CakePlugin::path('Sb') . 'Console' . DS . 'Template' . DS . 'docs' . DS;
+		$dir = CakePlugin::path('Sb') . 'Console' . DS . 'Templates' . DS . $this->Sbc->getConfig('general.superBakeTemplate') . DS . 'docs' . DS;
 		$docDir = opendir($dir);
 		$files = array();
 		$menuLinks = array();

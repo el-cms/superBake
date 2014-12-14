@@ -712,11 +712,17 @@ class Sbc {
 	 * @return void
 	 */
 	public function loadConfig() {
-		$configDir = $this->getConfigPath();
-		$dir = new Folder($this->getConfigPath());
+		// Load Yaml lib
+		if (empty($this->_Spyc)) {
+			$this->_Spyc = new Spyc();
+		}
+		// Fetch the correct template
+		$template = $this->getTemplateName();
+		// Search for config files
+		$configDir = $this->getConfigPath($template);
+		$dir = new Folder($configDir);
 		$configFiles = $dir->find('(?!_).*\.yml');
-
-		$this->_Spyc = new Spyc();
+		// Load config files
 		foreach ($configFiles as $file) {
 			// Opening file and converting YAML content to PHP array
 			$this->log("Loading file: \"$file\"...", 'info', 1);
@@ -742,8 +748,8 @@ class Sbc {
 	 *
 	 * @return string Path to the configuration file
 	 */
-	public function getConfigPath() {
-		$path = dirname(dirname(dirname(__FILE__))) . DS . 'Console' . DS . 'Template' . DS . 'config' . DS;
+	public function getConfigPath($templateName) {
+		$path = dirname(dirname(dirname(__FILE__))) . DS . 'Console' . DS . 'Templates' . DS . $templateName . DS . 'config' . DS;
 		return $path;
 	}
 
@@ -761,6 +767,17 @@ class Sbc {
 		} else {
 			return Hash::get($this->_config, $key);
 		}
+	}
+
+	public function getTemplateName() {
+		// Load config in /Console/Templates
+		$path = dirname(dirname(dirname(__FILE__))) . DS . 'Console' . DS . 'Templates' . DS . 'config.yml';
+		if (empty($this->_Spyc)) {
+			// Create Spyc var
+			$this->_Spyc = new Spyc();
+		}
+		$this->_config = array_merge_recursive($this->_config, $this->_Spyc->YAMLLoad($path));
+		return $this->getConfig('general.superBakeTemplate');
 	}
 
 	/**

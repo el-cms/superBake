@@ -1,0 +1,4 @@
+ general:
+   ## Template to use for generation.
+   ## Use "Cake" for CakePHP and "Croogo" for a croogo setup.
+   superBakeTemplate: Croogo

@@ -28,7 +28,7 @@
  *  along with EL-CMS. If not, see <http://www.gnu.org/licenses/>
  */
 //Page headers and licensing
-include $themePath . 'common/headers-files.ctp';
+include $this->templatePath . 'common/headers-files.ctp';
 
 echo "<?php
 \$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');

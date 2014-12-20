@@ -52,7 +52,7 @@ $conditions = (!isset($options['conditions']) || !is_array($options['conditions'
 public function <?php echo $admin . $a; ?>($id = null) {
 <?php
 // Support for a different layout. Look at the snippet for more info.
-include $themePath . 'actions/snippets/layout_support.ctp';
+include $this->templatePath . 'actions/snippets/layout_support.ctp';
 ?>
 	// Searching for the <?php echo "$currentModelName\n"; ?>
 	if ($this->request->is('post') || $this->request->is('put')) {

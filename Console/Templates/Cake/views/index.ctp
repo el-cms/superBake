@@ -85,7 +85,7 @@ if ($this->canDo('view') === true || $this->canDo('edit') === true || $this->can
 /* ----------------------------------------------------------------------------
  * Headers and licensing
  */
-include $themePath . 'views/common/headers.ctp';
+include $this->templatePath . 'views/common/headers.ctp';
 
 /* ----------------------------------------------------------------------------
  * Toolbar include
@@ -168,7 +168,7 @@ endif;
 	/* ---------------------------------------------------------------------------
 	 * Pagination
 	 */
-	include $themePath . 'views/common/pagination.ctp';
+	include $this->templatePath . 'views/common/pagination.ctp';
 	?>
 </div>
 
@@ -176,4 +176,4 @@ endif;
 /* -----------------------------------------------------------------------------
  * Additionnal scripts and CSS
  */
-include $themePath . 'views/common/additionnal_js_css.ctp';
+include $this->templatePath . 'views/common/additionnal_js_css.ctp';

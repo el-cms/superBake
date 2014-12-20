@@ -76,7 +76,7 @@ $paginateOptions = null;
 public function <?php echo $admin . $a ?>() {
 <?php
 // Support for a different layout. Look at the snippet for more info.
-include $themePath . 'actions/snippets/layout_support.ctp';
+include $this->templatePath . 'actions/snippets/layout_support.ctp';
 ?>
 	$this-><?php echo $currentModelName ?>->recursive = <?php echo $recursiveDepth ?>;
 	<?php

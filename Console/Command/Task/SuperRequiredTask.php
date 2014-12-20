@@ -2,50 +2,49 @@
 
 /**
  * The Required task handles needed files from the theme.
- * 
+ *
  * @copyright     Copyright 2012, Manuel Tancoigne (http://experimentslabs.com)
  * @author        Manuel Tancoigne <m.tancoigne@gmail.com>
  * @link          http://experimentslabs.com Experiments Labs
  * @package       ELCMS.superBake.Task
  * @license       GPL v3 (http://www.gnu.org/licenses/gpl.html)
  * @version       0.3
- * 
+ *
  * This task is based on the original CakePHP's PluginTask.
- * 
+ *
  * Added methods/vars:
  * ==============
- *	copyDir()
- *	copyFile()
+ * 	copyDir()
+ * 	copyFile()
  * -----
- *	$plugin
- *	$required
- *	$tasks
+ * 	$plugin
+ * 	$required
+ * 	$tasks
  *
  * Deleted methods/vars:
  * ================
- *	_interactive()
- *	_modifyBootstrap()
- *	findPath()
- *	getOptionParser()
+ * 	_interactive()
+ * 	_modifyBootstrap()
+ * 	findPath()
+ * 	getOptionParser()
  * -----
- *	$bootstrap
- * 
+ * 	$bootstrap
+ *
  * Modified methods:
  * =================
- *	bake()
- *	execute()
+ * 	bake()
+ * 	execute()
  *
  * Original methods/vars:
  * =================
- *	initialize()
+ * 	initialize()
  * -----
- *	$path
+ * 	$path
  */
-
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 // Template from superBake
-App::uses('TemplateTask', 'Sb.Console/Command/Task');
+//App::uses('TemplateTask', 'Sb.Console/Command/Task');
 
 // File from Cake
 App::uses('File', 'Utility');
@@ -124,7 +123,7 @@ class superRequiredTask extends SbShell {
 	 */
 	public function bake() {
 		// Theme path
-		$templatePath = $this->Template->getThemePath();
+		$templatePath = $this->getTemplatePath();
 		// Source dir
 		$source = $templatePath . 'required' . DS . $this->cleanPath($this->required['source']);
 

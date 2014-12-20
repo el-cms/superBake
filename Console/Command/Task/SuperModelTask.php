@@ -66,7 +66,6 @@
  * 	$path
  * 	$tasks
  */
-
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 // Bake from superBake
@@ -166,6 +165,9 @@ class SuperModelTask extends BakeTask {
 	 * @return void
 	 */
 	public function execute() {
+		// Theme class
+		App::uses('Theme', 'Sb.Console' . DS . 'Templates' . DS . $this->Sbc->getTemplateName() . DS);
+
 		// DB connection to use
 		$this->connection = $this->Sbc->getConfig('general.dbConnection');
 
@@ -575,6 +577,8 @@ class SuperModelTask extends BakeTask {
 
 		//Sbc class
 		$this->Template->Sbc = $this->Sbc;
+		// Theme path
+		$this->Template->templatePath=$this->getTemplatePath();
 		// Prepared data
 		$this->Template->set($data);
 		// Additionnal data:

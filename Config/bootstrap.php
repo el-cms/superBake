@@ -3,6 +3,8 @@
 // Use command execution through GUI (experimental)
 Configure::write('Sb.executeTroughGUI', true);
 
+Configure::write('Sb.template', 'Croogo');
+
 // Croogo integration
 if (class_exists('Croogo')) {
 	Configure::write('Sb.Croogo', true);

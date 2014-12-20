@@ -1,7 +1,8 @@
 <?php
 
 App::uses('AppController', 'Controller');
-App::uses('Superbake', 'Sbc');
+App::uses('Sbc', 'Sb.Superbake');
+
 
 class SbAppController extends AppController {
 
@@ -33,7 +34,7 @@ class SbAppController extends AppController {
 		}
 
 		// Search for documentation in Template dir:
-		$dir = CakePlugin::path('Sb') . 'Console' . DS . 'Templates' . DS . $this->Sbc->getConfig('general.superBakeTemplate') . DS . 'docs' . DS;
+		$dir = CakePlugin::path('Sb') . 'Console' . DS . 'Templates' . DS . $this->Sbc->getTemplateName() . DS . 'docs' . DS;
 		$docDir = opendir($dir);
 		$files = array();
 		$menuLinks = array();

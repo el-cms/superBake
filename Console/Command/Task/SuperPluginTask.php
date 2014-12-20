@@ -40,7 +40,6 @@
  * 	$bootstrap
  * 	$path
  */
-
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 
@@ -188,7 +187,7 @@ class SuperPluginTask extends SbShell {
 			$out .= "}\n";
 			$this->createFile($this->path . $plugin . DS . 'Model' . DS . $modelFileName, $out);
 
-			/** *********************************************************************
+			/**			 * ********************************************************************
 			 *
 			 * Additionnal files are handled here
 			 *
@@ -209,10 +208,10 @@ class SuperPluginTask extends SbShell {
 			}
 
 			//
-			// Files from plugin.pluginAdditions:
+			// Files from plugin.exec :
 			foreach ($this->pluginConfig['exec'] as $p) {
 				$this->speak(__d('superBake', 'Additionnal file %s is being generated', $p), 'info');
-				include CakePlugin::path('Sb') . 'Console' . DS . 'Template' . DS . 'exec' . DS . $p;
+				include CakePlugin::path('Sb') . 'Console' . DS . 'Templates' . DS . $this->Sbc->getTemplateName() . DS . 'exec' . DS . $p;
 			}
 			// Main bootstrap file update
 			$updateBootstrap = false;

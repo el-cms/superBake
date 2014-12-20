@@ -21,8 +21,6 @@
  */
 // Utilities to work with files and folders
 App::uses('Folder', 'Utility');
-
-
 /**
  * Template Task can generate templated output Used in other Tasks.
  * Acts like a simplified View class.
@@ -50,8 +48,7 @@ class TemplateTask extends Theme {
 	 * Path to the Template directory.
 	 * @var string
 	 */
-	public $templatePath=null;
-
+	public $templatePath = null;
 
 	/**
 	 * Set variable values to the template scope
@@ -91,9 +88,9 @@ class TemplateTask extends Theme {
 		if ($vars !== null) {
 			$this->set($vars);
 		}
-		$themePath = $this->_pluginPath('Sb') . 'Console' . DS . 'Templates'.DS.$this->Sbc->getConfig('general.theme').DS;
-		die ($themePath);
-		$templateFile = $this->_findTemplate($themePath, $directory, $filename);
+
+		// Finds the template file to use
+		$templateFile = $this->_findTemplate($this->templatePath, $directory, $filename);
 		if ($templateFile) {
 			extract($this->templateVars);
 			ob_start();
@@ -115,11 +112,10 @@ class TemplateTask extends Theme {
 	 */
 	public function getThemePath() {
 
-		if(is_null($this->templatePath)){
-			$this->templatePath=$this->_pluginPath('Sb') . 'Console' . DS . 'Template'.DS;
+		if (is_null($this->templatePath)) {
+			$this->_stop('Could not find template directory');
 		}
 		return $this->templatePath;
-
 	}
 
 	/**
@@ -136,7 +132,7 @@ class TemplateTask extends Theme {
 		if (file_exists($themeFile)) {
 			return $themeFile;
 		}
-		$this->err(__d('cake_console', 'Could not find template for %s (in %s)', array($filename, $path.$directory)));
+		$this->err(__d('cake_console', 'Could not find template for %s (in %s)', array($filename, $path . $directory)));
 		return false;
 	}
 

@@ -15,44 +15,43 @@
  *
  * Added methods/vars:
  * ==============
- *	getFilePath()
+ * 	getFilePath()
  * -----
- *	$Sbc
- *	$currentFileConfig
- *	$fileType
- *	$plugin
+ * 	$Sbc
+ * 	$currentFileConfig
+ * 	$fileType
+ * 	$plugin
  *
  * Deleted methods/vars:
  * ================
- *	_associations()
- *	_interactive()
- *	_loadController()
- *	_methodsToBake()
- *	all()
- *	bakeActions()
- *	customAction()
- *	getOptionParser()
- *	getTemplate()
+ * 	_associations()
+ * 	_interactive()
+ * 	_loadController()
+ * 	_methodsToBake()
+ * 	all()
+ * 	bakeActions()
+ * 	customAction()
+ * 	getOptionParser()
+ * 	getTemplate()
  * -----
- *	$controllerName
- *	$noTemplateAction
- *	$scaffoldActions
+ * 	$controllerName
+ * 	$noTemplateAction
+ * 	$scaffoldActions
  *
  * Modified methods:
  * =================
- *	bake()
- *	execute()
- *	getContent()
+ * 	bake()
+ * 	execute()
+ * 	getContent()
  *
  * Original methods/vars:
  * =================
- *	initialize()
- *	----
- *	$path
- *	$tasks
- *	$template
+ * 	initialize()
+ * 	----
+ * 	$path
+ * 	$tasks
+ * 	$template
  */
-
 // SbShell from superBake
 App::uses('SbShell', 'Sb.Console/Command');
 
@@ -137,13 +136,8 @@ class SuperFileTask extends BakeTask {
 	 * @return void
 	 */
 	public function execute() {
-//		// Dirty inclusion of the theme class that may contain logic to create HTML elements
-//		$themeClass = $this->Template->getThemePath() . DS . 'theme.php';
-//		if (!file_exists($themeClass)) {
-//			$this->speak(__d('superBake', 'The current theme has no theme class. It is not necessary, but can help...'), 'warning', 1);
-//		} else {
-//			include_once($this->Template->getThemePath() . DS . 'theme.php');
-//		}
+		// Theme class
+		App::uses('Theme', 'Sb.Console' . DS . 'Templates' . DS . $this->Sbc->getTemplateName() . DS);
 
 		// Getting content from template
 		$content = $this->getContent($this->currentFileConfig['template']);
@@ -201,6 +195,8 @@ class SuperFileTask extends BakeTask {
 		$this->Template->set('plugin', $this->plugin);
 		//Sbc object
 		$this->Template->Sbc = $this->Sbc;
+		// Template path
+		$this->Template->templatePath = $this->getTemplatePath();
 		// Vars passed as arguments
 		$this->Template->set($vars);
 

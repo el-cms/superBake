@@ -137,7 +137,7 @@ $titleForLayout = (!isset($options['title'])) ? 'New ' . strtolower(Inflector::s
 public function <?php echo $admin . $a ?>() {
 	<?php
 	// Support for a different layout. Look at the snippet for more info.
-	include $themePath . 'actions/snippets/layout_support.ctp';
+	include $this->templatePath . 'actions/snippets/layout_support.ctp';
 	?>
 	if ($this->request->is('post')) {
 		<?php

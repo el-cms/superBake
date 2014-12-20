@@ -66,7 +66,7 @@ $contain = $this->c_findContains($modelObj, array(
 public function <?php echo $admin . $a ?>($id = null) {
 <?php
 // Support for a different layout. Look at the snippet for more info.
-include $themePath . 'actions/snippets/layout_support.ctp';
+include $this->templatePath . 'actions/snippets/layout_support.ctp';
 
 	// Fields
 	$findFields = '';

@@ -138,7 +138,7 @@ foreach ($fields as $field) {
 /* ----------------------------------------------------------------------------
  * Headers and licensing
  */
-include $themePath . 'views/common/headers.ctp';
+include $this->templatePath . 'views/common/headers.ctp';
 
 /* ----------------------------------------------------------------------------
  * Toolbar
@@ -325,4 +325,4 @@ endforeach;
 /* -----------------------------------------------------------------------------
  * Additionnal scripts and CSS
  */
-include $themePath . 'views/common/additionnal_js_css.ctp';
+include $this->templatePath . 'views/common/additionnal_js_css.ctp';

@@ -10,7 +10,7 @@
  * @version       0.3
  */
 //Page headers and licensing
-include $themePath . 'views/common/headers.ctp';
+include $this->templatePath . 'views/common/headers.ctp';
 
 // Preparing schema srtucture and fields to replace the ones from Cake
 $this->s_prepareSchemaFields();
@@ -96,4 +96,4 @@ endif;
 /* -----------------------------------------------------------------------------
  * Additionnal scripts and CSS
  */
-include $themePath . 'views/common/additionnal_js_css.ctp';
+include $this->templatePath . 'views/common/additionnal_js_css.ctp';

@@ -29,6 +29,8 @@
  */
 App::uses('Folder', 'Utility');
 App::uses('File', 'Utility');
+App::uses('Spyc', 'Sb.Yaml');
+//App::uses('Configure', 'Core');
 
 /**
  * Plays with the configuration file.
@@ -168,6 +170,13 @@ class Sbc {
 	 * @var array
 	 */
 	protected $_prefixesList;
+
+	/**
+	 * Template being used
+	 *
+	 * @var string
+	 */
+	protected $_template;
 
 	// --------------------------------------------------------------------------
 	//
@@ -716,8 +725,11 @@ class Sbc {
 		if (empty($this->_Spyc)) {
 			$this->_Spyc = new Spyc();
 		}
+
+		$template=Configure::read('Sb.template');
 		// Fetch the correct template
-		$template = $this->getTemplateName();
+		$this->log("\"$template\" template is being used.", 'info', 1);
+		$this->_template=$template;
 		// Search for config files
 		$configDir = $this->getConfigPath($template);
 		$dir = new Folder($configDir);
@@ -769,15 +781,13 @@ class Sbc {
 		}
 	}
 
+	/**
+	 * Returns the template name
+	 *
+	 * @return string
+	 */
 	public function getTemplateName() {
-		// Load config in /Console/Templates
-		$path = dirname(dirname(dirname(__FILE__))) . DS . 'Console' . DS . 'Templates' . DS . 'config.yml';
-		if (empty($this->_Spyc)) {
-			// Create Spyc var
-			$this->_Spyc = new Spyc();
-		}
-		$this->_config = array_merge_recursive($this->_config, $this->_Spyc->YAMLLoad($path));
-		return $this->getConfig('general.superBakeTemplate');
+		return $this->_template;
 	}
 
 	/**

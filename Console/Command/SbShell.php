@@ -29,6 +29,7 @@
  */
 // Yaml
 App::uses('Spyc', 'Sb.Yaml');
+
 // superBake lib
 App::uses('Sbc', 'Sb.Superbake');
 
@@ -49,6 +50,15 @@ class SbShell extends AppShell {
 	 * @var Sbc
 	 */
 	public $Sbc;
+
+	/**
+	 * List of plugins that should be baked, but that are  not loaded.
+	 * This is used to prevent multiple messages when baking multiple files for
+	 * the same plugin.
+	 *
+	 * @var array
+	 */
+	private $unLoadedPlugins = array();
 
 	/**
 	 * Method executed if the shell is executed by command line (cake superApp)
@@ -411,12 +421,6 @@ class SbShell extends AppShell {
 	 */
 	public function isComponentEnabled($component) {
 		return ($this->Sbc->getConfig("theme.components.{$component}.useComponent"));
-//		$comp = $this->Sbc->getConfig("theme.components");
-//		if (is_array($comp[$component]) && (!isset($comp[$component]['useComponent']) || $comp[$component]['useComponent'] === true)) {
-//			return true;
-//		} else {
-//			return false;
-//		}
 	}
 
 	/**
@@ -444,7 +448,6 @@ class SbShell extends AppShell {
 	 * @param bool $ignoreKeys Set it to true if you want only the values. Does not work on mutidimensionnal arrays.
 	 * @return string
 	 */
-//	public function displayArray($array, $ignoreKeys = false, $keepNumericKeys = false) {
 	public function displayArray($array, $multiline = false, $ignoreKeys = false) {
 		$out = var_export($array, true);
 
@@ -457,40 +460,33 @@ class SbShell extends AppShell {
 		}
 
 		return $out;
+	}
 
+	/**
+	 * Returns the path to the current superBake template.
+	 *
+	 * @return string
+	 */
+	public function getTemplatePath() {
+		return $this->_pluginPath('Sb') . 'Console' . DS . 'Templates' . DS . $this->Sbc->getTemplateName() . DS;
+	}
 
-//		$out = null;
-//		$i = 0;
-//		if ($ignoreKeys) {
-//			foreach ($array as $v) {
-//				if (!is_array($v)) {
-//					if ($i > 0) {
-//						$out.=", ";
-//					}
-//					$out.=(($v[0] === '$') ? $v : "'$v'");
-//				} else {
-//					$this->speak(__d('superbake', 'DisplayArray can\'t process multi-dimensionnal arrays with option "ignoreKey".'), 'error', 0);
-//					return null;
-//				}
-//			}
-//		} else {
-//			foreach ($array as $k => $v) {
-//				$i++;
-////				if ($i > 0) {
-////					$out.=", ";
-////				}
-//				if (is_array($v)) {
-//					$out .="'$k'=>" . $this->displayArray($v) . ((count($array) != $i) ? ",\n" : "\n");
-//				} else {
-//					if ($keepNumericKeys === false && is_numeric($k)) {
-//						$out.=(($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
-//					} else {
-//						$out.="'$k'=>" . (($v[0] === '$') ? $v : "'$v'") . ((count($array) != $i) ? ", " : '');
-//					}
-//				}
-//			}
-//		}
-//		return "array($out)";
+	public function checkIfEnabled($plugin) {
+
+		if ($plugin != $this->Sbc->getAppBase() && !CakePlugin::loaded($plugin)) {
+			if (!in_array($plugin, $this->unLoadedPlugins)) {
+				if (class_exists('Croogo')) {
+					$this->speak(__d('superBake', "The $plugin plugin is not loaded. Please enable it in the Croogo administration."), 'error', 0, 1, 1);
+				} else {
+					$this->speak(__d('superBake', "The $plugin plugin is not loaded. Please enable it in bootstrap.php."), 'error', 0, 1, 1);
+				}
+				$this->unLoadedPlugins[] = $plugin;
+			} else {
+				$this->Speak(__d('superBake', 'Skipping...'), 'warning', 0);
+			}
+			return false;
+		}
+		return true;
 	}
 
 }

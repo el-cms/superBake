@@ -55,7 +55,6 @@
  * 	$tasks
  * 	$template
  */
-
 // SbShell
 App::uses('SbShell', 'Sb.Console/Command');
 // Bake from superBake
@@ -167,6 +166,8 @@ class SuperViewTask extends BakeTask {
 	 * @return mixed
 	 */
 	public function execute() {
+		// Theme class
+		App::uses('Theme', 'Sb.Console' . DS . 'Templates' . DS . $this->Sbc->getTemplateName() . DS);
 
 		// Variables to be made available to a view template
 		$vars = $this->_loadController();
@@ -307,6 +308,8 @@ class SuperViewTask extends BakeTask {
 		$this->Template->set('plugin', $this->plugin);
 		$this->Template->set('currentPart', $this->currentPart);
 		$this->Template->Sbc = $this->Sbc;
+		// Template path
+		$this->Template->templatePath = $this->getTemplatePath();
 
 		// Making view's options directly available in template.
 		$currentViewConfig = $this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($this->plugin) . '.parts.' . $this->currentPart . '.controller.actions.' . ((is_null($this->currentPrefix)) ? 'public' : $this->currentPrefix) . '.' . $this->currentSimpleAction . '.view.options');
@@ -367,9 +370,9 @@ class SuperViewTask extends BakeTask {
 		//
 		//First case: template view exists, everything's ok. We don't go any further
 		//
-		$themePath = $this->Template->getThemePath();
+		$this->templatePath = $this->Template->getThemePath();
 		$filePath = str_replace('::', DS, $view);
-		if (file_exists($themePath . 'views' . DS . $filePath . '.ctp')) {
+		if (file_exists($this->templatePath . 'views' . DS . $filePath . '.ctp')) {
 			return $filePath;
 		}
 

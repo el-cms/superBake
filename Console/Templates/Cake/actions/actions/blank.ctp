@@ -37,7 +37,7 @@ include 'common/common_options.ctp';
 public function <?php echo $admin . $a; ?>() {
 <?php
 // Support for a different layout. Look at the snippet for more info.
-include $themePath . 'actions/snippets/layout_support.ctp';
+include $this->templatePath . 'actions/snippets/layout_support.ctp';
 // Title for layout
 $fieldToDisplay = (!empty($modelObj->displayField)) ? 'displayField' : 'primaryKey';
 if (isset($options['title']) && !empty($options['title'])) {

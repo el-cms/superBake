@@ -125,14 +125,17 @@ class ShellShell extends SbShell {
 		$this->out('|  <warning>Read the doc before things turns bad</warning>                         |', 1, 0);
 		$this->out('|                                                               |', 1, 0);
 		$this->out('+---------------------------------------------------------------+', 1, 0);
+		$this->out('|', 1, 0);
+		$this->out('|  <info>You currently use the ' . $this->Sbc->getTemplateName() . ' template</info>', 1, 0);
+		$this->out('|', 1, 0);
 		if (count($this->Sbc->getPrefixesList()) != (count(Configure::read('Routing.prefixes')) + 1)) {
-			$this->out('|', 1, 0);
 			$this->out('| <warning>--> The amount of routing prefixes defined in your core.php.</warning>', 1, 0);
 			$this->out('| <warning>--> differs from the ones defined in your configuration files...</warning>', 1, 0);
 			$this->out('|', 1, 0);
 		}
 		if ($this->Sbc->getErrors() > 0) {
 			$this->out('| <warning>--> This file contains errors. Check it.</warning>', 1, 0);
+			$this->out('|', 1, 0);
 		}
 		$this->out('+--[ <error>' . __d('superBake', 'Plugin creation') . '</error> ]', 1, 0);
 		$this->out('|  ' . __d('superBake', '    [<bold>P</bold>]lugins (Creates all plugins structures)'), 1, 0);
@@ -450,6 +453,10 @@ class ShellShell extends SbShell {
 	 * @param string $part Part name
 	 */
 	protected function _model($plugin, $part) {
+		// Verify if plugin is loaded
+		if (!$this->checkIfEnabled($plugin)) {
+			return false;
+		}
 		// SuperBake
 		$this->SuperModel->Sbc = $this->Sbc;
 
@@ -461,6 +468,7 @@ class ShellShell extends SbShell {
 		}
 		// Part name
 		$this->SuperModel->currentPart = $part;
+
 		// Task execution
 		$this->SuperModel->execute();
 	}
@@ -618,12 +626,12 @@ class ShellShell extends SbShell {
 	 * @param string $part Part name
 	 */
 	protected function _controller($plugin, $part) {
-		// First of all, checking if the controller have a model associated.
-		// If not, file creation mmethods will be used instead.
-//		if ($this->Sbc->getConfig('plugins.' . $this->Sbc->pluginName($plugin) . ".parts.$part.haveModel") === false) {
-//			$this->speak(__d('superBake', 'ShellShell:630: Controller does not have a model. It should be generated using another method.'), 'warning', 0);
-//		} else {
-		// SuperBake
+		// Verify if plugin is loaded
+		if (!$this->checkIfEnabled($plugin)) {
+			return false;
+		}
+
+		// Passing Sbc
 		$this->SuperController->Sbc = $this->Sbc;
 
 		// Current plugin
@@ -738,6 +746,10 @@ class ShellShell extends SbShell {
 	 * @return void
 	 */
 	protected function _view($plugin, $part, $action) {
+		// Verify if plugin is loaded
+		if (!$this->checkIfEnabled($plugin)) {
+			return false;
+		}
 		// SuperBake
 		$this->SuperView->Sbc = $this->Sbc;
 
@@ -838,6 +850,10 @@ class ShellShell extends SbShell {
 	 * @param string $menu	Menu name
 	 */
 	protected function _menu($plugin, $menu) {
+		// Verify if plugin is loaded
+		if (!$this->checkIfEnabled($plugin)) {
+			return false;
+		}
 		// SuperBake
 		$this->SuperFile->Sbc = $this->Sbc;
 
@@ -875,6 +891,10 @@ class ShellShell extends SbShell {
 	 * @param string $file File name in configuration
 	 */
 	protected function _file($plugin, $file) {
+		// Verify if plugin is loaded
+		if (!$this->checkIfEnabled($plugin)) {
+			return false;
+		}
 		// SuperBake
 		$this->SuperFile->Sbc = $this->Sbc;
 
@@ -905,6 +925,10 @@ class ShellShell extends SbShell {
 	}
 
 	protected function _required($plugin, $required) {
+		// Verify if plugin is loaded
+		if (!$this->checkIfEnabled($plugin)) {
+			return false;
+		}
 		// SuperBake
 		$this->SuperRequired->Sbc = $this->Sbc;
 

@@ -1,6 +1,6 @@
 <?php
 
-include $themePath . "common/headers-files.ctp";
+include $this->templatePath . "common/headers-files.ctp";
 
 // Language list for lang support
 $languages = $this->Sbc->getConfig('theme.language.available');

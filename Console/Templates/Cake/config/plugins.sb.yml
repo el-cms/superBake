@@ -36,15 +36,14 @@ plugins:
           name: Sb
           displayName: superbake
           actions:
-            public:
+            admin:
               check: []
               tree: []
-              arraymerge: []
               index:
                 blackListed: true
               view:
                 blackListed: true
-            admin:
+            public:
               index:
                 blackListed: true
               view:

@@ -1,12 +1,4 @@
-superBake is still in development and is _not really ready_ to use. But you can still test it now with the sample db (in `examples`), the default Template (`Console/Template`) and the example config file (see below the quick steps to setup an app)
-
-This readme is in development too.
-
-Feel free to contact me on [g+ EL-CMS](https://plus.google.com/u/0/b/110073171539347252283/) or by [mail](mailto:m.tancoigne@gmail.com) (with "superBake" in the beginning of your subject), i'll try to answer quickly.
-
-For now, the configuration file provided with the plugin is the one I work on, so it's not an empty config file. You can test it with the models structure available in `docs/`.
-
-# superBake version 0.x
+# superBake
 ## What is superBake
 superBake is a console Shell for [__cakePHP__](http://cakephp.org/) 2.x. It will help you to generate your application's plugins, models, controllers, views and menus with a configuration file and custom templates.
 
@@ -16,11 +8,13 @@ You can find a demo video on [youtube](https://www.youtube.com/watch?v=sP9WOk7qm
 
 ## What superBake isn't
 
-superBake is not a CMS, a blog manager or anything. It will help you to create your apps. That's all.
+superBake is not a CMS, a blog manager or anything. It will _help_ you to create your apps. That's all.
 
-## Last big changes:
+## How it works
+As you can see in the graph below, superBake extends original CakePHP baking tasks. That means the plugin should always work with the new versions of CakePHP
 
- * added "generation from GUI", accessible at `http://<cakeInstall>/sb/sb/tree`
+<img src="plugin_docs/graph.png" alt="superBake" />
+
 
 ## Test it in a few simple steps:
 
@@ -52,3 +46,11 @@ superBake is not a CMS, a blog manager or anything. It will help you to create y
 ## What if it doesn't work as expected ?
 
 Open an issue, explain the problem, I'll be happy to help.
+
+## Links:
+
+Feel free to contact me on [g+ EL-CMS](https://plus.google.com/u/0/b/110073171539347252283/) or by [mail](mailto:m.tancoigne@gmail.com) (with "superBake" in the beginning of your subject), i'll try to answer quickly.
+
+For now, the configuration file provided with the plugin is the one I work on, so it's not an empty config file. You can test it with the models structure available in `docs/`.
+
+Trello [board](https://trello.com/b/n2thkRPQ/superbake) to discuss about the project
